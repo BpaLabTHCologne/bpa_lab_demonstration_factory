@@ -4,9 +4,14 @@ Project documentation of Guided Project in winter 2023
 ## Part 1: Evaluation of the learning concept 
 Learning concept: We would like to investigate the pros and cons of using BPALab hardware components in process automation project with Camunda 8 in the bachelor program.
 
-Your contribution: Please work on the project order in this repository (Project_Order_BicycleManufacturer_V1_1.pdf). As part of this process, please prepare a brief report with answers to the questions below.
-This task is not about creating the best technical solution, but to provide comprehensive feedback on the learning concept. At the same time, it is a good warm up exercise for the upcoming work packages.
+Your contribution: Please work on the project order in this repository (Project_Order_BicycleManufacturer_V1_1.pdf). 
+For the implementation, the following BPALab elements are required
+- Open Route Service (repository: bpa_lab_openroute_service_API)
+- Fischertechnik warehouse robot (repository: to be announced)
+As part of this process and as the most important deliverable, please prepare a report with answers to the questions below (3-4 pages). This report shall provide comprehensive feedback on the learning concept.
+Remark: At the same time, the technical work is  a good exercise for the upcoming work packages (see part 2).
 
+Question on learning concepts:
 - How understandable was the project assignment for you? 
 - What problems or questions did you encounter while working on the project assignment?
 - What requirements would you have for the course materials/documentation? (Please assume you have read the book: Marlon Dumas, Fundamentals of Business Process Management, 2018 as a substitute for the lecture notes).
@@ -14,7 +19,7 @@ This task is not about creating the best technical solution, but to provide comp
 - How did you feel about using the software component (Open Route) and the hardware component (Fischertechnik robot)? What are pros and cons of involving hardware components?
 - What suggestions do you have for improving the project assignment or the teaching concept when using BPA Lab building blocks? 
 
-Please do not hesitate, if you have any questions!!!
+Please do not hesitate to contact me, if you have any questions!!!
 
 ## Part 2: Designing and implementing the end to end business process of the Demonstration Factory
 Released work items will be maintained in the project board of this repository!
