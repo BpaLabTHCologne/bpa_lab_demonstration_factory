@@ -8,6 +8,7 @@ Your contribution: Please work on the project order in this repository (Project_
 For the implementation, the following BPALab elements are required
 - Open Route Service (repository: bpa_lab_openroute_service_API)
 - Fischertechnik warehouse robot (repository: to be announced)
+
 As part of this process and as the most important deliverable, please prepare a report with answers to the questions below (3-4 pages). This report shall provide comprehensive feedback on the learning concept.
 Remark: At the same time, the technical work is  a good exercise for the upcoming work packages (see part 2).
 
