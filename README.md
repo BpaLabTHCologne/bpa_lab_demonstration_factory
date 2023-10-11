@@ -4,7 +4,7 @@ Project documentation of Guided Project in winter 2023
 ## Part 1: Evaluation of the learning concept 
 Learning concept: We would like to investigate the pros and cons of using BPALab hardware components in process automation project with Camunda 8 in the bachelor program.
 
-Your contribution: Please work on the project order in this repository (Project_Order_BicycleManufacturer_V1_1.pdf). 
+Your contribution: Please work on the project order in this repository (Project_Order_BicycleManufacturer_V1_2.pdf). 
 For the implementation, the following BPALab elements are required
 - Open Route Service (repository: [bpa_lab_openroute_service_API](https://github.com/BpaLabTHCologne/bpa_lab_openroute_service_API))
 - Fischertechnik warehouse robot (repository: [bpa_lab_warehouse_operations](https://github.com/BpaLabTHCologne/bpa_lab_warehouse_operations))
