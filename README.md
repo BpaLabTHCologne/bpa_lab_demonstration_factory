@@ -9,16 +9,25 @@ For the implementation, the following BPALab elements are required
 - Open Route Service (repository: [bpa_lab_openroute_service_API](https://github.com/BpaLabTHCologne/bpa_lab_openroute_service_API))
 - Fischertechnik warehouse robot (repository: [bpa_lab_warehouse_operations](https://github.com/BpaLabTHCologne/bpa_lab_warehouse_operations))
 
-As part of this process and as the most important deliverable, please prepare a report with answers to the questions below (3-4 pages). This report shall provide comprehensive feedback on the learning concept.
+As part of this process and as the most important deliverable, please prepare a report with answers to the questions below (min. 3-4 pages). This report shall provide comprehensive feedback on the learning concept.
 Remark: At the same time, the technical work is  a good exercise for the upcoming work packages (see part 2).
 
 Question on learning concepts:
-- How understandable was the project assignment for you? 
+- What is your previous knowledge in process automation in general and with BPMS in particular?
+- While working on the project, what positive experiences did you have?
 - What problems or questions did you encounter while working on the project assignment?
 - What requirements would you have for the course materials/documentation? (Please assume you have read the book: Marlon Dumas, Fundamentals of Business Process Management, 2018 as a substitute for the lecture notes).
-- What did you learn about business process management systems while working on this project? For which scenarios can a BPMS like Camunda be used?
+- What did you learn from working on this project in addition to your previous knowledge of business process management systems?
+- For which scenarios can a BPMS like Camunda be used?
 - How did you feel about using the software component (Open Route) and the hardware component (Fischertechnik robot)? What are pros and cons of involving hardware components?
-- What suggestions do you have for improving the project assignment or the teaching concept when using BPA Lab building blocks? 
+- What suggestions do you have for improving the project assignment or the teaching concept when using BPA Lab building blocks?
+- Do you have any other feedback you would like to share?
+
+A few notes about the grading criteria for your report:
+- Demonstrate extensive work on project assignment 
+- Understand the learning concept and questions
+- Answer the questions above
+- Provide (honest) feedback/insights into your learning experience
 
 Please do not hesitate to contact me, if you have any questions!!!
 
