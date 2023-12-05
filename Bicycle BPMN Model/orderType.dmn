@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1kykn67" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
+  <decision id="Decision_1ymc9av" name="orderType">
+    <decisionTable id="DecisionTable_0hg7jxh">
+      <input id="Input_1" label="productName">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>product()</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0fw0aqh" label="orderQuantity">
+        <inputExpression id="LiteralExpression_1ao9x8s" typeRef="number">
+          <text>quantity</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="orderType" name="type" typeRef="string" />
+      <rule id="DecisionRule_0v3xymt">
+        <description>Customer receives an email for confirmation.</description>
+        <inputEntry id="UnaryTests_09v8xwb">
+          <text>"Mountain Bicycle"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0v1d0xi">
+          <text>[2..5]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15oe6hx">
+          <text>"multiple-order"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1mx1zy1">
+        <description>Customer receives an email for confirmation.</description>
+        <inputEntry id="UnaryTests_16xiv5n">
+          <text>"Hybrid 40000 Bicycle"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1i84vu5">
+          <text>[2..5]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xp61j8">
+          <text>"multiple-order"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_17bhykj">
+        <description>Customer receives an email for confirmation.</description>
+        <inputEntry id="UnaryTests_0bme6n2">
+          <text>"Speed Thriller Electric 147 Bicycle"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a8ljye">
+          <text>[2..5]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_191potq">
+          <text>"multiple-order"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1s9hfgk">
+        <description>Order is confirmed directly.</description>
+        <inputEntry id="UnaryTests_0rf4z4j">
+          <text>"Mountain Bicycle"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0we7aq6">
+          <text>1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1s0dwk8">
+          <text>"single-order"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05ud8co">
+        <description>Order is confirmed directly.</description>
+        <inputEntry id="UnaryTests_10322tx">
+          <text>"Hybrid 40000 Bicycle"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0p2s1k3">
+          <text>1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18d0lpk">
+          <text>"single-order"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0f03p5o">
+        <description>Order is confirmed directly.</description>
+        <inputEntry id="UnaryTests_1bcoqvn">
+          <text>"Speed Thriller Electric 147 Bicycle"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01w49wq">
+          <text>1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_026irog">
+          <text>"single-order"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1nfucjn">
+        <description>Customer receives a cancelation email.</description>
+        <inputEntry id="UnaryTests_0mfw7nu">
+          <text>"Mountain Bicycle"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_039c08v">
+          <text>&gt; 5</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xu4abd">
+          <text>"not-allowed"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1uqbpnz">
+        <description>Customer receives a cancelation email.</description>
+        <inputEntry id="UnaryTests_0h4urmb">
+          <text>"Hybrid 40000 Bicycle"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0swvsfi">
+          <text>&gt; 5</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nlhnfv">
+          <text>"not-allowed"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0o620a0">
+        <description>Customer receives a cancelation email.</description>
+        <inputEntry id="UnaryTests_0qrfe5l">
+          <text>"Speed Thriller Electric 147 Bicycle"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ekhw1y">
+          <text>&gt; 5</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0zv59cg">
+          <text>"not-allowed"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_1ymc9av">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
