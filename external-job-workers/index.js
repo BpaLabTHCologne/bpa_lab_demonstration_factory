@@ -1,5 +1,4 @@
 const ZB = require('zeebe-node')
-const nodemailer = require("nodemailer");
 const mysql = require('mysql');
 const zbc = new ZB.ZBClient();
 
@@ -15,8 +14,8 @@ function handler(job) {
   zbWorker.log('Task variables', job.variables);
 
   // Accessing optional variables
-//   const optionalVariable = job.variables.optionalVariable;
-//   console.log('Optional variables: ', job.variables);
+  const optionalVariable = job.variables.optionalVariable;
+  console.log('Optional variables: ', job.variables);
 
   var connection = mysql.createConnection({
   host     : process.env.MYSQL_HOST_NAME,
@@ -28,10 +27,18 @@ function handler(job) {
 
 connection.connect();
 
-connection.query('SELECT * from customer_order', function(err, rows, fields) {
-    if(err) console.log(err);
-    console.log('The solution is: ', rows);
-    connection.end();
+// connection.query('SELECT * from customer_order', function(err, rows, fields) {
+//     if(err) console.log(err);
+//     console.log('The solution is: ', rows);
+//     connection.end();
+// });
+
+connection.query('INSERT INTO `customer_order` (`id`, `name`, `email`, `phone`, `address`, `product`, `quantity`, `orderStatus`) VALUES (NULL, "' + job.variables.name +'", "' + job.variables.email +'", "'+ job.variables.phone +'", "' + job.variables.address + '", "' + job.variables.product + '", "'+ job.variables.quantity + '", "");', (err, results, fields) => {
+  if (err) {
+    console.error('Error executing query:', err.message);
+    return;
+  }
+  console.log('Query results:', results);
 });
 
   const updateToBrokerVariables = {
@@ -41,53 +48,3 @@ connection.query('SELECT * from customer_order', function(err, rows, fields) {
 
   return job.complete(updateToBrokerVariables);
 }
-
-
-// const zbWorker = zbc.createWorker({
-// 	debug: true,
-// 	loglevel: "DEBUG", 
-// 	taskType: 'sendEmail',
-// 	taskHandler: handler,
-// 	 // Called when the connection to the broker is (re-)established
-//         onReady: () => zbWorker.log('Job worker started successfully!')
-// })
-
-// async function handler(job) {
-// 	try {
-// 			// worker.log('Task variables', job.variables)
-// 			zbWorker.log('Hello this is now working.....')
-// 			zbWorker.log('Variables: ')
-// 			zbWorker.log(job.variables)
-
-// 			const transporter = nodemailer.createTransport({
-// 				host: 'smtp.ethereal.email',
-// 				port: 587,
-// 				auth: {
-// 					user: 'hanna.macejkovic57@ethereal.email',
-// 					pass: 'DVtNutYxDRMrCkErkZ'
-// 				}
-// 			});
-
-// 			const info = await transporter.sendMail({
-// 				from: '"Fred" <fred@newbike.com>', // sender address
-// 				to: job.variables.customerEmail, // list of receivers
-// 				cc: "orders@newbike, qa@newbike.com", // list of cc's
-// 				subject: "Your deliver date has postponed. Sorry for inconvenience!", // Subject line
-// 				text: "Dear " + job.variables.customerName + ", we are really sorry to say that due to some delay in the manufacturing unit, we had no choice but to delay the delivery date. The new expected delivery date is: " + job.variables.deliveryDate + ". We are really sorry for inconvenience. All our relevant departments have been notified regarding the issue and will get back to you as soon as possible. If you have any questions, please feel free to contact our support and we would be happy to assist you.", // plain text body
-// 				// html: "<b>Hello world?</b>", html body
-// 			  });
-
-// 			  console.log("Message sent: %s", info.messageId);
-// 			  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-
-// 			// Task worker business logic goes here
-// 			const updateToBrokerVariables = {
-// 				updatedProperty: 'newValue',
-// 			}
-		
-// 			return job.complete(updateToBrokerVariables)
-
-// 	} catch (error) {
-// 		console.log("Got error:", error)
-// 	}
-// }
