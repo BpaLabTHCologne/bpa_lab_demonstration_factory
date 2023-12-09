@@ -7,7 +7,12 @@ const zbc = new ZB.ZBClient();
 // Define an async main function to deploy a process, create a process instance, and log the outcome
 async function main() {
   // Deploy the 'new-customer.bpmn' process
-  const res = await zbc.deployProcess('../Bicycle BPMN Model/bicycle-process-model.bpmn');
+
+  const res = await zbc.deployResource({
+    processFilename: `../Bicycle BPMN Model/bicycle-process-model.bpmn`,
+    decisionFilename: `../Bicycle BPMN Model/orderApproval.dmn`,
+  })
+
   // Log the deployment result
   console.log('Deployed process:', JSON.stringify(res, null, 2));
 
@@ -23,6 +28,7 @@ async function main() {
         product: "Mountain Bike",
         quantity: 5,
         orderStatus: "ORDER_IN_PROGRESS",
+        orderType: "test",
       }
   });
   // Log the process outcome
