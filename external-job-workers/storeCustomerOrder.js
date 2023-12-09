@@ -1,17 +1,21 @@
 const ZB = require('zeebe-node')
 const mysql = require('mysql');
+const nodemailer = require('nodemailer');
+const fs = require('fs');
+
 const zbc = new ZB.ZBClient();
 
-const zbWorker = zbc.createWorker({
+//External job worker to store customer order
+const storeCustomerOrder = zbc.createWorker({
   taskType: 'storeCustomerOrder',
   taskHandler: handler,
   debug: true,
   loglevel: 'INFO',
-  onReady: () => zbWorker.log('Job worker started successfully!')
+  onReady: () => storeCustomerOrder.log('Job worker started successfully!')
 });
 
 function handler(job) {
-  zbWorker.log('Task variables', job.variables);
+  storeCustomerOrder.log('Task variables', job.variables);
 
   // Accessing optional variables
   const optionalVariable = job.variables.optionalVariable;
@@ -49,31 +53,4 @@ connection.query('INSERT INTO `customer_order` (`id`, `name`, `email`, `phone`, 
   return job.complete(updateToBrokerVariables);
 }
 
-
-// Define an async main function to deploy a process, create a process instance, and log the outcome
-async function main() {
-  // Deploy the 'new-customer.bpmn' process
-  const res = await zbc.deployProcess('../Bicycle BPMN Model/bicycle-process-model.bpmn');
-  // Log the deployment result
-  console.log('Deployed process:', JSON.stringify(res, null, 2));
-
-  // Create a process instance of the 'new-customer-process' process, with a customerId variable set
-  // 'createProcessInstanceWithResult' awaits the outcome
-  const outcome = await zbc.createProcessInstanceWithResult({
-      bpmnProcessId: 'order-management-id',
-      variables: { 
-        name: "Rahib",
-        email: "test@gmail.com",
-        phone: "+491515151515",
-        address: "221B Baker Street",
-        product: "Mountain Bike",
-        quantity: 5,
-        orderStatus: "ORDER_IN_PROGRESS",
-      }
-  });
-  // Log the process outcome
-  console.log('Process outcome', JSON.stringify(outcome, null, 2));
-}
-
-// Call the main function to execute the script
-main();
+module.exports = storeCustomerOrder;

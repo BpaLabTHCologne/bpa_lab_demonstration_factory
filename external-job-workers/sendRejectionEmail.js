@@ -1,23 +1,26 @@
 const ZB = require('zeebe-node')
 const mysql = require('mysql');
+const nodemailer = require('nodemailer');
+const fs = require('fs');
 
 const zbc = new ZB.ZBClient();
 
-const zbWorker = zbc.createWorker({
+//External job worker for sending order rejection email
+const sendRejectionEmail = zbc.createWorker({
 	debug: true,
 	loglevel: "DEBUG", 
-	taskType: 'sendEmail',
+	taskType: 'sendRejectionEmail',
 	taskHandler: handler,
 	 // Called when the connection to the broker is (re-)established
-        onReady: () => zbWorker.log('Job worker started successfully!')
+        onReady: () => sendRejectionEmail.log('Job worker started successfully!')
 })
 
 async function handler(job) {
 	try {
 			// worker.log('Task variables', job.variables)
-			zbWorker.log('Hello this is now working.....')
-			zbWorker.log('Variables: ')
-			zbWorker.log(job.variables)
+			sendRejectionEmail.log('Hello this is now working.....')
+			sendRejectionEmail.log('Variables: ')
+			sendRejectionEmail.log(job.variables)
 
 			const transporter = nodemailer.createTransport({
 				host: 'smtp.ethereal.email',
@@ -51,3 +54,5 @@ async function handler(job) {
 		console.log("Got error:", error)
 	}
 }
+
+module.exports = sendRejectionEmail;
