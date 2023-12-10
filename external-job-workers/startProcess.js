@@ -1,6 +1,7 @@
 const ZB = require('zeebe-node')
 require('./storeCustomerOrder');
 require('./sendRejectionEmail');
+// require('./customerOrderStatusRejected');
 
 const zbc = new ZB.ZBClient();
 
@@ -27,7 +28,7 @@ async function main() {
         address: "221B Baker Street",
         product: "Mountain Bike",
         quantity: 5,
-        orderStatus: "ORDER_IN_PROGRESS",
+        orderStatus: "ORDER_APPROVED",
         orderType: "test",
       }
   });
