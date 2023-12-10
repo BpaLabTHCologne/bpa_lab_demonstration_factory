@@ -1,0 +1,40 @@
+{"name ":  "Rahib",
+ "email": "test@gmail.com",
+ "phoneNumber ": "+491515151515",
+ "address ": "221B Baker Street",
+ "product": "Mountain Bike",
+ "quantity ": "5"
+}
+
+
+{ key: '578',
+  type: 'demo-service',
+  jobHeaders:
+   { processInstanceKey: '574',
+     bpmnProcessId: 'test-process',
+     processDefinitionVersion: 1,
+     processKey: '3',
+     elementId: 'ServiceTask_0xdwuw7',
+     elementInstanceKey: '577' },
+  customHeaders: '{}',
+  worker: 'test-worker',
+  retries: 3,
+  deadline: '1546915422636',
+  variables: { testData: 'something' } }
+
+GET MYSQL DOCKER CONTAINER IP ADDRESS:
+docker inspect \ -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysqldb
+
+docker exec -it e5249c40bdced4eaafb29ffab5acc0b851da39f5894ddd20d423435318418d70 sh
+
+mysql -u root -p
+
+CREATE USER 'rahib'@'172.21.0.2' IDENTIFIED BY 'rahib';
+GRANT ALL PRIVILEGES ON *.* TO 'rahib'@'172.21.0.2' WITH GRANT OPTION;
+flush privileges; 
+exit
+
+
+
+
+CREATE TABLE `customer_DB`.`customer_order` (`id` INT(11) NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NOT NULL , `phone` VARCHAR(255) NOT NULL , `address` VARCHAR(255) NOT NULL , `product` VARCHAR(255) NOT NULL , `quantity` INT(11) NOT NULL , `orderStatus` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
