@@ -1,7 +1,7 @@
 const ZB = require('zeebe-node')
 require('./storeCustomerOrder');
 require('./sendRejectionEmail');
-// require('./customerOrderStatusRejected');
+require('./customerOrderStatusRejected');
 
 const zbc = new ZB.ZBClient();
 
