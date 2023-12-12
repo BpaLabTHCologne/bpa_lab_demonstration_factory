@@ -29,13 +29,12 @@
     <bpmn:sequenceFlow id="Flow_0zstqgz" sourceRef="Activity_0yyo6d0" targetRef="Event_110xzw9" />
     <bpmn:sequenceFlow id="Flow_1lcaehb" sourceRef="Activity_1rklgdp" targetRef="Activity_0gyqdji" />
     <bpmn:sequenceFlow id="Flow_1gi0s6b" name="Yes" sourceRef="Gateway_07icwzx" targetRef="Activity_1rklgdp">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=productionOrderApproval = "true"</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=productionOrderApproval = true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0jsmc1j" name="No" sourceRef="Gateway_07icwzx" targetRef="Activity_1hssgqk">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=productionOrderApproval = "false"</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=productionOrderApproval = false</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0ej95l0" sourceRef="Activity_0lrrp6y" targetRef="Gateway_07icwzx" />
-    <bpmn:sequenceFlow id="Flow_02qpfi6" sourceRef="Activity_0rqszyy" targetRef="Activity_0lrrp6y" />
     <bpmn:intermediateThrowEvent id="Event_1ut6vn2" name="Release customer order">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="releaseCustomerOrder" />
@@ -115,25 +114,12 @@
         <bpmn:targetRef>DataStoreReference_1v18tqj</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_0yyo6d0" name="Send rejection email">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="sendRejectionEmail" />
-      </bpmn:extensionElements>
-      <bpmn:outgoing>Flow_0zstqgz</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1rklgdp" name="Send confirmation email">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="sendConfirmationEmail" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1gi0s6b</bpmn:incoming>
-      <bpmn:outgoing>Flow_1lcaehb</bpmn:outgoing>
-    </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_1hssgqk" name="Update customer order status">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="customerOrderStatusRejected" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0jsmc1j</bpmn:incoming>
-      <bpmn:outgoing>Flow_0yhtltp</bpmn:outgoing>
+      <bpmn:outgoing>Flow_03vra8v</bpmn:outgoing>
       <bpmn:dataOutputAssociation id="DataOutputAssociation_0u8a7iw">
         <bpmn:targetRef>DataStoreReference_0zla3jf</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
@@ -145,23 +131,27 @@
     </bpmn:exclusiveGateway>
     <bpmn:businessRuleTask id="Activity_0lrrp6y" name="Approve customer order">
       <bpmn:extensionElements>
-        <zeebe:calledDecision decisionId="Decision_1lfrw86" resultVariable="productionOrderApproval" />
+        <zeebe:calledDecision decisionId="orderApprovalBusinessRule" resultVariable="productionOrderApproval" />
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_02qpfi6</bpmn:incoming>
+      <bpmn:incoming>Flow_0mwc4xl</bpmn:incoming>
       <bpmn:outgoing>Flow_0ej95l0</bpmn:outgoing>
     </bpmn:businessRuleTask>
     <bpmn:serviceTask id="Activity_0rqszyy" name="Store customer order">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="storeCustomerOrder" />
+        <zeebe:ioMapping>
+          <zeebe:output source="=date(today()) + duration(&#34;P5D&#34;)" target="deliveryDate" />
+          <zeebe:output source="=orderID" target="orderID" />
+        </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0r4gbce</bpmn:incoming>
-      <bpmn:outgoing>Flow_02qpfi6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0mwc4xl</bpmn:outgoing>
       <bpmn:dataOutputAssociation id="DataOutputAssociation_0mq4vde">
         <bpmn:targetRef>DataStoreReference_0zla3jf</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
     <bpmn:dataStoreReference id="DataStoreReference_00hw2fs" name="Customer order DB (MySQL)" />
-    <bpmn:startEvent id="StartEvent_1" name="Customer order received">
+    <bpmn:startEvent id="StartEvent_1" name="Customer order received (Single Page Application)">
       <bpmn:outgoing>Flow_0r4gbce</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_0r4gbce" sourceRef="StartEvent_1" targetRef="Activity_0rqszyy" />
@@ -170,19 +160,44 @@
       <bpmn:messageEventDefinition id="MessageEventDefinition_0089otf" messageRef="Message_3ddh0d4" />
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_1w0vnrr" sourceRef="Event_1c352v3" targetRef="Activity_0wolzvg" />
-    <bpmn:sequenceFlow id="Flow_0yhtltp" sourceRef="Activity_1hssgqk" targetRef="Activity_0operfs" />
-    <bpmn:task id="Activity_0operfs" name="I&#39;m here just for some testings :)">
-      <bpmn:incoming>Flow_0yhtltp</bpmn:incoming>
-      <bpmn:outgoing>Flow_1h2vojj</bpmn:outgoing>
+    <bpmn:sequenceFlow id="Flow_03vra8v" sourceRef="Activity_1hssgqk" targetRef="Activity_0yyo6d0" />
+    <bpmn:task id="Activity_0yyo6d0" name="Send rejection email">
+      <bpmn:incoming>Flow_03vra8v</bpmn:incoming>
+      <bpmn:outgoing>Flow_0zstqgz</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:endEvent id="Event_0ha4qv9">
-      <bpmn:incoming>Flow_1h2vojj</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1h2vojj" sourceRef="Activity_0operfs" targetRef="Event_0ha4qv9" />
+    <bpmn:sequenceFlow id="Flow_0mwc4xl" sourceRef="Activity_0rqszyy" targetRef="Activity_0lrrp6y" />
+    <bpmn:task id="Activity_1rklgdp" name="Send confirmation email">
+      <bpmn:incoming>Flow_1gi0s6b</bpmn:incoming>
+      <bpmn:outgoing>Flow_1lcaehb</bpmn:outgoing>
+    </bpmn:task>
     <bpmn:textAnnotation id="TextAnnotation_1wk8etg">
       <bpmn:text>Prepare for shipment</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_0rhjiow" sourceRef="Activity_0wolzvg" targetRef="TextAnnotation_1wk8etg" />
+    <bpmn:textAnnotation id="TextAnnotation_14p9fax">
+      <bpmn:text>sendConfirmationEmail</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0mtde5w" sourceRef="Activity_1rklgdp" targetRef="TextAnnotation_14p9fax" />
+    <bpmn:textAnnotation id="TextAnnotation_092lsfy">
+      <bpmn:text>ORDER_APPROVED</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1o1m2gd" sourceRef="Activity_0gyqdji" targetRef="TextAnnotation_092lsfy" />
+    <bpmn:textAnnotation id="TextAnnotation_14cnwzg">
+      <bpmn:text>ORDER_RECEIVED</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0nvmm7r" sourceRef="Activity_0rqszyy" targetRef="TextAnnotation_14cnwzg" />
+    <bpmn:textAnnotation id="TextAnnotation_0m3b7lz">
+      <bpmn:text>ORDER_IN_PRODUCTION</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_06uwrty" sourceRef="Activity_16r23x4" targetRef="TextAnnotation_0m3b7lz" />
+    <bpmn:textAnnotation id="TextAnnotation_0rcgoxq">
+      <bpmn:text>ORDER_REJECTED</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0kcz76g" sourceRef="Activity_1hssgqk" targetRef="TextAnnotation_0rcgoxq" />
+    <bpmn:textAnnotation id="TextAnnotation_1ew1r59">
+      <bpmn:text>sendRejectionEmail</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0iby46d" sourceRef="Activity_0yyo6d0" targetRef="TextAnnotation_1ew1r59" />
   </bpmn:process>
   <bpmn:message id="Message_187unev" name="Message_187unev">
     <bpmn:extensionElements>
@@ -316,6 +331,30 @@
         <dc:Bounds x="160" y="340" width="2290" height="490" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_14p9fax_di" bpmnElement="TextAnnotation_14p9fax">
+        <dc:Bounds x="770" y="780" width="150" height="41" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_092lsfy_di" bpmnElement="TextAnnotation_092lsfy">
+        <dc:Bounds x="1000" y="781" width="132" height="40" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_14cnwzg_di" bpmnElement="TextAnnotation_14cnwzg">
+        <dc:Bounds x="270" y="680" width="140" height="40" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0m3b7lz_di" bpmnElement="TextAnnotation_0m3b7lz">
+        <dc:Bounds x="1550" y="781" width="170" height="40" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0rcgoxq_di" bpmnElement="TextAnnotation_0rcgoxq">
+        <dc:Bounds x="790" y="391" width="130" height="40" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1ew1r59_di" bpmnElement="TextAnnotation_1ew1r59">
+        <dc:Bounds x="1020" y="390" width="132" height="41" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0ub3zbd_di" bpmnElement="Event_1ut6vn2">
         <dc:Bounds x="1782" y="702" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -387,12 +426,6 @@
       <bpmndi:BPMNShape id="Activity_12af88t_di" bpmnElement="Activity_0gyqdji">
         <dc:Bounds x="1090" y="680" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1y2257w_di" bpmnElement="Activity_0yyo6d0">
-        <dc:Bounds x="1090" y="470" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1gpqi4t_di" bpmnElement="Activity_1rklgdp">
-        <dc:Bounds x="890" y="680" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0f74dg5_di" bpmnElement="Activity_1hssgqk">
         <dc:Bounds x="890" y="470" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -417,7 +450,7 @@
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="242" y="452" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="222" y="422" width="78" height="27" />
+          <dc:Bounds x="218" y="400" width="86" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0frhwe7_di" bpmnElement="Event_1c352v3">
@@ -427,16 +460,39 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_1wk8etg_di" bpmnElement="TextAnnotation_1wk8etg">
-        <dc:Bounds x="1520" y="400" width="100" height="40" />
+        <dc:Bounds x="1520" y="400" width="140" height="40" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0operfs_di" bpmnElement="Activity_0operfs">
-        <dc:Bounds x="980" y="360" width="100" height="80" />
-        <bpmndi:BPMNLabel />
+      <bpmndi:BPMNShape id="Activity_1vma3y4_di" bpmnElement="Activity_0yyo6d0">
+        <dc:Bounds x="1090" y="470" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ha4qv9_di" bpmnElement="Event_0ha4qv9">
-        <dc:Bounds x="1132" y="382" width="36" height="36" />
+      <bpmndi:BPMNShape id="Activity_179tf2z_di" bpmnElement="Activity_1rklgdp">
+        <dc:Bounds x="890" y="680" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0mtde5w_di" bpmnElement="Association_0mtde5w">
+        <di:waypoint x="890" y="751" />
+        <di:waypoint x="844" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1o1m2gd_di" bpmnElement="Association_1o1m2gd">
+        <di:waypoint x="1095" y="758" />
+        <di:waypoint x="1068" y="781" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0nvmm7r_di" bpmnElement="Association_0nvmm7r">
+        <di:waypoint x="368" y="650" />
+        <di:waypoint x="336" y="680" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_06uwrty_di" bpmnElement="Association_06uwrty">
+        <di:waypoint x="1628" y="760" />
+        <di:waypoint x="1612" y="781" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0kcz76g_di" bpmnElement="Association_0kcz76g">
+        <di:waypoint x="902" y="470" />
+        <di:waypoint x="864" y="431" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0iby46d_di" bpmnElement="Association_0iby46d">
+        <di:waypoint x="1113" y="470" />
+        <di:waypoint x="1087" y="431" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1g38cm5_di" bpmnElement="Flow_1g38cm5">
         <di:waypoint x="2110" y="510" />
         <di:waypoint x="2192" y="510" />
@@ -508,10 +564,6 @@
         <di:waypoint x="650" y="610" />
         <di:waypoint x="745" y="610" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_02qpfi6_di" bpmnElement="Flow_02qpfi6">
-        <di:waypoint x="460" y="610" />
-        <di:waypoint x="550" y="610" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0r4gbce_di" bpmnElement="Flow_0r4gbce">
         <di:waypoint x="260" y="488" />
         <di:waypoint x="260" y="610" />
@@ -527,14 +579,13 @@
         <di:waypoint x="1622" y="470" />
         <di:waypoint x="1594" y="440" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0yhtltp_di" bpmnElement="Flow_0yhtltp">
-        <di:waypoint x="940" y="470" />
-        <di:waypoint x="940" y="400" />
-        <di:waypoint x="980" y="400" />
+      <bpmndi:BPMNEdge id="Flow_03vra8v_di" bpmnElement="Flow_03vra8v">
+        <di:waypoint x="990" y="510" />
+        <di:waypoint x="1090" y="510" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1h2vojj_di" bpmnElement="Flow_1h2vojj">
-        <di:waypoint x="1080" y="400" />
-        <di:waypoint x="1132" y="400" />
+      <bpmndi:BPMNEdge id="Flow_0mwc4xl_di" bpmnElement="Flow_0mwc4xl">
+        <di:waypoint x="460" y="610" />
+        <di:waypoint x="550" y="610" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_0n4fqzm_di" bpmnElement="Participant_0n4fqzm" isHorizontal="true">
         <dc:Bounds x="160" y="900" width="2290" height="490" />

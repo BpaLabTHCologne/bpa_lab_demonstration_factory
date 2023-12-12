@@ -4,16 +4,16 @@ const mysql = require('mysql');
 const zbc = new ZB.ZBClient();
 
 //External job worker to store customer order
-const customerOrderStatusRejected = zbc.createWorker({
-  taskType: 'customerOrderStatusRejected',
+const customerOrderStatusApproved = zbc.createWorker({
+  taskType: 'customerOrderStatusApproved',
   taskHandler: handler,
   debug: true,
   loglevel: 'INFO',
-  onReady: () => customerOrderStatusRejected.log('Job worker started successfully!')
+  onReady: () => customerOrderStatusApproved.log('Job worker started successfully!')
 });
 
 function handler(job) {
-	customerOrderStatusRejected.log('Task variables', job.variables)
+	customerOrderStatusApproved.log('Task variables', job.variables)
     try {
         const orderID = parseInt(job.variables.orderID)
         var connection = mysql.createConnection({
@@ -26,7 +26,7 @@ function handler(job) {
     
         connection.connect();
     
-        connection.query('UPDATE `customer_order` SET `orderStatus` = "ORDER_REJECTED" WHERE `customer_order`.`id` = ' + orderID + ';',
+        connection.query('UPDATE `customer_order` SET `orderStatus` = "ORDER_APPROVED" WHERE `customer_order`.`id` = ' + orderID + ';',
           async function (error, results, fields) {
             if (error) throw error;
             console.log('Results: ', JSON.stringify(results));
@@ -45,4 +45,4 @@ function handler(job) {
 	return job.complete(updateToBrokerVariables)
 }
 
-  module.exports = customerOrderStatusRejected;
+  module.exports = customerOrderStatusApproved;

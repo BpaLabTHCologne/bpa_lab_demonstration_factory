@@ -4,34 +4,29 @@ const mysql = require('mysql');
 const zbc = new ZB.ZBClient();
 
 //External job worker to store customer order
-const storeCustomerOrder = zbc.createWorker({
-  taskType: 'storeCustomerOrder',
+const checkFinishedProductAvailability = zbc.createWorker({
+  taskType: 'checkFinishedProductAvailability',
   taskHandler: handler,
   debug: true,
   loglevel: 'INFO',
-  onReady: () => storeCustomerOrder.log('Job worker started successfully!')
+  onReady: () => checkFinishedProductAvailability.log('Job worker started successfully!')
 });
 
 function handler(job) {
-  let insertId = 0; // Declare insertId in the outer scope
 
-  storeCustomerOrder.log('Task variables', job.variables);
+  checkFinishedProductAvailability.log('Task variables', job.variables);
 
-  // Accessing optional variables
-  const optionalVariable = job.variables.optionalVariable;
-  console.log('Optional variables: ', job.variables);
-
-  var customerOrderConnection = mysql.createConnection({
+  var finishedProductConnection = mysql.createConnection({
     host: process.env.MYSQL_HOST_NAME,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
+    database: process.env.MYSQL_DATABASE_FINISHED_PRODUCT,
     port: process.env.MYSQL_HOST_PORT,
   });
 
-  customerOrderConnection.connect();
+  finishedProductConnection.connect();
 
-  customerOrderConnection.query('INSERT INTO `customer_order` (`id`, `name`, `email`, `phone`, `address`, `product`, `quantity`, `orderStatus`) VALUES (NULL, "' + job.variables.name +'", "' + job.variables.email +'", "'+ job.variables.phone +'", "' + job.variables.address + '", "' + job.variables.product + '", "'+ job.variables.quantity + '", "'+ job.variables.orderStatus + '");', (err, results, fields) => {
+  finishedProductConnection.query('INSERT INTO `customer_order` (`id`, `name`, `email`, `phone`, `address`, `product`, `quantity`, `orderStatus`) VALUES (NULL, "' + job.variables.name +'", "' + job.variables.email +'", "'+ job.variables.phone +'", "' + job.variables.address + '", "' + job.variables.product + '", "'+ job.variables.quantity + '", "'+ job.variables.orderStatus + '");', (err, results, fields) => {
     if (err) {
       console.error('Error executing query:', err.message);
       return;
@@ -55,10 +50,10 @@ function handler(job) {
       // optionalVariable: optionalVariable, // Add optional variables to the update object
     };
 
-    customerOrderConnection.end(); // Close the customerOrderConnection when done
+    finishedProductConnection.end(); // Close the finishedProductConnection when done
 
     return job.complete(updateToBrokerVariables);
   }
 }
 
-module.exports = storeCustomerOrder;
+module.exports = checkFinishedProductAvailability;
