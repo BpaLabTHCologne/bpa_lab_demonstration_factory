@@ -4,6 +4,7 @@ require('./sendRejectionEmail');
 require('./customerOrderStatusRejected');
 require('./sendConfirmationEmail');
 require('./customerOrderStatusApproved');
+require('./checkFinishedProductAvailability');
 
 const zbc = new ZB.ZBClient();
 
@@ -24,12 +25,12 @@ async function main() {
   const outcome = await zbc.createProcessInstanceWithResult({
       bpmnProcessId: 'order-management-id',
       variables: { 
-        name: "Rahib",
+        name: "Shelby",
         email: "test@gmail.com",
         phone: "+491515151515",
-        address: "221B Baker Street",
+        address: "Small Heath, Birmingham, England",
         product: "Mountain Bike",
-        quantity: 5,
+        quantity: 2,
         orderStatus: "ORDER_RECEIVED",
         orderType: "single-order",
       }

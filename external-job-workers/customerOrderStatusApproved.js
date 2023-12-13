@@ -17,6 +17,7 @@ function handler(job) {
     try {
         const orderID = parseInt(job.variables.orderID)
         var connection = mysql.createConnection({
+            connectionLimit: 10,
             host: process.env.MYSQL_HOST_NAME,
             user: process.env.MYSQL_USER,
             password: process.env.MYSQL_PASSWORD,
@@ -32,16 +33,16 @@ function handler(job) {
             console.log('Results: ', JSON.stringify(results));
           });
     
-        connection.end();
+        
     
       } catch (error) {
         console.log(error)
       }
 
       const updateToBrokerVariables = {
-        orderStatus: 'ORDER_REJECTED',
+        orderStatus: 'ORDER_APPROVED',
 	}
-
+  connection.end();
 	return job.complete(updateToBrokerVariables)
 }
 

@@ -32,7 +32,7 @@ function handler(job) {
             console.log('Results: ', JSON.stringify(results));
           });
     
-        connection.end();
+        
     
       } catch (error) {
         console.log(error)
@@ -41,7 +41,7 @@ function handler(job) {
       const updateToBrokerVariables = {
         orderStatus: 'ORDER_REJECTED',
 	}
-
+  connection.end();
 	return job.complete(updateToBrokerVariables)
 }
 
