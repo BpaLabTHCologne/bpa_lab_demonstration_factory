@@ -25,12 +25,12 @@ async function main() {
   const outcome = await zbc.createProcessInstanceWithResult({
       bpmnProcessId: 'order-management-id',
       variables: { 
-        name: "Shelby",
-        email: "test@gmail.com",
+        name: "Tommy Shelby",
+        email: "tshelby@gmail.com",
         phone: "+491515151515",
         address: "Small Heath, Birmingham, England",
         product: "Mountain Bike",
-        quantity: 2,
+        quantity: 5,
         orderStatus: "ORDER_RECEIVED",
         orderType: "single-order",
       }
