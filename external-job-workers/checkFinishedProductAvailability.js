@@ -82,6 +82,7 @@ async function handler(job) {
     const updateToBrokerVariables = {
       quantityNeededForProduction: result.quantityNeededForProduction,
       finishedProductQuantityAvailable: result.finishedProductQuantityAvailable,
+      productionRequired: result.productionRequired,
     };
 
     return job.complete(updateToBrokerVariables);
@@ -93,12 +94,13 @@ async function handler(job) {
 
 function checkStock(finishedProductName, finishedProductQuantityAvailable, customerOrderProduct, customerOrderQuantity) {
   let quantityNeededForProduction = 0
+  let productionRequired = "";
   if (finishedProductName === customerOrderProduct) {
     if (finishedProductQuantityAvailable >= customerOrderQuantity) {
       // Update finished product stock
       quantityNeededForProduction = finishedProductQuantityAvailable - customerOrderQuantity;
       console.log("New stock after deductions: ", quantityNeededForProduction);
-
+      productionRequired = "no";
       const finishedProductDBPool = mysql.createPool({
         connectionLimit: 10,
         host: process.env.MYSQL_HOST_NAME,
@@ -121,14 +123,16 @@ function checkStock(finishedProductName, finishedProductQuantityAvailable, custo
       return {
         quantityNeededForProduction,
         finishedProductQuantityAvailable,
+        productionRequired,
       };
     } else if (finishedProductQuantityAvailable < customerOrderQuantity) {
       quantityNeededForProduction = customerOrderQuantity - finishedProductQuantityAvailable;
       console.log("Seems like the finished product quantity is below the customer's order quantity. Please restock your finished product quantity. Number of bicycles needed for production: ", quantityNeededForProduction);
-      console.log("Finished stock available: ", finishedProductQuantityAvailable);
+      productionRequired = "yes";
       return {
         quantityNeededForProduction,
         finishedProductQuantityAvailable,
+        productionRequired,
       };
     } else {
       // Not enough quantity in stock
@@ -140,6 +144,7 @@ function checkStock(finishedProductName, finishedProductQuantityAvailable, custo
     return {
       quantityNeededForProduction,
       finishedProductQuantityAvailable,
+      productionRequired,
     };
   }
 }

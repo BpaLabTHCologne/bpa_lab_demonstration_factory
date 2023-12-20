@@ -7,7 +7,7 @@
           <text>orderType</text>
         </inputExpression>
       </input>
-      <output id="Output_1" label="Production Order Approval" name="productionOrderApproval" typeRef="boolean" />
+      <output id="Output_1" label="Customer Order Approval" name="customerOrderApproval" typeRef="boolean" />
       <rule id="DecisionRule_1ofwn29">
         <description>Order confirmed.</description>
         <inputEntry id="UnaryTests_08krp0f">

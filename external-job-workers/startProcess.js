@@ -5,6 +5,11 @@ require('./customerOrderStatusRejected');
 require('./sendConfirmationEmail');
 require('./customerOrderStatusApproved');
 require('./checkFinishedProductAvailability');
+require('./customerOrderStatusProduction');
+require('./sendCustomerOrderForProduction');
+require('./storeProductionOrder');
+
+
 
 const zbc = new ZB.ZBClient();
 
@@ -23,7 +28,7 @@ async function main() {
   // Create a process instance of the 'new-customer-process' process, with a customerId variable set
   // 'createProcessInstanceWithResult' awaits the outcome
   const outcome = await zbc.createProcessInstanceWithResult({
-      bpmnProcessId: 'order-management-id',
+      bpmnProcessId: 'Process_1gu1lel',
       variables: { 
         name: "Tommy Shelby",
         email: "tshelby@gmail.com",
