@@ -1,4 +1,6 @@
 const ZB = require('zeebe-node')
+
+//Importing all the job workers
 require('./storeCustomerOrder');
 require('./sendRejectionEmail');
 require('./customerOrderStatusRejected');

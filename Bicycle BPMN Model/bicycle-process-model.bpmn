@@ -125,9 +125,6 @@
     <bpmn:sendTask id="Activity_0ixenah" name="Send production order">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="sendCustomerOrderForProduction" />
-        <zeebe:ioMapping>
-          <zeebe:output source="=date(today()) + duration(&#34;P7D&#34;)" target="sampleDate" />
-        </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1m4btu3</bpmn:incoming>
     </bpmn:sendTask>
@@ -191,35 +188,251 @@
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmn:process id="Process_1ybxkst" isExecutable="true">
-    <bpmn:serviceTask id="Activity_0jykezt" name="Store production order">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="storeProductionOrder" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1x3ryl7</bpmn:incoming>
-      <bpmn:outgoing>Flow_1sm8jcj</bpmn:outgoing>
-    </bpmn:serviceTask>
+    <bpmn:extensionElements>
+      <zeebe:userTaskForm id="UserTaskForm_1208v63">{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "b9cb8c9"
+  },
+  "schemaVersion": 12,
+  "components": [
+    {
+      "text": "### Customer order details",
+      "type": "text",
+      "layout": {
+        "row": "row_1",
+        "col": "auto"
+      },
+      "id": "Heading_1"
+    },
+    {
+      "text": "##### Customer information",
+      "type": "text",
+      "layout": {
+        "row": "row_2",
+        "col": "auto"
+      },
+      "id": "Subheading_1"
+    },
+    {
+      "type": "textfield",
+      "layout": {
+        "row": "row_3",
+        "col": "auto"
+      },
+      "id": "Textfield_1",
+      "label": "Customer Name",
+      "key": "customerName"
+    },
+    {
+      "label": "Customer email",
+      "type": "textfield",
+      "layout": {
+        "row": "row_3",
+        "columns": null
+      },
+      "id": "Field_0oc25xo",
+      "key": "customerEmail"
+    },
+    {
+      "subtype": "date",
+      "dateLabel": "Order Date",
+      "type": "datetime",
+      "layout": {
+        "row": "row_4",
+        "col": "auto"
+      },
+      "id": "Date_1",
+      "key": "orderDate"
+    },
+    {
+      "text": "##### Product selection",
+      "type": "text",
+      "layout": {
+        "row": "row_5",
+        "col": "auto"
+      },
+      "id": "Subheading_2"
+    },
+    {
+      "values": [
+        {
+          "label": "Mountain Bike",
+          "value": "Mountain Bike"
+        },
+        {
+          "label": "Hybrid Bike",
+          "value": "Hybrid Bike"
+        },
+        {
+          "label": "Electric Bike",
+          "value": "Electric Bike"
+        }
+      ],
+      "type": "select",
+      "layout": {
+        "row": "row_6",
+        "col": "auto"
+      },
+      "id": "Select_1",
+      "label": "Type of Bike",
+      "key": "selectedProduct"
+    },
+    {
+      "label": "Hide customer address",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_17emncw",
+        "columns": null
+      },
+      "id": "Field_1jybmwb",
+      "key": "hideCustomerAddress"
+    },
+    {
+      "text": "##### Shipment address",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_0q7mmze",
+        "columns": null
+      },
+      "id": "Field_1hs3i9l",
+      "conditional": {
+        "hide": "=hideCustomerAddress = true"
+      }
+    },
+    {
+      "label": "Street Name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1ln7nn9",
+        "columns": 4
+      },
+      "id": "Field_1drv1lb",
+      "key": "streetName",
+      "conditional": {
+        "hide": "=hideCustomerAddress = true"
+      }
+    },
+    {
+      "label": "House Number",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1ln7nn9",
+        "columns": 2
+      },
+      "id": "Field_0dss9ez",
+      "key": "houseNumber",
+      "conditional": {
+        "hide": "=hideCustomerAddress = true"
+      }
+    },
+    {
+      "label": "Postal Code",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0xlyypw",
+        "columns": 4
+      },
+      "id": "Field_1sujwtu",
+      "key": "postalCode",
+      "conditional": {
+        "hide": "=hideCustomerAddress = true"
+      }
+    },
+    {
+      "label": "City Name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0xlyypw",
+        "columns": 4
+      },
+      "id": "Field_18a9tl7",
+      "key": "cityName",
+      "conditional": {
+        "hide": "=hideCustomerAddress = true"
+      }
+    },
+    {
+      "text": "##### Warehouse task",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_1iaammj",
+        "columns": null
+      },
+      "id": "Field_0pnffd5"
+    },
+    {
+      "values": [
+        {
+          "label": "Retrieve",
+          "value": "retrieve"
+        },
+        {
+          "label": "Store",
+          "value": "store"
+        }
+      ],
+      "label": "Retrieve or store order?",
+      "type": "select",
+      "layout": {
+        "row": "Row_0pwhnze",
+        "columns": 4
+      },
+      "id": "Field_0p87cdr",
+      "key": "taskType"
+    },
+    {
+      "text": "##### Confirm customer order details?",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_10w5s84",
+        "columns": null
+      },
+      "id": "Field_1catgqk"
+    }
+  ],
+  "generated": true,
+  "type": "default",
+  "id": "Form_0f99idp"
+}</zeebe:userTaskForm>
+    </bpmn:extensionElements>
     <bpmn:startEvent id="Event_1c3evrg" name="Receive production order">
       <bpmn:outgoing>Flow_1x3ryl7</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0fqgana" messageRef="Message_3jl5jnj" />
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1x3ryl7" sourceRef="Event_1c3evrg" targetRef="Activity_0jykezt" />
-    <bpmn:task id="Activity_16n6vsf" name="test1">
-      <bpmn:incoming>Flow_1sm8jcj</bpmn:incoming>
-      <bpmn:outgoing>Flow_1mrwntn</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:sequenceFlow id="Flow_1sm8jcj" sourceRef="Activity_0jykezt" targetRef="Activity_16n6vsf" />
-    <bpmn:sequenceFlow id="Flow_1mrwntn" sourceRef="Activity_16n6vsf" targetRef="Activity_1qmrgsr" />
-    <bpmn:serviceTask id="Activity_1qmrgsr" name="something">
+    <bpmn:sequenceFlow id="Flow_1x3ryl7" sourceRef="Event_1c3evrg" targetRef="Activity_130trpu" />
+    <bpmn:sequenceFlow id="Flow_0y9x7h6" sourceRef="Activity_130trpu" targetRef="Activity_0jykezt" />
+    <bpmn:serviceTask id="Activity_0jykezt" name="Store production order">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="somethihg" />
+        <zeebe:taskDefinition type="storeProductionOrder" />
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1mrwntn</bpmn:incoming>
-      <bpmn:outgoing>Flow_1flvwa5</bpmn:outgoing>
+      <bpmn:incoming>Flow_0y9x7h6</bpmn:incoming>
+      <bpmn:outgoing>Flow_1pcfhcv</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:endEvent id="Event_1nlg30a">
-      <bpmn:incoming>Flow_1flvwa5</bpmn:incoming>
+    <bpmn:userTask id="Activity_130trpu" name="Create production order">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_1208v63" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1x3ryl7</bpmn:incoming>
+      <bpmn:outgoing>Flow_0y9x7h6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1pcfhcv" sourceRef="Activity_0jykezt" targetRef="Activity_0gk1118" />
+    <bpmn:serviceTask id="Activity_0gk1118" name="Something">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="somethingToDo" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1pcfhcv</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hu1kdt</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_05slls0">
+      <bpmn:incoming>Flow_0hu1kdt</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1flvwa5" sourceRef="Activity_1qmrgsr" targetRef="Event_1nlg30a" />
+    <bpmn:sequenceFlow id="Flow_0hu1kdt" sourceRef="Activity_0gk1118" targetRef="Event_05slls0" />
   </bpmn:process>
   <bpmn:message id="Message_232ho2s" name="receiveProductionOrder">
     <bpmn:extensionElements>
@@ -475,39 +688,38 @@
         <dc:Bounds x="160" y="750" width="2030" height="250" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_12iqt7k_di" bpmnElement="Activity_0jykezt">
-        <dc:Bounds x="350" y="830" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_046aj7l_di" bpmnElement="Event_1c3evrg">
         <dc:Bounds x="262" y="852" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="239" y="895" width="82" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_16n6vsf_di" bpmnElement="Activity_16n6vsf">
+      <bpmndi:BPMNShape id="Activity_12iqt7k_di" bpmnElement="Activity_0jykezt">
         <dc:Bounds x="510" y="830" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0jktyo8_di" bpmnElement="Activity_1qmrgsr">
+      <bpmndi:BPMNShape id="Activity_14326as_di" bpmnElement="Activity_130trpu">
+        <dc:Bounds x="350" y="830" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0mtnoq3_di" bpmnElement="Activity_0gk1118">
         <dc:Bounds x="670" y="830" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1nlg30a_di" bpmnElement="Event_1nlg30a">
+      <bpmndi:BPMNShape id="Event_05slls0_di" bpmnElement="Event_05slls0">
         <dc:Bounds x="832" y="852" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1x3ryl7_di" bpmnElement="Flow_1x3ryl7">
         <di:waypoint x="298" y="870" />
         <di:waypoint x="350" y="870" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1sm8jcj_di" bpmnElement="Flow_1sm8jcj">
+      <bpmndi:BPMNEdge id="Flow_0y9x7h6_di" bpmnElement="Flow_0y9x7h6">
         <di:waypoint x="450" y="870" />
         <di:waypoint x="510" y="870" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1mrwntn_di" bpmnElement="Flow_1mrwntn">
+      <bpmndi:BPMNEdge id="Flow_1pcfhcv_di" bpmnElement="Flow_1pcfhcv">
         <di:waypoint x="610" y="870" />
         <di:waypoint x="670" y="870" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1flvwa5_di" bpmnElement="Flow_1flvwa5">
+      <bpmndi:BPMNEdge id="Flow_0hu1kdt_di" bpmnElement="Flow_0hu1kdt">
         <di:waypoint x="770" y="870" />
         <di:waypoint x="832" y="870" />
       </bpmndi:BPMNEdge>
