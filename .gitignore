@@ -5,4 +5,5 @@
 release-notes-fetcher
 e2e_tests
 data/mysql-db
+docker-compose-core.yaml
 
