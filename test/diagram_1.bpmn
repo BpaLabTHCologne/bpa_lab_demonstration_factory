@@ -65,7 +65,10 @@
     <bpmn:sequenceFlow id="Flow_1x4tavt" sourceRef="Activity_0cyaulq" targetRef="Event_08lg6zq" />
     <bpmn:businessRuleTask id="Activity_0ecp4la" name="decision">
       <bpmn:extensionElements>
-        <zeebe:calledDecision decisionId="Definitions_Order" resultVariable="result" />
+        <zeebe:calledDecision decisionId="Decision_Type" resultVariable="result" />
+        <zeebe:ioMapping>
+          <zeebe:output source="=result" target="result" />
+        </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_12w5dc5</bpmn:incoming>
       <bpmn:outgoing>Flow_1kwcs82</bpmn:outgoing>

@@ -95,6 +95,9 @@
     <informationRequirement id="InformationRequirement_1qrjx3b">
       <requiredDecision href="#Decision_Type" />
     </informationRequirement>
+    <informationRequirement>
+      <requiredInput href="#orderType" />
+    </informationRequirement>
     <decisionTable id="DecisionTable_03ls783" hitPolicy="FIRST">
       <input id="InputClause_1dqbbgy" label="orderType">
         <inputExpression id="LiteralExpression_0a31pwg" typeRef="string">
