@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_Order" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
-  <decision id="Decision_Type" name="orderType">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="DRDdecision" name="DRDdecision" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
+  <decision id="orderType" name="orderType">
     <decisionTable id="DecisionTable_0hg7jxh">
       <input id="InputClause_0fw0aqh" label="orderQuantity">
         <inputExpression id="LiteralExpression_1ao9x8s" typeRef="number">
           <text>orderQuantity</text>
         </inputExpression>
       </input>
-      <output id="Output_1" label="orderType" name="orderType" typeRef="string" />
+      <output id="Output_1" label="orderType" name="orderType" typeRef="string">
+        <outputValues id="UnaryTests_15a8dhc">
+          <text>"singleOrder","multipleOrder","notAllowed"</text>
+        </outputValues>
+      </output>
       <rule id="DecisionRule_0v3xymt">
         <description>Customer receives an email for confirmation.</description>
         <inputEntry id="UnaryTests_0v1d0xi">
           <text>[2..5]</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_15oe6hx">
-          <text>"multiple-order"</text>
+          <text>"multipleOrder"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1mx1zy1">
@@ -23,7 +27,7 @@
           <text>[2..5]</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0xp61j8">
-          <text>"multiple-order"</text>
+          <text>"multipleOrder"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_17bhykj">
@@ -32,7 +36,7 @@
           <text>[2..5]</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_191potq">
-          <text>"multiple-order"</text>
+          <text>"multipleOrder"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1s9hfgk">
@@ -41,7 +45,7 @@
           <text>1</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1s0dwk8">
-          <text>"single-order"</text>
+          <text>"singleOrder"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_05ud8co">
@@ -50,7 +54,7 @@
           <text>1</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_18d0lpk">
-          <text>"single-order"</text>
+          <text>"singleOrder"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0f03p5o">
@@ -59,7 +63,7 @@
           <text>1</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_026irog">
-          <text>"single-order"</text>
+          <text>"singleOrder"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1nfucjn">
@@ -68,7 +72,7 @@
           <text>&gt; 5</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0xu4abd">
-          <text>"not-allowed"</text>
+          <text>"notAllowed"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1uqbpnz">
@@ -77,7 +81,7 @@
           <text>&gt; 5</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1nlhnfv">
-          <text>"not-allowed"</text>
+          <text>"notAllowed"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0o620a0">
@@ -86,14 +90,14 @@
           <text>&gt; 5</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0zv59cg">
-          <text>"not-allowed"</text>
+          <text>"notAllowed"</text>
         </outputEntry>
       </rule>
     </decisionTable>
   </decision>
-  <decision id="Decision_Approval" name="orderApproval">
+  <decision id="orderApproval" name="orderApproval">
     <informationRequirement id="InformationRequirement_1qrjx3b">
-      <requiredDecision href="#Decision_Type" />
+      <requiredDecision href="#orderType" />
     </informationRequirement>
     <informationRequirement>
       <requiredInput href="#orderType" />
@@ -104,13 +108,13 @@
           <text>orderType</text>
         </inputExpression>
         <inputValues id="UnaryTests_0piu2cs">
-          <text>"single-order","multiple-order","-"</text>
+          <text>"singleOrder","multipleOrder","notAllowed"</text>
         </inputValues>
       </input>
       <output id="OutputClause_1nvxnqr" name="result" typeRef="boolean" />
       <rule id="DecisionRule_0cg896h">
         <inputEntry id="UnaryTests_08yie39">
-          <text>"single-order"</text>
+          <text>"singleOrder"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_156pioq">
           <text>true</text>
@@ -118,7 +122,7 @@
       </rule>
       <rule id="DecisionRule_0pjjcue">
         <inputEntry id="UnaryTests_0sjy5bg">
-          <text>"multiple-order"</text>
+          <text>"multipleOrder"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0jx6w8q">
           <text>true</text>
@@ -136,10 +140,10 @@
   </decision>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram>
-      <dmndi:DMNShape dmnElementRef="Decision_Type">
+      <dmndi:DMNShape dmnElementRef="orderType">
         <dc:Bounds height="80" width="180" x="330" y="280" />
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="DMNShape_0dmz38b" dmnElementRef="Decision_Approval">
+      <dmndi:DMNShape id="DMNShape_0dmz38b" dmnElementRef="orderApproval">
         <dc:Bounds height="80" width="180" x="160" y="110" />
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="DMNEdge_0m7hjtm" dmnElementRef="InformationRequirement_1qrjx3b">
