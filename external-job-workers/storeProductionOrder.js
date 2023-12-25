@@ -5,6 +5,7 @@ const zbc = new ZBClient();
 const storeProductionOrder = zbc.createWorker({
 	taskType: 'storeProductionOrder',
 	taskHandler: handler,
+	onReady: () => storeProductionOrder.log('Job worker started successfully!')
 })
 
 function handler(job) {

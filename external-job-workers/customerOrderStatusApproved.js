@@ -13,7 +13,7 @@ const customerOrderStatusApproved = zbc.createWorker({
 });
 
 function handler(job) {
-	customerOrderStatusApproved.log('Task variables', job.variables)
+	// customerOrderStatusApproved.log('Task variables', job.variables)
     try {
         const orderID = parseInt(job.variables.orderID)
         var connection = mysql.createConnection({

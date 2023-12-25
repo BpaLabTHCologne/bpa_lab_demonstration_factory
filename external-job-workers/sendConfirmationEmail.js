@@ -5,8 +5,8 @@ const zbc = new ZB.ZBClient();
 
 //External job worker for sending order rejection email
 const sendConfirmationEmail = zbc.createWorker({
-	debug: true,
-	loglevel: "DEBUG", 
+	// debug: true,
+	// loglevel: "DEBUG", 
 	taskType: 'sendConfirmationEmail',
 	taskHandler: handler,
 	 // Called when the connection to the broker is (re-)established

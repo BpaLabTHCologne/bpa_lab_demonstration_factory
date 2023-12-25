@@ -107,86 +107,31 @@ export default {
         }
     },
     methods: {
-        getProcessDefinitionId(processDefinitions, key){
-          const [processDefinition] = processDefinitions.filter((definition) => definition.key === key)
-          const { id } = processDefinition
-          return id
+  updateMass() {
+    this.mass = this.productMasses[this.product];
+  },
+
+  async onSubmit() {
+    try {
+      const response = await fetch('http://localhost:5173/start-process', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        updateMass() {
-      this.mass = this.productMasses[this.product];
-    },
-        async onSubmit() {
-          const processDefinitionsResponse = await fetch('/engine-rest/process-definition')
-          const processDefinitions = await processDefinitionsResponse.json()
-          const processDefinitionId = this.getProcessDefinitionId(processDefinitions, 'Order-management')
-          await fetch(`/engine-rest/process-definition/key/Order-management/start`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(
-                {
-                  "variables": {
-                    "name": {
-                      "value": this.name,
-                      "type": "String"
-                    },
-                    "email": {
-                      "value": this.email,
-                      "type": "String"
-                    },
-                    "phoneNumber": {
-                      "value": this.phone,
-                      "type": "String"
-                    },
-                    "address": {
-                      "value": this.address,
-                      "type": "String"
-                    },
-                    "product": {
-                      "value": this.product,
-                      "type": "String"
-                    },
-                    "quantity": {
-                      "value": parseInt(this.quantity),
-                      "type": "Integer"
-                    },
-                    "mass": {
-                        "value": parseInt(this.mass),
-                        "type": "Integer"
-                    }
-                  },
-                  "businessKey": "placeOrder"
-                },
-            )
-          })
-            return
-            // const userName = this.name;
-            // const userEmail = this.email;
-            // const userPhone = this.phone;
-            // const userAddress = this.address;
-            // const userProduct = this.product;
-            // const userQuantity = this.quantity;
-            // try {
-            //     await axios.get("http://localhost:8080", {
-            //         name: userName,
-            //         email: userEmail,
-            //         phone: userPhone,
-            //         address: userAddress,
-            //         product: userProduct,
-            //         quantity: userQuantity,
-            //     });
-            //     console.log(this.name)
-            //     console.log(this.email)
-            //     console.log(this.phone)
-            //     console.log(this.address)
-            //     console.log(this.product)
-            //     console.log(this.quantity)
-            // } catch (err) {
-            //     this.error = err.message;
-            // }
-        },
+        body: JSON.stringify({
+          workflowKey: 'Process_1gu1lel',
+          variables: { key: 'value' },
+        }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error:', error);
     }
+  },
+},
+
 }
 </script>
 

@@ -6,6 +6,7 @@ const zbc = new ZB.ZBClient()
 const checkFinishedProductAvailability = zbc.createWorker({
   taskType: 'checkFinishedProductAvailability',
   taskHandler: handler,
+  onReady: () => checkFinishedProductAvailability.log('Job worker started successfully!')
 })
 
 async function handler(job) {
@@ -15,7 +16,7 @@ async function handler(job) {
     let customerOrderProduct;
     let customerOrderQuantity;
 
-    checkFinishedProductAvailability.log('Task variables', job.variables);
+    // checkFinishedProductAvailability.log('Task variables', job.variables);
 
     const finishedProductDBPool = mysql.createPool({
       connectionLimit: 10,
@@ -50,8 +51,8 @@ async function handler(job) {
     if (finishedProductResults.length > 0) {
       finishedProductName = finishedProductResults[0].productName;
       finishedProductQuantityAvailable = finishedProductResults[0].productQuantity;
-      console.log("The product name is: ", finishedProductName);
-      console.log("The product quantity is: ", finishedProductQuantityAvailable);
+      console.log("\nProduct name from finished_product_stock: ", finishedProductName);
+      console.log("Product quantity available in finished_product_stock: ", finishedProductQuantityAvailable);
     }
 
     // Query customer_order
@@ -69,14 +70,14 @@ async function handler(job) {
     if (customerOrderResults.length > 0 && customerOrderResults[0].product !== undefined && customerOrderResults[0].quantity !== undefined) {
       customerOrderProduct = customerOrderResults[0].product;
       customerOrderQuantity = customerOrderResults[0].quantity;
-      console.log("The customer ordered product is: ", customerOrderProduct);
+      console.log("\nThe customer ordered product is: ", customerOrderProduct);
       console.log("The customer ordered quantity is: ", customerOrderQuantity);
     } else {
       console.log('No results found for the specified order ID or product/quantity is undefined.');
     }
 
     const result = checkStock(finishedProductName, finishedProductQuantityAvailable, customerOrderProduct, customerOrderQuantity);
-    console.log("Returned result: ", result);
+    console.log("\nReturned result: ", result);
 
     // Use updateToBrokerVariables as needed...
     const updateToBrokerVariables = {
@@ -99,7 +100,7 @@ function checkStock(finishedProductName, finishedProductQuantityAvailable, custo
     if (finishedProductQuantityAvailable >= customerOrderQuantity) {
       // Update finished product stock
       quantityNeededForProduction = finishedProductQuantityAvailable - customerOrderQuantity;
-      console.log("New stock after deductions: ", quantityNeededForProduction);
+      console.log("\nNew stock after deductions: ", quantityNeededForProduction);
       productionRequired = "no";
       const finishedProductDBPool = mysql.createPool({
         connectionLimit: 10,
@@ -117,7 +118,7 @@ function checkStock(finishedProductName, finishedProductQuantityAvailable, custo
 
         // Check if stock is getting low
         if (quantityNeededForProduction <= 0) {
-          console.log("Product stock is getting low. Please restock your warehouse!");
+          console.log("\nProduct stock is getting low. Please restock your warehouse!");
         }
       });
       return {
@@ -127,7 +128,7 @@ function checkStock(finishedProductName, finishedProductQuantityAvailable, custo
       };
     } else if (finishedProductQuantityAvailable < customerOrderQuantity) {
       quantityNeededForProduction = customerOrderQuantity - finishedProductQuantityAvailable;
-      console.log("Seems like the finished product quantity is below the customer's order quantity. Please restock your finished product quantity. Number of bicycles needed for production: ", quantityNeededForProduction);
+      console.log("\nSeems like the finished product quantity is below the customer's order quantity. Please restock your finished product quantity. Number of bicycles needed for production:", quantityNeededForProduction);
       productionRequired = "yes";
       return {
         quantityNeededForProduction,
@@ -136,11 +137,11 @@ function checkStock(finishedProductName, finishedProductQuantityAvailable, custo
       };
     } else {
       // Not enough quantity in stock
-      console.log("Sorry, the requested product is not available in sufficient quantity inside the stock at the moment.");
+      console.log("\nSorry, the requested product is not available in sufficient quantity inside the stock at the moment.");
     }
   } else {
     // Product mismatch or does not exist
-    console.log("Sorry, the selected product does not exist!");
+    console.log("\nSorry, the selected product does not exist!");
     return {
       quantityNeededForProduction,
       finishedProductQuantityAvailable,

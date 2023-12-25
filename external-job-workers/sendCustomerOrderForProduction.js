@@ -36,11 +36,11 @@ const messagePayload = {
 sendCustomerOrderForProduction.createWorker({
   taskType: 'sendCustomerOrderForProduction',
   taskHandler: handler,
+  onReady: () => console.log('Job worker started successfully!')
 });
 
 function handler(job) {
-  console.log("Sending customer order now for production...");
-  console.log("Number of bicycles to be produced: ", job.variables.quantityNeededForProduction);
+  console.log("\nNumber of bicycles to be produced: ", job.variables.quantityNeededForProduction);
   
   orderID = job.variables.orderID;
   name = job.variables.name;
@@ -91,7 +91,7 @@ function handler(job) {
 
   // Complete the current job
   job.complete(updateToBrokerVariables);
-  console.log("This is after job has been completed: ", updatedMessagePayload)
+  console.log("\nSending customer order for production: ", updatedMessagePayload)
 }
 
 module.exports = sendCustomerOrderForProduction;

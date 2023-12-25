@@ -112,7 +112,7 @@
     </bpmn:endEvent>
     <bpmn:serviceTask id="Activity_0iui4n4" name="Update customer order status">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="customerOrderStatusProduction" />
+        <zeebe:taskDefinition type="customerOrderStatusProductionReq" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0fh05by</bpmn:incoming>
       <bpmn:outgoing>Flow_1m4btu3</bpmn:outgoing>
@@ -120,7 +120,7 @@
         <bpmn:targetRef>DataStoreReference_1vhwh6e</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
-    <bpmn:sendTask id="Activity_0ixenah" name="Send production order">
+    <bpmn:sendTask id="Activity_0ixenah" name="Send customer order for production">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="sendCustomerOrderForProduction" />
       </bpmn:extensionElements>
@@ -182,7 +182,7 @@
       <bpmn:text>Prepare for shipment</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:textAnnotation id="TextAnnotation_0ow4m3d">
-      <bpmn:text>ORDER_IN_PRODUCTION</bpmn:text>
+      <bpmn:text>ORDER_REQUIRES_PRODUCTION</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:textAnnotation id="TextAnnotation_1tm6hp0">
       <bpmn:text>ORDER_SHIPPED</bpmn:text>
@@ -557,6 +557,12 @@
           <dc:Bounds x="1551" y="306" width="78" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_12f5ljf_di" bpmnElement="Activity_1kuvp5w">
+        <dc:Bounds x="820" y="420" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1wko8e3_di" bpmnElement="Activity_1q0pnkq">
+        <dc:Bounds x="1000" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_1sk69p2_di" bpmnElement="TextAnnotation_1sk69p2">
         <dc:Bounds x="920" y="150" width="129.99746963562754" height="26.990553306342782" />
         <bpmndi:BPMNLabel />
@@ -586,18 +592,12 @@
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0ow4m3d_di" bpmnElement="TextAnnotation_0ow4m3d">
-        <dc:Bounds x="1390" y="530" width="169.99831309041835" height="26.990553306342782" />
+        <dc:Bounds x="1390" y="530" width="224.99510188087774" height="40.997257053291534" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_1tm6hp0_di" bpmnElement="TextAnnotation_1tm6hp0">
         <dc:Bounds x="1790" y="330" width="118" height="26" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_12f5ljf_di" bpmnElement="Activity_1kuvp5w">
-        <dc:Bounds x="820" y="420" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1wko8e3_di" bpmnElement="Activity_1q0pnkq">
-        <dc:Bounds x="1000" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0m018yf_di" bpmnElement="Flow_0m018yf">
         <di:waypoint x="300" y="268" />

@@ -16,7 +16,6 @@ export default {
   components: {
     Header,
     Carousel,
-    Form,
   }
 }
 </script>

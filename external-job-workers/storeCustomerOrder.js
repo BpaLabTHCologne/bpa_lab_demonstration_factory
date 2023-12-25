@@ -7,8 +7,8 @@ const zbc = new ZB.ZBClient();
 const storeCustomerOrder = zbc.createWorker({
   taskType: 'storeCustomerOrder',
   taskHandler: handler,
-  debug: true,
-  loglevel: 'INFO',
+  // debug: true,
+  // loglevel: 'INFO',
   onReady: () => storeCustomerOrder.log('Job worker started successfully!')
 });
 
@@ -44,7 +44,7 @@ function handler(job) {
 
     // Now you can use insertId in the callback or pass it to another function
 
-    console.log("Results: ", JSON.stringify(results));
+    // console.log("Results: ", JSON.stringify(results));
 
     // Continue with your logic, e.g., call another function
     updateToBrokerVariables();
