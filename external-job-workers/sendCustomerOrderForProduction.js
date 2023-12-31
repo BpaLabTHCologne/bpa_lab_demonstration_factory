@@ -2,28 +2,31 @@ const { ZBClient, Duration } = require('zeebe-node');
 const uuid = require('uuid');
 
 let orderID = '';
-let name = '';
-let email = '';
-let phone = '';
-let address = '';
-let product = '';
-let quantity = '';
+let customerName = '';
+let customerEmail = '';
+let customerPhone = '';
+let customerAddress = '';
+let customerProduct = '';
+let customerQuantity = '';
 let orderStatus = '';
 let customerOrderApproval = '';
-let deliveryDate = '';
+let expectedDeliveryDate = '';
 let finishedProductQuantityAvailable = '';
 let orderType = '';
 let productionRequired = '';
 let quantityNeededForProduction = '';
+let customerOrderDate = '';
+let customerOrderTime = '';
+let productMass = '';
 
 let updateToBrokerVariables = '';
 
-const sendCustomerOrderForProduction = new ZBClient();
+const zbc = new ZBClient();
 
 // Define your message payload with the necessary variables
 const messagePayload = {
   messageId: uuid.v4(),
-  name: 'juststart',
+  name: 'receiveProductionOrder',
   variables: {
     // Include any other variables you want to pass to the workflow
   },
@@ -33,48 +36,54 @@ const messagePayload = {
 // Send the message to the workflow
 //sendCustomerOrderForProduction.publishMessage(messagePayload);
 
-sendCustomerOrderForProduction.createWorker({
+const sendCustomerOrderForProduction = zbc.createWorker({
   taskType: 'sendCustomerOrderForProduction',
   taskHandler: handler,
-  onReady: () => console.log('Job worker started successfully!')
+  onReady: () => sendCustomerOrderForProduction.log('Job worker started successfully!')
 });
 
 function handler(job) {
   console.log("\nNumber of bicycles to be produced: ", job.variables.quantityNeededForProduction);
   
   orderID = job.variables.orderID;
-  name = job.variables.name;
-  email = job.variables.email;
-  phone = job.variables.phone;
-  address = job.variables.address;
-  product = job.variables.product;
-  quantity = job.variables.quantity;
+  customerName = job.variables.customerName;
+  customerEmail = job.variables.customerEmail;
+  customerPhone = job.variables.customerPhone;
+  customerAddress = job.variables.customerAddress;
+  customerProduct = job.variables.customerProduct;
+  customerQuantity = job.variables.customerQuantity;
   orderStatus = job.variables.orderStatus;
   customerOrderApproval = job.variables.customerOrderApproval;
-  deliveryDate = job.variables.deliveryDate;
+  expectedDeliveryDate = job.variables.expectedDeliveryDate;
   finishedProductQuantityAvailable = job.variables.finishedProductQuantityAvailable;
   orderType = job.variables.orderType;
   productionRequired = job.variables.productionRequired;
   quantityNeededForProduction = job.variables.quantityNeededForProduction;
+  customerOrderDate = job.variables.customerOrderDate;
+  customerOrderTime = job.variables.customerOrderTime;
+  productMass = job.variables.productMass;
 
 
   // Task worker business logic goes here
   updateToBrokerVariables = {
     //updatedProperty: 'newValue',
     orderID: orderID,
-    name: name,
-    email: email,
-    phone: phone,
-    address: address,
-    product: product,
-    quantity: quantity,
+    customerName: customerName,
+    customerEmail: customerEmail,
+    customerPhone: customerPhone,
+    customerAddress: customerAddress,
+    customerProduct: customerProduct,
+    customerQuantity: customerQuantity,
     orderStatus: orderStatus,
     customerOrderApproval: customerOrderApproval,
-    deliveryDate: deliveryDate,
+    expectedDeliveryDate: expectedDeliveryDate,
     finishedProductQuantityAvailable: finishedProductQuantityAvailable,
     orderType: orderType,
     productionRequired: productionRequired,
     quantityNeededForProduction: quantityNeededForProduction,
+    customerOrderDate: customerOrderDate,
+    customerOrderTime: customerOrderTime,
+    productMass: productMass,
   };
 
   // Include the updated variables in the message payload for the next step in the workflow
@@ -87,7 +96,7 @@ function handler(job) {
   };
 
   // Publish the updated message to the workflow
-  sendCustomerOrderForProduction.publishMessage(updatedMessagePayload);
+  zbc.publishMessage(updatedMessagePayload);
 
   // Complete the current job
   job.complete(updateToBrokerVariables);

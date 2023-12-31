@@ -70,7 +70,7 @@
                           <div class="mb-3 text-start">
                               <label for="yourName" class="form-label">Name</label>
                               <input class="form-control" id="yourName" type="text" placeholder="Your name"
-                                  v-model="name" />
+                                  v-model="customerName" />
 
                           </div>
                       </div>
@@ -78,7 +78,7 @@
                           <div class="mb-3 text-start">
                               <label for="yourEmailAddress" class="form-label">Email</label>
                               <input required class="form-control" id="yourEmailAddress" type="email"
-                                  placeholder="Your email Address" v-model="email" />
+                                  placeholder="Your email Address" v-model="customerEmail" />
 
                           </div>
                       </div>
@@ -86,7 +86,7 @@
                           <div class="mb-3 text-start">
                               <label for="yourPhoneNumber" class="form-label">Phone</label>
                               <input required class="form-control" id="yourPhoneNumber" type="text"
-                                  placeholder="Your phone number" data-sb-validations="" v-model="phone" />
+                                  placeholder="Your phone number" data-sb-validations="" v-model="customerPhone" />
                               <!-- pattern="[a-zA-Z0-9]+" -->
 
                           </div>
@@ -95,7 +95,7 @@
                           <div class="mb-3 text-start">
                               <label for="yourAddress" class="form-label">Address</label>
                               <input class="form-control" id="yourAddress" type="text" placeholder="Your address"
-                                  v-model="address" />
+                                  v-model="customerAddress" />
 
                           </div>
                       </div>
@@ -103,7 +103,7 @@
                       <div class="dropdown text-start">
                           <label for="selectProduct" class="form-label">Please select a bicycle: </label>
                           <select class="form-select" id="selectProduct"
-                              aria-label=".form-select-sm example" v-model="product" @change="updateMass">
+                              aria-label=".form-select-sm example" v-model="customerProduct" @change="updateMass">
                               <option value="option1" selected>Select bicycle</option>
                               <option value="Mountain Bike">Mountain Bike</option>
                               <option value="Hybrid 40000 Bicycle">Hybrid 40000 Bicycle</option>
@@ -115,14 +115,14 @@
                       <div class="col-6">
             <div class="mb-3 text-start">
               <label for="mass" class="form-label">Mass (in pounds)</label>
-              <input class="form-control" id="mass" type="text" v-model="mass" readonly />
+              <input class="form-control" id="mass" type="text" v-model="productMass" readonly />
             </div>
           </div>
                       <div class="col-6">
                           <div class="dropdown text-start">
                               <label for="selectQuantity" class="form-label">Please select quantity: </label>
                               <select class="form-select" id="selectQuantity"
-                                  aria-label=".form-select-sm example" v-model="quantity">
+                                  aria-label=".form-select-sm example" v-model="customerQuantity">
                                   <option value="option2" selected>Select quantity</option>
                                   <option value="1">1</option>
                                   <option value="2">2</option>
@@ -149,13 +149,13 @@
 export default {
   data() {
     return {
-            name: 'Mario',
-            email: 'mario@skyrocket.com',
-            phone: '+44 584 442 994',
-            address: '221B Baker Street',
-            product: this.product,
-            quantity: this.quantity,
-            mass: '',
+        customerName: 'Mario',
+        customerEmail: 'mario@skyrocket.com',
+        customerPhone: '+44 584 442 994',
+        customerAddress: '221B Baker Street',
+        customerProduct: this.customerProduct,
+        customerQuantity: this.customerQuantity,
+        productMass: '',
             productMasses: {
                 'Mountain Bike': 18,
                 'Hybrid 40000 Bicycle': 29,
@@ -167,7 +167,7 @@ export default {
   },
   methods: {
     updateMass() {
-      this.mass = this.productMasses[this.product];
+      this.productMass = this.productMasses[this.customerProduct];
     },
 
     async submitForm() {
@@ -180,17 +180,17 @@ export default {
           body: JSON.stringify({
             workflowKey: 'Process_1gu1lel',
             variables: { 
-              key: 'value',
-              name: this.name, 
-              email: this.email,
-              phone: this.phone,
-              address: this.address,
-              product: this.product,
-              quantity: this.quantity,
+              customerName: this.customerName, 
+              customerEmail: this.customerEmail,
+              customerPhone: this.customerPhone,
+              customerAddress: this.customerAddress,
+              customerProduct: this.customerProduct,
+              customerQuantity: this.customerQuantity,
               mass: this.mass,
               productMass: this.productMasses,
               orderStatus: this.orderStatus,
               orderType: this.orderType,
+              //key: 'value', //To send additional variables
             },
           }),
         });

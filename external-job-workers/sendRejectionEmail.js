@@ -30,10 +30,10 @@ async function handler(job) {
 
 			const info = await transporter.sendMail({
 				from: '"Fred" <fred@newbike.com>', // sender address
-				to: job.variables.email, // list of receivers
+				to: job.variables.customerEmail, // list of receivers
 				cc: "orders@newbike, qa@newbike.com", // list of cc's
 				subject: "Your delivery date has postponed. Sorry for inconvenience!", // Subject line
-				text: "Dear " + job.variables.name + ", we are really sorry to say that due to some delay in the manufacturing unit, we had no choice but to delay the delivery date. The new expected delivery date is: " + job.variables.deliveryDate + ". We are really sorry for inconvenience. All our relevant departments have been notified regarding the issue and will get back to you as soon as possible. If you have any questions, please feel free to contact our support and we would be happy to assist you.", // plain text body
+				text: "Dear " + job.variables.customerName + ", we are really sorry to say that due to some delay in the manufacturing unit, we had no choice but to delay the delivery date. The new expected delivery date is: " + job.variables.deliveryDate + ". We are really sorry for inconvenience. All our relevant departments have been notified regarding the issue and will get back to you as soon as possible. If you have any questions, please feel free to contact our support and we would be happy to assist you.", // plain text body
 				// html: "<b>Hello world?</b>", html body
 			  });
 

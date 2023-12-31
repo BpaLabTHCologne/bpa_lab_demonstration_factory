@@ -4,16 +4,16 @@ const mysql = require('mysql');
 const zbc = new ZB.ZBClient();
 
 //External job worker to store customer order
-const customerOrderStatusProductionReq = zbc.createWorker({
-  taskType: 'customerOrderStatusProductionReq',
+const customerOrderStatusProductionRequired = zbc.createWorker({
+  taskType: 'customerOrderStatusProductionRequired',
   taskHandler: handler,
   debug: true,
   loglevel: 'INFO',
-  onReady: () => customerOrderStatusProductionReq.log('Job worker started successfully!')
+  onReady: () => customerOrderStatusProductionRequired.log('Job worker started successfully!')
 });
 
 function handler(job) {
-	// customerOrderStatusProductionReq.log('Task variables', job.variables)
+	// customerOrderStatusProductionRequired.log('Task variables', job.variables)
     try {
         const orderID = parseInt(job.variables.orderID)
         var connection = mysql.createConnection({
@@ -27,7 +27,7 @@ function handler(job) {
     
         connection.connect();
     
-        connection.query('UPDATE `customer_order` SET `orderStatus` = "ORDER_REQUIRES_PRODUCTION" WHERE `customer_order`.`id` = ' + orderID + ';',
+        connection.query('UPDATE `customer_order` SET `orderStatus` = "ORDER_PRODUCTION_REQUIRED" WHERE `customer_order`.`id` = ' + orderID + ';',
           async function (error, results, fields) {
             if (error) throw error;
             console.log('Results: ', JSON.stringify(results));
@@ -40,10 +40,10 @@ function handler(job) {
       }
 
       const updateToBrokerVariables = {
-        orderStatus: 'ORDER_REQUIRES_PRODUCTION',
+        orderStatus: 'ORDER_PRODUCTION_REQUIRED',
 	}
   connection.end();
 	return job.complete(updateToBrokerVariables)
 }
 
-  module.exports = customerOrderStatusProductionReq;
+  module.exports = customerOrderStatusProductionRequired;

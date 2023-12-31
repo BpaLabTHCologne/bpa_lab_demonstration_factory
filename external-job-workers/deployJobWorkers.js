@@ -7,11 +7,9 @@ require('./customerOrderStatusRejected');
 require('./sendConfirmationEmail');
 require('./customerOrderStatusApproved');
 require('./checkFinishedProductAvailability');
-require('./customerOrderStatusProductionReq');
+require('./customerOrderStatusProductionRequired');
 require('./sendCustomerOrderForProduction');
 require('./storeProductionOrder');
-
-
 
 const zbc = new ZB.ZBClient();
 
@@ -25,7 +23,7 @@ async function main() {
   })
 
   // Log the deployment result
-  console.log('Process deployed successfully:', JSON.stringify(res, null, 2));
+  console.log('\nProcess deployed successfully:', JSON.stringify(res, null, 2));
 
   // Create a process instance of the 'new-customer-process' process, with a customerId variable set
   // 'createProcessInstanceWithResult' awaits the outcome

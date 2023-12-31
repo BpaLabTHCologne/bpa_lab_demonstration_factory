@@ -32,11 +32,11 @@ async function handler(job) {
 				from: '"Fred" <fred@newbike.com>', // sender address
 				to: job.variables.customerEmail, // list of receivers
 				cc: "orders@newbike, qa@newbike.com", // list of cc's
-				subject: "Your NewBike order of " + job.variables.product + " has been confirmed!", // Subject line
-				text: "Dear " + job.variables.name + 
+				subject: "Your NewBike order of " + job.variables.customerProduct + " has been confirmed!", // Subject line
+				text: "Dear " + job.variables.customerName + 
                 ",\n\nWe are thrilled to inform you that your order with NewBike GmbH has been successfully confirmed! Thank you for choosing us.\n\nHere are the key details of your order:\n\nOrder Number: " + job.variables.orderID + 
-                "\nDate of Order: " + job.variables.deliveryDate + "\n\nItems Purchased:\n1. " + job.variables.product + "\n   - Quantity: " + job.variables.quantity + 
-                "\n\nShipping Address: " + job.variables.address + "\n\nYour order is now being processed, and you can expect it to be dispatched shortly. We will notify you with the tracking details once your package is on its way.\n\nIf you have any questions or concerns, feel free to reply to this email. We are here to assist you!\n\nThank you again for choosing NewBike GmbH. We appreciate your business.\n\nBest regards,\n\nFred\nNewBike GmbH\nContact Information: orders@newbike", // plain text body
+                "\nDate of Order: " + job.variables.deliveryDate + "\n\nItems Purchased:\n1. " + job.variables.customerProduct + "\n   - Quantity: " + job.variables.customerQuantity + 
+                "\n\nShipping Address: " + job.variables.customerAddress + "\n\nYour order is now being processed, and you can expect it to be dispatched shortly. We will notify you with the tracking details once your package is on its way.\n\nIf you have any questions or concerns, feel free to reply to this email. We are here to assist you!\n\nThank you again for choosing NewBike GmbH. We appreciate your business.\n\nBest regards,\n\nFred\nNewBike GmbH\nContact Information: orders@newbike", // plain text body
 				// html: "<b>Hello world?</b>", html body
 			  });
 
