@@ -190,6 +190,10 @@ export default {
               productMass: this.productMasses,
               orderStatus: this.orderStatus,
               orderType: this.orderType,
+              task: "retrieve",
+              place_id: 3,
+              shelf_id: 1,
+              transactionId: 0,
               //key: 'value', //To send additional variables
             },
           }),

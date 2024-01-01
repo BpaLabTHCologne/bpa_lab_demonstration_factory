@@ -91,13 +91,6 @@
       <bpmn:outgoing>Flow_1ctvoit</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0v1xla8" />
     </bpmn:intermediateThrowEvent>
-    <bpmn:serviceTask id="Activity_1w5lgb5" name="Warehouse Operation">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="warehouseOperation" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1siz0fh</bpmn:incoming>
-      <bpmn:outgoing>Flow_08tve48</bpmn:outgoing>
-    </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_1aimtuw" name="Update customer order status">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="customerOrderStatusShipped" />
@@ -162,6 +155,13 @@
       <bpmn:incoming>Flow_1ibjffz</bpmn:incoming>
       <bpmn:outgoing>Flow_0hk28zj</bpmn:outgoing>
     </bpmn:task>
+    <bpmn:callActivity id="Activity_1w5lgb5" name="Warehouse Operation">
+      <bpmn:extensionElements>
+        <zeebe:calledElement processId="WarehouseOperationsProcess" propagateAllChildVariables="false" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1siz0fh</bpmn:incoming>
+      <bpmn:outgoing>Flow_08tve48</bpmn:outgoing>
+    </bpmn:callActivity>
     <bpmn:textAnnotation id="TextAnnotation_1sk69p2">
       <bpmn:text>ORDER_REJECTED</bpmn:text>
     </bpmn:textAnnotation>
@@ -591,9 +591,6 @@
       <bpmndi:BPMNShape id="Event_0b3u7gz_di" bpmnElement="Event_1uot1fh">
         <dc:Bounds x="1632" y="232" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_19f3sg1_di" bpmnElement="Activity_1w5lgb5">
-        <dc:Bounds x="1470" y="210" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1w2i67i_di" bpmnElement="Activity_1aimtuw">
         <dc:Bounds x="1860" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -668,6 +665,9 @@
       <bpmndi:BPMNShape id="BPMNShape_0v5yygu" bpmnElement="TextAnnotation_1rntece">
         <dc:Bounds x="1710" y="530" width="225" height="30" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_12yhpw3_di" bpmnElement="Activity_1w5lgb5">
+        <dc:Bounds x="1470" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0m018yf_di" bpmnElement="Flow_0m018yf">
         <di:waypoint x="300" y="268" />
