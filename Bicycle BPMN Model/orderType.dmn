@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_1kykn67" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
   <decision id="orderType" name="Order Type">
-    <decisionTable id="DecisionTable_0hg7jxh">
+    <decisionTable id="DecisionTable_0hg7jxh" hitPolicy="FIRST">
       <input id="Input_1" label="Product Name">
         <inputExpression id="InputExpression_1" typeRef="string">
           <text>productName</text>
         </inputExpression>
         <inputValues id="UnaryTests_03jqlle">
-          <text>"Mountain Bicycle","Speed Thriller Electric 147 Bicycle","Hybrid 40000 Bicycle"</text>
+          <text>"Speed Thriller Electric 147 Bicycle","Hybrid 40000 Bicycle","Mountain Bike"</text>
         </inputValues>
       </input>
       <input id="InputClause_0fw0aqh" label="Order Quantity">
@@ -23,7 +23,7 @@
       <rule id="DecisionRule_0v3xymt">
         <description>Customer receives an email for confirmation.</description>
         <inputEntry id="UnaryTests_09v8xwb">
-          <text>"Mountain Bicycle"</text>
+          <text>"Mountain Bike"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0v1d0xi">
           <text>[2..5]</text>
@@ -59,7 +59,7 @@
       <rule id="DecisionRule_1s9hfgk">
         <description>Order is confirmed directly.</description>
         <inputEntry id="UnaryTests_0rf4z4j">
-          <text>"Mountain Bicycle"</text>
+          <text>"Mountain Bike"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0we7aq6">
           <text>1</text>
@@ -95,7 +95,7 @@
       <rule id="DecisionRule_1nfucjn">
         <description>Customer receives a cancelation email.</description>
         <inputEntry id="UnaryTests_0mfw7nu">
-          <text>"Mountain Bicycle"</text>
+          <text>"Mountain Bike","Mountain Bicycle"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_039c08v">
           <text>&gt; 5</text>
@@ -159,7 +159,7 @@
           <text>"multipleOrder"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1mmjvp4">
-          <text>true</text>
+          <text>false</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_04bmk8o">
@@ -168,7 +168,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0kzmakc">
-          <text>false</text>
+          <text>true</text>
         </outputEntry>
       </rule>
     </decisionTable>
