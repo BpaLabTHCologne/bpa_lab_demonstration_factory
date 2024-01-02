@@ -162,7 +162,7 @@ export default {
                 'Speed Thriller Electric 147 Bicycle': 25
             },
             orderStatus: "ORDER_RECEIVED",
-            orderType: "single-order",
+            orderType: "singleOrder",
     };
   },
   methods: {
