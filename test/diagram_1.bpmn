@@ -52,7 +52,7 @@
       <bpmn:incoming>Flow_0ltgdnm</bpmn:incoming>
       <bpmn:outgoing>Flow_1x4tavt</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:sequenceFlow id="Flow_0ltgdnm" name="yes" sourceRef="Gateway_01" targetRef="Activity_0cyaulq">
+    <bpmn:sequenceFlow id="Flow_0ltgdnm" name="no" sourceRef="Gateway_01" targetRef="Activity_0cyaulq">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=result = false</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_0pw3im1" name="success">
@@ -65,7 +65,7 @@
     <bpmn:sequenceFlow id="Flow_1x4tavt" sourceRef="Activity_0cyaulq" targetRef="Event_08lg6zq" />
     <bpmn:businessRuleTask id="Activity_0ecp4la" name="decision">
       <bpmn:extensionElements>
-        <zeebe:calledDecision decisionId="Decision_Type" resultVariable="result" />
+        <zeebe:calledDecision decisionId="orderApproval" resultVariable="result" />
         <zeebe:ioMapping>
           <zeebe:output source="=result" target="result" />
         </zeebe:ioMapping>
@@ -148,7 +148,7 @@
         <di:waypoint x="620" y="290" />
         <di:waypoint x="710" y="290" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="626" y="243" width="18" height="14" />
+          <dc:Bounds x="629" y="243" width="13" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1p6zu35_di" bpmnElement="Flow_1p6zu35">
