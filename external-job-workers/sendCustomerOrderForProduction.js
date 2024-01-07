@@ -1,4 +1,5 @@
 const { ZBClient, Duration } = require('zeebe-node');
+const zbc = new ZBClient();
 const uuid = require('uuid');
 
 let orderID = '';
@@ -18,10 +19,7 @@ let quantityNeededForProduction = '';
 let customerOrderDate = '';
 let customerOrderTime = '';
 let productMass = '';
-
 let updateToBrokerVariables = '';
-
-const zbc = new ZBClient();
 
 // Define your message payload with the necessary variables
 const messagePayload = {
@@ -44,7 +42,7 @@ const sendCustomerOrderForProduction = zbc.createWorker({
 
 function handler(job) {
   console.log("\nNumber of bicycles to be produced: ", job.variables.quantityNeededForProduction);
-  
+
   orderID = job.variables.orderID;
   customerName = job.variables.customerName;
   customerEmail = job.variables.customerEmail;

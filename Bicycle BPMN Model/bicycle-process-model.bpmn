@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xmzs53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xmzs53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
   <bpmn:collaboration id="Collaboration_12fblkz">
     <bpmn:participant id="Participant_1wccacm" name="Order Management" processRef="Process_1gu1lel" />
     <bpmn:participant id="Participant_13428ol" name="Production Control" processRef="Process_1ybxkst" />
@@ -126,10 +126,10 @@
     <bpmn:sequenceFlow id="Flow_0wzmhve" sourceRef="Activity_1jfvylf" targetRef="Activity_1rolqr1" />
     <bpmn:sequenceFlow id="Flow_17knclo" sourceRef="Activity_1rolqr1" targetRef="Gateway_1luailu" />
     <bpmn:sequenceFlow id="Flow_0m4utcn" name="No" sourceRef="Gateway_1luailu" targetRef="Activity_0qfd9zo">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=customerOrderApproval = false</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=customerOrderApproval = "0"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_11a0c1d" name="Yes" sourceRef="Gateway_1luailu" targetRef="Activity_1kuvp5w">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=customerOrderApproval = true</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=customerOrderApproval = "1"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1ibjffz" sourceRef="Activity_0qfd9zo" targetRef="Activity_1q0pnkq" />
     <bpmn:sequenceFlow id="Flow_0hk28zj" sourceRef="Activity_1q0pnkq" targetRef="Event_0hty5h8" />
@@ -491,20 +491,29 @@
         <zeebe:taskDefinition type="customerOrderStatusInProduction" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1pcfhcv</bpmn:incoming>
-      <bpmn:outgoing>Flow_0hu1kdt</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1upe0ld</bpmn:outgoing>
       <bpmn:dataOutputAssociation id="DataOutputAssociation_1ty3t90">
         <bpmn:targetRef>DataStoreReference_08tm2cl</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
-    <bpmn:endEvent id="Event_05slls0">
-      <bpmn:incoming>Flow_0hu1kdt</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1x3ryl7" sourceRef="Event_1c3evrg" targetRef="Activity_130trpu" />
     <bpmn:sequenceFlow id="Flow_0y9x7h6" sourceRef="Activity_130trpu" targetRef="Activity_0jykezt" />
     <bpmn:sequenceFlow id="Flow_1pcfhcv" sourceRef="Activity_0jykezt" targetRef="Activity_0gk1118" />
-    <bpmn:sequenceFlow id="Flow_0hu1kdt" sourceRef="Activity_0gk1118" targetRef="Event_05slls0" />
     <bpmn:dataStoreReference id="DataStoreReference_1vxvggz" name="production_&#10;order_DB (MySQL)" />
     <bpmn:dataStoreReference id="DataStoreReference_08tm2cl" name="customer_DB (MySQL)" />
+    <bpmn:task id="Activity_0bpd5he" name="Check components availability">
+      <bpmn:incoming>Flow_1upe0ld</bpmn:incoming>
+      <bpmn:outgoing>Flow_1944x2i</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_110m0x3">
+        <bpmn:targetRef>DataStoreReference_1gti6u4</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1upe0ld" sourceRef="Activity_0gk1118" targetRef="Activity_0bpd5he" />
+    <bpmn:endEvent id="Event_1p46bq8">
+      <bpmn:incoming>Flow_1944x2i</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1944x2i" sourceRef="Activity_0bpd5he" targetRef="Event_1p46bq8" />
+    <bpmn:dataStoreReference id="DataStoreReference_1gti6u4" name="components_DB (MySQL)" />
     <bpmn:textAnnotation id="TextAnnotation_1s50v8k">
       <bpmn:text>ORDER_IN_PRODUCTION</bpmn:text>
     </bpmn:textAnnotation>
@@ -813,9 +822,6 @@
         <dc:Bounds x="670" y="780" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_05slls0_di" bpmnElement="Event_05slls0">
-        <dc:Bounds x="832" y="802" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_1vxvggz_di" bpmnElement="DataStoreReference_1vxvggz">
         <dc:Bounds x="605" y="695" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -826,6 +832,19 @@
         <dc:Bounds x="765" y="695" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="756" y="661" width="68" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0bpd5he_di" bpmnElement="Activity_0bpd5he">
+        <dc:Bounds x="830" y="780" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1p46bq8_di" bpmnElement="Event_1p46bq8">
+        <dc:Bounds x="992" y="802" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0g2sy17" bpmnElement="DataStoreReference_1gti6u4">
+        <dc:Bounds x="925" y="695" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="909" y="661" width="82" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_059jvku" bpmnElement="TextAnnotation_1s50v8k">
@@ -848,9 +867,13 @@
         <di:waypoint x="610" y="820" />
         <di:waypoint x="670" y="820" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0hu1kdt_di" bpmnElement="Flow_0hu1kdt">
+      <bpmndi:BPMNEdge id="Flow_1upe0ld_di" bpmnElement="Flow_1upe0ld">
         <di:waypoint x="770" y="820" />
-        <di:waypoint x="832" y="820" />
+        <di:waypoint x="830" y="820" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1944x2i_di" bpmnElement="Flow_1944x2i">
+        <di:waypoint x="930" y="820" />
+        <di:waypoint x="992" y="820" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_1ghx8u6_di" bpmnElement="Association_1ghx8u6">
         <di:waypoint x="700" y="860" />
@@ -891,6 +914,10 @@
       <bpmndi:BPMNEdge id="DataOutputAssociation_1ty3t90_di" bpmnElement="DataOutputAssociation_1ty3t90">
         <di:waypoint x="749" y="780" />
         <di:waypoint x="775" y="745" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_110m0x3_di" bpmnElement="DataOutputAssociation_110m0x3">
+        <di:waypoint x="912" y="780" />
+        <di:waypoint x="939" y="745" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0vjq124_di" bpmnElement="Flow_0vjq124">
         <di:waypoint x="1680" y="500" />

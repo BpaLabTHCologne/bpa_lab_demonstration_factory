@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_1kykn67" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1kykn67" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
   <decision id="orderType" name="Order Type">
     <decisionTable id="DecisionTable_0hg7jxh" hitPolicy="FIRST">
       <input id="Input_1" label="Product Name">
@@ -11,7 +11,7 @@
         </inputValues>
       </input>
       <input id="InputClause_0fw0aqh" label="Order Quantity">
-        <inputExpression id="LiteralExpression_1ao9x8s" typeRef="number">
+        <inputExpression id="LiteralExpression_1ao9x8s" typeRef="integer">
           <text>orderQuantity</text>
         </inputExpression>
       </input>
@@ -95,7 +95,7 @@
       <rule id="DecisionRule_1nfucjn">
         <description>Customer receives a cancelation email.</description>
         <inputEntry id="UnaryTests_0mfw7nu">
-          <text>"Mountain Bike","Mountain Bicycle"</text>
+          <text>"Mountain Bike"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_039c08v">
           <text>&gt; 5</text>
@@ -134,7 +134,7 @@
     <informationRequirement id="InformationRequirement_0qgno5y">
       <requiredDecision href="#orderType" />
     </informationRequirement>
-    <decisionTable id="DecisionTable_0620erz">
+    <decisionTable id="DecisionTable_0620erz" hitPolicy="FIRST">
       <input id="InputClause_0iyhnej" label="Order Type">
         <inputExpression id="LiteralExpression_1q7q5cd" typeRef="string">
           <text>orderType</text>
@@ -143,14 +143,14 @@
           <text>"singleOrder","multipleOrder","notAllowed"</text>
         </inputValues>
       </input>
-      <output id="OutputClause_00gbvon" label="Customer Order Approval" name="customerOrderApproval" typeRef="boolean" />
+      <output id="OutputClause_00gbvon" label="Customer Order Approval" name="customerOrderApproval" typeRef="string" />
       <rule id="DecisionRule_1szmuyq">
         <description>Order confirmed.</description>
         <inputEntry id="UnaryTests_0407fr0">
           <text>"singleOrder"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_08t4p9i">
-          <text>true</text>
+          <text>"0"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1x3bkwr">
@@ -159,7 +159,7 @@
           <text>"multipleOrder"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1mmjvp4">
-          <text>false</text>
+          <text>"0"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_04bmk8o">
@@ -168,7 +168,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0kzmakc">
-          <text>false</text>
+          <text>"1"</text>
         </outputEntry>
       </rule>
     </decisionTable>

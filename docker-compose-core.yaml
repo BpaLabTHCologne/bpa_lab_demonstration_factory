@@ -165,7 +165,7 @@ services:
       - ./data/mysql-db:/var/lib/mysql
       - ./provision:/docker-entrypoint-initdb.d
     ports:
-      - "3308:3306"
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 
       MYSQL_DATABASE: customer_DB
