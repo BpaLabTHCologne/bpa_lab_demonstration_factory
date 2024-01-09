@@ -1,0 +1,254 @@
+{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "7821bea"
+  },
+  "schemaVersion": 14,
+  "id": "Form_j8qsukg",
+  "components": [
+    {
+      "text": "### Customer order details",
+      "type": "text",
+      "layout": {
+        "row": "row_1",
+        "col": "auto"
+      },
+      "id": "Heading_1"
+    },
+    {
+      "text": "##### Customer information",
+      "type": "text",
+      "layout": {
+        "row": "row_2",
+        "col": "auto"
+      },
+      "id": "Subheading_1"
+    },
+    {
+      "type": "textfield",
+      "layout": {
+        "row": "row_3",
+        "col": "auto"
+      },
+      "id": "Textfield_1",
+      "label": "Customer Name",
+      "key": "customerName",
+      "defaultValue": "${customerName}",
+      "readonly": true
+    },
+    {
+      "label": "Customer email",
+      "type": "textfield",
+      "layout": {
+        "row": "row_3",
+        "columns": null
+      },
+      "id": "Field_0oc25xo",
+      "key": "customerEmail",
+      "defaultValue": "${customerEmail}",
+      "validate": { },
+      "readonly": true
+    },
+    {
+      "label": "Customer Phone",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1yxdjq9",
+        "columns": 8
+      },
+      "id": "Field_03eja6r",
+      "key": "customerPhone",
+      "defaultValue": "${customerPhone}",
+      "readonly": true
+    },
+    {
+      "label": "Customer Address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1yxdjq9",
+        "columns": null
+      },
+      "id": "Field_07ml6g8",
+      "key": "customerAddress",
+      "defaultValue": "${customerAddress}",
+      "readonly": true
+    },
+    {
+      "text": "##### Product selection",
+      "type": "text",
+      "layout": {
+        "row": "row_5",
+        "col": "auto"
+      },
+      "id": "Subheading_2"
+    },
+    {
+      "label": "Customer's ordered product",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03uc6il",
+        "columns": 8
+      },
+      "id": "Field_0d253hn",
+      "key": "customerProduct",
+      "readonly": true,
+      "defaultValue": "${customerProduct}"
+    },
+    {
+      "label": "Customer's ordered quantity",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03uc6il",
+        "columns": null
+      },
+      "id": "Field_0pu9dbd",
+      "key": "customerQuantity",
+      "defaultValue": "${customerQuantity}",
+      "readonly": true
+    },
+    {
+      "label": "Customer's order date",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03pdfkq",
+        "columns": 8
+      },
+      "id": "Field_16iv9bh",
+      "key": "customerOrderDate",
+      "defaultValue": "${customerOrderDate}",
+      "readonly": true
+    },
+    {
+      "label": "Customer's order time",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03pdfkq",
+        "columns": null
+      },
+      "id": "Field_1uwq3hu",
+      "key": "customerOrderTime",
+      "defaultValue": "${customerOrderTime}",
+      "readonly": true
+    },
+    {
+      "label": "Hide customer's shipping address?",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_17emncw",
+        "columns": null
+      },
+      "id": "Field_1jybmwb",
+      "key": "hideCustomerAddress"
+    },
+    {
+      "text": "##### Shipment address",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_0q7mmze",
+        "columns": null
+      },
+      "id": "Field_1hs3i9l",
+      "conditional": {
+        "hide": "=hideCustomerAddress = true"
+      }
+    },
+    {
+      "label": "Street Name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1ln7nn9",
+        "columns": 4
+      },
+      "id": "Field_1drv1lb",
+      "key": "streetName",
+      "conditional": {
+        "hide": "=hideCustomerAddress = true"
+      },
+      "readonly": false
+    },
+    {
+      "label": "House Number",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1ln7nn9",
+        "columns": 2
+      },
+      "id": "Field_0dss9ez",
+      "key": "houseNumber",
+      "conditional": {
+        "hide": "=hideCustomerAddress = true"
+      }
+    },
+    {
+      "label": "Postal Code",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0xlyypw",
+        "columns": 4
+      },
+      "id": "Field_1sujwtu",
+      "key": "postalCode",
+      "conditional": {
+        "hide": "=hideCustomerAddress = true"
+      }
+    },
+    {
+      "label": "City Name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0xlyypw",
+        "columns": 4
+      },
+      "id": "Field_18a9tl7",
+      "key": "cityName",
+      "conditional": {
+        "hide": "=hideCustomerAddress = true"
+      }
+    },
+    {
+      "text": "##### Warehouse task",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_1iaammj",
+        "columns": null
+      },
+      "id": "Field_0pnffd5"
+    },
+    {
+      "values": [
+        {
+          "label": "Retrieve",
+          "value": "retrieve"
+        },
+        {
+          "label": "Store",
+          "value": "store"
+        }
+      ],
+      "label": "Retrieve or store order?",
+      "type": "select",
+      "layout": {
+        "row": "Row_0pwhnze",
+        "columns": 4
+      },
+      "id": "Field_0p87cdr",
+      "key": "taskType"
+    },
+    {
+      "text": "##### Confirm customer order details?",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_10w5s84",
+        "columns": null
+      },
+      "id": "Field_1catgqk"
+    }
+  ],
+  "generated": true,
+  "type": "default"
+}
