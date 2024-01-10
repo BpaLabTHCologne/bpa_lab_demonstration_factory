@@ -482,6 +482,10 @@
     <bpmn:userTask id="Activity_130trpu" name="Create production order">
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_1208v63" />
+        <zeebe:ioMapping>
+          <zeebe:output source="=substring(string(now()), 12, 8)" target="productionStartTime" />
+          <zeebe:output source="=date(today())" target="productionStartDate" />
+        </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1x3ryl7</bpmn:incoming>
       <bpmn:outgoing>Flow_0y9x7h6</bpmn:outgoing>
