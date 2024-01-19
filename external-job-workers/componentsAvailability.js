@@ -15,6 +15,9 @@ const componentsAvailability = zbc.createWorker({
 
 async function handler(job) {
   try {
+    //troubleshooting 1
+    console.log('Worker handling task. Job variables:', job.variables);
+
     let componentName;
     let componentQuantityAvailable;
     let orderProduct;
@@ -41,12 +44,19 @@ async function handler(job) {
     });
 
     // Query components_stock
+
+    //troubleshooting 2
+    console.log('Executing query for components_stock');
+    
     const componentResults = await new Promise((resolve, reject) => {
       availableComponentsDBPool.query('SELECT * FROM components_stock', (queryErr, results, fields) => {
         if (queryErr) {
           console.error('Error selecting from components_stock', queryErr.message);
           reject(queryErr);
         } else {
+          //troubleshooting 3
+          console.log('Query successful. Results:', results);
+
           resolve(results);
         }
       });
@@ -60,12 +70,19 @@ async function handler(job) {
     }
 
     // Query customer_order
+
+    //troubleshooting 4
+    console.log('Executing query for customer_order');
+
     const customerOrderResults = await new Promise((resolve, reject) => {
       productionOrderDBPool.query('SELECT * FROM `customer_order` WHERE `customer_order`.`id` = ?', [job.variables.orderID], (queryErr, results, fields) => {
         if (queryErr) {
           console.error('Error selecting from customer_order', queryErr.message);
           reject(queryErr);
         } else {
+          //troubleshooting 5
+          console.log('Query successful. Results:', results);
+          
           resolve(results);
         }
       });
