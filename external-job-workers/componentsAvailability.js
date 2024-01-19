@@ -23,7 +23,7 @@ async function handler(job) {
     let orderProduct;
     let orderQuantity;
 
-    // componentsAvailability.log('Task variables', job.variables);
+    //componentsAvailability.log('Task variables', job.variables);
 
     const availableComponentsDBPool = mysql.createPool({
       connectionLimit: 10,
@@ -39,7 +39,7 @@ async function handler(job) {
       host: process.env.MYSQL_HOST_NAME,
       user: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_DATABASE,
+      database: process.env.MYSQL_DATABASE_PRODUCTION,
       port: process.env.MYSQL_HOST_PORT,
     });
 
