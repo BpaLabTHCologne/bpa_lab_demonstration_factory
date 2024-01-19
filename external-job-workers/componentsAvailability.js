@@ -53,8 +53,8 @@ async function handler(job) {
     });
 
     if (componentResults.length > 0) {
-      componentName = componentResults[0].productName;
-      componentQuantityAvailable = componentResults[0].productQuantity;
+      componentName = componentResults[0].componentName;
+      componentQuantityAvailable = componentResults[0].componentQuantity;
       console.log("\Component name from components_stock: ", componentName);
       console.log("Component quantity available in components_stock: ", componentQuantityAvailable);
     }
@@ -85,7 +85,7 @@ async function handler(job) {
 
     // Use updateToBrokerVariables as needed...
     const updateToBrokerVariables = {
-      quantityNeededForProduction: result.quantityNeededForProduction,
+      quantityNeededToPurchase: result.quantityNeededToPurchase,
       componentQuantityAvailable: result.componentQuantityAvailable,
       purchasingRequired: result.purchasingRequired,
     };
@@ -98,13 +98,13 @@ async function handler(job) {
 
 
 function checkStock(componentName, componentQuantityAvailable, orderProduct, orderQuantity) {
-  let quantityNeededForProduction = 0
+  let quantityNeededToPurchase = 0
   let purchasingRequired = "";
   if (componentName === orderProduct) {
     if (componentQuantityAvailable >= orderQuantity) {
       // Update finished product stock
-      quantityNeededForProduction = componentQuantityAvailable - orderQuantity;
-      console.log("\nNew stock after deductions: ", quantityNeededForProduction);
+      quantityNeededToPurchase = componentQuantityAvailable - orderQuantity;
+      console.log("\nNew stock after deductions: ", quantityNeededToPurchase);
       purchasingRequired = "no";
       const availableComponentsDBPool = mysql.createPool({
         connectionLimit: 10,
@@ -115,27 +115,27 @@ function checkStock(componentName, componentQuantityAvailable, orderProduct, ord
         port: process.env.MYSQL_HOST_PORT,
       });
 
-      availableComponentsDBPool.query('UPDATE components_stock SET productQuantity = ?', [quantityNeededForProduction], (updateErr) => {
+      availableComponentsDBPool.query('UPDATE components_stock SET productQuantity = ?', [quantityNeededToPurchase], (updateErr) => {
         if (updateErr) {
           console.error('Error updating finished product stock:', updateErr.message);
         }
 
         // Check if stock is getting low
-        if (quantityNeededForProduction <= 0) {
+        if (quantityNeededToPurchase <= 0) {
           console.log("\nProduct stock is getting low. Please restock your warehouse!");
         }
       });
       return {
-        quantityNeededForProduction,
+        quantityNeededToPurchase,
         componentQuantityAvailable,
         purchasingRequired,
       };
     } else if (componentQuantityAvailable < orderQuantity) {
-      quantityNeededForProduction = orderQuantity - componentQuantityAvailable;
-      console.log("\nSeems like the finished product quantity is below the customer's order quantity. Please restock your finished product quantity. Number of bicycles needed for production:", quantityNeededForProduction);
+      quantityNeededToPurchase = orderQuantity - componentQuantityAvailable;
+      console.log("\nSeems like the finished product quantity is below the customer's order quantity. Please restock your finished product quantity. Number of bicycles needed for production:", quantityNeededToPurchase);
       purchasingRequired = "yes";
       return {
-        quantityNeededForProduction,
+        quantityNeededToPurchase,
         componentQuantityAvailable,
         purchasingRequired,
       };
@@ -147,7 +147,7 @@ function checkStock(componentName, componentQuantityAvailable, orderProduct, ord
     // Product mismatch or does not exist
     console.log("\nSorry, the selected product does not exist!");
     return {
-      quantityNeededForProduction,
+      quantityNeededToPurchase,
       componentQuantityAvailable,
       purchasingRequired,
     };
