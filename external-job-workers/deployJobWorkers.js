@@ -20,8 +20,8 @@ async function main() {
   // Deploy the 'new-customer.bpmn' process
 
   const res = await zbc.deployResource({
-    processFilename: `../Bicycle BPMN Model/bicycle-process-model.bpmn`,
-    decisionFilename: `../Bicycle BPMN Model/orderApproval.dmn`,
+    processFilename: `./models/bicycle-process-model.bpmn`,
+    decisionFilename: `./models/orderApproval.dmn`,
   })
 
   // Log the deployment result

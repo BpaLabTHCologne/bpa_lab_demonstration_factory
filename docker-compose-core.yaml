@@ -167,7 +167,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: customer_DB
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
@@ -188,6 +188,38 @@ services:
       PMA_USER: root
       PMA_PASSWORD: root
       PMA_ARBITRARY: 1
+
+  frontend_order_app:
+    build: 
+      context: ./front-end-order-app
+      dockerfile: dev.Dockerfile
+    container_name: frontend-order-app
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./front-end-order-app/public:/app/public
+      - ./front-end-order-app/src:/app/src
+
+  external_job_workers:
+    build:
+      context: ./external-job-workers
+      dockerfile: dev.Dockerfile
+    container_name: external-job-workers
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - zeebe
+      - elasticsearch
+      - mysql
+    volumes:
+      - ./external-job-workers:/app
+
 
 volumes:
   zeebe:

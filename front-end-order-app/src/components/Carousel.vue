@@ -1,6 +1,6 @@
 <template>
     <section id="hero" class="position-relative overflow-hidden py-4"
-        style="background: url(../src/assets/bike4-modified.jpg) no-repeat center center / cover;">
+        style="background: url('/images/bike4-modified.jpg') no-repeat center center / cover;">
         <!-- <div class="pattern-overlay pattern-right position-absolute">
           <img src="images/pattern-hero.png" alt="pattern">
       </div> -->
