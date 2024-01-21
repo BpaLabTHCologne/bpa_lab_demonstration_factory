@@ -18,7 +18,7 @@ async function handler(job) {
     //troubleshooting 1
     console.log('Worker handling task. Job variables:', job.variables);
 
-    let componentName;
+    let componentName = 'Mountain bike';
     let componentQuantityAvailable;
     let orderProduct;
     let orderQuantity;
@@ -72,12 +72,13 @@ async function handler(job) {
     // Query customer_order
 
     //troubleshooting 4
-    console.log('Executing query for customer_order');
+    console.log('Executing query for production_order');
 
+    //change here customerOrderResults name to production order results!!!
     const customerOrderResults = await new Promise((resolve, reject) => {
-      productionOrderDBPool.query('SELECT * FROM `customer_order` WHERE `customer_order`.`id` = ?', [job.variables.orderID], (queryErr, results, fields) => {
+      productionOrderDBPool.query('SELECT * FROM `production_order` WHERE `production_order`.`orderID` = ?', [job.variables.orderID], (queryErr, results, fields) => {
         if (queryErr) {
-          console.error('Error selecting from customer_order', queryErr.message);
+          console.error('Error selecting from production_order', queryErr.message);
           reject(queryErr);
         } else {
           //troubleshooting 5
@@ -88,9 +89,10 @@ async function handler(job) {
       });
     });
 
-    if (customerOrderResults.length > 0 && customerOrderResults[0].product !== undefined && customerOrderResults[0].quantity !== undefined) {
-      orderProduct = customerOrderResults[0].product;
-      orderQuantity = customerOrderResults[0].quantity;
+    //this IF BLOCK doesn't work as wanted... 
+    if (customerOrderResults.length > 0 && customerOrderResults[0].orderProduct !== undefined && customerOrderResults[0].quantity !== undefined) {
+      orderProduct = customerOrderResults[0].orderProduct;
+      orderQuantity = customerOrderResults[0].quantityNeededForProduction;
       console.log("\nThe production order is: ", orderProduct);
       console.log("The quantity is: ", orderQuantity);
     } else {
@@ -118,6 +120,7 @@ function checkStock(componentName, componentQuantityAvailable, orderProduct, ord
   let quantityNeededToPurchase = 0
   let purchasingRequired = "";
   if (componentName === orderProduct) {
+    console.log("Component name === Order product");
     if (componentQuantityAvailable >= orderQuantity) {
       // Update finished product stock
       quantityNeededToPurchase = componentQuantityAvailable - orderQuantity;
