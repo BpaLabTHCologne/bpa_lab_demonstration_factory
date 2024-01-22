@@ -171,6 +171,7 @@ services:
       MYSQL_DATABASE: customer_DB
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
+      MYSQL_MAX_CONNECTIONS: 100
 
   #phpMyAdmin container for database adminstration tasks
   phpmyadmin:
@@ -219,6 +220,29 @@ services:
       - mysql
     volumes:
       - ./external-job-workers:/app
+    environment:
+      MYSQL_HOST_NAME: mysql
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_DATABASE: customer_DB
+      MYSQL_HOST_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root  
+
+  rest_middleware_server:
+    build:
+      context: ./REST-middleware-server
+      dockerfile: dev.Dockerfile
+    container_name: REST-middleware-server
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "3005:3005"
+    volumes:
+      - ./REST-middleware-server:/app
+    depends_on:
+      - zeebe
+      - frontend_order_app
 
 
 volumes:

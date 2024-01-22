@@ -43,3 +43,6 @@ CREATE TABLE `warehouse`.`place`
     `last_user` VARCHAR(45) NULL DEFAULT NULL , 
     PRIMARY KEY (`shelf_id`)
 ) ENGINE = InnoDB;
+
+GRANT ALL PRIVILEGES ON customer_DB.* TO 'dev'@'172.20.0.10' IDENTIFIED BY 'dev';
+FLUSH PRIVILEGES;

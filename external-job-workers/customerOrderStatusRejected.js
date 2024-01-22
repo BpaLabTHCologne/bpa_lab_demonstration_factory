@@ -1,7 +1,9 @@
 const ZB = require('zeebe-node')
 const mysql = require('mysql');
 
-const zbc = new ZB.ZBClient();
+const zbc = new ZB.ZBClient({
+  hostname: 'zeebe'
+});
 
 //External job worker to store customer order
 const customerOrderStatusRejected = zbc.createWorker({
@@ -17,6 +19,7 @@ function handler(job) {
     try {
         const orderID = parseInt(job.variables.orderID)
         var connection = mysql.createConnection({
+            
             host: process.env.MYSQL_HOST_NAME,
             user: process.env.MYSQL_USER,
             password: process.env.MYSQL_PASSWORD,

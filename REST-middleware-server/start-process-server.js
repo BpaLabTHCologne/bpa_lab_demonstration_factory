@@ -4,12 +4,13 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3000;
+const port = 3005;
 
 // Create a Zeebe client
 const zbc = new ZBClient({
   // Specify your Zeebe broker contact point(s)
-  brokerContactPoint: 'localhost:26500',
+  brokerContactPoint: 'zeebe:26500',
+  hostname: 'zeebe'
 });
 
 // Use middleware to parse JSON in the request body
@@ -21,6 +22,7 @@ app.use(cors());
 // Define an endpoint to start a process instance
 app.post('/start-process-server', async (req, res) => {
   try {
+    console.log("GOT POST REQUEST.....")
     const { workflowKey, variables } = req.body;
 
     // Use createProcessInstance method
@@ -28,6 +30,8 @@ app.post('/start-process-server', async (req, res) => {
       bpmnProcessId: workflowKey,
       variables,
     });
+
+    console.log("REsponse", response)
 
     res.json({ success: true, response });
   } catch (error) {

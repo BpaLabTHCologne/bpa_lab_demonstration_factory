@@ -1,5 +1,7 @@
 const { ZBClient, Duration } = require('zeebe-node');
-const zbc = new ZBClient();
+const zbc = new ZBClient({
+  hostname: 'zeebe'
+});
 const uuid = require('uuid');
 
 let orderID = '';

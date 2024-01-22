@@ -1,7 +1,9 @@
 const ZB = require('zeebe-node')
 const nodemailer = require('nodemailer');
 
-const zbc = new ZB.ZBClient();
+const zbc = new ZB.ZBClient({
+	hostname: 'zeebe'
+  });
 
 //External job worker for sending order rejection email
 const sendRejectionEmail = zbc.createWorker({

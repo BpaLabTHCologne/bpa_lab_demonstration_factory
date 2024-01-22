@@ -1,7 +1,9 @@
 const ZB = require('zeebe-node')
 const mysql = require('mysql');
 
-const zbc = new ZB.ZBClient();
+const zbc = new ZB.ZBClient({
+  hostname: 'zeebe'
+});
 
 //External job worker to store customer order
 const customerOrderStatusInProduction = zbc.createWorker({

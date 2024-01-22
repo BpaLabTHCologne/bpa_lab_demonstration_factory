@@ -1,7 +1,9 @@
 const ZB = require('zeebe-node')
 const mysql = require('mysql');
 
-const zbc = new ZB.ZBClient();
+const zbc = new ZB.ZBClient({
+  hostname: 'zeebe'
+});
 
 //External job worker to store customer order
 const storeCustomerOrder = zbc.createWorker({
@@ -23,7 +25,7 @@ function handler(job) {
   console.log('Optional variables: ', job.variables);
 
   var customerOrderConnection = mysql.createConnection({
-    connectionLimit: 10,
+    connectionLimit: 50,
     host: process.env.MYSQL_HOST_NAME,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
@@ -31,9 +33,15 @@ function handler(job) {
     port: process.env.MYSQL_HOST_PORT,
   });
 
-  customerOrderConnection.connect();
+  customerOrderConnection.connect((error) => {
+    if(error){
+      console.log("storeCustomerOrder:: Error connecting to mysql database", error)
+    }
+  });
 
-  customerOrderConnection.query('INSERT INTO `customer_order` (`id`, `name`, `email`, `phone`, `address`, `product`, `quantity`, `orderStatus`) VALUES (NULL, "' + job.variables.customerName +'", "' + job.variables.customerEmail +'", "'+ job.variables.customerPhone +'", "' + job.variables.customerAddress + '", "' + job.variables.customerProduct + '", "'+ job.variables.customerQuantity + '", "'+ job.variables.orderStatus + '");', (err, insertResults, fields) => {
+  customerOrderConnection.query('INSERT INTO `customer_order` (`id`, `name`, `email`, `phone`, `address`, `product`, `quantity`, `orderStatus`) VALUES' + 
+  '(NULL, "John", "john@doe.com", "1234567", "12345 street", "Bicycle", "20", "active");', 
+  (err, insertResults, fields) => {
     if (err) {
         console.error('Error executing insert query:', err.message);
         return;
@@ -50,9 +58,27 @@ function handler(job) {
       orderDateTime: orderDateTime,
     }
     return job.complete(updateToBrokerVariables)
-  
-    
 });
+
+//   customerOrderConnection.query('INSERT INTO `customer_order` (`id`, `name`, `email`, `phone`, `address`, `product`, `quantity`, `orderStatus`) VALUES (NULL, "' + job.variables.customerName +'", "' + job.variables.customerEmail +'", "'+ job.variables.customerPhone +'", "' + job.variables.customerAddress + '", "' + job.variables.customerProduct + '", "'+ job.variables.customerQuantity + '", "'+ job.variables.orderStatus + '");', 
+//   (err, insertResults, fields) => {
+//     if (err) {
+//         console.error('Error executing insert query:', err.message);
+//         return;
+//     }
+
+//     // Access the insertId from the callback
+//     const insertId = insertResults.insertId;
+//     console.log("\ninsertId:", insertId);
+
+//     // Now, perform the SELECT query using the insertId
+//     const updateToBrokerVariables = {
+//       orderID: insertId,
+//       updatedProperty: 'newValue',
+//       orderDateTime: orderDateTime,
+//     }
+//     return job.complete(updateToBrokerVariables)
+// });
 
 }
 
