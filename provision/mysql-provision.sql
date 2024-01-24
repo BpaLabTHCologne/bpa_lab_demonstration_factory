@@ -26,9 +26,10 @@ CREATE TABLE `finished_product_DB`.`finished_product_stock`
 
 CREATE TABLE `production_order_DB`.`production_order` 
 (
-    `productionOrderID` INT NOT NULL AUTO_INCREMENT , 
-    `orderID` INT NOT NULL , 
-    `quantityNeededForProduction` INT NOT NULL , 
+    `productionOrderID` INT(11) NOT NULL AUTO_INCREMENT , 
+    `orderID` INT(11) NOT NULL , 
+    `customerProduct` VARCHAR(255) NOT NULL , 
+    `quantityNeededForProduction` INT(11) NOT NULL , 
     `productionOrderDateTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
     PRIMARY KEY (`productionOrderID`)
 ) ENGINE = InnoDB;
