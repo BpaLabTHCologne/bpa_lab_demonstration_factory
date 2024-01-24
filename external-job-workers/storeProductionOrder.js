@@ -23,7 +23,7 @@ function handler(job) {
   console.log('Optional variables: ', job.variables);
 
   var customerOrderConnection = mysql.createConnection({
-    connectionLimit: 10,
+    connectionLimit: 50,
     host: process.env.MYSQL_HOST_NAME,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,

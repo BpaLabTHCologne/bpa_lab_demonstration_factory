@@ -44,5 +44,28 @@ CREATE TABLE `warehouse`.`place`
     PRIMARY KEY (`shelf_id`)
 ) ENGINE = InnoDB;
 
-GRANT ALL PRIVILEGES ON customer_DB.* TO 'dev'@'172.20.0.10' IDENTIFIED BY 'dev';
+-- GRANT ALL PRIVILEGES ON customer_DB.* TO 'dev'@'172.20.0.10' IDENTIFIED BY 'dev';
+-- FLUSH PRIVILEGES;
+
+-- GRANT ALL PRIVILEGES ON finished_product_DB.* TO 'dev'@'172.20.0.10' IDENTIFIED BY 'dev';
+-- FLUSH PRIVILEGES;
+
+-- GRANT ALL PRIVILEGES ON production_order_DB.* TO 'dev'@'172.20.0.10' IDENTIFIED BY 'dev';
+-- FLUSH PRIVILEGES;
+
+GRANT ALL PRIVILEGES ON customer_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
 FLUSH PRIVILEGES;
+
+GRANT ALL PRIVILEGES ON finished_product_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
+FLUSH PRIVILEGES;
+
+GRANT ALL PRIVILEGES ON production_order_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
+FLUSH PRIVILEGES;
+
+USE finished_product_DB;
+INSERT INTO `finished_product_stock` (`productName`, `productQuantity`) 
+VALUES 
+  ('Mountain Bike', '50'), 
+  ('Hybrid 40000 Bicycle', '50'), 
+  ('Speed Thriller Electric 147 Bicycle', '50');
+
