@@ -11,7 +11,7 @@ require('./customerOrderStatusProductionRequired');
 require('./sendCustomerOrderForProduction');
 require('./storeProductionOrder');
 require('./customerOrderStatusInProduction');
-require('./componentsAvailability');
+require('./checkComponentsAvailability');
 
 
 const zbc = new ZB.ZBClient({
