@@ -19,7 +19,7 @@ function handler(job) {
     try {
         const orderID = parseInt(job.variables.orderID)
         var connection = mysql.createConnection({
-            connectionLimit: 10,
+            connectionLimit: 50,
             host: process.env.MYSQL_HOST_NAME,
             user: process.env.MYSQL_USER,
             password: process.env.MYSQL_PASSWORD,

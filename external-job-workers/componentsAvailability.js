@@ -5,10 +5,10 @@ const zbc = new ZB.ZBClient({
   hostname: 'zeebe'
 });
 
-const componentsAvailability = zbc.createWorker({
-  taskType: 'componentsAvailability',
+const checkComponentsAvailability = zbc.createWorker({
+  taskType: 'checkComponentsAvailability',
   taskHandler: handler,
-  onReady: () => componentsAvailability.log('Job worker started successfully!')
+  onReady: () => checkComponentsAvailability.log('Job worker started successfully!')
 })
 
 // Get the process variables from the execution context
@@ -25,7 +25,7 @@ async function handler(job) {
     let orderProduct;
     let orderQuantity;
 
-    //componentsAvailability.log('Task variables', job.variables);
+    //checkComponentsAvailability.log('Task variables', job.variables);
 
     const availableComponentsDBPool = mysql.createPool({
       connectionLimit: 10,
@@ -177,4 +177,4 @@ function checkStock(componentName, componentQuantityAvailable, orderProduct, ord
 }
 
 
-module.exports = componentsAvailability;
+module.exports = checkComponentsAvailability;

@@ -1,5 +1,6 @@
 CREATE DATABASE finished_product_DB;
 CREATE DATABASE production_order_DB;
+CREATE DATABASE component_DB;
 CREATE DATABASE warehouse;
 
 CREATE TABLE `customer_DB`.`customer_order` 
@@ -44,15 +45,6 @@ CREATE TABLE `warehouse`.`place`
     PRIMARY KEY (`shelf_id`)
 ) ENGINE = InnoDB;
 
--- GRANT ALL PRIVILEGES ON customer_DB.* TO 'dev'@'172.20.0.10' IDENTIFIED BY 'dev';
--- FLUSH PRIVILEGES;
-
--- GRANT ALL PRIVILEGES ON finished_product_DB.* TO 'dev'@'172.20.0.10' IDENTIFIED BY 'dev';
--- FLUSH PRIVILEGES;
-
--- GRANT ALL PRIVILEGES ON production_order_DB.* TO 'dev'@'172.20.0.10' IDENTIFIED BY 'dev';
--- FLUSH PRIVILEGES;
-
 GRANT ALL PRIVILEGES ON customer_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
 FLUSH PRIVILEGES;
 
@@ -60,6 +52,9 @@ GRANT ALL PRIVILEGES ON finished_product_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
 FLUSH PRIVILEGES;
 
 GRANT ALL PRIVILEGES ON production_order_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
+FLUSH PRIVILEGES;
+
+GRANT ALL PRIVILEGES ON component_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
 FLUSH PRIVILEGES;
 
 USE finished_product_DB;

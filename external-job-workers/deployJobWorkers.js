@@ -10,6 +10,7 @@ require('./checkFinishedProductAvailability');
 require('./customerOrderStatusProductionRequired');
 require('./sendCustomerOrderForProduction');
 require('./storeProductionOrder');
+require('./customerOrderStatusInProduction');
 require('./componentsAvailability');
 
 

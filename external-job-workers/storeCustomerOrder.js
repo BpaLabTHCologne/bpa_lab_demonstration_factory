@@ -69,7 +69,7 @@ function handler(job) {
 
     // Access the insertId from the callback
     const insertId = insertResults.insertId;
-    console.log("\ninsertId:", insertId);
+    // console.log("\ninsertId:", insertId);
 
     // Now, perform the SELECT query using the insertId
     const updateToBrokerVariables = {

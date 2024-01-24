@@ -33,7 +33,7 @@ function handler(job) {
 
   customerOrderConnection.connect();
 
-  customerOrderConnection.query('INSERT INTO `production_order` (`productionOrderID`, `orderID`, `orderProduct`, `quantityNeededForProduction` ) VALUES (NULL, "' + + job.variables.orderID +'", "' + job.variables.customerProduct + '","' + job.variables.quantityNeededForProduction + '");', (err, insertResults, fields) => {
+  customerOrderConnection.query('INSERT INTO `production_order` (`productionOrderID`, `orderID`, `customerProduct`, `quantityNeededForProduction`) VALUES (NULL, "' + + job.variables.orderID +'", "' + job.variables.customerProduct + '","' + job.variables.quantityNeededForProduction + '");', (err, insertResults, fields) => {
     if (err) {
         console.error('Error executing insert query:', err.message);
         return;
