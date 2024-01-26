@@ -1,0 +1,6 @@
+.env.example
+.git*
+*.md
+.env
+TXT_Controller_Apps/
+warehouse_operation_process.bpmn

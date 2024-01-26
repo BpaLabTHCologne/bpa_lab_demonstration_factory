@@ -1,0 +1,8 @@
+paho-mqtt
+python-dotenv
+nanoid
+pyzeebe
+mysql-connector-python
+grpcio
+requests
+zeebe-grpc

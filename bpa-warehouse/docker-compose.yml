@@ -1,0 +1,54 @@
+version: '3'
+services:
+  process-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+        IS_CLOUD: ${IS_CLOUD}
+        IS_PROD: ${IS_PROD}
+        ZEEBE_CLIENT_ID: cbeRUiuBk.tP.iK3GBbHx.4YyAUx~WOA
+        ZEEBE_CLIENT_SECRET: W-YUP6OLH4E3SntjyUByv4GdjDWy-Z8G~Mrxvy6r9z7tvw8LV90MvSMhi-l84qTQ
+        CAMUNDA_CLUSTER_ID: 9c374c31-412f-4b3f-a1cf-66c56565bef3
+        CAMUNDA_CLUSTER_REGION: bru-2
+        ZEEBE_ADRESS: host.docker.internal:26500
+        ZEEBE_ADRESS_HOST: host.docker.internal
+        ZEEBE_ADRESS_PORT: 26500
+        ZEEBE_TOKEN_AUDIENCE: 9c374c31-412f-4b3f-a1cf-66c56565bef3.bru-2.zeebe.camunda.io
+        CAMUNDA_OAUTH_URL: https://login.cloud.camunda.io/oauth/token
+        MYSQL_USER: ftrobot
+        MYSQL_PASSWORD: Camunda2024!
+
+  robot-app:
+    build:
+      context: ./TXT_Controller_Apps
+      dockerfile: Dockerfile
+    environment:
+        IS_PROD: ${IS_PROD}
+
+  mysql-db:
+    image: mysql:5.7 
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: warehouse
+      MYSQL_USER: ftrobot
+      MYSQL_PASSWORD: Camunda2024!
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_init_scripts:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-config:/mosquitto/config
+
+volumes:
+  mysql-data:
+  mosquitto-data:
+  mosquitto-config:
