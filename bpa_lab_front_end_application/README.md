@@ -1,4 +1,4 @@
-# front-end-order-app
+# bpa_lab_front_end_application
 
 This template should help get you started developing with Vue 3 in Vite.
 

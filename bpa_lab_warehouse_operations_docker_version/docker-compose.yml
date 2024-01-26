@@ -34,7 +34,7 @@ services:
       MYSQL_USER: ftrobot
       MYSQL_PASSWORD: Camunda2024!
     ports:
-      - "3306:3306"
+      - "3308:3306"
     volumes:
       - ./mysql_init_scripts:/docker-entrypoint-initdb.d
       - mysql-data:/var/lib/mysql
