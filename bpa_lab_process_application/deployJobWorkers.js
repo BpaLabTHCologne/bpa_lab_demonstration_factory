@@ -15,7 +15,9 @@ require('./checkComponentsAvailability');
 require('./sendShipmentConfirmation');
 require('./receiveShipmentConfirmation');
 require('./customerOrderStatusShipped');
-require('./sendShippedEmail');
+// require('./sendShippedEmail');
+// require('./sendToWarehouseOperations');
+
 
 // Define an async main function to deploy a process, create a process instance, and log the outcome
 async function main() {

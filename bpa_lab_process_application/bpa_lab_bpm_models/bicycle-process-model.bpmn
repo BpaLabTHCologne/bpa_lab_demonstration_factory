@@ -378,10 +378,6 @@
       <bpmn:incoming>Flow_1679yn3</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:dataStoreReference id="DataStoreReference_092cr36" name="customer_DB (MySQL)" />
-    <bpmn:task id="Activity_1w5lgb5" name="Warehouse Operation">
-      <bpmn:incoming>Flow_1siz0fh</bpmn:incoming>
-      <bpmn:outgoing>Flow_1kz12tj</bpmn:outgoing>
-    </bpmn:task>
     <bpmn:sequenceFlow id="Flow_149fb0r" sourceRef="Activity_0yc7jzn" targetRef="Activity_1nidbw1" />
     <bpmn:sequenceFlow id="Flow_1679yn3" sourceRef="Activity_1nidbw1" targetRef="Event_1f3dmc2" />
     <bpmn:serviceTask id="Activity_1nidbw1" name="Update customer order status">
@@ -394,6 +390,13 @@
         <bpmn:targetRef>DataStoreReference_092cr36</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
+    <bpmn:sendTask id="Activity_1w5lgb5" name="Warehouse Operation">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendToWarehouseOperations" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1siz0fh</bpmn:incoming>
+      <bpmn:outgoing>Flow_1kz12tj</bpmn:outgoing>
+    </bpmn:sendTask>
     <bpmn:textAnnotation id="TextAnnotation_1sk69p2">
       <bpmn:text>ORDER_REJECTED</bpmn:text>
     </bpmn:textAnnotation>
@@ -982,12 +985,12 @@
           <dc:Bounds x="2156" y="96" width="68" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1c9vftx_di" bpmnElement="Activity_1w5lgb5">
-        <dc:Bounds x="1600" y="210" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1o1e37r_di" bpmnElement="Activity_1nidbw1">
         <dc:Bounds x="2080" y="210" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0jzyiv1_di" bpmnElement="Activity_1w5lgb5">
+        <dc:Bounds x="1600" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_1vgec07_di" bpmnElement="Association_1vgec07">
         <di:waypoint x="1678" y="210" />

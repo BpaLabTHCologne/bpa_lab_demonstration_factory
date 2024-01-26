@@ -34,7 +34,7 @@ services:
       MYSQL_USER: ftrobot
       MYSQL_PASSWORD: Camunda2024!
     ports:
-      - "3308:3306"
+      - "3333:3306"
     volumes:
       - ./mysql_init_scripts:/docker-entrypoint-initdb.d
       - mysql-data:/var/lib/mysql
@@ -42,7 +42,7 @@ services:
   mqtt-broker:
     image: eclipse-mosquitto:latest
     ports:
-      - "1883:1883"
+      - "2020:1883"
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
       - mosquitto-data:/mosquitto/data
