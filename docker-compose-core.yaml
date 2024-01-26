@@ -221,7 +221,7 @@ services:
       - elasticsearch
       - mysql
     volumes:
-      - ./bpa_lab_process_application:/app
+      - ./bpa_lab_process_application/src:/app/src
     environment:
       MYSQL_HOST_NAME: mysql
       MYSQL_USER: dev
@@ -245,7 +245,7 @@ services:
     ports:
       - "3005:3005"
     volumes:
-      - ./bpa_lab_rest_middleware_server:/app
+      - ./bpa_lab_rest_middleware_server/src:/app/src
     depends_on:
       - zeebe
       - bpa_lab_front_end_application

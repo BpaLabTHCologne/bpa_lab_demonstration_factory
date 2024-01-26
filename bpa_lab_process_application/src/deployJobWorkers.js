@@ -51,13 +51,13 @@ async function main() {
     // Log the shipment BPMN diagram
     console.log('Shipment BPMN deployed successfully:', JSON.stringify(shipment, null, 2));
 
-    // // Deploy the warehouse operations BPMN diagram
-    // const warehouseOperations = await zbc.deployResource({
-    //   decisionFilename: `./bpa_lab_warehouse_operations_docker_version/warehouse-operations-process.bpmn`,
-    // });
+    // Deploy the warehouse operations BPMN diagram
+    const warehouseOperations = await zbc.deployResource({
+      decisionFilename: `./bpa_lab_bpm_models/warehouse-operations-process.bpmn`,
+    });
 
-    // // Log the warehouse operations BPMN diagram
-    // console.log('Warehouse operations BPMN deployed successfully:', JSON.stringify(warehouseOperations, null, 2));
+    // Log the warehouse operations BPMN diagram
+    console.log('Warehouse operations BPMN deployed successfully:', JSON.stringify(warehouseOperations, null, 2));
 
   } catch (error) {
     // Handle any errors that occur during deployment
