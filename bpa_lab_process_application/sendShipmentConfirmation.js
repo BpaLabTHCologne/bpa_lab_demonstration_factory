@@ -54,8 +54,6 @@ function handler(job) {
   zbc.publishStartMessage({
     name: 'startShipment',
     variables: {
-      initialProcessVariable: 'here',
-      anotherProcessVariable: 333,
       correlationValue,
       orderID: orderID,
       customerName: customerName,

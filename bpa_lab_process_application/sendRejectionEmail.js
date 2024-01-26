@@ -18,8 +18,7 @@ const sendRejectionEmail = zbc.createWorker({
 async function handler(job) {
 	try {
 			// worker.log('Task variables', job.variables)
-			sendRejectionEmail.log('Variables: ')
-			sendRejectionEmail.log(job.variables)
+			sendRejectionEmail.log('sendRejectionEmail variables:', job.variables)
 
 			const transporter = nodemailer.createTransport({
 				host: 'smtp.ethereal.email',

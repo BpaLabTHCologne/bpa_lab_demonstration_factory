@@ -1,8 +1,8 @@
-const { ZBClient, Duration } = require('zeebe-node');
-const zbc = new ZBClient({
+const ZB = require('zeebe-node')
+
+const zbc = new ZB.ZBClient({
   hostname: 'zeebe'
 });
-const uuid = require('uuid');
 
 let orderID = '';
 let customerName = '';
@@ -21,30 +21,17 @@ let quantityNeededForProduction = '';
 let customerOrderDate = '';
 let customerOrderTime = '';
 let productMass = '';
-let updateToBrokerVariables = '';
 
-// Define your message payload with the necessary variables
-const messagePayload = {
-  messageId: uuid.v4(),
-  name: 'receiveShipmentOrder',
-  variables: {
-    // Include any other variables you want to pass to the workflow
-  },
-  timeToLive: Duration.seconds.of(10), // seconds
-};
-
-// Send the message to the workflow
-//sendCustomerOrderForShipment.publishMessage(messagePayload);
-
-const sendCustomerOrderForShipment = zbc.createWorker({
-  taskType: 'sendCustomerOrderForShipment',
+const sendCustomerOrderForProduction = zbc.createWorker({
+  taskType: 'sendCustomerOrderForProduction',
   taskHandler: handler,
-  onReady: () => sendCustomerOrderForShipment.log('Job worker started successfully!')
+  // debug: true,
+  // loglevel: 'INFO',
+  onReady: () => sendCustomerOrderForProduction.log('Job worker started successfully!')
 });
 
 function handler(job) {
-  console.log("\nNumber of bicycles to be produced: ", job.variables.quantityNeededForProduction);
-
+  const correlationValue = 786;
   orderID = job.variables.orderID;
   customerName = job.variables.customerName;
   customerEmail = job.variables.customerEmail;
@@ -64,43 +51,37 @@ function handler(job) {
   productMass = job.variables.productMass;
 
 
-  // Task worker business logic goes here
-  updateToBrokerVariables = {
-    //updatedProperty: 'newValue',
-    orderID: orderID,
-    customerName: customerName,
-    customerEmail: customerEmail,
-    customerPhone: customerPhone,
-    customerAddress: customerAddress,
-    customerProduct: customerProduct,
-    customerQuantity: customerQuantity,
-    orderStatus: orderStatus,
-    customerOrderApproval: customerOrderApproval,
-    expectedDeliveryDate: expectedDeliveryDate,
-    finishedProductQuantityAvailable: finishedProductQuantityAvailable,
-    orderType: orderType,
-    productionRequired: productionRequired,
-    quantityNeededForProduction: quantityNeededForProduction,
-    customerOrderDate: customerOrderDate,
-    customerOrderTime: customerOrderTime,
-    productMass: productMass,
-  };
-
-  // Include the updated variables in the message payload for the next step in the workflow
-  const updatedMessagePayload = {
-    ...messagePayload,
+  zbc.publishStartMessage({
+    name: 'receiveProductionOrder',
     variables: {
-      ...messagePayload.variables,
-      ...updateToBrokerVariables,
+      correlationValue,
+      orderID: orderID,
+      customerName: customerName,
+      customerEmail: customerEmail,
+      customerPhone: customerPhone,
+      customerAddress: customerAddress,
+      customerProduct: customerProduct,
+      customerQuantity: customerQuantity,
+      orderStatus: orderStatus,
+      customerOrderApproval: customerOrderApproval,
+      expectedDeliveryDate: expectedDeliveryDate,
+      finishedProductQuantityAvailable: finishedProductQuantityAvailable,
+      orderType: orderType,
+      productionRequired: productionRequired,
+      quantityNeededForProduction: quantityNeededForProduction,
+      customerOrderDate: customerOrderDate,
+      customerOrderTime: customerOrderTime,
+      productMass: productMass,
     },
-  };
+  })
 
-  // Publish the updated message to the workflow
-  zbc.publishMessage(updatedMessagePayload);
-
-  // Complete the current job
-  job.complete(updateToBrokerVariables);
-  console.log("\nSending customer order for shipment: ", updatedMessagePayload)
+  return job.complete({ correlationValue: correlationValue });
 }
 
-module.exports = sendCustomerOrderForShipment;
+
+module.exports = sendCustomerOrderForProduction;
+
+
+
+
+
