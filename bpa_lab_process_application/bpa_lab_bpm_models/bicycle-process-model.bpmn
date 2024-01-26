@@ -382,15 +382,18 @@
       <bpmn:incoming>Flow_1siz0fh</bpmn:incoming>
       <bpmn:outgoing>Flow_1kz12tj</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="Activity_1nidbw1" name="Test">
+    <bpmn:sequenceFlow id="Flow_149fb0r" sourceRef="Activity_0yc7jzn" targetRef="Activity_1nidbw1" />
+    <bpmn:sequenceFlow id="Flow_1679yn3" sourceRef="Activity_1nidbw1" targetRef="Event_1f3dmc2" />
+    <bpmn:serviceTask id="Activity_1nidbw1" name="Update customer order status">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="customerOrderStatusShipped" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_149fb0r</bpmn:incoming>
       <bpmn:outgoing>Flow_1679yn3</bpmn:outgoing>
       <bpmn:dataOutputAssociation id="DataOutputAssociation_0kvpumd">
         <bpmn:targetRef>DataStoreReference_092cr36</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
-    </bpmn:task>
-    <bpmn:sequenceFlow id="Flow_149fb0r" sourceRef="Activity_0yc7jzn" targetRef="Activity_1nidbw1" />
-    <bpmn:sequenceFlow id="Flow_1679yn3" sourceRef="Activity_1nidbw1" targetRef="Event_1f3dmc2" />
+    </bpmn:serviceTask>
     <bpmn:textAnnotation id="TextAnnotation_1sk69p2">
       <bpmn:text>ORDER_REJECTED</bpmn:text>
     </bpmn:textAnnotation>
@@ -835,7 +838,7 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_12fblkz">
       <bpmndi:BPMNShape id="Participant_1wccacm_di" bpmnElement="Participant_1wccacm" isHorizontal="true">
-        <dc:Bounds x="160" y="80" width="2240" height="500" />
+        <dc:Bounds x="160" y="80" width="2170" height="500" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0k4ii08_di" bpmnElement="TextAnnotation_0k4ii08">
@@ -982,7 +985,7 @@
       <bpmndi:BPMNShape id="Activity_1c9vftx_di" bpmnElement="Activity_1w5lgb5">
         <dc:Bounds x="1600" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1nidbw1_di" bpmnElement="Activity_1nidbw1">
+      <bpmndi:BPMNShape id="Activity_1o1e37r_di" bpmnElement="Activity_1nidbw1">
         <dc:Bounds x="2080" y="210" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
@@ -1115,7 +1118,7 @@
         <di:waypoint x="2242" y="250" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_13428ol_di" bpmnElement="Participant_13428ol" isHorizontal="true">
-        <dc:Bounds x="160" y="640" width="2240" height="410" />
+        <dc:Bounds x="160" y="640" width="2170" height="410" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_046aj7l_di" bpmnElement="Event_1c3evrg">
