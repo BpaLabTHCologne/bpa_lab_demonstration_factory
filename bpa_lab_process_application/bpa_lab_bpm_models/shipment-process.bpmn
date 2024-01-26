@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_08qpqnf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0" camunda:diagramRelationId="67af45b5-cc6c-4546-9323-90b495908be3">
+  <bpmn:collaboration id="ship">
+    <bpmn:participant id="Participant_shipment" name="Shipment" processRef="Process_shipment" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_shipment" isExecutable="true">
+    <bpmn:extensionElements>
+      <zeebe:userTaskForm id="UserTaskForm_0bsaibc">{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "7da525c"
+  },
+  "schemaVersion": 13,
+  "id": "Shipping_info_form",
+  "components": [
+    {
+      "label": "Customer name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1nd96bd",
+        "columns": null
+      },
+      "id": "Field_1tap452",
+      "key": "Name",
+      "properties": { }
+    },
+    {
+      "label": "Phone number",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_001m6nf",
+        "columns": null
+      },
+      "id": "Field_18m7kaf",
+      "key": "number"
+    },
+    {
+      "label": "Address",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1pw9b0e",
+        "columns": null
+      },
+      "id": "Field_1k4z8g9",
+      "key": "address"
+    },
+    {
+      "label": "Email",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0al5src",
+        "columns": null
+      },
+      "id": "Field_1f14g8b",
+      "key": "Email"
+    }
+  ],
+  "type": "default"
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_3h2gdkr">{
+  "components": [
+    {
+      "label": "Enter city",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0fe1h3w",
+        "columns": null
+      },
+      "id": "Field_146sco4",
+      "key": "City",
+      "validate": {
+        "required": false
+      }
+    },
+    {
+      "label": "Postal code",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1hcu37u",
+        "columns": null
+      },
+      "id": "Field_1hncjej",
+      "key": "Postcode",
+      "validate": {
+        "required": false
+      }
+    },
+    {
+      "label": "Address Checked",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_0y47t48",
+        "columns": null
+      },
+      "id": "Field_0ubeqgv",
+      "key": "checkbox_postcode",
+      "defaultValue": false,
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.18.0"
+  },
+  "schemaVersion": 13,
+  "id": "Form_check",
+  "type": "default"
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_1565lpk">{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "0fa2a54"
+  },
+  "schemaVersion": 10,
+  "components": [
+    {
+      "label": "Warehouse address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1n6mpll",
+        "columns": null
+      },
+      "id": "Field_17hf7nq",
+      "key": "warehouseAddress",
+      "defaultValue": "Steinmüllerallee 1, 51643 Gummersbach"
+    },
+    {
+      "label": "Latitude of warehouse address",
+      "type": "number",
+      "layout": {
+        "row": "Row_1rbqhrj",
+        "columns": null
+      },
+      "id": "Field_1nkw34c",
+      "key": "latitudeWA",
+      "defaultValue": 51.023238338791835
+    },
+    {
+      "label": "Longitude of warehouse address",
+      "type": "number",
+      "layout": {
+        "row": null,
+        "columns": null
+      },
+      "id": "Field_19vwb6i",
+      "key": "longitudeWA",
+      "defaultValue": 7.562013168617832
+    },
+    {
+      "label": "Shipping address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0xggxhx",
+        "columns": null
+      },
+      "id": "Field_0v9tqif",
+      "key": "shippingAddress"
+    }
+  ],
+  "type": "default",
+  "id": "Form_ShippingInformation"
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_2epkjtt">{
+  "components": [
+    {
+      "label": "Post code",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_091o99v",
+        "columns": null
+      },
+      "id": "Field_1ns6iyc",
+      "key": "Postcode"
+    },
+    {
+      "label": "Compnay",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1v48fb9",
+        "columns": null
+      },
+      "id": "Field_10o4nsi",
+      "key": "Company"
+    },
+    {
+      "label": "Send notification to Warehouse",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_0gmtm8a",
+        "columns": null
+      },
+      "id": "Field_0y4pegi",
+      "key": "approve"
+    }
+  ],
+  "type": "default",
+  "id": "company",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.18.0"
+  },
+  "schemaVersion": 13
+}</zeebe:userTaskForm>
+    </bpmn:extensionElements>
+    <bpmn:userTask id="input_activity" name="Input shipping information">
+      <bpmn:documentation>Input information where the customer details are store from a form.</bpmn:documentation>
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_1565lpk" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1pmdgh3</bpmn:incoming>
+      <bpmn:outgoing>Flow_162iv19</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_check" name="Check travel information">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_3h2gdkr" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_162iv19</bpmn:incoming>
+      <bpmn:outgoing>Flow_1pjyt6m</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_12odlqw">
+        <bpmn:targetRef>DataStore_ship</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:dataStoreReference id="DataStore_ship" name="customer_DB (MySQL)" />
+    <bpmn:startEvent id="StartEvent_shipment" name="Start">
+      <bpmn:outgoing>Flow_1pmdgh3</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1jf1bc0" messageRef="Message_099t73j" />
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0osux6c" name="End">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="shipmentCompleted" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1pjyt6m</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1qoa11s" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1pmdgh3" sourceRef="StartEvent_shipment" targetRef="input_activity" />
+    <bpmn:sequenceFlow id="Flow_162iv19" sourceRef="input_activity" targetRef="Activity_check" />
+    <bpmn:sequenceFlow id="Flow_1pjyt6m" sourceRef="Activity_check" targetRef="Event_0osux6c" />
+  </bpmn:process>
+  <bpmn:message id="Message_2173054" name="Message_startdelivery">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=startDelivery" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:message id="Message_0dkcuht" name="Message_0dkcuht">
+    <bpmn:extensionElements />
+  </bpmn:message>
+  <bpmn:message id="Message_2lm38rv" name="Message_2lm38rv">
+    <bpmn:extensionElements />
+  </bpmn:message>
+  <bpmn:message id="Message_2p93dko" name="Message_2p93dko" />
+  <bpmn:message id="Message_3b16462" name="Message_3b16462" />
+  <bpmn:message id="Message_099t73j" name="startShipment" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ship">
+      <bpmndi:BPMNShape id="Participant_0lfhd15_di" bpmnElement="Participant_shipment" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1790" height="560" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ndcnzk_di" bpmnElement="input_activity">
+        <dc:Bounds x="511" y="317" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bszcjt_di" bpmnElement="Activity_check">
+        <dc:Bounds x="670" y="317" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_15cyk9c_di" bpmnElement="DataStore_ship">
+        <dc:Bounds x="605" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="595" y="186" width="68" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0hinj9n_di" bpmnElement="StartEvent_shipment">
+        <dc:Bounds x="420" y="339" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="426" y="382" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_022i8rn_di" bpmnElement="Event_0osux6c">
+        <dc:Bounds x="832" y="339" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="840" y="382" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1pmdgh3_di" bpmnElement="Flow_1pmdgh3">
+        <di:waypoint x="456" y="357" />
+        <di:waypoint x="511" y="357" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_162iv19_di" bpmnElement="Flow_162iv19">
+        <di:waypoint x="611" y="357" />
+        <di:waypoint x="670" y="357" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1pjyt6m_di" bpmnElement="Flow_1pjyt6m">
+        <di:waypoint x="770" y="357" />
+        <di:waypoint x="832" y="357" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_12odlqw_di" bpmnElement="DataOutputAssociation_12odlqw">
+        <di:waypoint x="690" y="317" />
+        <di:waypoint x="650" y="265" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

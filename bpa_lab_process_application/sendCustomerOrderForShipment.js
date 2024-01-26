@@ -26,7 +26,7 @@ let updateToBrokerVariables = '';
 // Define your message payload with the necessary variables
 const messagePayload = {
   messageId: uuid.v4(),
-  name: 'receiveShipmentOrder',
+  name: 'receiveProductionOrder',
   variables: {
     // Include any other variables you want to pass to the workflow
   },
@@ -34,12 +34,12 @@ const messagePayload = {
 };
 
 // Send the message to the workflow
-//sendCustomerOrderForShipment.publishMessage(messagePayload);
+//sendCustomerOrderForProduction.publishMessage(messagePayload);
 
-const sendCustomerOrderForShipment = zbc.createWorker({
-  taskType: 'sendCustomerOrderForShipment',
+const sendCustomerOrderForProduction = zbc.createWorker({
+  taskType: 'sendCustomerOrderForProduction',
   taskHandler: handler,
-  onReady: () => sendCustomerOrderForShipment.log('Job worker started successfully!')
+  onReady: () => sendCustomerOrderForProduction.log('Job worker started successfully!')
 });
 
 function handler(job) {
@@ -100,7 +100,7 @@ function handler(job) {
 
   // Complete the current job
   job.complete(updateToBrokerVariables);
-  console.log("\nSending customer order for shipment: ", updatedMessagePayload)
+  console.log("\nSending customer order for production: ", updatedMessagePayload)
 }
 
-module.exports = sendCustomerOrderForShipment;
+module.exports = sendCustomerOrderForProduction;
