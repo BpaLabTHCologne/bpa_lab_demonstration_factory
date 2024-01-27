@@ -34,6 +34,13 @@ CREATE TABLE `production_order_DB`.`production_order`
     PRIMARY KEY (`productionOrderID`)
 ) ENGINE = InnoDB;
 
+CREATE TABLE `component_DB`.`component_stock` 
+(
+    `id` INT(11) NOT NULL, 
+    `componentName` VARCHAR(255) NOT NULL , 
+    `componentQuantity` INT NOT NULL , PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
 
 CREATE TABLE `warehouse`.`place` 
 (
