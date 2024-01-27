@@ -33,7 +33,7 @@ async function main() {
     });
 
     // Log the order management and production control pool BPMN diagram deployment result
-    console.log('Order management/Production control BPMN deployed successfully:', JSON.stringify(bpmnResult, null, 2));
+    console.log('\nOrder management/Production control BPMN deployed successfully:', JSON.stringify(bpmnResult, null, 2));
 
     // Deploy the DMN decision model inside order management pool
     const dmnResult = await zbc.deployResource({
@@ -41,7 +41,7 @@ async function main() {
     });
 
     // Log the DMN decision model inside order management pool
-    console.log('DMN Decision model deployed successfully:', JSON.stringify(dmnResult, null, 2));
+    console.log('\nDMN Decision model deployed successfully:', JSON.stringify(dmnResult, null, 2));
 
     // Deploy the shipment BPMN diagram
     const shipment = await zbc.deployResource({
@@ -49,7 +49,7 @@ async function main() {
     });
 
     // Log the shipment BPMN diagram
-    console.log('Shipment BPMN deployed successfully:', JSON.stringify(shipment, null, 2));
+    console.log('\nShipment BPMN deployed successfully:', JSON.stringify(shipment, null, 2));
 
     // Deploy the warehouse operations BPMN diagram
     const warehouseOperations = await zbc.deployResource({
@@ -57,7 +57,7 @@ async function main() {
     });
 
     // Log the warehouse operations BPMN diagram
-    console.log('Warehouse operations BPMN deployed successfully:', JSON.stringify(warehouseOperations, null, 2));
+    console.log('\nWarehouse operations BPMN deployed successfully:', JSON.stringify(warehouseOperations, null, 2));
 
   } catch (error) {
     // Handle any errors that occur during deployment
