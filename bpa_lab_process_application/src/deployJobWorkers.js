@@ -15,7 +15,7 @@ require('./checkComponentsAvailability');
 require('./sendShipmentConfirmation');
 require('./receiveShipmentConfirmation');
 require('./customerOrderStatusShipped');
-// require('./sendShippedEmail');
+require('./sendShippedEmail');
 // require('./sendToWarehouseOperations');
 
 
