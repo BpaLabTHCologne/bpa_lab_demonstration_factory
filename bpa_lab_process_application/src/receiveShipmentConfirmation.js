@@ -5,7 +5,7 @@ const zbc = new ZB.ZBClient({
 });
 
 const receiveShipmentConfirmation = zbc.createWorker({
-  taskType: 'shipmentCompleted',
+  taskType: 'receiveShipmentConfirmation',
   taskHandler: handler,
   // debug: true,
   // loglevel: 'INFO',
@@ -13,14 +13,12 @@ const receiveShipmentConfirmation = zbc.createWorker({
 });
 
 function handler(job) {
-  console.log("shipmentCompleted");
+  console.log("receiveShipmentConfirmation");
     console.log(job.variables);
     zbc.publishMessage({
       name: 'shipmentDone',
       correlationKey: job.variables["correlationValue"],
       variables: {
-        replyProcessVariable: 'there',
-        anotherReplyProcessVariable: 9999
       },
       // timeToLive: Duration.seconds.of(10), // seconds
     })

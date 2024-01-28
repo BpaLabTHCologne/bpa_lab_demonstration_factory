@@ -27,15 +27,16 @@ let shelf_id = ''
 let task = ''
 let transactionId = ''
 
-const sendShipmentConfirmation = zbc.createWorker({
-  taskType: 'sendShipmentConfirmation',
+const receiveFinishedProduct = zbc.createWorker({
+  taskType: 'receiveFinishedProduct',
   taskHandler: handler,
   // debug: true,
   // loglevel: 'INFO',
-  onReady: () => sendShipmentConfirmation.log('Job worker started successfully!')
+  onReady: () => receiveFinishedProduct.log('Job worker started successfully!')
 });
 
 function handler(job) {
+  console.log("Starting to receive finished...")
   const correlationValue = 124;
   orderID = job.variables.orderID;
   customerName = job.variables.customerName;
@@ -62,7 +63,7 @@ function handler(job) {
 
 
   zbc.publishStartMessage({
-    name: 'startShipment',
+    name: 'finishedProductReceived',
     variables: {
       correlationValue,
       orderID: orderID,
@@ -89,12 +90,12 @@ function handler(job) {
       transactionId: transactionId,
     },
   })
-
+  console.log("Before job completion...")
   return job.complete({ correlationValue: correlationValue });
 }
 
 
-module.exports = sendShipmentConfirmation;
+module.exports = receiveFinishedProduct;
 
 
 

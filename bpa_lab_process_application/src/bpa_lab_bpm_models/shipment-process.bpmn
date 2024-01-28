@@ -237,7 +237,7 @@
     </bpmn:startEvent>
     <bpmn:endEvent id="Event_0osux6c" name="End">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="shipmentCompleted" />
+        <zeebe:taskDefinition type="receiveShipmentConfirmation" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0o54j1m</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1qoa11s" />

@@ -21,6 +21,11 @@ let quantityNeededForProduction = '';
 let customerOrderDate = '';
 let customerOrderTime = '';
 let productMass = '';
+let item = ''
+let place_id = ''
+let shelf_id = ''
+let task = ''
+let transactionId = ''
 
 const sendCustomerOrderForProduction = zbc.createWorker({
   taskType: 'sendCustomerOrderForProduction',
@@ -31,7 +36,7 @@ const sendCustomerOrderForProduction = zbc.createWorker({
 });
 
 function handler(job) {
-  const correlationValue = 786;
+  const correlationValue = 124;
   orderID = job.variables.orderID;
   customerName = job.variables.customerName;
   customerEmail = job.variables.customerEmail;
@@ -49,6 +54,11 @@ function handler(job) {
   customerOrderDate = job.variables.customerOrderDate;
   customerOrderTime = job.variables.customerOrderTime;
   productMass = job.variables.productMass;
+  item = job.variables.item;
+  place_id = job.variables.place_id;
+  shelf_id = job.variables.shelf_id;
+  task = job.variables.task;
+  transactionId = job.variables.transactionId;
 
 
   zbc.publishStartMessage({
@@ -72,6 +82,11 @@ function handler(job) {
       customerOrderDate: customerOrderDate,
       customerOrderTime: customerOrderTime,
       productMass: productMass,
+      item: item,
+      place_id: place_id,
+      shelf_id: shelf_id,
+      task: task,
+      transactionId: transactionId,
     },
   })
 
@@ -80,7 +95,6 @@ function handler(job) {
 
 
 module.exports = sendCustomerOrderForProduction;
-
 
 
 

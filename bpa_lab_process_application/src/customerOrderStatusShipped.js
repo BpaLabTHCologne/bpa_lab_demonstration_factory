@@ -29,7 +29,7 @@ function handler(job) {
     
         connection.connect();
     
-        connection.query('UPDATE `customer_order` SET `orderStatus` = "ORDER_IN_PRODUCTION" WHERE `customer_order`.`id` = ' + orderID + ';',
+        connection.query('UPDATE `customer_order` SET `orderStatus` = "ORDER_SHIPPED" WHERE `customer_order`.`id` = ' + orderID + ';',
           async function (error, results, fields) {
             if (error) throw error;
             console.log('Results: ', JSON.stringify(results));
