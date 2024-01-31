@@ -62,8 +62,9 @@ function handler(job) {
   transactionId = job.variables.transactionId;
 
 
-  zbc.publishStartMessage({
+  zbc.publishMessage({
     name: 'finishedProductReceived',
+    correlationKey: job.variables["correlationValue"],
     variables: {
       correlationValue,
       orderID: orderID,
