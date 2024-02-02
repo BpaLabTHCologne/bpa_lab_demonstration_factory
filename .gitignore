@@ -8,3 +8,4 @@ data/mysql-db
 docker-compose-core.yaml
 bpa_lab_process_application/.env
 docker-compose-core.yaml
+docker-compose-core.yaml
