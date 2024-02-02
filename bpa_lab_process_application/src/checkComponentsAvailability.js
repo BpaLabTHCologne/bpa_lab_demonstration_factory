@@ -45,15 +45,15 @@ async function handler(job) {
       port: process.env.MYSQL_HOST_PORT,
     });
 
-    // Query components_stock
+    // Query component_stock
 
     //troubleshooting 2
-    console.log('Executing query for components_stock');
+    console.log('Executing query for component_stock');
     
     const componentResults = await new Promise((resolve, reject) => {
-      availableComponentsDBPool.query('SELECT * FROM components_stock', (queryErr, results, fields) => {
+      availableComponentsDBPool.query('SELECT * FROM component_stock', (queryErr, results, fields) => {
         if (queryErr) {
-          console.error('Error selecting from components_stock', queryErr.message);
+          console.error('Error selecting from component_stock', queryErr.message);
           reject(queryErr);
         } else {
           //troubleshooting 3
@@ -67,8 +67,8 @@ async function handler(job) {
     if (componentResults.length > 0) {
       componentName = componentResults[0].componentName;
       componentQuantityAvailable = componentResults[0].componentQuantity;
-      console.log("\Component name from components_stock: ", componentName);
-      console.log("Component quantity available in components_stock: ", componentQuantityAvailable);
+      console.log("\Component name from component_stock: ", componentName);
+      console.log("Component quantity available in component_stock: ", componentQuantityAvailable);
     }
 
     // Query customer_order
@@ -137,7 +137,7 @@ function checkStock(componentName, componentQuantityAvailable, orderProduct, ord
         port: process.env.MYSQL_HOST_PORT,
       });
 
-      availableComponentsDBPool.query('UPDATE components_stock SET productQuantity = ?', [quantityNeededToPurchase], (updateErr) => {
+      availableComponentsDBPool.query('UPDATE component_stock SET productQuantity = ?', [quantityNeededToPurchase], (updateErr) => {
         if (updateErr) {
           console.error('Error updating finished product stock:', updateErr.message);
         }
