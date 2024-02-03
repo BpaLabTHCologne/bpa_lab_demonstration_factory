@@ -45,7 +45,7 @@ function handler(job) {
         orderStatus: 'ORDER_SHIPPED',
 	}
   connection.end();
-  console.log("\nThe customer order has been SHIPPED successfully!")
+  console.log("\nThe customer order has been SHIPPED successfully!\n")
 	return job.complete(updateToBrokerVariables)
 }
 

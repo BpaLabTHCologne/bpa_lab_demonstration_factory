@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="50c6516" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0" camunda:diagramRelationId="49237d53-bebd-4849-943c-cb910fa02678">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0" camunda:diagramRelationId="49237d53-bebd-4849-943c-cb910fa02678">
   <bpmn:collaboration id="Collaboration_1ks02x6">
     <bpmn:participant id="Participant_WarehouseOperations" name="Warehouse Operations" processRef="WarehouseOperationsProcess" />
     <bpmn:participant id="Participant_WarehouseRobot" name="Warehouse Robot" processRef="WarehouseRobotProcess" />
@@ -43,9 +43,6 @@
       <bpmn:outgoing>SequenceFlow_BicycleAvailableYes</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_BicycleAvailableNo</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:endEvent id="EndEvent_BicycleNotAvailable" name="Bicycle not available">
-      <bpmn:incoming>SequenceFlow_BicycleAvailableNo</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:endEvent id="EndEvent_BicycleRetrievedFromShelf" name="Bicycle retrieved from shelf">
       <bpmn:incoming>Flow_1hriyeo</bpmn:incoming>
     </bpmn:endEvent>
@@ -149,6 +146,13 @@
       <bpmn:outgoing>Flow_19baej5</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_14l94eg" messageRef="Message_2hiplml" />
     </bpmn:startEvent>
+    <bpmn:endEvent id="EndEvent_BicycleNotAvailable" name="Bicycle not available">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="receiveFromWarehouseOperations" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_BicycleAvailableNo</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1pboslm" />
+    </bpmn:endEvent>
   </bpmn:process>
   <bpmn:message id="Message_2o4h9rs" name="Msg_StartWarehouseRobot">
     <bpmn:extensionElements>
@@ -248,12 +252,6 @@
           <dc:Bounds x="609" y="115" width="82" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ez5lze_di" bpmnElement="EndEvent_BicycleNotAvailable">
-        <dc:Bounds x="792" y="152" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="786" y="195" width="55" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0p64wmy_di" bpmnElement="EndEvent_BicycleRetrievedFromShelf">
         <dc:Bounds x="1352" y="264" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -323,6 +321,12 @@
         <dc:Bounds x="242" y="202" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="220" y="245" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0hxibuw_di" bpmnElement="EndEvent_BicycleNotAvailable">
+        <dc:Bounds x="792" y="152" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="786" y="195" width="55" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_105d3jy_di" bpmnElement="SequenceFlow_StoreBicycleNo">
