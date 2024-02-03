@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xmzs53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xmzs53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
   <bpmn:collaboration id="Collaboration_12fblkz">
     <bpmn:participant id="Participant_1wccacm" name="Order Management" processRef="Process_1gu1lel" />
     <bpmn:participant id="Participant_13428ol" name="Production Control" processRef="Process_1ybxkst" />
@@ -287,10 +287,6 @@
       <bpmn:incoming>Flow_1m4btu3</bpmn:incoming>
       <bpmn:outgoing>Flow_0923deq</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:task id="Activity_1kuvp5w" name="Send confirmation email">
-      <bpmn:incoming>Flow_11a0c1d</bpmn:incoming>
-      <bpmn:outgoing>Flow_1q24qqg</bpmn:outgoing>
-    </bpmn:task>
     <bpmn:task id="Activity_1q0pnkq" name="Send rejection email">
       <bpmn:incoming>Flow_1ibjffz</bpmn:incoming>
       <bpmn:outgoing>Flow_0hk28zj</bpmn:outgoing>
@@ -364,11 +360,15 @@
       <bpmn:outgoing>Flow_1kz12tj</bpmn:outgoing>
     </bpmn:sendTask>
     <bpmn:sequenceFlow id="Flow_0923deq" sourceRef="Activity_0ixenah" targetRef="Activity_0x1xog5" />
-    <bpmn:receiveTask id="Activity_0x1xog5" name="Receive" messageRef="Message_215fh3u">
+    <bpmn:receiveTask id="Activity_0x1xog5" name="Receive finished production order" messageRef="Message_215fh3u">
       <bpmn:incoming>Flow_0923deq</bpmn:incoming>
       <bpmn:outgoing>Flow_1tbt60b</bpmn:outgoing>
     </bpmn:receiveTask>
     <bpmn:sequenceFlow id="Flow_1tbt60b" sourceRef="Activity_0x1xog5" targetRef="Activity_1w5lgb5" />
+    <bpmn:task id="Activity_1kuvp5w" name="Send confirmation email">
+      <bpmn:incoming>Flow_11a0c1d</bpmn:incoming>
+      <bpmn:outgoing>Flow_1q24qqg</bpmn:outgoing>
+    </bpmn:task>
     <bpmn:textAnnotation id="TextAnnotation_13pvht0">
       <bpmn:text>sendConfirmationEmail</bpmn:text>
     </bpmn:textAnnotation>
@@ -426,6 +426,10 @@ order for production</bpmn:text>
       <bpmn:text>Camunda pre-filled form</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_13km4xp" sourceRef="Activity_094s0jz" targetRef="TextAnnotation_12j53y1" />
+    <bpmn:textAnnotation id="TextAnnotation_0akzdn3">
+      <bpmn:text>Receive finished production order from production control</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1144nmy" sourceRef="Activity_0x1xog5" targetRef="TextAnnotation_0akzdn3" />
   </bpmn:process>
   <bpmn:message id="Message_215fh3u" name="finishedProductReceived">
     <bpmn:extensionElements>
@@ -968,6 +972,10 @@ order for production</bpmn:text>
         <dc:Bounds x="160" y="80" width="2170" height="500" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0unevl4" bpmnElement="TextAnnotation_0akzdn3">
+        <dc:Bounds x="2030" y="526" width="179" height="37" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1we0odi" bpmnElement="StartEvent_1">
         <dc:Bounds x="252" y="232" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -1035,9 +1043,6 @@ order for production</bpmn:text>
         <dc:Bounds x="1760" y="420" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_12f5ljf_di" bpmnElement="Activity_1kuvp5w">
-        <dc:Bounds x="950" y="420" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1wko8e3_di" bpmnElement="Activity_1q0pnkq">
         <dc:Bounds x="1130" y="210" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -1087,7 +1092,7 @@ order for production</bpmn:text>
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_13pvht0_di" bpmnElement="TextAnnotation_13pvht0">
-        <dc:Bounds x="860" y="520" width="139.99886156648452" height="26.98087431693989" />
+        <dc:Bounds x="860" y="520" width="139.99680918953413" height="26.992262284620296" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0kohb3e_di" bpmnElement="TextAnnotation_0kohb3e">
@@ -1142,6 +1147,13 @@ order for production</bpmn:text>
         <dc:Bounds x="600" y="429" width="179.99325236167343" height="29.984817813765183" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0h8voi9_di" bpmnElement="Activity_1kuvp5w">
+        <dc:Bounds x="950" y="420" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1144nmy_di" bpmnElement="Association_1144nmy">
+        <di:waypoint x="2012" y="499" />
+        <di:waypoint x="2041" y="526" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0m018yf_di" bpmnElement="Flow_0m018yf">
         <di:waypoint x="270" y="268" />
         <di:waypoint x="270" y="360" />
@@ -1376,6 +1388,9 @@ order for production</bpmn:text>
         <dc:Bounds x="1110" y="940" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_002m6bg_di" bpmnElement="Activity_0bpd5he">
+        <dc:Bounds x="830" y="820" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_19u4fwq" bpmnElement="TextAnnotation_0mtdut4">
         <dc:Bounds x="1170" y="740" width="210" height="41" />
         <bpmndi:BPMNLabel />
@@ -1395,9 +1410,6 @@ order for production</bpmn:text>
       <bpmndi:BPMNShape id="BPMNShape_1widkfe" bpmnElement="TextAnnotation_0g7taqv">
         <dc:Bounds x="1890" y="820" width="210" height="41" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_002m6bg_di" bpmnElement="Activity_0bpd5he">
-        <dc:Bounds x="830" y="820" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1x3ryl7_di" bpmnElement="Flow_1x3ryl7">
         <di:waypoint x="298" y="860" />

@@ -38,25 +38,6 @@ async function handler(job) {
       port: process.env.MYSQL_HOST_PORT,
     });
 
-    // Query finished_product_stock
-    const finishedProductResults = await new Promise((resolve, reject) => {
-      finishedProductDBPool.query('SELECT * FROM finished_product_stock', (queryErr, results, fields) => {
-        if (queryErr) {
-          console.error('Error selecting from finished_product_stock', queryErr.message);
-          reject(queryErr);
-        } else {
-          resolve(results);
-        }
-      });
-    });
-
-    if (finishedProductResults.length > 0) {
-      finishedProductName = finishedProductResults[0].productName;
-      finishedProductQuantityAvailable = finishedProductResults[0].productQuantity;
-      console.log("\nProduct name from finished_product_stock: ", finishedProductName);
-      console.log("Product quantity available in finished_product_stock: ", finishedProductQuantityAvailable);
-    }
-
     // Query customer_order
     const customerOrderResults = await new Promise((resolve, reject) => {
       customerOrderDBPool.query('SELECT * FROM `customer_order` WHERE `customer_order`.`id` = ?', [job.variables.orderID], (queryErr, results, fields) => {
@@ -68,18 +49,31 @@ async function handler(job) {
         }
       });
     });
+    console.log("\nCustomer product results: ", customerOrderResults);
+    customerOrderProduct = customerOrderResults[0].product;
+    customerOrderQuantity = customerOrderResults[0].quantity;
+    console.log("\nCustomer ordered product is: ", customerOrderProduct);
+    console.log("\nCustomer ordered quantity is: ", customerOrderQuantity);
 
-    if (customerOrderResults.length > 0 && customerOrderResults[0].product !== undefined && customerOrderResults[0].quantity !== undefined) {
-      customerOrderProduct = customerOrderResults[0].product;
-      customerOrderQuantity = customerOrderResults[0].quantity;
-      console.log("\nThe customer ordered product is: ", customerOrderProduct);
-      console.log("The customer ordered quantity is: ", customerOrderQuantity);
-    } else {
-      console.log('No results found for the specified order ID or product/quantity is undefined.');
-    }
+    // Query finished_product_stock
+    const finishedProductResults = await new Promise((resolve, reject) => {
+      finishedProductDBPool.query('SELECT * FROM finished_product_stock WHERE productName = ?', [customerOrderProduct], (queryErr, results, fields) => {
+        if (queryErr) {
+          console.error('Error selecting from finished_product_stock', queryErr.message);
+          reject(queryErr);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+    console.log("\nFinished product results: ", finishedProductResults);
+    finishedProductName = finishedProductResults[0].productName;
+    finishedProductQuantityAvailable = finishedProductResults[0].productQuantity;
+    console.log("\nFinished product found same as what customer ordered: ", finishedProductName);
+    console.log("\nFinished product quantity available: ", finishedProductQuantityAvailable);
 
-    const result = checkStock(finishedProductName, finishedProductQuantityAvailable, customerOrderProduct, customerOrderQuantity);
-    console.log("\nReturned result: ", result);
+    const result = checkStock(customerOrderProduct, customerOrderQuantity, finishedProductName, finishedProductQuantityAvailable);
+    console.log("\nFinal results after checking stock: ", result);
 
     // Use updateToBrokerVariables as needed...
     const updateToBrokerVariables = {
@@ -90,67 +84,50 @@ async function handler(job) {
 
     return job.complete(updateToBrokerVariables);
   } catch (error) {
-    console.log("Got error:", error);
+    console.log("\nGot error:", error);
   }
 }
 
+function checkStock(customerOrderProduct, customerOrderQuantity, finishedProductName, finishedProductQuantityAvailable) {
+  let productionRequired = "no";
+  let quantityNeededForProduction = 0;
 
-function checkStock(finishedProductName, finishedProductQuantityAvailable, customerOrderProduct, customerOrderQuantity) {
-  let quantityNeededForProduction = 0
-  let productionRequired = "";
-  if (finishedProductName === customerOrderProduct) {
-    if (finishedProductQuantityAvailable >= customerOrderQuantity) {
-      // Update finished product stock
-      quantityNeededForProduction = finishedProductQuantityAvailable - customerOrderQuantity;
-      console.log("\nNew stock after deductions: ", quantityNeededForProduction);
-      productionRequired = "no";
-      const finishedProductDBPool = mysql.createPool({
-        connectionLimit: 10,
-        host: process.env.MYSQL_HOST_NAME,
-        user: process.env.MYSQL_USER,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE_FINISHED_PRODUCT,
-        port: process.env.MYSQL_HOST_PORT,
-      });
-
-      finishedProductDBPool.query('UPDATE finished_product_stock SET productQuantity = ?', [quantityNeededForProduction], (updateErr) => {
-        if (updateErr) {
-          console.error('Error updating finished product stock:', updateErr.message);
-        }
-
-        // Check if stock is getting low
-        if (quantityNeededForProduction <= 0) {
-          console.log("\nProduct stock is getting low. Please restock your warehouse!");
-        }
-      });
-      return {
-        quantityNeededForProduction,
-        finishedProductQuantityAvailable,
-        productionRequired,
-      };
-    } else if (finishedProductQuantityAvailable < customerOrderQuantity) {
-      quantityNeededForProduction = customerOrderQuantity - finishedProductQuantityAvailable;
-      console.log("\nSeems like the finished product quantity is below the customer's order quantity. Please restock your finished product quantity. Number of bicycles needed for production:", quantityNeededForProduction);
+  // Check if stock is totally empty
+  if (finishedProductQuantityAvailable === 0) {
       productionRequired = "yes";
-      return {
-        quantityNeededForProduction,
-        finishedProductQuantityAvailable,
-        productionRequired,
-      };
-    } else {
-      // Not enough quantity in stock
-      console.log("\nSorry, the requested product is not available in sufficient quantity inside the stock at the moment.");
-    }
-  } else {
-    // Product mismatch or does not exist
-    console.log("\nSorry, the selected product does not exist!");
-    return {
-      quantityNeededForProduction,
-      finishedProductQuantityAvailable,
-      productionRequired,
-    };
+      quantityNeededForProduction = customerOrderQuantity;
+      console.log("\nFinished product stock is empty. PRODUCTION STARTING...")
   }
-}
+  // Check if finishedProductQuantityAvailable is greater than customerOrderQuantity
+  else if(finishedProductQuantityAvailable > customerOrderQuantity){
+    finishedProductQuantityAvailable = finishedProductQuantityAvailable - customerOrderQuantity;
+    const finishedProductDBPool = mysql.createPool({
+      connectionLimit: 10,
+      host: process.env.MYSQL_HOST_NAME,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE_FINISHED_PRODUCT,
+      port: process.env.MYSQL_HOST_PORT,
+    });
+    finishedProductDBPool.query('UPDATE finished_product_stock SET productQuantity = ? WHERE productName = ?', [finishedProductQuantityAvailable, finishedProductName])
+    productionRequired = "no";
+    console.log("\nFinished product stock is available. PREPARING FOR SHIPMENT...")
+  }
+  // Check if finishedProductQuantityAvailable is below customerOrderQuantity
+  else if(customerOrderQuantity > finishedProductQuantityAvailable){
+    quantityNeededForProduction = customerOrderQuantity - finishedProductQuantityAvailable
+    productionRequired = "yes";
+    console.log("\nFinished product stock is below the customer's request. PRODUCTION STARTING...")
+  }
 
+  return {
+    customerOrderProduct,
+    customerOrderQuantity,
+    finishedProductName,
+    finishedProductQuantityAvailable,
+    quantityNeededForProduction,
+    productionRequired
+  };
+}
 
 module.exports = checkFinishedProductAvailability;

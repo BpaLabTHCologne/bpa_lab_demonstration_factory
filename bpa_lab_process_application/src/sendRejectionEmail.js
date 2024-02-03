@@ -33,9 +33,19 @@ async function handler(job) {
 				from: '"Fred" <fred@newbike.com>', // sender address
 				to: job.variables.customerEmail, // list of receivers
 				cc: "orders@newbike, qa@newbike.com", // list of cc's
-				subject: "Your delivery date has postponed. Sorry for inconvenience!", // Subject line
-				text: "Dear " + job.variables.customerName + ", we are really sorry to say that due to some delay in the manufacturing unit, we had no choice but to delay the delivery date. The new expected delivery date is: " + job.variables.deliveryDate + ". We are really sorry for inconvenience. All our relevant departments have been notified regarding the issue and will get back to you as soon as possible. If you have any questions, please feel free to contact our support and we would be happy to assist you.", // plain text body
-				// html: "<b>Hello world?</b>", html body
+				subject: "Your order has been rejected. Sorry for inconvenience!", // Subject line
+				html: "<p><b>Dear " + job.variables.customerName + ",</b></p>" + 
+					"<p>We are really sorry to inform you that your order has not been confirmed.</p>" + 
+					"<p>Here are the key details of your order:</p>" +
+					"<ul>" +
+					"<li><b>Order Number:</b> " + job.variables.orderID + "</li>" +
+					"<li><b>Date of Order:</b> " + job.variables.customerOrderDate + "</li>" +
+					"<li><b>Time of Order:</b> " + job.variables.customerOrderTime + "</li>" +
+					"<li><b>Order details:</b><br>" + "<b>Product: </b>" + job.variables.customerProduct + "<br><b>Quantity: </b>" + job.variables.customerQuantity + "</li>" +
+					"</ul>" +
+					"<p><b>Shipping Address:</b> " + job.variables.customerAddress + "</p>" +
+					"<p><b>Reason: Currently, we only accept orders with quantity below five.</b></p>" +
+					"<p><b>Best regards,</b><br><b>Fred</b><br><b>NewBike GmbH</b><br><b>Contact Information: orders@newbike</b></p>", // html body
 			  });
 
 			  console.log("Message sent: %s", info.messageId);

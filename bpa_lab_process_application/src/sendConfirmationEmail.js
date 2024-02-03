@@ -34,12 +34,24 @@ async function handler(job) {
 				to: job.variables.customerEmail, // list of receivers
 				cc: "orders@newbike, qa@newbike.com", // list of cc's
 				subject: "Your NewBike order of " + job.variables.customerProduct + " has been confirmed!", // Subject line
-				text: "Dear " + job.variables.customerName + 
-                ",\n\nWe are thrilled to inform you that your order with NewBike GmbH has been successfully confirmed! Thank you for choosing us.\n\nHere are the key details of your order:\n\nOrder Number: " + job.variables.orderID + 
-                "\nDate of Order: " + job.variables.deliveryDate + "\n\nItems Purchased:\n1. " + job.variables.customerProduct + "\n   - Quantity: " + job.variables.customerQuantity + 
-                "\n\nShipping Address: " + job.variables.customerAddress + "\n\nYour order is now being processed, and you can expect it to be dispatched shortly. We will notify you with the tracking details once your package is on its way.\n\nIf you have any questions or concerns, feel free to reply to this email. We are here to assist you!\n\nThank you again for choosing NewBike GmbH. We appreciate your business.\n\nBest regards,\n\nFred\nNewBike GmbH\nContact Information: orders@newbike", // plain text body
-				// html: "<b>Hello world?</b>", html body
-			  });
+				html: "<p><b>Dear " + job.variables.customerName + ",</b></p>" + 
+					"<p>We are thrilled to inform you that your order with NewBike GmbH has been successfully confirmed! Thank you for choosing us.</p>" + 
+					"<p>Here are the key details of your order:</p>" +
+					"<ul>" +
+					"<li><b>Order Number:</b> " + job.variables.orderID + "</li>" +
+					"<li><b>Date of Order:</b> " + job.variables.customerOrderDate + "</li>" +
+					"<li><b>Time of Order:</b> " + job.variables.customerOrderTime + "</li>" +
+					"<li><b>Expected Delivery Date:</b> " + job.variables.expectedDeliveryDate + "</li>" +
+					"<li><b>Order details:</b><br>" + "<b>Product: </b>" + job.variables.customerProduct + "<br><b>Quantity: </b>" + job.variables.customerQuantity + "</li>" +
+					"</ul>" +
+					"<p><b>Shipping Address:</b> " + job.variables.customerAddress + "</p>" +
+					"<p><b>Your order is now being processed, and you can expect it to be dispatched shortly. We will notify you with the tracking details once your package is on its way.</b></p>" +
+					"<p>If you have any questions or concerns, feel free to reply to this email. We are here to assist you!</p>" +
+					"<p>Thank you again for choosing NewBike GmbH.</p>" +
+					"<p><b>Best regards,</b><br><b>Fred</b><br><b>NewBike GmbH</b><br><b>Contact Information: orders@newbike</b></p>", // html body
+			});
+			
+			
 
 			  console.log("Message sent: %s", info.messageId);
 			  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));

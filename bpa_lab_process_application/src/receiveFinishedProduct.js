@@ -36,7 +36,6 @@ const receiveFinishedProduct = zbc.createWorker({
 });
 
 function handler(job) {
-  console.log("Starting to receive finished...")
   const correlationValue = 124;
   orderID = job.variables.orderID;
   customerName = job.variables.customerName;
@@ -91,7 +90,7 @@ function handler(job) {
       transactionId: transactionId,
     },
   })
-  console.log("Before job completion...")
+  console.log("\nProduction order has been successfully completed. Sending process back to order management...")
   return job.complete({ correlationValue: correlationValue });
 }
 
