@@ -36,7 +36,7 @@ const sendToWarehouseOperations = zbc.createWorker({
 });
 
 function handler(job) {
-  const correlationValue = 555;
+  const correlationValue = 124;
   orderID = job.variables.orderID;
   customerName = job.variables.customerName;
   customerEmail = job.variables.customerEmail;

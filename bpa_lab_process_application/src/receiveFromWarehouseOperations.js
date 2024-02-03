@@ -17,7 +17,7 @@ function handler(job) {
     console.log(job.variables);
     zbc.publishMessage({
       name: 'receiveWarehouseOperations',
-      correlationKey: job.variables["correlationValue"],
+      correlationKey: "124",
       variables: {
       },
       // timeToLive: Duration.seconds.of(10), // seconds
