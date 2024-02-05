@@ -1,0 +1,142 @@
+{
+  "components": [
+    {
+      "label": "Customer name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1nd96bd",
+        "columns": null
+      },
+      "id": "Field_1tap452",
+      "key": "customerName",
+      "properties": {},
+      "defaultValue": "Peter"
+    },
+    {
+      "label": "Product name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_001m6nf",
+        "columns": 7
+      },
+      "id": "Field_18m7kaf",
+      "key": "customerProduct",
+      "defaultValue": "Mountain bike"
+    },
+    {
+      "label": "Order Id",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_001m6nf",
+        "columns": 5
+      },
+      "id": "Field_1tqfpnq",
+      "key": "orderID",
+      "defaultValue": "1"
+    },
+    {
+      "label": "Quantity",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_001m6nf",
+        "columns": null
+      },
+      "id": "Field_0o29877",
+      "key": "customerQuantity",
+      "defaultValue": "1"
+    },
+    {
+      "label": "Date",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1pw9b0e",
+        "columns": 5
+      },
+      "id": "Field_1mxhr3c",
+      "key": "customerOrderDate",
+      "defaultValue": "10/01/2024"
+    },
+    {
+      "label": "Time",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1pw9b0e",
+        "columns": 5
+      },
+      "id": "Field_1ebu9gk",
+      "key": "customerOrderTime",
+      "defaultValue": "10:10 AM"
+    },
+    {
+      "label": "Delivery date",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1pw9b0e",
+        "columns": null
+      },
+      "id": "Field_1q1kvyi",
+      "key": "expectedDeliveryDate",
+      "defaultValue": "13/01/2024"
+    },
+    {
+      "label": "Street",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0q5fxow",
+        "columns": null
+      },
+      "id": "Field_1k4z8g9",
+      "key": "customerAddress"
+    },
+    {
+      "label": "Post code",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1ifaa6k",
+        "columns": null
+      },
+      "id": "Postcode",
+      "key": "Postcode"
+    },
+    {
+      "label": "City",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1ifaa6k",
+        "columns": null
+      },
+      "id": "Field_0k1tlcy",
+      "key": "City"
+    },
+    {
+      "label": "Weight of the product",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0al5src",
+        "columns": null
+      },
+      "id": "Weight",
+      "key": "Weight"
+    },
+    {
+      "label": "Email",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1babtqw",
+        "columns": null
+      },
+      "id": "Field_1f14g8b",
+      "key": "customerEmail",
+      "defaultValue": "peter@gmail.com"
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.18.0"
+  },
+  "schemaVersion": 13,
+  "id": "Shipping_info_form",
+  "type": "default"
+}

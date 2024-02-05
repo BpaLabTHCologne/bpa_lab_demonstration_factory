@@ -1,9 +1,7 @@
 const ZB = require('zeebe-node')
 const nodemailer = require('nodemailer');
 
-const zbc = new ZB.ZBClient({
-	hostname: 'zeebe'
-  });
+const zbc = new ZB.ZBClient('localhost:26500')
 
 //External job worker for sending order rejection email
 const sendShippedEmail = zbc.createWorker({
@@ -24,8 +22,8 @@ async function handler(job) {
 				host: 'smtp.ethereal.email',
 				port: 587,
 				auth: {
-					user: 'arturo.roberts@ethereal.email',
-					pass: 'JrTD1b89g5hEjN1UBh'
+					user: 'tessie.tillman94@ethereal.email',
+					pass: 'PEW7jjMfhhQGsP92AR'
 				}
 			});
 

@@ -1,19 +1,17 @@
 const ZB = require('zeebe-node')
 
-const zbc = new ZB.ZBClient({
-  hostname: 'zeebe'
-});
+const zbc = new ZB.ZBClient('localhost:26500')
 
-const receiveShipmentConfirmation = zbc.createWorker({
-  taskType: 'receiveShipmentConfirmation',
+const shipmentCompleted = zbc.createWorker({
+  taskType: 'shipmentCompleted',
   taskHandler: handler,
   // debug: true,
   // loglevel: 'INFO',
-  onReady: () => receiveShipmentConfirmation.log('Job worker started successfully!')
+  onReady: () => shipmentCompleted.log('Job worker started successfully!')
 });
 
 function handler(job) {
-  console.log("receiveShipmentConfirmation");
+  console.log("shipmentCompleted");
     console.log(job.variables);
     zbc.publishMessage({
       name: 'shipmentDone',
@@ -26,5 +24,5 @@ function handler(job) {
 }
 
 
-module.exports = receiveShipmentConfirmation;
+module.exports = shipmentCompleted;
   

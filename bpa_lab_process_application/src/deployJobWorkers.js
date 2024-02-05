@@ -13,9 +13,7 @@ require('./storeProductionOrder');
 require('./customerOrderStatusInProduction');
 require('./checkComponentsAvailability');
 require('./sendShipmentConfirmation');
-require('./receiveShipmentConfirmation');
 require('./customerOrderStatusShipped');
-require('./sendShippedEmail');
 require('./sendToWarehouseOperations');
 require('./receiveFinishedProduct');
 require('./receiveFromWarehouseOperations');
@@ -43,14 +41,6 @@ async function main() {
 
     // Log the DMN decision model inside order management pool
     console.log('\nDMN Decision model deployed successfully:', JSON.stringify(dmnResult, null, 2));
-
-    // Deploy the shipment BPMN diagram
-    const shipment = await zbc.deployResource({
-      decisionFilename: `./bpa_lab_bpm_models/shipment-process.bpmn`,
-    });
-
-    // Log the shipment BPMN diagram
-    console.log('\nShipment BPMN deployed successfully:', JSON.stringify(shipment, null, 2));
 
     // Deploy the warehouse operations BPMN diagram
     const warehouseOperations = await zbc.deployResource({
