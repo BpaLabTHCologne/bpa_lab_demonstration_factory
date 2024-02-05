@@ -9,7 +9,10 @@ require('./shipmentCompleted');
 // Define an async main function to deploy a process, create a process instance, and log the outcome
 async function main() {
   // Create a new ZBClient instance with the provided configuration
-  const zbc = new ZBClient('localhost:26500')
+  // const zbc = new ZBClient('localhost:26500')
+  const zbc = new ZBClient({
+    hostname: 'zeebe'
+    });
 
   try {
     // Deploy the shipment process BPMN diagram
@@ -25,8 +28,8 @@ async function main() {
       decisionFilename: `./bpa_lab_bpm_models/transportCompany.dmn`,
     });
 
-    // Log the shipment process BPMN diagram deployment result
-    console.log('\nShipment process BPMN deployed successfully:', JSON.stringify(dmnResult, null, 2));
+    // Log the shipment process DMN diagram deployment result
+    console.log('\nShipment process DMN deployed successfully:', JSON.stringify(dmnResult, null, 2));
 
   } catch (error) {
     // Handle any errors that occur during deployment

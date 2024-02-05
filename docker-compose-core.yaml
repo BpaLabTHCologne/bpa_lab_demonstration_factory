@@ -250,6 +250,24 @@ services:
       - zeebe
       - bpa_lab_front_end_application
 
+#Shipment process container including job workers
+  bpa_lab_shipment_process:
+    build:
+      context: ./bpa_lab_shipment_process
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_shipment_process
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "3194:3194"
+    depends_on:
+      - zeebe
+      - elasticsearch
+      - mysql
+    volumes:
+      - ./bpa_lab_shipment_process/src:/app/src
+
 
 volumes:
   zeebe:

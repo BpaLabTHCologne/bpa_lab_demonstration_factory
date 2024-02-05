@@ -1,6 +1,9 @@
 const ZB = require('zeebe-node')
 
-const zbc = new ZB.ZBClient('localhost:26500')
+// const zbc = new ZB.ZBClient('localhost:26500')
+const zbc = new ZB.ZBClient({
+  hostname: 'zeebe'
+});
 
 const shipmentCompleted = zbc.createWorker({
   taskType: 'shipmentCompleted',
