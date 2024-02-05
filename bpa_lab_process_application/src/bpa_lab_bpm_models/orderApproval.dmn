@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1kykn67" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_1kykn67" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
   <decision id="orderType" name="Order Type">
     <decisionTable id="DecisionTable_0hg7jxh" hitPolicy="FIRST">
-      <input id="Input_1" label="Product Name">
+      <input id="Input_1" label="Customer product">
         <inputExpression id="InputExpression_1" typeRef="string">
-          <text>productName</text>
+          <text>customerProduct</text>
         </inputExpression>
         <inputValues id="UnaryTests_03jqlle">
           <text>"Speed Thriller Electric 147 Bicycle","Hybrid 40000 Bicycle","Mountain Bike"</text>
         </inputValues>
       </input>
-      <input id="InputClause_0fw0aqh" label="Order Quantity">
-        <inputExpression id="LiteralExpression_1ao9x8s" typeRef="integer">
-          <text>orderQuantity</text>
+      <input id="InputClause_0fw0aqh" label="Customer quantity">
+        <inputExpression id="LiteralExpression_1ao9x8s" typeRef="number">
+          <text>customerQuantity</text>
         </inputExpression>
       </input>
-      <output id="Output_1" label="Order Type" name="orderType" typeRef="string">
-        <outputValues id="UnaryTests_0lng7kg">
-          <text>"multipleOrder","singleOrder","notAllowed"</text>
-        </outputValues>
-      </output>
+      <output id="OutputClause_1tihq2n" label="Customer order type" name="customerOrderType" typeRef="string" />
+      <output id="Output_1" label="Customer order approval" name="customerOrderApproval" typeRef="boolean" biodi:width="201" />
       <rule id="DecisionRule_0v3xymt">
         <description>Customer receives an email for confirmation.</description>
         <inputEntry id="UnaryTests_09v8xwb">
@@ -28,8 +25,11 @@
         <inputEntry id="UnaryTests_0v1d0xi">
           <text>[2..5]</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_15oe6hx">
+        <outputEntry id="LiteralExpression_1050h5a">
           <text>"multipleOrder"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15oe6hx">
+          <text>true</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1mx1zy1">
@@ -40,8 +40,11 @@
         <inputEntry id="UnaryTests_1i84vu5">
           <text>[2..5]</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_0xp61j8">
+        <outputEntry id="LiteralExpression_083fx53">
           <text>"multipleOrder"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xp61j8">
+          <text>true</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_17bhykj">
@@ -52,8 +55,11 @@
         <inputEntry id="UnaryTests_0a8ljye">
           <text>[2..5]</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_191potq">
+        <outputEntry id="LiteralExpression_0alxkp7">
           <text>"multipleOrder"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_191potq">
+          <text>true</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1s9hfgk">
@@ -64,8 +70,11 @@
         <inputEntry id="UnaryTests_0we7aq6">
           <text>1</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1s0dwk8">
+        <outputEntry id="LiteralExpression_16esqkn">
           <text>"singleOrder"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1s0dwk8">
+          <text>true</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_05ud8co">
@@ -76,8 +85,11 @@
         <inputEntry id="UnaryTests_0p2s1k3">
           <text>1</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_18d0lpk">
+        <outputEntry id="LiteralExpression_13tllyf">
           <text>"singleOrder"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18d0lpk">
+          <text>true</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0f03p5o">
@@ -88,8 +100,11 @@
         <inputEntry id="UnaryTests_01w49wq">
           <text>1</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_026irog">
+        <outputEntry id="LiteralExpression_0njbyzf">
           <text>"singleOrder"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_026irog">
+          <text>true</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1nfucjn">
@@ -100,8 +115,11 @@
         <inputEntry id="UnaryTests_039c08v">
           <text>&gt; 5</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_0xu4abd">
+        <outputEntry id="LiteralExpression_057ojf9">
           <text>"notAllowed"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xu4abd">
+          <text>false</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1uqbpnz">
@@ -112,8 +130,11 @@
         <inputEntry id="UnaryTests_0swvsfi">
           <text>&gt; 5</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1nlhnfv">
+        <outputEntry id="LiteralExpression_0rzpx6j">
           <text>"notAllowed"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1nlhnfv">
+          <text>false</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0o620a0">
@@ -124,51 +145,11 @@
         <inputEntry id="UnaryTests_0ekhw1y">
           <text>&gt; 5</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_0zv59cg">
+        <outputEntry id="LiteralExpression_0b04ti0">
           <text>"notAllowed"</text>
         </outputEntry>
-      </rule>
-    </decisionTable>
-  </decision>
-  <decision id="orderApproval" name="Order Approval">
-    <informationRequirement id="InformationRequirement_0qgno5y">
-      <requiredDecision href="#orderType" />
-    </informationRequirement>
-    <decisionTable id="DecisionTable_0620erz" hitPolicy="FIRST">
-      <input id="InputClause_0iyhnej" label="Order Type">
-        <inputExpression id="LiteralExpression_1q7q5cd" typeRef="string">
-          <text>orderType</text>
-        </inputExpression>
-        <inputValues id="UnaryTests_0fqa4s9">
-          <text>"singleOrder","multipleOrder","notAllowed"</text>
-        </inputValues>
-      </input>
-      <output id="OutputClause_00gbvon" label="Customer Order Approval" name="customerOrderApproval" typeRef="string" />
-      <rule id="DecisionRule_1szmuyq">
-        <description>Order confirmed.</description>
-        <inputEntry id="UnaryTests_0407fr0">
-          <text>"singleOrder"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_08t4p9i">
-          <text>"0"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1x3bkwr">
-        <description>Order confirmed.</description>
-        <inputEntry id="UnaryTests_1j8s7xr">
-          <text>"multipleOrder"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1mmjvp4">
-          <text>"0"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_04bmk8o">
-        <description>Order not confirmed.</description>
-        <inputEntry id="UnaryTests_1dsju2h">
-          <text></text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0kzmakc">
-          <text>"1"</text>
+        <outputEntry id="LiteralExpression_0zv59cg">
+          <text>false</text>
         </outputEntry>
       </rule>
     </decisionTable>
@@ -176,16 +157,8 @@
   <dmndi:DMNDI>
     <dmndi:DMNDiagram>
       <dmndi:DMNShape dmnElementRef="orderType">
-        <dc:Bounds height="80" width="180" x="340" y="290" />
+        <dc:Bounds height="80" width="180" x="150" y="80" />
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="DMNShape_0wr9ewo" dmnElementRef="orderApproval">
-        <dc:Bounds height="80" width="180" x="200" y="80" />
-      </dmndi:DMNShape>
-      <dmndi:DMNEdge id="DMNEdge_019fupt" dmnElementRef="InformationRequirement_0qgno5y">
-        <di:waypoint x="430" y="290" />
-        <di:waypoint x="290" y="180" />
-        <di:waypoint x="290" y="160" />
-      </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
 </definitions>

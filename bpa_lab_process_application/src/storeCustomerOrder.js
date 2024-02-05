@@ -21,7 +21,6 @@ function handler(job) {
   storeCustomerOrder.log('\nTask variables', job.variables);
 
   // Accessing optional variables
-  const optionalVariable = job.variables.optionalVariable;
   console.log('Optional variables: ', job.variables);
 
   var customerOrderConnection = mysql.createConnection({
@@ -39,27 +38,6 @@ function handler(job) {
     }
   });
 
-//   customerOrderConnection.query('INSERT INTO `customer_order` (`id`, `name`, `email`, `phone`, `address`, `product`, `quantity`, `orderStatus`) VALUES' + 
-//   '(NULL, "John", "john@doe.com", "1234567", "12345 street", "Bicycle", "20", "active");', 
-//   (err, insertResults, fields) => {
-//     if (err) {
-//         console.error('Error executing insert query:', err.message);
-//         return;
-//     }
-
-//     // Access the insertId from the callback
-//     const insertId = insertResults.insertId;
-//     console.log("\ninsertId:", insertId);
-
-//     // Now, perform the SELECT query using the insertId
-//     const updateToBrokerVariables = {
-//       orderID: insertId,
-//       updatedProperty: 'newValue',
-//       orderDateTime: orderDateTime,
-//     }
-//     return job.complete(updateToBrokerVariables)
-// });
-
   customerOrderConnection.query('INSERT INTO `customer_order` (`id`, `name`, `email`, `phone`, `address`, `product`, `quantity`, `orderStatus`) VALUES (NULL, "' + job.variables.customerName +'", "' + job.variables.customerEmail +'", "'+ job.variables.customerPhone +'", "' + job.variables.customerAddress + '", "' + job.variables.customerProduct + '", "'+ job.variables.customerQuantity + '", "'+ job.variables.orderStatus + '");', 
   (err, insertResults, fields) => {
     if (err) {
@@ -74,7 +52,6 @@ function handler(job) {
     // Now, perform the SELECT query using the insertId
     const updateToBrokerVariables = {
       orderID: insertId,
-      updatedProperty: 'newValue',
       orderDateTime: orderDateTime,
     }
     return job.complete(updateToBrokerVariables)

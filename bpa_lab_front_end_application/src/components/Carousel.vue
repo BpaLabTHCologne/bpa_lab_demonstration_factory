@@ -125,7 +125,7 @@
                                             <option value="3">3</option>
                                             <option value="4">4</option>
                                             <option value="5">5</option>
-                                            <option value=">5">More than 5</option>
+                                            <option value="6">More than 5</option>
                                         </select>
                                     </div>
                                 </div>
@@ -173,27 +173,27 @@ export default {
             },
             orderStatus: "ORDER_RECEIVED",
             isSubmitDisabled: true,
-            customerOrderType: '',
+            // customerOrderType: '',
         };
     },
     computed: {
         isSubmitDisabled() {
             return this.customerProduct === 'option1' || this.customerQuantity === 'option2';
         },
-        updateOrderType() {
-            // Update customerOrderType based on the current quantity
-            const quantity = parseInt(this.customerQuantity);
+        // updateOrderType() {
+        //     // Update customerOrderType based on the current quantity
+        //     const quantity = parseInt(this.customerQuantity);
 
-            if (quantity === 1) {
-                this.customerOrderType = 'singleOrder';
-            } else if (quantity > 1 && quantity <= 5) {
-                this.customerOrderType = 'multipleOrder';
-            } else if (quantity > 5) {
-                this.customerOrderType = 'notAllowed';
-            } else {
-                this.customerOrderType = '';
-            }
-        },
+        //     if (quantity === 1) {
+        //         this.customerOrderType = 'singleOrder';
+        //     } else if (quantity > 1 && quantity <= 5) {
+        //         this.customerOrderType = 'multipleOrder';
+        //     } else if (quantity > 5) {
+        //         this.customerOrderType = 'notAllowed';
+        //     } else {
+        //         this.customerOrderType = '';
+        //     }
+        // },
     },
     methods: {
         updateMass() {
@@ -220,8 +220,8 @@ export default {
                             customerPhone: this.customerPhone,
                             customerAddress: this.customerAddress,
                             customerProduct: this.customerProduct,
-                            customerQuantity: this.customerQuantity,
-                            customerOrderType: this.customerOrderType,
+                            customerQuantity: parseInt(this.customerQuantity),
+                            // customerOrderType: this.customerOrderType,
                             mass: this.mass,
                             productMass: this.productMasses,
                             orderStatus: this.orderStatus,
