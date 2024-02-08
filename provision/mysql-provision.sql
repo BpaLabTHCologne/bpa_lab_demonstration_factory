@@ -1,6 +1,7 @@
 CREATE DATABASE finished_product_DB;
 CREATE DATABASE production_order_DB;
 CREATE DATABASE component_DB;
+CREATE DATABASE purchasing_DB
 CREATE DATABASE warehouse;
 
 CREATE TABLE `customer_DB`.`customer_order` 
@@ -41,6 +42,17 @@ CREATE TABLE `component_DB`.`component_stock`
     `componentQuantity` INT NOT NULL , PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
+CREATE TABLE `purchasing_DB`.`purchasing_order` 
+(
+    `id` INT(11) NOT NULL AUTO_INCREMENT ,
+    `material` VARCHAR(255) NOT NULL ,
+    `price` FLOAT(11) NOT NULL , 
+    `vendor` VARCHAR(255) NOT NULL , 
+    `amount` INT(11) NOT NULL , 
+    `approved` VARCHAR(255) NOT NULL , 
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
 
 CREATE TABLE `warehouse`.`place` 
 (
@@ -60,6 +72,9 @@ GRANT ALL PRIVILEGES ON finished_product_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
 FLUSH PRIVILEGES;
 
 GRANT ALL PRIVILEGES ON production_order_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
+FLUSH PRIVILEGES;
+
+GRANT ALL PRIVILEGES ON purchasing_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
 FLUSH PRIVILEGES;
 
 GRANT ALL PRIVILEGES ON component_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
