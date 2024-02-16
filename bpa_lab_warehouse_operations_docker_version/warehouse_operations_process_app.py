@@ -187,8 +187,7 @@ async def manage_item(function, place_id, task_type):
 
 
 # Connect to the MQTT Broker and receive messages
-MqttClient = mqtt.Client()
-MqttClient = mqtt.Client()
+MqttClient = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
 MqttClient.on_message = on_message 
 
 
