@@ -1,7 +1,7 @@
 CREATE DATABASE finished_product_DB;
 CREATE DATABASE production_order_DB;
 CREATE DATABASE component_DB;
-CREATE DATABASE purchasing_DB
+CREATE DATABASE purchasing_DB;
 CREATE DATABASE warehouse;
 
 CREATE TABLE `customer_DB`.`customer_order` 
