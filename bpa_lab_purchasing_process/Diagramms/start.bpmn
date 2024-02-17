@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0p5txiq" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
+  <bpmn:process id="Start-process" isExecutable="true">
+    <bpmn:startEvent id="Event_0e5r4ju" name="Process A startevent">
+      <bpmn:extensionElements />
+      <bpmn:outgoing>Flow_19a55hj</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0vt4ksr" name="Process A endevent">
+      <bpmn:incoming>Flow_1qhr9dv</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sendTask id="Activity_05di55d" name="start purchasing">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send_start_purchasing" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_19a55hj</bpmn:incoming>
+      <bpmn:outgoing>Flow_1oa1ivp</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="Activity_1uduhpb" name="wait reply purchasing" messageRef="Message_199nd3e">
+      <bpmn:incoming>Flow_1oa1ivp</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gnk4lj</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:userTask id="Activity_0284bh7" name="showVariables">
+      <bpmn:incoming>Flow_1gnk4lj</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qhr9dv</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_19a55hj" sourceRef="Event_0e5r4ju" targetRef="Activity_05di55d" />
+    <bpmn:sequenceFlow id="Flow_1qhr9dv" sourceRef="Activity_0284bh7" targetRef="Event_0vt4ksr" />
+    <bpmn:sequenceFlow id="Flow_1oa1ivp" sourceRef="Activity_05di55d" targetRef="Activity_1uduhpb" />
+    <bpmn:sequenceFlow id="Flow_1gnk4lj" sourceRef="Activity_1uduhpb" targetRef="Activity_0284bh7" />
+  </bpmn:process>
+  <bpmn:message id="Message_199nd3e" name="replymessage_purchasing">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=correlationValue" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Start-process">
+      <bpmndi:BPMNShape id="BPMNShape_11z61s6" bpmnElement="Event_0e5r4ju">
+        <dc:Bounds x="192" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="190" y="125" width="50" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0vt4ksr_di" bpmnElement="Event_0vt4ksr">
+        <dc:Bounds x="745" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="740" y="125" width="50" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1us0ahg_di" bpmnElement="Activity_05di55d">
+        <dc:Bounds x="283" y="60" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0bejq4h_di" bpmnElement="Activity_1uduhpb">
+        <dc:Bounds x="453" y="60" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14c3tp6_di" bpmnElement="Activity_0284bh7">
+        <dc:Bounds x="593" y="60" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_19a55hj_di" bpmnElement="Flow_19a55hj">
+        <di:waypoint x="228" y="100" />
+        <di:waypoint x="283" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qhr9dv_di" bpmnElement="Flow_1qhr9dv">
+        <di:waypoint x="693" y="100" />
+        <di:waypoint x="745" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1oa1ivp_di" bpmnElement="Flow_1oa1ivp">
+        <di:waypoint x="383" y="100" />
+        <di:waypoint x="453" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gnk4lj_di" bpmnElement="Flow_1gnk4lj">
+        <di:waypoint x="553" y="100" />
+        <di:waypoint x="593" y="100" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

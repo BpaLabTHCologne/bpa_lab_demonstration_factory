@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_19g4p99" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0" camunda:diagramRelationId="f46d06de-8831-4454-bec9-58269431caab">
+  <decision id="Decision_0duh4xd" name="VendorDecision">
+    <decisionTable id="DecisionTable_09ls988" hitPolicy="ANY">
+      <input id="Input_1" label="material">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>material_key</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="vendor" name="vendor_key" typeRef="string" />
+      <rule id="DecisionRule_1ilaloz">
+        <inputEntry id="UnaryTests_1h57169">
+          <text>"Mountain bike frame"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0adtxx8">
+          <text>"MountainBikeComponentsShop"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vodrbz">
+        <inputEntry id="UnaryTests_19a1318">
+          <text>"Mountain bike wheels"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0v5xqug">
+          <text>"MountainBikeComponentsShop"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0c0ycwx">
+        <inputEntry id="UnaryTests_1obv0jh">
+          <text>"Mountain bike seat"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kr66bh">
+          <text>"Seats4You"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_04n053h">
+        <inputEntry id="UnaryTests_1h98kh7">
+          <text>"Hybrid bicycle frame" </text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06zkpe1">
+          <text>"HybridComponentsShop"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0gie3ls">
+        <inputEntry id="UnaryTests_1h21w0p">
+          <text>"Hybrid bicycle wheels"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0uq6e5o">
+          <text>"HybridComponentsShop"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0id9w2j">
+        <inputEntry id="UnaryTests_1nubi5c">
+          <text>"Hybrid bicycle seat"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vnsyym">
+          <text>"Seats4You"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_11mulyj">
+        <inputEntry id="UnaryTests_1m4hnzx">
+          <text>"Electric bicycle frame"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0lmja3b">
+          <text>"ElectricBikeFactory"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ih5kru">
+        <inputEntry id="UnaryTests_04ty1de">
+          <text>"Electric bicycle wheels"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0zyqn5y">
+          <text>"ElectricBikeFactory"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1os7yzl">
+        <inputEntry id="UnaryTests_0as6hug">
+          <text>"Electric bicycle seat"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_020l6lg">
+          <text>"Seats4You"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_0duh4xd">
+        <dc:Bounds height="80" width="180" x="160" y="80" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

@@ -268,6 +268,30 @@ services:
     volumes:
       - ./bpa_lab_shipment_process/src:/app/src
 
+#Purchasing process container including job workers
+  bpa_lab_purchasing_process:
+    build:
+      context: ./bpa_lab_purchasing_process
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_purchasing_process
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "3100:3100"
+    depends_on:
+      - zeebe
+      - elasticsearch
+      - mysql
+    volumes:
+      - ./bpa_lab_purchasing_process/src:/app/src
+    environment:
+      MYSQL_HOST_NAME: mysql
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_DATABASE: purchasing_DB
+      MYSQL_HOST_PORT: 3306
+
 
 volumes:
   zeebe:
