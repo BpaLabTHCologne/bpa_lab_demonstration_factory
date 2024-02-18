@@ -20,7 +20,7 @@ async function handler(job) {
     //troubleshooting 1
     console.log('Worker handling task. Job variables:', job.variables);
 
-    let componentName = 'Mountain bike';
+    let componentName = "Mountain Bike";
     let componentQuantityAvailable;
     let orderProduct;
     let orderQuantity;
@@ -77,10 +77,10 @@ async function handler(job) {
     console.log('Executing query for production_order');
 
     //change here customerOrderResults name to production order results!!!
-    const customerOrderResults = await new Promise((resolve, reject) => {
+    const productionOrderResults = await new Promise((resolve, reject) => {
       productionOrderDBPool.query('SELECT * FROM `production_order` WHERE `production_order`.`orderID` = ?', [job.variables.orderID], (queryErr, results, fields) => {
         if (queryErr) {
-          console.error('Error selecting from production_order', queryErr.message);
+          console.error('Error selecting from production_order ID error???', queryErr.message);
           reject(queryErr);
         } else {
           //troubleshooting 5
@@ -91,15 +91,12 @@ async function handler(job) {
       });
     });
 
-    //this IF BLOCK doesn't work as wanted... 
-    if (customerOrderResults.length > 0 && customerOrderResults[0].orderProduct !== undefined && customerOrderResults[0].quantity !== undefined) {
-      orderProduct = customerOrderResults[0].orderProduct;
-      orderQuantity = customerOrderResults[0].quantityNeededForProduction;
-      console.log("\nThe production order is: ", orderProduct);
-      console.log("The quantity is: ", orderQuantity);
-    } else {
-      console.log('No results found for the specified order ID or product/quantity is undefined.');
-    }
+    //this IF BLOCK doesn't work as wanted - deleted it
+
+    orderProduct = productionOrderResults[0].customerProduct;
+    orderQuantity = productionOrderResults[0].quantityNeededForProduction;
+    console.log("\nThe production order is: ", orderProduct);
+    console.log("The quantity is: ", orderQuantity);
 
     const result = checkStock(componentName, componentQuantityAvailable, orderProduct, orderQuantity);
     console.log("\nReturned result: ", result);
@@ -117,64 +114,35 @@ async function handler(job) {
   }
 }
 
+//it seems to be ok until this point
 
 function checkStock(componentName, componentQuantityAvailable, orderProduct, orderQuantity) {
   let quantityNeededToPurchase = 0
   let purchasingRequired = "";
-  if (componentName === orderProduct) {
-    console.log("Component name === Order product");
-    if (componentQuantityAvailable >= orderQuantity) {
-      // Update finished product stock
-      quantityNeededToPurchase = componentQuantityAvailable - orderQuantity;
-      console.log("\nNew stock after deductions: ", quantityNeededToPurchase);
-      purchasingRequired = "no";
-      const availableComponentsDBPool = mysql.createPool({
-        connectionLimit: 10,
-        host: process.env.MYSQL_HOST_NAME,
-        user: process.env.MYSQL_USER,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE_FINISHED_PRODUCT,
-        port: process.env.MYSQL_HOST_PORT,
-      });
+  //componentName = "Mountain Bike";
+  //orderProduct = "Mountain Bike";
 
-      availableComponentsDBPool.query('UPDATE component_stock SET productQuantity = ?', [quantityNeededToPurchase], (updateErr) => {
-        if (updateErr) {
-          console.error('Error updating finished product stock:', updateErr.message);
-        }
-
-        // Check if stock is getting low
-        if (quantityNeededToPurchase <= 0) {
-          console.log("\nProduct stock is getting low. Please restock your warehouse!");
-        }
-      });
-      return {
-        quantityNeededToPurchase,
-        componentQuantityAvailable,
-        purchasingRequired,
-      };
-    } else if (componentQuantityAvailable < orderQuantity) {
-      quantityNeededToPurchase = orderQuantity - componentQuantityAvailable;
-      console.log("\nSeems like the finished product quantity is below the customer's order quantity. Please restock your finished product quantity. Number of bicycles needed for production:", quantityNeededToPurchase);
-      purchasingRequired = "yes";
-      return {
-        quantityNeededToPurchase,
-        componentQuantityAvailable,
-        purchasingRequired,
-      };
-    } else {
-      // Not enough quantity in stock
-      console.log("\nSorry, the requested product is not available in sufficient quantity inside the stock at the moment.");
-    }
-  } else {
-    // Product mismatch or does not exist
-    console.log("\nSorry, the selected product does not exist!");
-    return {
-      quantityNeededToPurchase,
-      componentQuantityAvailable,
-      purchasingRequired,
-    };
+  if(componentQuantityAvailable === 0) {
+    purchasingRequired = "yes";
+    quantityNeededToPurchase = orderQuantity;
+    console.log("\nComponent stock is empty! Purchasing needed.");
   }
-}
+  else if(componentQuantityAvailable >= orderQuantity) {
+    console.log("\nComponent stock available. Production starting...");
+    purchasingRequired = "no";
+  }
+  else if(componentQuantityAvailable < orderQuantity) {
+    console.log("\nNot enough components in the stock! Purchasing needed.");
+  }
 
+  return {
+    componentName,
+    orderQuantity,
+    orderProduct,
+    componentQuantityAvailable,
+    orderQuantity,
+    purchasingRequired
+  };
+}
 
 module.exports = checkComponentsAvailability;
