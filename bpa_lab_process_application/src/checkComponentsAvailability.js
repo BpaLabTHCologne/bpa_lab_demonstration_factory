@@ -20,7 +20,7 @@ async function handler(job) {
     //troubleshooting 1
     console.log('Worker handling task. Job variables:', job.variables);
 
-    let componentName = "Mountain Bike";
+    let componentName;
     let componentQuantityAvailable;
     let orderProduct;
     let orderQuantity;
@@ -48,35 +48,9 @@ async function handler(job) {
     // Query component_stock
 
     //troubleshooting 2
-    console.log('Executing query for component_stock');
-    
-    const componentResults = await new Promise((resolve, reject) => {
-      availableComponentsDBPool.query('SELECT * FROM component_stock', (queryErr, results, fields) => {
-        if (queryErr) {
-          console.error('Error selecting from component_stock', queryErr.message);
-          reject(queryErr);
-        } else {
-          //troubleshooting 3
-          console.log('Query successful. Results:', results);
 
-          resolve(results);
-        }
-      });
-    });
-
-    if (componentResults.length > 0) {
-      componentName = componentResults[0].componentName;
-      componentQuantityAvailable = componentResults[0].componentQuantity;
-      console.log("\Component name from component_stock: ", componentName);
-      console.log("Component quantity available in component_stock: ", componentQuantityAvailable);
-    }
-
-    // Query customer_order
-
-    //troubleshooting 4
     console.log('Executing query for production_order');
 
-    //change here customerOrderResults name to production order results!!!
     const productionOrderResults = await new Promise((resolve, reject) => {
       productionOrderDBPool.query('SELECT * FROM `production_order` WHERE `production_order`.`orderID` = ?', [job.variables.orderID], (queryErr, results, fields) => {
         if (queryErr) {
@@ -91,12 +65,55 @@ async function handler(job) {
       });
     });
 
-    //this IF BLOCK doesn't work as wanted - deleted it
-
     orderProduct = productionOrderResults[0].customerProduct;
     orderQuantity = productionOrderResults[0].quantityNeededForProduction;
     console.log("\nThe production order is: ", orderProduct);
     console.log("The quantity is: ", orderQuantity);
+
+    // Now we have to look for the components of this product. Mountain Bike -> frame, seat, wheel...
+
+    if(orderProduct === "Mountain Bike") {
+      componentName = "Mountain bike frame";
+    }
+    else;
+
+    // delete this if block???
+    /*
+    if (componentResults.length > 0) {
+      componentName = componentResults[0].componentName;
+      componentQuantityAvailable = componentResults[0].componentQuantity;
+      console.log("\Component name from component_stock: ", componentName);
+      console.log("Component quantity available in component_stock: ", componentQuantityAvailable);
+    }
+    */
+    
+
+
+    // Query customer_order
+
+    //troubleshooting 4
+
+    console.log('Executing query for component_stock');
+    
+    const componentResults = await new Promise((resolve, reject) => {
+      availableComponentsDBPool.query('SELECT * FROM component_stock WHERE componentName = ?', [componentName], (queryErr, results, fields) => {
+        if (queryErr) {
+          console.error('Error selecting from component_stock', queryErr.message);
+          reject(queryErr);
+        } else {
+          //troubleshooting 3
+          console.log('Query successful. Results:', results);
+
+          resolve(results);
+        }
+      });
+    });
+
+    //componentName = componentResults[0].componentName; //??
+    componentQuantityAvailable = componentResults[0].componentQuantity;
+    console.log("\Component name from component_stock: ", componentName);
+    console.log("Component quantity available in component_stock: ", componentQuantityAvailable);
+
 
     const result = checkStock(componentName, componentQuantityAvailable, orderProduct, orderQuantity);
     console.log("\nReturned result: ", result);
@@ -117,7 +134,7 @@ async function handler(job) {
 //it seems to be ok until this point
 
 function checkStock(componentName, componentQuantityAvailable, orderProduct, orderQuantity) {
-  let quantityNeededToPurchase = 0
+  let quantityNeededToPurchase = 0;
   let purchasingRequired = "";
   //componentName = "Mountain Bike";
   //orderProduct = "Mountain Bike";
