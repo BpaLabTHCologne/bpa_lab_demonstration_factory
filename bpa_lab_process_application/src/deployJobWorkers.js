@@ -17,6 +17,8 @@ require('./customerOrderStatusShipped');
 require('./sendToWarehouseOperations');
 require('./receiveFinishedProduct');
 require('./receiveFromWarehouseOperations');
+require('./sendProductionOrderToPurchasing');
+require('./sendPurchasingReply');
 
 // Define an async main function to deploy a process, create a process instance, and log the outcome
 async function main() {

@@ -1,7 +1,7 @@
 //const ZB = require('zeebe-node')
 const { ZBClient } = require('zeebe-node');
 require('./sendMail');
-require('./store'); 
+// require('./store'); 
 require('./message');
 require('./reply');
 require('./update');
