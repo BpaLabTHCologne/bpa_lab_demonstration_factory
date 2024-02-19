@@ -49,7 +49,6 @@ async function handler(job) {
 
 			// Task worker business logic goes here
 			const updateToBrokerVariables = {
-				updatedProperty: 'newValue',
 			}
 		
 			return job.complete(updateToBrokerVariables)

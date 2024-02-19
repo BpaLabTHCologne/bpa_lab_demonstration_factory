@@ -18,7 +18,7 @@ async function main() {
   try {
     // Deploy the purchasing BPMN diagram
     const bpmnResult = await zbc.deployResource({
-      processFilename: `../Diagramms/purchasing-process-overview-executable.bpmn`,
+      processFilename: `../Diagramms/purchasing_process.bpmn`,
     });
 
     // Log the purchasing BPMN diagram deployment result
@@ -49,9 +49,9 @@ async function main() {
       console.log('\nDMN Price Decision deployed successfully:', JSON.stringify(dmnResult2, null, 2));
 
     // Deploy the Requisition form
-    const requisition = await zbc.deployResource({
-      formFilename: `../Diagramms/purchasing-requisition.form`,
-    });
+    // const requisition = await zbc.deployResource({
+    //   formFilename: `../Diagramms/purchasing-requisition.form`,
+    // });
 
     // Log the warehouse operations BPMN diagram
     console.log('\nRequisition Form deployed successfully:', JSON.stringify(requisition, null, 2));

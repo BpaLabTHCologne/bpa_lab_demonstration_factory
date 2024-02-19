@@ -26,7 +26,7 @@ function handler(job) {
     host: process.env.MYSQL_HOST_NAME,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE_PURCHASING,
+    database: 'purchasing_DB',
     port: process.env.MYSQL_HOST_PORT,
   });
 
