@@ -7,7 +7,7 @@ const zbc = new ZB.ZBClient({
 
 //External job worker to store customer order
 const customerOrderStatusApproved = zbc.createWorker({
-  taskType: 'finishPurchasing',
+  taskType: 'rejectPurchasingOrder',
   taskHandler: handler,
   debug: true,
   loglevel: 'INFO',

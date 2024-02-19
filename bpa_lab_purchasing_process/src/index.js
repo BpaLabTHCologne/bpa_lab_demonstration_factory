@@ -4,7 +4,7 @@ require('./sendMail');
 require('./storePurchasingOrder'); 
 require('./message');
 require('./reply');
-require('./update');
+require('./finishPurchasing');
 require('./updateapprove');
 
 
@@ -18,7 +18,7 @@ async function main() {
   try {
     // Deploy the purchasing BPMN diagram
     const bpmnResult = await zbc.deployResource({
-      processFilename: `../Diagramms/purchasing_process.bpmn`,
+      processFilename: `./bpa_lab_bpm_models/purchasing_process.bpmn`,
     });
 
     // Log the purchasing BPMN diagram deployment result
@@ -26,7 +26,7 @@ async function main() {
 
     // Deploy the start BPMN diagram
     const start = await zbc.deployResource({
-      processFilename: `../Diagramms/start.bpmn`,
+      processFilename: `./bpa_lab_bpm_models/start.bpmn`,
     });
 
     // Log the purchasing BPMN diagram deployment result
@@ -34,7 +34,7 @@ async function main() {
 
     // Deploy the DMN vendor decision model 
     const dmnResult = await zbc.deployResource({
-      decisionFilename: `../Diagramms/vendor-decision.dmn`,
+      decisionFilename: `./bpa_lab_bpm_models/vendor-decision.dmn`,
     });
 
     // Log the DMN vendor decision model 
@@ -42,7 +42,7 @@ async function main() {
 
     // Deploy the DMN price decision model 
       const dmnResult2 = await zbc.deployResource({
-        decisionFilename: `../Diagramms/price-decision.dmn`,
+        decisionFilename: `./bpa_lab_bpm_models/price-decision.dmn`,
       });
   
       // Log the DMN price decision model 
@@ -54,7 +54,7 @@ async function main() {
     // });
 
     // Log the warehouse operations BPMN diagram
-    console.log('\nRequisition Form deployed successfully:', JSON.stringify(requisition, null, 2));
+    // console.log('\nRequisition Form deployed successfully:', JSON.stringify(requisition, null, 2));
 
   } catch (error) {
     // Handle any errors that occur during deployment

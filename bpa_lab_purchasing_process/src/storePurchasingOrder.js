@@ -15,6 +15,7 @@ const storePurchasingOrder = zbc.createWorker({
 });
 
 function handler(job) {
+  let insertId = 0;
   storePurchasingOrder.log('\nTask variables', job.variables);
 
   // Accessing optional variables
@@ -26,7 +27,7 @@ function handler(job) {
     host: process.env.MYSQL_HOST_NAME,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
-    database: 'purchasing_DB',
+    database: process.env.MYSQL_DATABASE_PURCHASING,
     port: process.env.MYSQL_HOST_PORT,
   });
 
@@ -37,7 +38,11 @@ function handler(job) {
         console.error('Error executing insert query:', err.message);
         return;
     }
-    return job.complete()
+    const updateToBrokerVariables = {
+      purchasingOrderID: insertId,
+    }
+    console.log("Purchasing order stored successfully!");
+    return job.complete(updateToBrokerVariables)
 });
 
 }
