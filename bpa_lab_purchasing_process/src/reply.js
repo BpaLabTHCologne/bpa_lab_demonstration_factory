@@ -46,9 +46,9 @@ main();
 
 const ZB = require('zeebe-node')
 
-const zbc = new ZB.ZBClient();
- // hostname: 'zeebe'
-//});
+const zbc = new ZB.ZBClient({
+  hostname: 'zeebe'
+});
 
 //const { ZBClient, Duration} = require('zeebe-node')
 
