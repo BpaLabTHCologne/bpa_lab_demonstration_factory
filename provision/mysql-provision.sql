@@ -37,20 +37,20 @@ CREATE TABLE `production_order_DB`.`production_order`
 
 CREATE TABLE `component_DB`.`component_stock` 
 (
-    `id` INT(11) NOT NULL, 
+    `id` INT(11) NOT NULL AUTO_INCREMENT ,  
     `componentName` VARCHAR(255) NOT NULL , 
     `componentQuantity` INT NOT NULL , PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE `purchasing_DB`.`purchasing_order` 
 (
-    `id` INT(11) NOT NULL AUTO_INCREMENT ,
+    `purchasingOrderID` INT(11) NOT NULL AUTO_INCREMENT ,
     `material` VARCHAR(255) NOT NULL ,
     `price` FLOAT(11) NOT NULL , 
     `vendor` VARCHAR(255) NOT NULL , 
     `amount` INT(11) NOT NULL , 
     `approved` VARCHAR(255) NOT NULL , 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`purchasingOrderID`)
 ) ENGINE = InnoDB;
 
 
@@ -86,4 +86,9 @@ VALUES
   ('Mountain Bike', '50'), 
   ('Hybrid 40000 Bicycle', '50'), 
   ('Speed Thriller Electric 147 Bicycle', '50');
+
+USE component_DB;
+INSERT INTO `component_stock` (`id`, `componentName`, `componentQuantity`) 
+VALUES 
+(NULL, 'Mountain bike frame', '50')
 

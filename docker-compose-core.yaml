@@ -289,7 +289,7 @@ services:
       MYSQL_HOST_NAME: mysql
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
-      MYSQL_DATABASE: purchasing_DB
+      MYSQL_DATABASE_PURCHASING: purchasing_DB
       MYSQL_HOST_PORT: 3306
 
 

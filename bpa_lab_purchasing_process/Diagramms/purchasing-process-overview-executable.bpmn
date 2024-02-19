@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0" camunda:diagramRelationId="3f004bd5-3647-41a6-9d4d-aef3f6c1143a">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0" camunda:diagramRelationId="3f004bd5-3647-41a6-9d4d-aef3f6c1143a">
   <bpmn:collaboration id="Collaboration_0kaj0bf">
     <bpmn:participant id="Participant_03c2iwl" name="Bike GmbH" processRef="Purchasing-exe" />
   </bpmn:collaboration>
@@ -985,18 +985,17 @@
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_09bi0um</bpmn:incoming>
-      <bpmn:outgoing>Flow_10zp61r</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1e9y0ow</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:serviceTask id="Activity_0vlqzxk" name="Store PO in Database">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="storeCustomerOrder" />
+        <zeebe:taskDefinition type="storePurchasingOrder" />
       </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1e9y0ow</bpmn:incoming>
       <bpmn:outgoing>Flow_0ansei1</bpmn:outgoing>
-      <bpmn:property id="Property_0wj6kzp" name="__targetRef_placeholder" />
-      <bpmn:dataInputAssociation id="DataInputAssociation_1u1666r">
-        <bpmn:sourceRef>DataStoreReference_0oul6ac</bpmn:sourceRef>
-        <bpmn:targetRef>Property_0wj6kzp</bpmn:targetRef>
-      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1mn7o20">
+        <bpmn:targetRef>DataStoreReference_0oul6ac</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_0dg7wiv" name="Send Email to Vendor ">
       <bpmn:extensionElements>
@@ -1050,7 +1049,7 @@
         <bpmn:targetRef>Property_1wg2xg7</bpmn:targetRef>
       </bpmn:dataInputAssociation>
     </bpmn:serviceTask>
-    <bpmn:dataStoreReference id="DataStoreReference_0oul6ac" name="purchasing_order" />
+    <bpmn:dataStoreReference id="DataStoreReference_0oul6ac" name="purchasing_DB" />
     <bpmn:userTask id="Activity_0jmsq26" name="Approve Purchase Request PR">
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_0iipld1" />
@@ -1097,7 +1096,6 @@
         <zeebe:taskDefinition type="sendPurchasingReply" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0gvt124</bpmn:incoming>
-      <bpmn:incoming>Flow_10zp61r</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_10y2wy3" />
     </bpmn:endEvent>
     <bpmn:startEvent id="Event_0m3kfap" name="external trigger">
@@ -1119,8 +1117,8 @@
       <bpmn:incoming>Flow_0pn2957</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1cq9lvd" />
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_10zp61r" sourceRef="Activity_09exn8f" targetRef="Event_0gj0uz0" />
     <bpmn:sequenceFlow id="Flow_1svatmq" sourceRef="Event_0m3kfap" targetRef="Activity_11wfe69" />
+    <bpmn:sequenceFlow id="Flow_1e9y0ow" sourceRef="Activity_09exn8f" targetRef="Activity_0vlqzxk" />
     <bpmn:textAnnotation id="TextAnnotation_1dv9kk9">
       <bpmn:text>if price_key&lt;=10 approve is needed</bpmn:text>
     </bpmn:textAnnotation>
@@ -1214,7 +1212,7 @@
       <bpmndi:BPMNShape id="DataStoreReference_0oul6ac_di" bpmnElement="DataStoreReference_0oul6ac">
         <dc:Bounds x="1275" y="365" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1257" y="422" width="86" height="14" />
+          <dc:Bounds x="1262" y="343" width="76" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1iwwbn1_di" bpmnElement="Activity_0jmsq26">
@@ -1366,12 +1364,6 @@
         <di:waypoint x="1820" y="700" />
         <di:waypoint x="1862" y="700" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_10zp61r_di" bpmnElement="Flow_10zp61r">
-        <di:waypoint x="1200" y="480" />
-        <di:waypoint x="1200" y="220" />
-        <di:waypoint x="2540" y="220" />
-        <di:waypoint x="2540" y="502" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1svatmq_di" bpmnElement="Flow_1svatmq">
         <di:waypoint x="260" y="308" />
         <di:waypoint x="260" y="394" />
@@ -1390,9 +1382,9 @@
         <di:waypoint x="2023" y="480" />
         <di:waypoint x="2045" y="441" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataInputAssociation_1u1666r_di" bpmnElement="DataInputAssociation_1u1666r">
-        <di:waypoint x="1313" y="415" />
-        <di:waypoint x="1345" y="480" />
+      <bpmndi:BPMNEdge id="Flow_1e9y0ow_di" bpmnElement="Flow_1e9y0ow">
+        <di:waypoint x="1250" y="520" />
+        <di:waypoint x="1300" y="520" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataInputAssociation_0i4sn98_di" bpmnElement="DataInputAssociation_0i4sn98">
         <di:waypoint x="1725" y="756" />
@@ -1401,6 +1393,10 @@
       <bpmndi:BPMNEdge id="DataInputAssociation_1tdkhqj_di" bpmnElement="DataInputAssociation_1tdkhqj">
         <di:waypoint x="2167" y="435" />
         <di:waypoint x="2179" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1mn7o20_di" bpmnElement="DataOutputAssociation_1mn7o20">
+        <di:waypoint x="1336" y="480" />
+        <di:waypoint x="1314" y="415" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
