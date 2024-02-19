@@ -75,19 +75,12 @@ async function handler(job) {
     if(orderProduct === "Mountain Bike") {
       componentName = "Mountain bike frame";
     }
-    else;
-
-    // delete this if block???
-    /*
-    if (componentResults.length > 0) {
-      componentName = componentResults[0].componentName;
-      componentQuantityAvailable = componentResults[0].componentQuantity;
-      console.log("\Component name from component_stock: ", componentName);
-      console.log("Component quantity available in component_stock: ", componentQuantityAvailable);
+    else if(orderProduct === "Hybrid 40000 Bicycle") {
+      componentName = "Hybrid bicycle wheels";
     }
-    */
-    
-
+    else if(orderProduct === "Speed Thriller Electric 147 Bicycle") {
+      componentName = "Electric bicycle frame"
+    }
 
     // Query customer_order
 
