@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0" camunda:diagramRelationId="3f004bd5-3647-41a6-9d4d-aef3f6c1143a">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0" camunda:diagramRelationId="3f004bd5-3647-41a6-9d4d-aef3f6c1143a">
   <bpmn:collaboration id="Collaboration_0kaj0bf">
     <bpmn:participant id="Participant_03c2iwl" name="Bike GmbH" processRef="Purchasing-exe" />
   </bpmn:collaboration>
@@ -1370,6 +1370,10 @@
         <di:waypoint x="310" y="394" />
         <di:waypoint x="310" y="480" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1e9y0ow_di" bpmnElement="Flow_1e9y0ow">
+        <di:waypoint x="1250" y="520" />
+        <di:waypoint x="1300" y="520" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_0gabvtt_di" bpmnElement="Association_0gabvtt">
         <di:waypoint x="752" y="511" />
         <di:waypoint x="780" y="495" />
@@ -1382,9 +1386,9 @@
         <di:waypoint x="2023" y="480" />
         <di:waypoint x="2045" y="441" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1e9y0ow_di" bpmnElement="Flow_1e9y0ow">
-        <di:waypoint x="1250" y="520" />
-        <di:waypoint x="1300" y="520" />
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1mn7o20_di" bpmnElement="DataOutputAssociation_1mn7o20">
+        <di:waypoint x="1336" y="480" />
+        <di:waypoint x="1314" y="415" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataInputAssociation_0i4sn98_di" bpmnElement="DataInputAssociation_0i4sn98">
         <di:waypoint x="1725" y="756" />
@@ -1393,10 +1397,6 @@
       <bpmndi:BPMNEdge id="DataInputAssociation_1tdkhqj_di" bpmnElement="DataInputAssociation_1tdkhqj">
         <di:waypoint x="2167" y="435" />
         <di:waypoint x="2179" y="480" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataOutputAssociation_1mn7o20_di" bpmnElement="DataOutputAssociation_1mn7o20">
-        <di:waypoint x="1336" y="480" />
-        <di:waypoint x="1314" y="415" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

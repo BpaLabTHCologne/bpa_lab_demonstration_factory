@@ -32,7 +32,7 @@ function handler(job) {
 
   customerOrderConnection.connect();
 
-  customerOrderConnection.query('INSERT INTO `purchasing_order` (`purchasingOrderID`, `material`, `price`, `vendor`, `amount`, `approved`) VALUES (NULL, "' + + job.variables.material_key +'", "' + job.variables.price_key + '","' + job.variables.vendor_key + '","' + job.variables.amount + '","' + job.variables.approve_key + '");', (err, insertResults, fields) => {
+  customerOrderConnection.query('INSERT INTO `purchasing_order` (`purchasingOrderID`, `material`, `price`, `vendor`, `amount`, `approved`) VALUES (NULL, "' + job.variables.material_key +'", "' + job.variables.price_key + '","' + job.variables.vendor_key + '","' + job.variables.quantity_key + '","' + job.variables.approve_key + '");', (err, insertResults, fields) => {
     if (err) {
         console.error('Error executing insert query:', err.message);
         return;

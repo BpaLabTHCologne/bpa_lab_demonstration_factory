@@ -48,7 +48,7 @@ CREATE TABLE `purchasing_DB`.`purchasing_order`
     `material` VARCHAR(255) NOT NULL ,
     `price` FLOAT(11) NOT NULL , 
     `vendor` VARCHAR(255) NOT NULL , 
-    `amount` INT(11) NOT NULL , 
+    `amount` FLOAT(11) NOT NULL ,  
     `approved` VARCHAR(255) NOT NULL , 
     PRIMARY KEY (`purchasingOrderID`)
 ) ENGINE = InnoDB;
@@ -91,4 +91,6 @@ USE component_DB;
 INSERT INTO `component_stock` (`id`, `componentName`, `componentQuantity`) 
 VALUES 
 (NULL, 'Mountain bike frame', '50')
+(NULL, 'Hybrid bicycle wheels', '50')
+(NULL, 'Electric bicycle frame', '50')
 
