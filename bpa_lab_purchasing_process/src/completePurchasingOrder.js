@@ -4,18 +4,21 @@ const mysql = require('mysql');
 const zbc = new ZB.ZBClient({
   hostname: 'zeebe'
 });
+let purchasingStatus = '';
 
 //External job worker to store customer order
-const finishPurchasing = zbc.createWorker({
-  taskType: 'finishPurchasing',
+const completePurchasingOrder = zbc.createWorker({
+  taskType: 'completePurchasingOrder',
   taskHandler: handler,
-  onReady: () => finishPurchasing.log('Job worker started successfully!')
+  onReady: () => completePurchasingOrder.log('Job worker started successfully!')
 });
 
 function handler(job) {
-	// finishPurchasing.log('Task variables', job.variables)
+	// completePurchasingOrder.log('Task variables', job.variables)
+  purchasingStatus = job.variables.approve_key;
     try {
         const purchasingOrderID = parseInt(job.variables.purchasingOrderID)
+        console.log("Purchasing order ID from job variables is: ", purchasingOrderID)
         var connection = mysql.createConnection({
           connectionLimit: 50,
           host: process.env.MYSQL_HOST_NAME,
@@ -32,19 +35,16 @@ function handler(job) {
             if (error) throw error;
             console.log('Results: ', JSON.stringify(results));
           });
-    
-        
-    
       } catch (error) {
         console.log(error)
       }
 
       const updateToBrokerVariables = {
         purchasingStatus: 'PURCHASING_APPROVED',
-	}
-  connection.end();
+      }
   console.log("Purchasing order has been approved!");
+  connection.end();
 	return job.complete(updateToBrokerVariables)
 }
 
-  module.exports = finishPurchasing;
+  module.exports = completePurchasingOrder;

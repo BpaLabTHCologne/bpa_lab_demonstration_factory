@@ -1029,13 +1029,13 @@
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_1l0l3up</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0zavgge">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT15S</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_1fodk2z" sourceRef="Activity_0vhupia" targetRef="Activity_0qooinp" />
     <bpmn:serviceTask id="Activity_0qooinp" name="Reject PO">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="updateCustomerOrder" />
+        <zeebe:taskDefinition type="rejectPurchasingOrder" />
         <zeebe:ioMapping>
           <zeebe:output source="=0" target="quantity_key" />
           <zeebe:output source="=124" target="correlationValue" />
@@ -1066,10 +1066,7 @@
     <bpmn:sequenceFlow id="Flow_1n7ybxt" sourceRef="Activity_0nal9jp" targetRef="Activity_0itobkx" />
     <bpmn:serviceTask id="Activity_1tnjurp" name="Complete PO">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="finishPurchasing" />
-        <zeebe:ioMapping>
-          <zeebe:output source="=124" target="correlationValue" />
-        </zeebe:ioMapping>
+        <zeebe:taskDefinition type="completePurchasingOrder" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_04drlby</bpmn:incoming>
       <bpmn:outgoing>Flow_0gvt124</bpmn:outgoing>

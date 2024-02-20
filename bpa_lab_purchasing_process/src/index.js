@@ -4,8 +4,8 @@ require('./sendMail');
 require('./storePurchasingOrder'); 
 require('./message');
 require('./reply');
-require('./finishPurchasing');
-require('./updateapprove');
+require('./completePurchasingOrder');
+require('./rejectPurchasingOrder');
 
 
 // Define an async main function to deploy a process, create a process instance, and log the outcome

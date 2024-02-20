@@ -1,28 +1,27 @@
-const ZB = require('zeebe-node')
-const mysql = require('mysql');
+const ZB = require("zeebe-node");
+const mysql = require("mysql");
 
 const zbc = new ZB.ZBClient({
-  hostname: 'zeebe'
+  hostname: "zeebe",
 });
 
 //External job worker to store customer order
 const storePurchasingOrder = zbc.createWorker({
-  taskType: 'storePurchasingOrder',
+  taskType: "storePurchasingOrder",
   taskHandler: handler,
-  // debug: true,
-  // loglevel: 'INFO',
-  onReady: () => storePurchasingOrder.log('Job worker started successfully!')
+  onReady: () => storePurchasingOrder.log("Job worker started successfully!"),
 });
 
 function handler(job) {
-  let insertId = 0;
-  storePurchasingOrder.log('\nTask variables', job.variables);
+  let insertId = 0; // Declare insertId in the outer scope
+  // let purchasingOrderID = 0;
+
+  storePurchasingOrder.log("\nTask variables", job.variables);
 
   // Accessing optional variables
-  // const optionalVariable = job.variables.optionalVariable;
-  console.log('Optional variables: ', job.variables);
+  console.log("Optional variables: ", job.variables);
 
-  var customerOrderConnection = mysql.createConnection({
+  var connection = mysql.createConnection({
     connectionLimit: 50,
     host: process.env.MYSQL_HOST_NAME,
     user: process.env.MYSQL_USER,
@@ -31,17 +30,30 @@ function handler(job) {
     port: process.env.MYSQL_HOST_PORT,
   });
 
-  customerOrderConnection.connect();
+  connection.connect((error) => {
+    if (error) {
+      console.log(
+        "storePurchasingOrder:: Error connecting to mysql database",
+        error
+      );
+    }
+  });
 
-  customerOrderConnection.query('INSERT INTO `purchasing_order` (`purchasingOrderID`, `material`, `price`, `vendor`, `amount`, `approved`) VALUES (NULL, "' + job.variables.material_key +'", "' + job.variables.price_key + '","' + job.variables.vendor_key + '","' + job.variables.quantity_key + '","' + job.variables.approve_key + '");', (err, insertResults, fields) => {
+  connection.query('INSERT INTO `purchasing_order` (`purchasingOrderID`, `material`, `price`, `vendor`, `amount`, `approved`) VALUES (NULL, "' + job.variables.material_key +'", "' + job.variables.price_key + '","' + job.variables.vendor_key + '","' + job.variables.quantity_key + '","' + job.variables.approve_key + '");',
+  (err, insertResults, fields) => {
     if (err) {
         console.error('Error executing insert query:', err.message);
         return;
     }
+
+    // Access the insertId from the callback
+    const insertId = insertResults.insertId;
+    // console.log("\ninsertId:", insertId);
+
+    // Now, perform the SELECT query using the insertId
     const updateToBrokerVariables = {
       purchasingOrderID: insertId,
     }
-    console.log("Purchasing order stored successfully!");
     return job.complete(updateToBrokerVariables)
 });
 

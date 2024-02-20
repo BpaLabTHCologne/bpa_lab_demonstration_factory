@@ -90,7 +90,7 @@ VALUES
 USE component_DB;
 INSERT INTO `component_stock` (`id`, `componentName`, `componentQuantity`) 
 VALUES 
-(NULL, 'Mountain bike frame', '50')
-(NULL, 'Hybrid bicycle wheels', '50')
-(NULL, 'Electric bicycle frame', '50')
+(NULL, 'Mountain bike frame', '50'),
+(NULL, 'Hybrid bicycle wheels', '50'),
+(NULL, 'Electric bicycle frame', '50'),
 
