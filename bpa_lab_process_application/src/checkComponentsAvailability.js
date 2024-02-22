@@ -122,8 +122,6 @@ async function handler(job) {
 function checkStock(componentName, componentQuantityAvailable, orderProduct, orderQuantity) {
   let quantityNeededToPurchase = 0;
   let purchasingRequired = "";
-  //componentName = "Mountain Bike";
-  //orderProduct = "Mountain Bike";
 
   if(componentQuantityAvailable === 0) {
     purchasingRequired = "yes";
