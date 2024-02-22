@@ -134,6 +134,8 @@ function checkStock(componentName, componentQuantityAvailable, orderProduct, ord
   }
   else if(componentQuantityAvailable < orderQuantity) {
     console.log("\nNot enough components in the stock! Purchasing needed.");
+    purchasingRequired = "yes";
+    quantityNeededToPurchase = orderQuantity - componentQuantityAvailable;
   }
 
   return {
