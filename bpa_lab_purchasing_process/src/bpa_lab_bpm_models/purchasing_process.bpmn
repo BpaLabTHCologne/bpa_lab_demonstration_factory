@@ -1,225 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0" camunda:diagramRelationId="3f004bd5-3647-41a6-9d4d-aef3f6c1143a">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.20.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0" camunda:diagramRelationId="3f004bd5-3647-41a6-9d4d-aef3f6c1143a">
   <bpmn:collaboration id="Collaboration_0kaj0bf">
     <bpmn:participant id="Participant_03c2iwl" name="Bike GmbH" processRef="Purchasing-exe" />
   </bpmn:collaboration>
   <bpmn:process id="Purchasing-exe" isExecutable="true">
     <bpmn:extensionElements>
-      <zeebe:userTaskForm id="UserTaskForm_29m3s2g">{
-  "components": [
-    {
-      "components": [
-        {
-          "values": [
-            {
-              "label": "Mountain bike frame",
-              "value": "Mountain bike frame"
-            },
-            {
-              "label": "Mountain bike wheels",
-              "value": "Mountain bike wheels"
-            },
-            {
-              "label": "Mountain bike seat",
-              "value": "Mountain bike seat"
-            },
-            {
-              "label": "Hybrid bicycle frame ",
-              "value": "Hybrid bicycle frame"
-            },
-            {
-              "label": "Hybrid bicycle wheels ",
-              "value": "Hybrid bicycle wheels"
-            },
-            {
-              "label": "Hybrid bicycle seat",
-              "value": "Hybrid bicycle seat"
-            },
-            {
-              "label": "Electric bicycle frame",
-              "value": "Electric bicycle frame"
-            },
-            {
-              "label": "Electric bicycle wheels",
-              "value": "Electric bicycle wheels"
-            },
-            {
-              "label": "Electric bicycle seat",
-              "value": "Electric bicycle seat"
-            }
-          ],
-          "label": "Material",
-          "type": "select",
-          "layout": {
-            "row": "Row_0ixkml6",
-            "columns": null
-          },
-          "id": "Field_10409i5",
-          "key": "material_key",
-          "readonly": "=if orderdetailvisible or modification then true else false",
-          "disabled": false
-        },
-        {
-          "label": "Quantity",
-          "type": "number",
-          "layout": {
-            "row": "Row_0ixkml6",
-            "columns": null
-          },
-          "id": "Field_0vmdv7i",
-          "key": "quantity_key",
-          "readonly": "=if orderdetailvisible or modification then true else false"
-        }
-      ],
-      "showOutline": true,
-      "label": "Order",
-      "type": "group",
-      "layout": {
-        "row": "Row_185rn1d",
-        "columns": null
-      },
-      "id": "Field_1h94l9l"
-    },
-    {
-      "components": [
-        {
-          "label": "Vendor",
-          "type": "textfield",
-          "layout": {
-            "row": "Row_0c35ncv",
-            "columns": null
-          },
-          "id": "Field_0om6lv0",
-          "key": "vendor_key",
-          "disabled": false,
-          "properties": {},
-          "readonly": "=if orderdetailvisible then true else false",
-          "defaultValue": "\"Test\""
-        },
-        {
-          "label": "Price ",
-          "type": "number",
-          "layout": {
-            "row": "Row_0c35ncv",
-            "columns": null
-          },
-          "id": "Field_09eg069",
-          "key": "price_key",
-          "readonly": "=if orderdetailvisible then true else false",
-          "properties": {}
-        }
-      ],
-      "showOutline": true,
-      "label": "Order Details",
-      "type": "group",
-      "layout": {
-        "row": "Row_01cduoc",
-        "columns": 16
-      },
-      "id": "Field_0l1384c",
-      "conditional": {
-        "hide": "=not(orderdetailvisible) "
-      }
-    },
-    {
-      "label": "Approve",
-      "type": "checkbox",
-      "layout": {
-        "row": "Row_1rqpraw",
-        "columns": null
-      },
-      "id": "Field_18xyh42",
-      "key": "approve_key",
-      "readonly": false,
-      "disabled": false,
-      "conditional": {
-        "hide": "=not(orderdetailvisible)"
-      }
-    },
-    {
-      "components": [
-        {
-          "values": [
-            {
-              "label": "Mountain bike frame",
-              "value": "Mountain bike frame"
-            },
-            {
-              "label": "Mountain bike wheels",
-              "value": "Mountain bike wheels"
-            },
-            {
-              "label": "Mountain bike seat",
-              "value": "Mountain bike seat"
-            },
-            {
-              "label": "Hybrid bicycle frame ",
-              "value": "Hybrid bicycle frame"
-            },
-            {
-              "label": "Hybrid bicycle wheels ",
-              "value": "Hybrid bicycle wheels"
-            },
-            {
-              "label": "Hybrid bicycle seat",
-              "value": "Hybrid bicycle seat"
-            },
-            {
-              "label": "Electric bicycle frame",
-              "value": "Electric bicycle frame"
-            },
-            {
-              "label": "Electric bicycle wheels",
-              "value": "Electric bicycle wheels"
-            },
-            {
-              "label": "Electric bicycle seat",
-              "value": "Electric bicycle seat"
-            }
-          ],
-          "label": "Material New ",
-          "type": "select",
-          "layout": {
-            "row": "Row_0921d07",
-            "columns": null
-          },
-          "id": "Field_1xlcpp6",
-          "key": "material2_key"
-        },
-        {
-          "label": "Quantity New ",
-          "type": "number",
-          "layout": {
-            "row": "Row_0921d07",
-            "columns": null
-          },
-          "id": "Field_0afgbxb",
-          "key": "quantity2_key"
-        }
-      ],
-      "showOutline": true,
-      "label": "Modified Order",
-      "type": "group",
-      "layout": {
-        "row": "Row_1smgl3r",
-        "columns": null
-      },
-      "id": "Field_0dznc3t",
-      "conditional": {
-        "hide": "=not(modification)"
-      }
-    }
-  ],
-  "executionPlatform": "Camunda Cloud",
-  "executionPlatformVersion": "8.3.0",
-  "exporter": {
-    "name": "Camunda Modeler",
-    "version": "5.17.0"
-  },
-  "schemaVersion": 12,
-  "type": "default",
-  "id": "Purchasing_Form"
-}</zeebe:userTaskForm>
       <zeebe:userTaskForm id="UserTaskForm_0iipld1">{
   "components": [
     {
@@ -871,7 +656,6 @@
         <bpmn:flowNodeRef>Gateway_1avlzdj</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_0731a0a</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0nnx0eg</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_11wfe69</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0qr4tnp</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0orsgxe</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_09exn8f</bpmn:flowNodeRef>
@@ -917,13 +701,6 @@
       <bpmn:incoming>Flow_014qxmd</bpmn:incoming>
       <bpmn:outgoing>Flow_0lgi25s</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="Activity_11wfe69" name="Create Purchase Requisition">
-      <bpmn:extensionElements>
-        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_29m3s2g" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1svatmq</bpmn:incoming>
-      <bpmn:outgoing>Flow_149y4yd</bpmn:outgoing>
-    </bpmn:userTask>
     <bpmn:businessRuleTask id="Activity_0qr4tnp" name="Decide on Vendor">
       <bpmn:extensionElements>
         <zeebe:calledDecision decisionId="Decision_0duh4xd" resultVariable="vendor_key" />
@@ -931,8 +708,8 @@
           <zeebe:input source="=material_key" target="material" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_149y4yd</bpmn:incoming>
       <bpmn:incoming>Flow_0lgi25s</bpmn:incoming>
+      <bpmn:incoming>Flow_1svatmq</bpmn:incoming>
       <bpmn:outgoing>Flow_1vnt5da</bpmn:outgoing>
     </bpmn:businessRuleTask>
     <bpmn:businessRuleTask id="Activity_0orsgxe" name="Decide on Price">
@@ -1085,8 +862,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=approve_key= true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0lgi25s" sourceRef="Activity_0nnx0eg" targetRef="Activity_0qr4tnp" />
-    <bpmn:sequenceFlow id="Flow_1svatmq" sourceRef="Event_0m3kfap" targetRef="Activity_11wfe69" />
-    <bpmn:sequenceFlow id="Flow_149y4yd" sourceRef="Activity_11wfe69" targetRef="Activity_0qr4tnp" />
+    <bpmn:sequenceFlow id="Flow_1svatmq" sourceRef="Event_0m3kfap" targetRef="Activity_0qr4tnp" />
     <bpmn:sequenceFlow id="Flow_1vnt5da" sourceRef="Activity_0qr4tnp" targetRef="Activity_0orsgxe" />
     <bpmn:sequenceFlow id="Flow_1e9y0ow" sourceRef="Activity_09exn8f" targetRef="Activity_0vlqzxk" />
     <bpmn:sequenceFlow id="Flow_0ansei1" sourceRef="Activity_0vlqzxk" targetRef="Activity_0dg7wiv" />
@@ -1154,9 +930,6 @@
       <bpmndi:BPMNShape id="Activity_1eg42ia_di" bpmnElement="Activity_0nnx0eg">
         <dc:Bounds x="916" y="190" width="100" height="80" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_19723ki_di" bpmnElement="Activity_11wfe69">
-        <dc:Bounds x="330" y="310" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0wll7w0_di" bpmnElement="Activity_0qr4tnp">
         <dc:Bounds x="470" y="310" width="100" height="80" />
@@ -1306,10 +1079,6 @@
       <bpmndi:BPMNEdge id="Flow_1svatmq_di" bpmnElement="Flow_1svatmq">
         <di:waypoint x="280" y="208" />
         <di:waypoint x="280" y="350" />
-        <di:waypoint x="330" y="350" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_149y4yd_di" bpmnElement="Flow_149y4yd">
-        <di:waypoint x="430" y="350" />
         <di:waypoint x="470" y="350" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1vnt5da_di" bpmnElement="Flow_1vnt5da">

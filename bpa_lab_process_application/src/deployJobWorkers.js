@@ -29,12 +29,19 @@ async function main() {
 
   try {
     // Deploy the order management and production control pool BPMN diagram
-    const bpmnResult = await zbc.deployResource({
-      processFilename: `./bpa_lab_bpm_models/bicycle-process-model.bpmn`,
+    const orderManagement = await zbc.deployResource({
+      processFilename: `./bpa_lab_bpm_models/order-management-process.bpmn`,
     });
 
     // Log the order management and production control pool BPMN diagram deployment result
-    console.log('\nOrder management/Production control BPMN deployed successfully:', JSON.stringify(bpmnResult, null, 2));
+    console.log('\nOrder management BPMN deployed successfully:', JSON.stringify(orderManagement, null, 2));
+
+    const productionControl = await zbc.deployResource({
+      processFilename: `./bpa_lab_bpm_models/production-control-process.bpmn`,
+    });
+
+    // Log the order management and production control pool BPMN diagram deployment result
+    console.log('\nProduction control BPMN deployed successfully:', JSON.stringify(productionControl, null, 2));
 
     // Deploy the DMN decision model inside order management pool
     const dmnResult = await zbc.deployResource({
