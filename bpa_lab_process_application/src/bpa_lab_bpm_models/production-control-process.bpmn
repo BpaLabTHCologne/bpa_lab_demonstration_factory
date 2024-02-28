@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xmzs53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.20.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xmzs53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
   <bpmn:collaboration id="Collaboration_12fblkz">
     <bpmn:participant id="Participant_1o4at5h" name="Production Control" processRef="production-control-process" />
     <bpmn:participant id="Participant_19m935s" name="Order Management" processRef="order-management-process" />
@@ -1082,10 +1082,6 @@ order for production</bpmn:text>
       <bpmn:incoming>Flow_1ibjffz</bpmn:incoming>
       <bpmn:outgoing>Flow_0hk28zj</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:task id="Activity_1kuvp5w" name="Send confirmation email">
-      <bpmn:incoming>Flow_11a0c1d</bpmn:incoming>
-      <bpmn:outgoing>Flow_1q24qqg</bpmn:outgoing>
-    </bpmn:task>
     <bpmn:sequenceFlow id="Flow_0m018yf" sourceRef="StartEvent_1" targetRef="Activity_1jfvylf" />
     <bpmn:sequenceFlow id="Flow_0wzmhve" sourceRef="Activity_1jfvylf" targetRef="Activity_1rolqr1" />
     <bpmn:sequenceFlow id="Flow_14tjs3k" sourceRef="Activity_1rolqr1" targetRef="Activity_094s0jz" />
@@ -1113,6 +1109,13 @@ order for production</bpmn:text>
     <bpmn:sequenceFlow id="Flow_149fb0r" sourceRef="Activity_0yc7jzn" targetRef="Activity_1nidbw1" />
     <bpmn:sequenceFlow id="Flow_1679yn3" sourceRef="Activity_1nidbw1" targetRef="Event_1f3dmc2" />
     <bpmn:sequenceFlow id="Flow_0808v6q" sourceRef="Activity_1ezjjmp" targetRef="Activity_0yc7jzn" />
+    <bpmn:serviceTask id="Activity_1kuvp5w" name="Send confirmation email">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendConfirmationEmail" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_11a0c1d</bpmn:incoming>
+      <bpmn:outgoing>Flow_1q24qqg</bpmn:outgoing>
+    </bpmn:serviceTask>
     <bpmn:association id="Association_0pw9aw5" sourceRef="Activity_1kuvp5w" targetRef="TextAnnotation_13pvht0" />
     <bpmn:association id="Association_1b97p92" sourceRef="Activity_1q0pnkq" targetRef="TextAnnotation_0kohb3e" />
     <bpmn:association id="Association_1yvuno4" sourceRef="Activity_0vpv7c3" targetRef="TextAnnotation_0kmbx9n" />
@@ -1447,7 +1450,7 @@ order for production</bpmn:text>
       <bpmndi:BPMNShape id="Activity_02wu1y9_di" bpmnElement="Activity_1q0pnkq">
         <dc:Bounds x="1130" y="230" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0rj43z6_di" bpmnElement="Activity_1kuvp5w">
+      <bpmndi:BPMNShape id="Activity_09t49wk_di" bpmnElement="Activity_1kuvp5w">
         <dc:Bounds x="950" y="440" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0m018yf_di" bpmnElement="Flow_0m018yf">

@@ -1,10 +1,10 @@
 # BPA Lab Bicycle Manufacturing Factory
 
-This repository contains the source code and configuration files for automating a small bicycle factory model using Camunda 8, a powerful workflow automation platform. The automation system orchestrates various manufacturing processes involved in the production of bicycles, streamlining the entire production lifecycle from order placement to shipment. Most of the job workers are implemented using official zeebe-node repository [Zeebe Node](https://github.com/camunda-community-hub/zeebe-client-node-js) provided by the Camunda Platform.
+This repository contains the source code and configuration files for automating a small bicycle factory model using Camunda 8, a powerful workflow automation platform. The automation system orchestrates various manufacturing processes involved in the production of bicycles, streamlining the entire production lifecycle from order management to production control and purchasing to shipment. Most of the job workers are implemented using official zeebe-node repository [Zeebe Node](https://github.com/camunda-community-hub/zeebe-client-node-js) provided by the Camunda Platform. Moreover, the robots for the warehouse operations like storing or retrieving items are implemented in Python.
 
 ## Prerequisites
 
-Docker desktop application based on your system preference (Windows/macOS)
+-> Docker desktop application based on your system preference (Windows/macOS)
 
 ## Using docker compose
 
@@ -36,7 +36,7 @@ docker compose up --build
 Ctrl+C
 ```
 
-Wait a few minutes for the environment to start up and settle down. Monitor the logs inside the containers, to ensure the components have started.
+Wait a few minutes for the environment to start up and settle down. Monitor the logs inside the containers, to ensure the all the containers have started successfully.
 
 Now you can navigate to the different web apps and log in with the user `demo` and password `demo`:
 - Operate: [http://localhost:8081](http://localhost:8081)
@@ -50,7 +50,7 @@ Navigate the BPA Lab containers:
 
 In addition to the local environment setup with docker compose, you can download the [Camunda Desktop Modeler](https://camunda.com/download/modeler/) to locally model BPMN diagrams for execution and directly deploy them to your local environment.
 
-> :information_source: This project deployes process diagrams automatically for order management, production control, purchasing, shipment and warehouse operations.
+> :information_source: This project deployes all the process diagrams automatically including order management, production control, purchasing, shipment and warehouse operations.
 
 ### Start the process
 
@@ -59,3 +59,7 @@ The process can be started by placing an order from the front-end single page ap
 ### Process overview
 
 ![process image](https://github.com/BpaLabTHCologne/BPALab_GuidedProject_23_24/blob/berrak-and-rahib/bicycle-process-model.png?raw=true)
+
+### Docker overview
+
+![process image](https://github.com/BpaLabTHCologne/BPALab_GuidedProject_23_24/blob/berrak-and-rahib/docker-overview.png?raw=true)
