@@ -33,6 +33,7 @@ async function handler(job) {
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE_COMPONENTS,
       port: process.env.MYSQL_HOST_PORT,
+      server: 'localhost',
     });
 
     const productionOrderDBPool = mysql.createPool({
@@ -42,6 +43,7 @@ async function handler(job) {
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE_PRODUCTION,
       port: process.env.MYSQL_HOST_PORT,
+      server: 'localhost',
     });
 
     // Query component_stock

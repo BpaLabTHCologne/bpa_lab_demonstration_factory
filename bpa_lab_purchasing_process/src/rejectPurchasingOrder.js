@@ -26,6 +26,7 @@ function handler(job) {
           password: process.env.MYSQL_PASSWORD,
           database: process.env.MYSQL_DATABASE_PURCHASING,
           port: process.env.MYSQL_HOST_PORT,
+          server: 'localhost',
         });
     
         connection.connect();

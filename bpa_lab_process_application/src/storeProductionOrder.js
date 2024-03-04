@@ -29,6 +29,7 @@ function handler(job) {
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE_PRODUCTION,
     port: process.env.MYSQL_HOST_PORT,
+    server: 'localhost',
   });
 
   customerOrderConnection.connect();
