@@ -25,7 +25,6 @@ async function handler(job) {
     let orderProduct;
     let orderQuantity;
 
-    //checkComponentsAvailability.log('Task variables', job.variables);
 
     const availableComponentsDBPool = mysql.createPool({
       connectionLimit: 10,
@@ -34,6 +33,7 @@ async function handler(job) {
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE_COMPONENTS,
       port: process.env.MYSQL_HOST_PORT,
+      server: 'localhost',
     });
 
     const productionOrderDBPool = mysql.createPool({
@@ -43,6 +43,7 @@ async function handler(job) {
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE_PRODUCTION,
       port: process.env.MYSQL_HOST_PORT,
+      server: 'localhost',
     });
 
     // Query component_stock
@@ -70,8 +71,8 @@ async function handler(job) {
     console.log("\nThe production order is: ", orderProduct);
     console.log("The quantity is: ", orderQuantity);
 
-    // Now we have to look for the components of this product. Mountain Bike -> frame, seat, wheel...
-
+    // Looks only for the first components 
+    
     if(orderProduct === "Mountain Bike") {
       componentName = "Mountain bike frame";
     }
@@ -82,10 +83,7 @@ async function handler(job) {
       componentName = "Electric bicycle frame"
     }
 
-    // Query customer_order
-
     //troubleshooting 4
-
     console.log('Executing query for component_stock');
     
     const componentResults = await new Promise((resolve, reject) => {
@@ -102,16 +100,14 @@ async function handler(job) {
       });
     });
 
-    //componentName = componentResults[0].componentName; //??
     componentQuantityAvailable = componentResults[0].componentQuantity;
     console.log("\Component name from component_stock: ", componentName);
     console.log("Component quantity available in component_stock: ", componentQuantityAvailable);
 
-
     const result = checkStock(componentName, componentQuantityAvailable, orderProduct, orderQuantity);
     console.log("\nReturned result: ", result);
 
-    // Use updateToBrokerVariables as needed...
+    // Use updateToBrokerVariables as needed
     const updateToBrokerVariables = {
       quantityNeededToPurchase: result.quantityNeededToPurchase,
       componentQuantityAvailable: result.componentQuantityAvailable,
@@ -124,13 +120,10 @@ async function handler(job) {
   }
 }
 
-//it seems to be ok until this point
 
 function checkStock(componentName, componentQuantityAvailable, orderProduct, orderQuantity) {
   let quantityNeededToPurchase = 0;
   let purchasingRequired = "";
-  //componentName = "Mountain Bike";
-  //orderProduct = "Mountain Bike";
 
   if(componentQuantityAvailable === 0) {
     purchasingRequired = "yes";
@@ -143,8 +136,10 @@ function checkStock(componentName, componentQuantityAvailable, orderProduct, ord
   }
   else if(componentQuantityAvailable < orderQuantity) {
     console.log("\nNot enough components in the stock! Purchasing needed.");
+    purchasingRequired = "yes";
+    quantityNeededToPurchase = orderQuantity - componentQuantityAvailable;
   }
-
+  purchasingRequired = "yes"
   return {
     componentName,
     orderQuantity,

@@ -165,13 +165,14 @@ services:
       - ./data/mysql-db:/var/lib/mysql
       - ./provision:/docker-entrypoint-initdb.d
     ports:
-      - "3306:3306"
+      - "3070:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: customer_DB
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
       MYSQL_MAX_CONNECTIONS: 100
+      MYSQL_HOST_PORT: 3306
 
   #phpMyAdmin container for database adminstration tasks
   phpmyadmin:

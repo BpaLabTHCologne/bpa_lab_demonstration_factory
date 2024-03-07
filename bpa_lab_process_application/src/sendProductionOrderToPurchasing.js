@@ -26,6 +26,11 @@ let place_id = ''
 let shelf_id = ''
 let task = ''
 let transactionId = ''
+let approve_key = ''
+let material_key = ''
+let price_key = ''
+let quantity_key = ''
+let vendor_key = ''
 
 const sendProductionOrderToPurchasing = zbc.createWorker({
   taskType: 'sendProductionOrderToPurchasing',
@@ -59,6 +64,11 @@ function handler(job) {
   shelf_id = job.variables.shelf_id;
   task = job.variables.task;
   transactionId = job.variables.transactionId;
+  approve_key = job.variables.approve_key;
+  material_key = job.variables.material_key;
+  price_key = job.variables.price_key;
+  quantity_key = job.variables.quantity_key;
+  vendor_key = job.variables.vendor_key;
 
 
   zbc.publishStartMessage({
@@ -87,6 +97,11 @@ function handler(job) {
       shelf_id: shelf_id,
       task: task,
       transactionId: transactionId,
+      approve_key: job.variables.approve_key,
+      material_key: job.variables.material_key,
+      price_key: job.variables.price_key,
+      quantity_key: job.variables.quantity_key,
+      vendor_key: job.variables.vendor_key,
     },
   })
 

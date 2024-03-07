@@ -19,12 +19,12 @@ function handler(job) {
     try {
         const orderID = parseInt(job.variables.orderID)
         var connection = mysql.createConnection({
-            
             host: process.env.MYSQL_HOST_NAME,
             user: process.env.MYSQL_USER,
             password: process.env.MYSQL_PASSWORD,
             database: process.env.MYSQL_DATABASE,
             port: process.env.MYSQL_HOST_PORT,
+            server: 'localhost',
         });
     
         connection.connect();
