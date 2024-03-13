@@ -10,13 +10,11 @@ from pyzeebe import (
     ZeebeClient, 
     ZeebeWorker, 
     Job, 
-    create_camunda_cloud_channel, 
     create_insecure_channel,
 )
 import mysql.connector
 from mysql.connector import errorcode
 import grpc
-import requests
 from zeebe_grpc import gateway_pb2, gateway_pb2_grpc
 
 
@@ -27,18 +25,10 @@ from zeebe_grpc import gateway_pb2, gateway_pb2_grpc
 # Loading the environment variables to acces them
 load_dotenv()
 
-# Camunda Cloud or local Channel with Python Client
-if (os.getenv('IS_CLOUD') == 'true'):
-    channel = create_camunda_cloud_channel(
-        client_id=os.getenv('ZEEBE_CLIENT_ID'),
-        client_secret=os.getenv('ZEEBE_CLIENT_SECRET'),
-        cluster_id=os.getenv('CAMUNDA_CLUSTER_ID'),
-        region=os.getenv('CAMUNDA_CLUSTER_REGION'),
-    )
-else:
-    zeebe_adress_host=os.getenv("ZEEBE_ADRESS_HOST")
-    zeebe_adress_port=os.getenv("ZEEBE_ADRESS_PORT")
-    channel = create_insecure_channel(zeebe_adress_host, zeebe_adress_port)
+# Local Channel with Python Client
+zeebe_adress_host=os.getenv("ZEEBE_ADRESS_HOST")
+zeebe_adress_port=os.getenv("ZEEBE_ADRESS_PORT")
+channel = create_insecure_channel(zeebe_adress_host, zeebe_adress_port)
 
 
 # Python Client for Zeebe and Worker
@@ -46,51 +36,8 @@ client = ZeebeClient(channel)
 worker = ZeebeWorker(channel, poll_retry_delay=50)
 
 # Separate channel that connects directly via gRPC (without Python Client) to Zeebe
-def get_oauth_token():
-    # Request OAuth token from Camunda Cloud
-    client_id=os.getenv('ZEEBE_CLIENT_ID')
-    client_secret=os.getenv('ZEEBE_CLIENT_SECRET')
-    audience=os.getenv('ZEEBE_TOKEN_AUDIENCE')
-    oauth_url= os.getenv('CAMUNDA_OAUTH_URL')
-
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    
-    response = requests.post(
-        oauth_url,
-        data={
-            "client_id": client_id,
-            "client_secret": client_secret,
-            "audience": audience,
-            "grant_type": "client_credentials"
-        },
-        headers=headers
-    )
-
-    response.raise_for_status()
-    return response.json()["access_token"]
-
-
-def create_grpc_channel(oauth_token):
-    # Authentication function for gRPC
-    def oauth2(token):
-        return [("authorization", f"Bearer {token}")]
-    
-    audience=os.getenv('ZEEBE_TOKEN_AUDIENCE')
-
-    # Create the gRPC channel with authentication
-    return grpc.secure_channel(
-        audience,
-        grpc.composite_channel_credentials(
-            grpc.ssl_channel_credentials(), grpc.access_token_call_credentials(oauth_token)
-        ),
-    )
-
-if (os.getenv('IS_CLOUD') == 'true'):
-    oauth_token = get_oauth_token()
-    seperateChannel = create_grpc_channel(oauth_token)
-else:
-    zeebe_adress=os.getenv("ZEEBE_ADRESS")
-    seperateChannel = grpc.insecure_channel(zeebe_adress)
+zeebe_adress=os.getenv("ZEEBE_ADRESS")
+seperateChannel = grpc.insecure_channel(zeebe_adress)
 
 
 async def publish_start_message(**variables):
@@ -128,12 +75,23 @@ async def logging_decorator(job: Job) -> Job:
 
 # Establishes a connection to the MySQL database
 async def connect_to_db():
-    return mysql.connector.connect(
-        host='mysql-db',
-        user=os.getenv('MYSQL_USER'),
-        password=os.getenv('MYSQL_PASSWORD'),
-        database='warehouse'
-    )
+    try:
+        logging.info("Trying to connect to the database...")
+        connection = mysql.connector.connect(
+            host=os.getenv('MYSQL_HOST_NAME'),
+            user=os.getenv('MYSQL_USER'),
+            password=os.getenv('MYSQL_PASSWORD'),
+            database=os.getenv('MYSQL_DATABASE'),
+            port=os.getenv('MYSQL_PORT')
+        )
+
+        if connection.is_connected():
+            logging.info("Succesfully connected to the database.")
+        return connection
+    except mysql.connector.Error as e:
+        logging.error(f"Error when connecting to database: {e}")
+        return None
+
 
 # Handles potential database errors
 async def handle_db_error(job: Job, err):
@@ -229,8 +187,8 @@ async def check_inventory(job: Job, **variables) -> dict:
         logging.info(piMySqlDB)
         mycursor = piMySqlDB.cursor()
 
-        shelf_id= variables.get("shelf_id")
-        place_id= variables.get("place_id")
+        shelf_id = variables.get("shelf_id")
+        place_id = variables.get("place_id")
         item = variables.get("item")
         
         # Check whether the requested product is available in the warehouse
