@@ -58,8 +58,8 @@ The process can be started by placing an order from the front-end single page ap
 
 ### Process overview
 
-![process image](https://github.com/BpaLabTHCologne/BPALab_GuidedProject_23_24/blob/berrak-and-rahib/bicycle-process-model.png?raw=true)
+![process image](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/bicycle-process-model.png?raw=true)
 
 ### Docker overview
 
-![process image](https://github.com/BpaLabTHCologne/BPALab_GuidedProject_23_24/blob/berrak-and-rahib/docker-overview.png?raw=true)
+![process image](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/docker-overview.png?raw=true)
