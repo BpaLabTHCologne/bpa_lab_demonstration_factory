@@ -56,13 +56,14 @@ CREATE TABLE `purchasing_DB`.`purchasing_order`
 
 CREATE TABLE `warehouse`.`place` 
 (
-    `shelf_id` INT NOT NULL AUTO_INCREMENT , 
+    `item_id` INT NOT NULL AUTO_INCREMENT ,
+    `shelf_id` INT NOT NULL , 
     `place_id` INT NOT NULL , 
     `item` VARCHAR(45) NULL DEFAULT NULL , 
     `status` INT NULL DEFAULT NULL , 
     `last_change` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL , 
     `last_user` VARCHAR(45) NULL DEFAULT NULL , 
-    PRIMARY KEY (`shelf_id`)
+    PRIMARY KEY (`item_id`)
 ) ENGINE = InnoDB;
 
 GRANT ALL PRIVILEGES ON customer_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
@@ -80,6 +81,9 @@ FLUSH PRIVILEGES;
 GRANT ALL PRIVILEGES ON component_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
 FLUSH PRIVILEGES;
 
+GRANT ALL PRIVILEGES ON warehouse.* TO 'dev'@'%' IDENTIFIED BY 'dev';
+FLUSH PRIVILEGES;
+
 USE finished_product_DB;
 INSERT INTO `finished_product_stock` (`productName`, `productQuantity`) 
 VALUES 
@@ -94,3 +98,12 @@ VALUES
 ('Hybrid bicycle wheels', '50'),
 ('Electric bicycle frame', '50');
 
+USE warehouse;
+INSERT INTO `place` (`shelf_id`, `place_id`, `item`, `status`)
+VALUES 
+(1,1,'Mountain Bike',1),
+(1,2,'empty',0),
+(1,3,'empty',0),
+(1,4,'empty',0),
+(1,5,'empty',0),
+(1,6,'empty',0);

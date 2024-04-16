@@ -59,6 +59,15 @@ async function main() {
     // Log the warehouse operations BPMN diagram
     console.log('\nWarehouse operations BPMN deployed successfully:', JSON.stringify(warehouseOperations, null, 2));
 
+    // Deploy the warehouse robot BPMN diagram
+    const warehouseRobot = await zbc.deployResource({
+      decisionFilename: `./bpa_lab_bpm_models/warehouse-robot-process.bpmn`,
+    });
+
+    // Log the warehouse robot BPMN diagram
+    console.log('\nWarehouse robot BPMN deployed successfully:', JSON.stringify(warehouseRobot, null, 2));
+
+
   } catch (error) {
     // Handle any errors that occur during deployment
     console.error('Deployment failed:', error);

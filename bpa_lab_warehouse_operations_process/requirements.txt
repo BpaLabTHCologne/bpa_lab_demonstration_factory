@@ -4,5 +4,4 @@ nanoid
 pyzeebe
 mysql-connector-python
 grpcio
-requests
 zeebe-grpc

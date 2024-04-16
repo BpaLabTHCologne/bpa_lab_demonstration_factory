@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xmzs53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xmzs53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.19.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
   <bpmn:collaboration id="Collaboration_12fblkz">
-    <bpmn:participant id="Participant_1o4at5h" name="Production Control" processRef="Process_0e7bsv4" />
+    <bpmn:participant id="Participant_1o4at5h" name="Production Control" processRef="production-control-process" />
     <bpmn:participant id="Participant_19m935s" name="Order Management" processRef="order-management-process" />
     <bpmn:messageFlow id="Flow_0tw80c1" sourceRef="Activity_0ixenah" targetRef="Event_1c3evrg" />
     <bpmn:messageFlow id="Flow_159eb9f" sourceRef="Event_1hi9ypc" targetRef="Activity_0x1xog5" />
@@ -98,7 +98,7 @@ order for production</bpmn:text>
       <zeebe:subscription correlationKey="=correlationValue" />
     </bpmn:extensionElements>
   </bpmn:message>
-  <bpmn:process id="Process_0e7bsv4" isExecutable="false">
+  <bpmn:process id="production-control-process" isExecutable="false">
     <bpmn:extensionElements>
       <zeebe:userTaskForm id="UserTaskForm_324473u">{
   "executionPlatform": "Camunda Cloud",

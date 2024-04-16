@@ -30,10 +30,9 @@ zeebe_adress_host=os.getenv("ZEEBE_ADRESS_HOST")
 zeebe_adress_port=os.getenv("ZEEBE_ADRESS_PORT")
 channel = create_insecure_channel(zeebe_adress_host, zeebe_adress_port)
 
-
 # Python Client for Zeebe and Worker
 client = ZeebeClient(channel)
-worker = ZeebeWorker(channel, poll_retry_delay=50)
+worker = ZeebeWorker(channel, max_connection_retries=-1, poll_retry_delay=50)
 
 # Separate channel that connects directly via gRPC (without Python Client) to Zeebe
 zeebe_adress=os.getenv("ZEEBE_ADRESS")
@@ -82,14 +81,20 @@ async def connect_to_db():
             user=os.getenv('MYSQL_USER'),
             password=os.getenv('MYSQL_PASSWORD'),
             database=os.getenv('MYSQL_DATABASE'),
-            port=os.getenv('MYSQL_PORT')
+            port=os.getenv('MYSQL_HOST_PORT')
         )
 
         if connection.is_connected():
-            logging.info("Succesfully connected to the database.")
+            logging.info("Successfully connected to the database.")
         return connection
     except mysql.connector.Error as e:
         logging.error(f"Error when connecting to database: {e}")
+        logging.error("Error details: Host: {}, User: {}, Database: {}, Port: {}".format(
+            os.getenv('MYSQL_HOST_NAME'),
+            os.getenv('MYSQL_USER'),
+            os.getenv('MYSQL_DATABASE'),
+            os.getenv('MYSQL_HOST_PORT')
+        ))
         return None
 
 
@@ -181,32 +186,28 @@ UPDATE_SHELF_STATUS_ID = "update-shelf-status"
 # CheckBicycleAvailability =========================================================
 @worker.task(task_type=CHECK_BICYCLE_AVAILABILITY_ID, exception_handler=error_handler)
 async def check_inventory(job: Job, **variables) -> dict:
+    piMySqlDB = None
     try:
-
         piMySqlDB = await connect_to_db()
-        logging.info(piMySqlDB)
+        if piMySqlDB is None:
+            logging.error("Failed to connect to the database.")
+            return {"error": "Database connection failed"}
+
+        logging.info("Database connection established.")
         mycursor = piMySqlDB.cursor()
 
-        shelf_id = variables.get("shelf_id")
-        place_id = variables.get("place_id")
         item = variables.get("item")
-        
-        # Check whether the requested product is available in the warehouse
         sql_check_item = "SELECT EXISTS (SELECT * FROM place WHERE item = %s)"
         mycursor.execute(sql_check_item, (item,))
 
-        item_exists = mycursor.fetchone()[0]
-        
-        logging.info(f"item_exists: {item_exists}")
-        logging.info(f"shelf_id: {shelf_id}")
-        logging.info(f"place_id: {place_id}")
-        logging.info(f"item: {item}")
+        result = mycursor.fetchone()
+        if result is None:
+            logging.error("No data returned from database query.")
+            return {"error": "No data or invalid data"}
 
-        if item_exists == 1:
-            variables = {"stock": "stock"}
-        else: 
-            variables = {"stock": None}
-            #shutdown_flag = True
+        item_exists = result[0]
+
+        variables = {"stock": "stock" if item_exists else None}
 
         return variables
     
@@ -214,7 +215,8 @@ async def check_inventory(job: Job, **variables) -> dict:
         await handle_db_error(job, err)
 
     finally:
-        piMySqlDB.close()
+        if piMySqlDB is not None and piMySqlDB.is_connected():
+            piMySqlDB.close()
 
 # GetBicycleFromShelf ============================================================
 @worker.task(task_type=GET_BICYCLE_FROM_SHELF_TASK_ID, exception_handler=error_handler)
@@ -263,20 +265,26 @@ async def pickup_ready_throw(job: Job, **variables) -> dict:
 # UpdateBicycleStatus =======================================================
 @worker.task(task_type=UPDATE_BICYCLE_STATUS_ID, exception_handler=error_handler)
 async def update_retrieve_inventory(job: Job, place_id):
+    piMySqlDB = None
     try:
-
         piMySqlDB = await connect_to_db()
-        mycursor = piMySqlDB.cursor()
+        if piMySqlDB is None:
+            # Wenn die Verbindung fehlschlägt, geben Sie einen Fehler zurück oder behandeln Sie ihn entsprechend
+            logging.error("Failed to connect to the database.")
+            return {"error": "Database connection failed"}
 
+        mycursor = piMySqlDB.cursor()
         sql_update = "UPDATE place SET item = 'empty', status = 0, last_user = 'Warehouse Robot 1' WHERE place_id = %s"
         mycursor.execute(sql_update, (place_id,))
-    
         piMySqlDB.commit()
+
     except mysql.connector.Error as err:
         await handle_db_error(job, err)
 
     finally:
-        piMySqlDB.close()
+        if piMySqlDB is not None and piMySqlDB.is_connected():
+            piMySqlDB.close()
+
 
 
 #****************************************************************************
@@ -285,34 +293,37 @@ async def update_retrieve_inventory(job: Job, place_id):
 
 # CheckSpaceAvailability ====================================================
 @worker.task(task_type="check-space-availability", exception_handler=error_handler)
-async def check_storage(job: Job, **variables)-> dict:
+async def check_storage(job: Job, **variables) -> dict:
+    piMySqlDB = None
     try:
         piMySqlDB = await connect_to_db()
-        logging.info(piMySqlDB)
+        if piMySqlDB is None:
+            logging.error("Failed to connect to the database.")
+            return {"error": "Database connection failed"}
+
         mycursor = piMySqlDB.cursor()
 
-        shelf_id= variables.get("shelf_id")
-        place_id= variables.get("place_id")
+        shelf_id = variables.get("shelf_id")
+        place_id = variables.get("place_id")
 
-        # Status mit für die Einlagerung eines neues Items auf 0 stehen.
         sql_select_check = "SELECT status FROM place WHERE shelf_id = %s AND place_id = %s"
-
         mycursor.execute(sql_select_check, (shelf_id, place_id))
+        
         data = mycursor.fetchone()
-        status = int(data[0])
+        if data and data[0] is not None:
+            status = int(data[0])
+            return {"space": "space" if status == 1 else None}
+        else:
+            logging.error("No data returned from database query.")
+            return {"error": "No data or invalid data"}
 
-        if status == 0:
-            variables = {"space": "space"}
-        else: 
-            variables = {"space": None}
-
-        return variables
-    
     except mysql.connector.Error as err:
         await handle_db_error(job, err)
 
     finally:
-        piMySqlDB.close()
+        if piMySqlDB is not None and piMySqlDB.is_connected():
+            piMySqlDB.close()
+
         
 # StoreBicycleToShelf
 @worker.task(task_type=STORE_BICYCLE_TO_SHELF_TASK_ID, exception_handler=error_handler)
@@ -361,13 +372,15 @@ async def store_success_throw(job: Job, **variables) -> dict:
 # UpdateShelfStatus =======================================================
 @worker.task(task_type=UPDATE_SHELF_STATUS_ID, exception_handler=error_handler)
 async def update_storage_inventory(job: Job, item, place_id):
+    piMySqlDB = None
     try:
-
         piMySqlDB = await connect_to_db()
-        mycursor = piMySqlDB.cursor()
-        
-        sql_update = "UPDATE place SET item = %s, status = 1, last_user = 'Warehouse Robot 1' WHERE place_id = %s"
+        if piMySqlDB is None:
+            logging.error("Failed to connect to the database.")
+            return {"error": "Database connection failed"}
 
+        mycursor = piMySqlDB.cursor()
+        sql_update = "UPDATE place SET item = %s, status = 1, last_user = 'Warehouse Robot 1' WHERE place_id = %s"
         mycursor.execute(sql_update, (item, place_id))
         piMySqlDB.commit()
 
@@ -375,7 +388,9 @@ async def update_storage_inventory(job: Job, item, place_id):
         await handle_db_error(job, err)
 
     finally:
-        piMySqlDB.close()
+        if piMySqlDB is not None and piMySqlDB.is_connected():
+            piMySqlDB.close()
+
 
 
 # ***********************************************************************************************

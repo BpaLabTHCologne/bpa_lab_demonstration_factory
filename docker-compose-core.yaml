@@ -259,7 +259,7 @@ services:
     container_name: bpa_lab_shipment_process
     networks:
       - camunda-platform
-    restart: always
+    #restart: always
     ports:
       - "3194:3194"
     depends_on:
@@ -277,7 +277,7 @@ services:
     container_name: bpa_lab_purchasing_process
     networks:
       - camunda-platform
-    restart: always
+    #restart: always
     ports:
       - "3100:3100"
     depends_on:
@@ -293,11 +293,68 @@ services:
       MYSQL_DATABASE_PURCHASING: purchasing_DB
       MYSQL_HOST_PORT: 3306
 
+# Warehouse operations process container including job workers
+  bpa_lab_warehouse_operations_process:
+    build: 
+      context: ./bpa_lab_warehouse_operations_process
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_warehouse_operations_process
+    networks:
+      - camunda-platform
+    ports:
+      - "3200:3200"
+    depends_on:
+      - zeebe
+      - elasticsearch
+      - mysql
+      - mqtt-broker
+    environment:
+        IS_PROD: ${IS_PROD}
+        ZEEBE_ADRESS: host.docker.internal:26500
+        ZEEBE_ADRESS_HOST: host.docker.internal
+        ZEEBE_ADRESS_PORT: 26500
+        MYSQL_HOST_NAME: mysql
+        MYSQL_USER: dev
+        MYSQL_PASSWORD: dev
+        MYSQL_DATABASE: warehouse
+        MYSQL_HOST_PORT: 3306
+
+# Warehouse robot process container including job workers
+  bpa_lab_warehouse_robot_process:
+    build:
+      context: ./bpa_lab_warehouse_operations_process/TXT_Controller_Apps
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_warehouse_robot_process
+    networks:
+      - camunda-platform
+    ports:
+      - "3300:3300"
+    depends_on:
+      - bpa_lab_warehouse_operations_process
+      - mqtt-broker
+    environment:
+        IS_PROD: ${IS_PROD}
+
+# MQTT-Broker for communication between warehouse robot process and warehouse operations process
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt-broker
+    networks:
+      - camunda-platform
+    ports:
+      - "2020:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-config:/mosquitto/config
+
 
 volumes:
   zeebe:
   elastic:
   kibana:
+  mosquitto-data:
+  mosquitto-config:
 
 networks:
   camunda-platform:
