@@ -21,7 +21,7 @@ docker compose -f docker-compose-core.yaml up -d
 > :information_source: Run the following command only to shut down the containers gracefully.
 
 ```
-docker compose -f docker-compose-core.yaml
+docker compose -f docker-compose-core.yaml down
 ```
 
 Wait a few minutes for the environment to start up and settle down. Monitor the logs inside the containers, to ensure the all the containers have started successfully.
