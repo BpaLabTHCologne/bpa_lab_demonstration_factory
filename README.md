@@ -24,18 +24,6 @@ docker compose -f docker-compose-core.yaml up -d
 docker compose -f docker-compose-core.yaml
 ```
 
-Now run another docker file for Warehouse Operations inside the bpa_lab_warehouse_operations_docker_version folder to pull, create and run all the containers:
-
-```
-docker compose up --build
-```
-
-> :information_source: Press the following buttons only if you wish to stop the warehouse operation containers gracefully.
-
-```
-Ctrl+C
-```
-
 Wait a few minutes for the environment to start up and settle down. Monitor the logs inside the containers, to ensure the all the containers have started successfully.
 
 Now you can navigate to the different web apps and log in with the user `demo` and password `demo`:
