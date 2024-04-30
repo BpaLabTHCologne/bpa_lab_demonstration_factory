@@ -430,7 +430,8 @@
         <zeebe:ioMapping>
           <zeebe:input source="noAuth" target="authentication.type" />
           <zeebe:input source="GET" target="method" />
-          <zeebe:input source="https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf6248e3818d26da2f41b59aa58087f0fd0499&#38;text=Namibian%20Brewery" target="url" />
+          <zeebe:input source="https://api.openrouteservice.org/geocode/search?" target="url" />
+          <zeebe:input source="={&#10; &#34;api_key&#34;: &#34;5b3ce3597851110001cf6248144e20c3fba54cdf8dba00a2ab8239b3&#34;,&#10; &#34;text&#34;: shippingAddress,&#10; &#34;size&#34;: 1&#10;}" target="queryParameters" />
           <zeebe:input source="20" target="connectionTimeoutInSeconds" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
@@ -450,11 +451,12 @@
         <zeebe:ioMapping>
           <zeebe:input source="noAuth" target="authentication.type" />
           <zeebe:input source="GET" target="method" />
-          <zeebe:input source="https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248e3818d26da2f41b59aa58087f0fd0499&#38;start=8.681495,49.41461&#38;end=8.687872,49.420318" target="url" />
+          <zeebe:input source="https://api.openrouteservice.org/v2/directions/driving-car?" target="url" />
+          <zeebe:input source="={&#10; &#34;api_key&#34;: &#34;5b3ce3597851110001cf6248144e20c3fba54cdf8dba00a2ab8239b3&#34;,&#10; &#34;start&#34;: string(longitudeWA) + &#34;,&#34; + string(latitudeWA),&#10; &#34;end&#34;: string(longitudeSA) + &#34;,&#34; + string(latitudeSA)&#10;}" target="queryParameters" />
           <zeebe:input source="20" target="connectionTimeoutInSeconds" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
-          <zeebe:header key="resultExpression" value="={&#10; distance: response.body.features[1].properties.summary.distance, &#10; duration: response.body.features[1].properties.summary.duration &#10;}" />
+          <zeebe:header key="resultExpression" value="={&#10; distance: decimal(response.body.features[1].properties.summary.distance / 1000, 2), &#10; duration: decimal(response.body.features[1].properties.summary.duration / 60, 2)&#10;}" />
           <zeebe:header key="retryBackoff" value="PT0S" />
         </zeebe:taskHeaders>
       </bpmn:extensionElements>
