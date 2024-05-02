@@ -411,7 +411,8 @@
         "columns": null
       },
       "id": "Field_0v9tqif",
-      "key": "shippingAddress"
+      "key": "shippingAddress",
+      "readonly": true
     }
   ],
   "type": "default",

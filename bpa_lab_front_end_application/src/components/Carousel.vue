@@ -159,10 +159,10 @@
 export default {
     data() {
         return {
-            customerName: 'Mario',
-            customerEmail: 'mario@skyrocket.com',
-            customerPhone: '+44 584 442 994',
-            customerAddress: '221B Baker Street',
+            customerName: 'Max Mustermann',
+            customerEmail: 'max@mustermann.de',
+            customerPhone: '+49 1234 567890',
+            customerAddress: 'Am Sandberg 9, 51643 Gummersbach',
             customerProduct: 'option1',
             customerQuantity: 'option2',
             productMass: '',

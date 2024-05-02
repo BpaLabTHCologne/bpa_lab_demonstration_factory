@@ -25,8 +25,8 @@ async function handler(job) {
 				host: 'smtp.ethereal.email',
 				port: 587,
 				auth: {
-					user: 'louvenia.leffler@ethereal.email',
-					pass: 'GqD1Fnk8h4rKvZTEYT'
+					user: 'delfina97@ethereal.email',
+					pass: '9hQh9xQVAwpZsC1QCK' 
 				}
 			});
 

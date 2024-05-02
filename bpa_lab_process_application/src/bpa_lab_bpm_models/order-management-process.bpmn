@@ -930,7 +930,7 @@ order for production</bpmn:text>
         "hide": "=hideCustomerAddress = true"
       },
       "readonly": false,
-      "defaultValue": "SAME AS ABOVE"
+      "defaultValue": "${customerAddress}"
     },
     {
       "text": "##### Confirm customer order details?",

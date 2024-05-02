@@ -30,8 +30,6 @@ let transactionId = ''
 const sendToWarehouseOperations = zbc.createWorker({
   taskType: 'sendToWarehouseOperations',
   taskHandler: handler,
-  // debug: true,
-  // loglevel: 'INFO',
   onReady: () => sendToWarehouseOperations.log('Job worker started successfully!')
 });
 

@@ -26,6 +26,7 @@ let place_id = ''
 let shelf_id = ''
 let task = ''
 let transactionId = ''
+let shippingAddress = ''
 
 const sendShipmentConfirmation = zbc.createWorker({
   taskType: 'sendShipmentConfirmation',
@@ -59,6 +60,7 @@ function handler(job) {
   shelf_id = job.variables.shelf_id;
   task = job.variables.task;
   transactionId = job.variables.transactionId;
+  shippingAddress = job.variables.shippingAddress;
 
 
   zbc.publishStartMessage({
@@ -87,6 +89,7 @@ function handler(job) {
       shelf_id: shelf_id,
       task: task,
       transactionId: transactionId,
+      shippingAddress: shippingAddress,
     },
   })
 
