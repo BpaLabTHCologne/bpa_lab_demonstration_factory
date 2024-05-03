@@ -481,35 +481,6 @@
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_14vpp19" sourceRef="ServiceTask_CalculateTravelDistance" targetRef="transportCompany" />
     <bpmn:sequenceFlow id="Flow_10xexi4" sourceRef="transportCompany" targetRef="UpdateWO" />
-    <bpmn:sequenceFlow id="Flow_1ml8fdu" sourceRef="UpdateWO" targetRef="shipmentUpdate" />
-    <bpmn:callActivity id="shipmentUpdate" name="Update Warehouse">
-      <bpmn:extensionElements>
-        <zeebe:calledElement processId="WarehouseOperationsProcess" propagateAllChildVariables="false" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1ml8fdu</bpmn:incoming>
-      <bpmn:outgoing>Flow_16azuuv</bpmn:outgoing>
-    </bpmn:callActivity>
-    <bpmn:sequenceFlow id="Flow_16azuuv" sourceRef="shipmentUpdate" targetRef="Activity_email" />
-    <bpmn:serviceTask id="Activity_email" name="Send Shipped email to customer">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="sendShippedEmail" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_16azuuv</bpmn:incoming>
-      <bpmn:outgoing>Flow_15meqys</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:manualTask id="Activity_00qopob" name="Handover product to customer">
-      <bpmn:incoming>Flow_15meqys</bpmn:incoming>
-      <bpmn:outgoing>Flow_1nx1glf</bpmn:outgoing>
-    </bpmn:manualTask>
-    <bpmn:sequenceFlow id="Flow_15meqys" sourceRef="Activity_email" targetRef="Activity_00qopob" />
-    <bpmn:sequenceFlow id="Flow_1nx1glf" sourceRef="Activity_00qopob" targetRef="Event_0osux6c" />
-    <bpmn:endEvent id="Event_0osux6c" name="End">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="shipmentCompleted" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1nx1glf</bpmn:incoming>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1qoa11s" />
-    </bpmn:endEvent>
     <bpmn:userTask id="input_activity" name="Input shipping information">
       <bpmn:documentation>Input information where the customer details are store from a form.</bpmn:documentation>
       <bpmn:extensionElements>
@@ -519,6 +490,35 @@
       <bpmn:outgoing>Flow_1l5p1qk</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1l5p1qk" sourceRef="input_activity" targetRef="ServiceTask_GetCoordinatesOfShippingAdress" />
+    <bpmn:sequenceFlow id="Flow_1nx1glf" sourceRef="Activity_00qopob" targetRef="Event_0osux6c" />
+    <bpmn:sequenceFlow id="Flow_15meqys" sourceRef="Activity_email" targetRef="Activity_00qopob" />
+    <bpmn:endEvent id="Event_0osux6c" name="End">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="shipmentCompleted" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1nx1glf</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1qoa11s" />
+    </bpmn:endEvent>
+    <bpmn:manualTask id="Activity_00qopob" name="Handover product to customer">
+      <bpmn:incoming>Flow_15meqys</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nx1glf</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:serviceTask id="Activity_email" name="Send Shipped email to customer">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendShippedEmail" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_16azuuv</bpmn:incoming>
+      <bpmn:outgoing>Flow_15meqys</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:callActivity id="shipmentUpdate" name="Update Warehouse">
+      <bpmn:extensionElements>
+        <zeebe:calledElement processId="WarehouseOperationsProcess" propagateAllChildVariables="false" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ml8fdu</bpmn:incoming>
+      <bpmn:outgoing>Flow_16azuuv</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="Flow_16azuuv" sourceRef="shipmentUpdate" targetRef="Activity_email" />
+    <bpmn:sequenceFlow id="Flow_1ml8fdu" sourceRef="UpdateWO" targetRef="shipmentUpdate" />
   </bpmn:process>
   <bpmn:message id="Message_2173054" name="Message_startdelivery">
     <bpmn:extensionElements>

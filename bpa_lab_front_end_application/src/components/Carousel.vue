@@ -221,6 +221,7 @@ export default {
                             customerAddress: this.customerAddress,
                             customerProduct: this.customerProduct,
                             customerQuantity: parseInt(this.customerQuantity),
+                            shippingAddress: this.customerAddress,
                             // customerOrderType: this.customerOrderType,
                             mass: this.mass,
                             productMass: this.productMasses,
