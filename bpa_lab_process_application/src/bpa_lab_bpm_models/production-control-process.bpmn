@@ -269,8 +269,8 @@ order for production</bpmn:text>
       "conditional": {
         "hide": "=hideCustomerAddress = true"
       },
-      "readonly": false,
-      "defaultValue": "SAME AS ABOVE"
+      "readonly": true,
+      "defaultValue": "${shippingAddress}"
     },
     {
       "text": "##### Confirm customer order details?",

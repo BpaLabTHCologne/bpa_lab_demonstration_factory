@@ -43,12 +43,6 @@
       <bpmn:outgoing>SequenceFlow_BicycleAvailableYes</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_BicycleAvailableNo</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:endEvent id="EndEvent_BicycleRetrievedFromShelf" name="Bicycle retrieved from shelf">
-      <bpmn:incoming>Flow_1hriyeo</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:endEvent id="EndEvent_BicycleStoredToShelf" name="Bicycle stored to shelf">
-      <bpmn:incoming>Flow_1sgdq8m</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:endEvent id="EndEvent_SpaceNotAvailable" name="Space not available">
       <bpmn:incoming>SequenceFlow_SpaceNotAvailableNo</bpmn:incoming>
     </bpmn:endEvent>
@@ -153,6 +147,12 @@
       <bpmn:incoming>SequenceFlow_BicycleAvailableNo</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1pboslm" />
     </bpmn:endEvent>
+    <bpmn:endEvent id="EndEvent_BicycleRetrievedFromShelf" name="Bicycle retrieved from shelf">
+      <bpmn:incoming>Flow_1hriyeo</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="EndEvent_BicycleStoredToShelf" name="Bicycle stored to shelf">
+      <bpmn:incoming>Flow_1sgdq8m</bpmn:incoming>
+    </bpmn:endEvent>
   </bpmn:process>
   <bpmn:message id="Message_2o4h9rs" name="Msg_StartWarehouseRobot">
     <bpmn:extensionElements>
@@ -199,9 +199,6 @@
       <bpmn:outgoing>SequenceFlow_StoreBicycleNo2</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_StoreBicycleYes2</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:endEvent id="EndEvent_RobotStopped" name="Robot stopped">
-      <bpmn:incoming>Flow_1q8he6q</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:startEvent id="StartEvent_StartWarehouseRobot" name="Start warehouse robot">
       <bpmn:outgoing>Flow_1rejccn</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_06k0jji" messageRef="Message_2o4h9rs" />
@@ -234,6 +231,9 @@
       <bpmn:incoming>Flow_1rm5t0s</bpmn:incoming>
       <bpmn:outgoing>Flow_1tqjcu1</bpmn:outgoing>
     </bpmn:sendTask>
+    <bpmn:endEvent id="EndEvent_RobotStopped" name="Robot stopped">
+      <bpmn:incoming>Flow_1q8he6q</bpmn:incoming>
+    </bpmn:endEvent>
   </bpmn:process>
   <bpmn:message id="Message_2hiplml" name="Msg_StartWarehouseOperation" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -250,18 +250,6 @@
         <dc:Bounds x="625" y="145" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="609" y="115" width="82" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0p64wmy_di" bpmnElement="EndEvent_BicycleRetrievedFromShelf">
-        <dc:Bounds x="1352" y="264" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1330" y="303" width="81" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1rmfcke_di" bpmnElement="EndEvent_BicycleStoredToShelf">
-        <dc:Bounds x="1352" y="472" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1330" y="518" width="81" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_11vf6e7_di" bpmnElement="EndEvent_SpaceNotAvailable">
@@ -327,6 +315,18 @@
         <dc:Bounds x="792" y="152" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="786" y="195" width="55" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ut9ox0_di" bpmnElement="EndEvent_BicycleRetrievedFromShelf">
+        <dc:Bounds x="1352" y="264" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1330" y="303" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ukb8vj_di" bpmnElement="EndEvent_BicycleStoredToShelf">
+        <dc:Bounds x="1352" y="472" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1330" y="518" width="81" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_105d3jy_di" bpmnElement="SequenceFlow_StoreBicycleNo">
@@ -448,12 +448,6 @@
           <dc:Bounds x="490" y="846" width="40" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1xkm2ju_di" bpmnElement="EndEvent_RobotStopped">
-        <dc:Bounds x="1342" y="852" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1324" y="828" width="72" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_18pig0r_di" bpmnElement="StartEvent_StartWarehouseRobot">
         <dc:Bounds x="332" y="842" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -467,6 +461,12 @@
       <bpmndi:BPMNShape id="Activity_08uu8yf_di" bpmnElement="Activity_0nrtdju">
         <dc:Bounds x="1060" y="920" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1y8oyc3_di" bpmnElement="EndEvent_RobotStopped">
+        <dc:Bounds x="1342" y="852" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1324" y="903" width="72" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1tqjcu1_di" bpmnElement="Flow_1tqjcu1">
         <di:waypoint x="1160" y="960" />
