@@ -24,14 +24,6 @@ async function main() {
     // Log the purchasing BPMN diagram deployment result
     console.log('\nPurchasing BPMN deployed successfully:', JSON.stringify(bpmnResult, null, 2));
 
-    // Deploy the start BPMN diagram
-    const start = await zbc.deployResource({
-      processFilename: `./bpa_lab_bpm_models/start.bpmn`,
-    });
-
-    // Log the purchasing BPMN diagram deployment result
-    console.log('\nStart BPMN deployed successfully:', JSON.stringify(start, null, 2));
-
     // Deploy the DMN vendor decision model 
     const dmnResult = await zbc.deployResource({
       decisionFilename: `./bpa_lab_bpm_models/vendor-decision.dmn`,
