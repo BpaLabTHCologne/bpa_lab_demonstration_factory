@@ -154,7 +154,7 @@ services:
     profiles:
       - kibana
   
-  #MySQL container for master's data 
+  # MySQL container for master's data 
   mysql:
     container_name: mysqldb
     image: mysql:5
@@ -174,7 +174,7 @@ services:
       MYSQL_MAX_CONNECTIONS: 100
       MYSQL_HOST_PORT: 3306
 
-  #phpMyAdmin container for database adminstration tasks
+  # phpMyAdmin container for database adminstration tasks
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpMyAdmin
@@ -191,7 +191,7 @@ services:
       PMA_PASSWORD: root
       PMA_ARBITRARY: 1
 
-#Front-end application container
+# Front-end application container
   bpa_lab_front_end_application:
     build: 
       context: ./bpa_lab_front_end_application
@@ -206,7 +206,7 @@ services:
       - ./bpa_lab_front_end_application/public:/app/public
       - ./bpa_lab_front_end_application/src:/app/src
 
-#Process application container including job workers
+# Process application container including job workers
   bpa_lab_process_application:
     build:
       context: ./bpa_lab_process_application
@@ -234,7 +234,7 @@ services:
       MYSQL_DATABASE_PRODUCTION: production_order_DB
       MYSQL_DATABASE_COMPONENTS: component_DB
 
-#REST middleware server container used to communicate between the front-end and zeebe broker
+# REST middleware server container used to communicate between the front-end and zeebe broker
   bpa_lab_rest_middleware_server:
     build:
       context: ./bpa_lab_rest_middleware_server
@@ -251,7 +251,7 @@ services:
       - zeebe
       - bpa_lab_front_end_application
 
-#Shipment process container including job workers
+# Shipment process container including job workers
   bpa_lab_shipment_process:
     build:
       context: ./bpa_lab_shipment_process
@@ -269,7 +269,7 @@ services:
     volumes:
       - ./bpa_lab_shipment_process/src:/app/src
 
-#Purchasing process container including job workers
+# Purchasing process container including job workers
   bpa_lab_purchasing_process:
     build:
       context: ./bpa_lab_purchasing_process
