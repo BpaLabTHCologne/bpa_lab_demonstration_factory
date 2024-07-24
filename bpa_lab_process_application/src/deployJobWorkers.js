@@ -53,7 +53,7 @@ async function main() {
 
     // Deploy the warehouse operations BPMN diagram
     const warehouseOperations = await zbc.deployResource({
-      decisionFilename: `./bpa_lab_bpm_models/warehouse-operations-process.bpmn`,
+      processFilename: `./bpa_lab_bpm_models/warehouse-operations-process.bpmn`,
     });
 
     // Log the warehouse operations BPMN diagram
@@ -61,7 +61,7 @@ async function main() {
 
     // Deploy the warehouse robot BPMN diagram
     const warehouseRobot = await zbc.deployResource({
-      decisionFilename: `./bpa_lab_bpm_models/warehouse-robot-process.bpmn`,
+      processFilename: `./bpa_lab_bpm_models/warehouse-robot-process.bpmn`,
     });
 
     // Log the warehouse robot BPMN diagram

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xmzs53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.24.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
   <bpmn:collaboration id="Collaboration_12fblkz">
-    <bpmn:participant id="Participant_1o4at5h" name="Production Control" processRef="production-control-process" />
-    <bpmn:participant id="Participant_19m935s" name="Order Management" processRef="order-management-process" />
+    <bpmn:participant id="Participant_1o4at5h" name="Production Control" processRef="ProductionControlProcess" />
+    <bpmn:participant id="Participant_19m935s" name="Order Management" processRef="OrderManagementProcess" />
     <bpmn:messageFlow id="Flow_0tw80c1" sourceRef="SendTask_SendCustomerOrderForProduction" targetRef="StartEvent_ReceiveProductionOrder" />
     <bpmn:messageFlow id="Flow_159eb9f" sourceRef="EndEvent_ProductionOrderCompleted" targetRef="ReceiveTask_ReceiveFinishedProductionOrder" />
     <bpmn:textAnnotation id="TextAnnotation_1s50v8k">
@@ -118,7 +118,7 @@ order for production</bpmn:text>
       <zeebe:subscription correlationKey="=correlationValue" />
     </bpmn:extensionElements>
   </bpmn:message>
-  <bpmn:process id="production-control-process" isExecutable="true">
+  <bpmn:process id="ProductionControlProcess" name="Production control process" isExecutable="true">
     <bpmn:extensionElements>
       <zeebe:userTaskForm id="UserTaskForm_324473u">{
   "executionPlatform": "Camunda Cloud",
@@ -767,7 +767,7 @@ order for production</bpmn:text>
       <bpmn:incoming>SequenceFlow_ProductionStatusStopped</bpmn:incoming>
     </bpmn:endEvent>
   </bpmn:process>
-  <bpmn:process id="order-management-process" isExecutable="false">
+  <bpmn:process id="OrderManagementProcess" isExecutable="false">
     <bpmn:extensionElements>
       <zeebe:userTaskForm id="UserTaskForm_0kfqech">{
   "executionPlatform": "Camunda Cloud",

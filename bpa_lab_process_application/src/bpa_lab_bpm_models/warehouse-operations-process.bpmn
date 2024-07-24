@@ -160,7 +160,7 @@
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmn:message id="Message_1toum5n" name="Message_1toum5n" />
-  <bpmn:process id="WarehouseRobotProcess" name="Warehouse robot process" isExecutable="false">
+  <bpmn:process id="WarehouseRobotProcess" isExecutable="false">
     <bpmn:exclusiveGateway id="Gateway_1198veh">
       <bpmn:incoming>Flow_01xe0cm</bpmn:incoming>
       <bpmn:incoming>Flow_1tqjcu1</bpmn:incoming>

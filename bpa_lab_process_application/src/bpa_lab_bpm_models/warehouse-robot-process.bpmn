@@ -30,7 +30,7 @@
       <zeebe:subscription correlationKey="=transactionId" />
     </bpmn:extensionElements>
   </bpmn:message>
-  <bpmn:process id="WarehouseOperationsProcess" name="Warehouse operations process" isExecutable="false">
+  <bpmn:process id="WarehouseOperationsProcess" isExecutable="false">
     <bpmn:serviceTask id="ServiceTask_CheckBicycleAvaillability" name="Check bicycle availability">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="check-bicycle-availability" />

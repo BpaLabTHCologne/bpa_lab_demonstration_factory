@@ -18,18 +18,18 @@ const router = createRouter({
       component: OrderPage,
       beforeEnter: async (to, from, next) => {
         // Add logic to start BPMN process here
-        const processKey = 'order-management-id'; // Replace with your actual BPMN process key
+        const processKey = 'OrderManagementProcess'; // Replace with your actual BPMN process key
         const variables = {
           // Include the necessary variables here
         };
 
         try {
-          const response = await axios.post('http://localhost:3000/start-process', {
-            processKey,
+          const response = await axios.post('http://localhost:3005/start-process-server', {
+            workflowKey: processKey,
             variables
           });
 
-          console.log('Workflow Instance Key:', response.data.workflowInstanceKey);
+          console.log('Workflow Instance Key:', response.data.response.workflowInstanceKey);
           next(); // Continue with navigation
         } catch (error) {
           console.error('Error starting BPMN process:', error);

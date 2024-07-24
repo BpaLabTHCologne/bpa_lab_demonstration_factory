@@ -25,13 +25,15 @@ app.post('/start-process-server', async (req, res) => {
     console.log("GOT POST REQUEST.....")
     const { workflowKey, variables } = req.body;
 
+    console.log("Request Body:", req.body); // Log the entire request body
+
     // Use createProcessInstance method
     const response = await zbc.createProcessInstanceWithResult({
       bpmnProcessId: workflowKey,
       variables,
     });
 
-    console.log("REsponse", response)
+    console.log("Response", response)
 
     res.json({ success: true, response });
   } catch (error) {

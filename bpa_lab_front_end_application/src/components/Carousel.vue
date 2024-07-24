@@ -213,7 +213,7 @@ export default {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        workflowKey: 'order-management-process',
+                        workflowKey: 'OrderManagementProcess',
                         variables: {
                             customerName: this.customerName,
                             customerEmail: this.customerEmail,

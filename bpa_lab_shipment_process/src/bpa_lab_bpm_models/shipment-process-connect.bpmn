@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_08qpqnf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.19.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0" camunda:diagramRelationId="67af45b5-cc6c-4546-9323-90b495908be3">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_08qpqnf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.24.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0" camunda:diagramRelationId="67af45b5-cc6c-4546-9323-90b495908be3">
   <bpmn:collaboration id="ship">
     <bpmn:participant id="Participant_shipment" name="Shipment" processRef="ShipmentProcess" />
   </bpmn:collaboration>
@@ -420,12 +420,12 @@
 }</zeebe:userTaskForm>
     </bpmn:extensionElements>
     <bpmn:dataStoreReference id="DataStore_ship" name="customer_DB (MySQL)" />
-    <bpmn:startEvent id="StartEvent_shipment" name="Start">
+    <bpmn:startEvent id="StartEvent_ShipmentStarted" name="Shipment started">
       <bpmn:outgoing>Flow_1pmdgh3</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1jf1bc0" messageRef="Message_099t73j" />
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1pmdgh3" sourceRef="StartEvent_shipment" targetRef="input_activity" />
-    <bpmn:serviceTask id="ServiceTask_GetCoordinatesOfShippingAdress" name="Get Coordinates of shipping address" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="6" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+    <bpmn:sequenceFlow id="Flow_1pmdgh3" sourceRef="StartEvent_ShipmentStarted" targetRef="UserTask_InputShippingInformation" />
+    <bpmn:serviceTask id="ServiceTask_GetCoordinatesOfShippingAdress" name="Get Coordinates of shipping adress" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="6" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="io.camunda:http-json:1" retries="3" />
         <zeebe:ioMapping>
@@ -465,23 +465,23 @@
       <bpmn:outgoing>Flow_14vpp19</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_0g8wzw1" sourceRef="ServiceTask_GetCoordinatesOfShippingAdress" targetRef="ServiceTask_CalculateTravelDistance" />
-    <bpmn:businessRuleTask id="transportCompany" name="Decide Company">
+    <bpmn:businessRuleTask id="BusinessRuleTask_DecideOnCompany" name="Decide on company">
       <bpmn:extensionElements>
         <zeebe:calledDecision decisionId="transportCompany" resultVariable="Company" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_14vpp19</bpmn:incoming>
       <bpmn:outgoing>Flow_10xexi4</bpmn:outgoing>
     </bpmn:businessRuleTask>
-    <bpmn:userTask id="UpdateWO" name="Check information">
+    <bpmn:userTask id="UserTask_CheckInformation" name="Check information">
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_0deq2qa" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_10xexi4</bpmn:incoming>
       <bpmn:outgoing>Flow_1ml8fdu</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_14vpp19" sourceRef="ServiceTask_CalculateTravelDistance" targetRef="transportCompany" />
-    <bpmn:sequenceFlow id="Flow_10xexi4" sourceRef="transportCompany" targetRef="UpdateWO" />
-    <bpmn:userTask id="input_activity" name="Input shipping information">
+    <bpmn:sequenceFlow id="Flow_14vpp19" sourceRef="ServiceTask_CalculateTravelDistance" targetRef="BusinessRuleTask_DecideOnCompany" />
+    <bpmn:sequenceFlow id="Flow_10xexi4" sourceRef="BusinessRuleTask_DecideOnCompany" targetRef="UserTask_CheckInformation" />
+    <bpmn:userTask id="UserTask_InputShippingInformation" name="Input shipping information">
       <bpmn:documentation>Input information where the customer details are store from a form.</bpmn:documentation>
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_3iki37l" />
@@ -489,21 +489,21 @@
       <bpmn:incoming>Flow_1pmdgh3</bpmn:incoming>
       <bpmn:outgoing>Flow_1l5p1qk</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_1l5p1qk" sourceRef="input_activity" targetRef="ServiceTask_GetCoordinatesOfShippingAdress" />
-    <bpmn:sequenceFlow id="Flow_1nx1glf" sourceRef="Activity_00qopob" targetRef="Event_0osux6c" />
-    <bpmn:sequenceFlow id="Flow_15meqys" sourceRef="Activity_email" targetRef="Activity_00qopob" />
-    <bpmn:endEvent id="Event_0osux6c" name="End">
+    <bpmn:sequenceFlow id="Flow_1l5p1qk" sourceRef="UserTask_InputShippingInformation" targetRef="ServiceTask_GetCoordinatesOfShippingAdress" />
+    <bpmn:sequenceFlow id="Flow_1nx1glf" sourceRef="ManualTask_HandoverProductToCustomer" targetRef="EndEvent_ShipmentCompleted" />
+    <bpmn:sequenceFlow id="Flow_15meqys" sourceRef="ServiceTask_SendShippingConfirmationToCustomer" targetRef="ManualTask_HandoverProductToCustomer" />
+    <bpmn:endEvent id="EndEvent_ShipmentCompleted" name="Shipment completed">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="shipmentCompleted" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1nx1glf</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1qoa11s" />
     </bpmn:endEvent>
-    <bpmn:manualTask id="Activity_00qopob" name="Handover product to customer">
+    <bpmn:manualTask id="ManualTask_HandoverProductToCustomer" name="Handover product to customer">
       <bpmn:incoming>Flow_15meqys</bpmn:incoming>
       <bpmn:outgoing>Flow_1nx1glf</bpmn:outgoing>
     </bpmn:manualTask>
-    <bpmn:serviceTask id="Activity_email" name="Send Shipped email to customer">
+    <bpmn:serviceTask id="ServiceTask_SendShippingConfirmationToCustomer" name="Send shipping confirmation to customer">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="sendShippedEmail" />
       </bpmn:extensionElements>
@@ -517,8 +517,8 @@
       <bpmn:incoming>Flow_1ml8fdu</bpmn:incoming>
       <bpmn:outgoing>Flow_16azuuv</bpmn:outgoing>
     </bpmn:callActivity>
-    <bpmn:sequenceFlow id="Flow_16azuuv" sourceRef="shipmentUpdate" targetRef="Activity_email" />
-    <bpmn:sequenceFlow id="Flow_1ml8fdu" sourceRef="UpdateWO" targetRef="shipmentUpdate" />
+    <bpmn:sequenceFlow id="Flow_16azuuv" sourceRef="shipmentUpdate" targetRef="ServiceTask_SendShippingConfirmationToCustomer" />
+    <bpmn:sequenceFlow id="Flow_1ml8fdu" sourceRef="UserTask_CheckInformation" targetRef="shipmentUpdate" />
   </bpmn:process>
   <bpmn:message id="Message_2173054" name="Message_startdelivery">
     <bpmn:extensionElements>
@@ -546,46 +546,47 @@
           <dc:Bounds x="415" y="106" width="68" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0hinj9n_di" bpmnElement="StartEvent_shipment">
+      <bpmndi:BPMNShape id="Event_0hinj9n_di" bpmnElement="StartEvent_ShipmentStarted">
         <dc:Bounds x="240" y="259" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="246" y="302" width="25" height="14" />
+          <dc:Bounds x="216" y="302" width="84" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_17m9g15_di" bpmnElement="ServiceTask_GetCoordinatesOfShippingAdress">
         <dc:Bounds x="470" y="237" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1bh0xjh" bpmnElement="ServiceTask_CalculateTravelDistance">
         <dc:Bounds x="610" y="237" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0xtaano_di" bpmnElement="transportCompany">
+      <bpmndi:BPMNShape id="Activity_0xtaano_di" bpmnElement="BusinessRuleTask_DecideOnCompany">
         <dc:Bounds x="750" y="237" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1e2x74s_di" bpmnElement="UpdateWO">
+      <bpmndi:BPMNShape id="Activity_1e2x74s_di" bpmnElement="UserTask_CheckInformation">
         <dc:Bounds x="880" y="237" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_15yzkj2" bpmnElement="UserTask_InputShippingInformation">
+        <dc:Bounds x="320" y="237" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_022i8rn_di" bpmnElement="EndEvent_ShipmentCompleted">
+        <dc:Bounds x="1452" y="256" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1446" y="299" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bbsffu_di" bpmnElement="ManualTask_HandoverProductToCustomer">
+        <dc:Bounds x="1290" y="234" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06psarr_di" bpmnElement="ServiceTask_SendShippingConfirmationToCustomer">
+        <dc:Bounds x="1150" y="234" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1sd30fo_di" bpmnElement="shipmentUpdate">
         <dc:Bounds x="1010" y="234" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_06psarr_di" bpmnElement="Activity_email">
-        <dc:Bounds x="1150" y="234" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1bbsffu_di" bpmnElement="Activity_00qopob">
-        <dc:Bounds x="1290" y="234" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_022i8rn_di" bpmnElement="Event_0osux6c">
-        <dc:Bounds x="1452" y="256" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1460" y="299" width="20" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_15yzkj2" bpmnElement="input_activity">
-        <dc:Bounds x="320" y="237" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1pmdgh3_di" bpmnElement="Flow_1pmdgh3">
         <di:waypoint x="276" y="277" />
@@ -603,25 +604,25 @@
         <di:waypoint x="850" y="277" />
         <di:waypoint x="880" y="277" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1ml8fdu_di" bpmnElement="Flow_1ml8fdu">
-        <di:waypoint x="980" y="277" />
-        <di:waypoint x="1010" y="277" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_16azuuv_di" bpmnElement="Flow_16azuuv">
-        <di:waypoint x="1110" y="274" />
-        <di:waypoint x="1150" y="274" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_15meqys_di" bpmnElement="Flow_15meqys">
-        <di:waypoint x="1250" y="274" />
-        <di:waypoint x="1290" y="274" />
+      <bpmndi:BPMNEdge id="Flow_1l5p1qk_di" bpmnElement="Flow_1l5p1qk">
+        <di:waypoint x="420" y="277" />
+        <di:waypoint x="470" y="277" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1nx1glf_di" bpmnElement="Flow_1nx1glf">
         <di:waypoint x="1390" y="274" />
         <di:waypoint x="1452" y="274" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1l5p1qk_di" bpmnElement="Flow_1l5p1qk">
-        <di:waypoint x="420" y="277" />
-        <di:waypoint x="470" y="277" />
+      <bpmndi:BPMNEdge id="Flow_15meqys_di" bpmnElement="Flow_15meqys">
+        <di:waypoint x="1250" y="274" />
+        <di:waypoint x="1290" y="274" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16azuuv_di" bpmnElement="Flow_16azuuv">
+        <di:waypoint x="1110" y="274" />
+        <di:waypoint x="1150" y="274" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ml8fdu_di" bpmnElement="Flow_1ml8fdu">
+        <di:waypoint x="980" y="277" />
+        <di:waypoint x="1010" y="277" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_136ibia_di" bpmnElement="DataOutputAssociation_136ibia">
         <di:waypoint x="497" y="237" />
