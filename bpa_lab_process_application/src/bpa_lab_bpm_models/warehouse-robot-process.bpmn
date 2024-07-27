@@ -4,8 +4,8 @@
     <bpmn:participant id="Participant_WarehouseOperations" name="Warehouse Operations" processRef="WarehouseOperationsProcess" />
     <bpmn:participant id="Participant_WarehouseRobot" name="Warehouse Robot" processRef="WarehouseRobotProcess" />
     <bpmn:messageFlow id="Flow_0x3jzo0" sourceRef="ServiceTask_GetBicycleFromShelf" targetRef="StartEvent_StartWarehouseRobot" />
-    <bpmn:messageFlow id="Flow_1kpit84" sourceRef="Activity_1bct2kp" targetRef="ReceiveTask_MovedBicycleToDock" />
-    <bpmn:messageFlow id="Flow_0k689p1" sourceRef="Activity_0nrtdju" targetRef="ReceiveTask_StoredBicycleToShelf" />
+    <bpmn:messageFlow id="Flow_1kpit84" sourceRef="SendTask_MovedBicycleToDock" targetRef="ReceiveTask_MovedBicycleToDock" />
+    <bpmn:messageFlow id="Flow_0k689p1" sourceRef="SendTask_StoredBicycleToShelf" targetRef="ReceiveTask_StoredBicycleToShelf" />
     <bpmn:messageFlow id="Flow_0o2pp92" sourceRef="SendTask_StoreBicycleToShelf" targetRef="StartEvent_StartWarehouseRobot" />
   </bpmn:collaboration>
   <bpmn:message id="Message_1rqaj14" name="StartWarehouse_Message_1rqaj14" />
@@ -22,12 +22,12 @@
   </bpmn:message>
   <bpmn:message id="Message_36e652c" name="Msg_MovedBicycleToDock">
     <bpmn:extensionElements>
-      <zeebe:subscription correlationKey="=transactionId" />
+      <zeebe:subscription correlationKey="=correlationValue" />
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmn:message id="Message_2agcfmo" name="Msg_StoredToShelf">
     <bpmn:extensionElements>
-      <zeebe:subscription correlationKey="=transactionId" />
+      <zeebe:subscription correlationKey="=correlationValue" />
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmn:process id="WarehouseOperationsProcess" isExecutable="false">
@@ -206,28 +206,28 @@
       <bpmn:outgoing>Flow_1rejccn</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_06k0jji" messageRef="Message_2o4h9rs" />
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1tqjcu1" sourceRef="Activity_0nrtdju" targetRef="Gateway_1198veh" />
-    <bpmn:sequenceFlow id="Flow_01xe0cm" sourceRef="Activity_1bct2kp" targetRef="Gateway_1198veh" />
+    <bpmn:sequenceFlow id="Flow_1tqjcu1" sourceRef="SendTask_StoredBicycleToShelf" targetRef="Gateway_1198veh" />
+    <bpmn:sequenceFlow id="Flow_01xe0cm" sourceRef="SendTask_MovedBicycleToDock" targetRef="Gateway_1198veh" />
     <bpmn:sequenceFlow id="Flow_1q8he6q" sourceRef="Gateway_1198veh" targetRef="EndEvent_RobotStopped" />
     <bpmn:sequenceFlow id="Flow_1qyfl58" sourceRef="ServiceTask_PickBicycleFromShopFloor" targetRef="ServiceTask_StoreBicycleToShelf" />
-    <bpmn:sequenceFlow id="Flow_1rm5t0s" sourceRef="ServiceTask_StoreBicycleToShelf" targetRef="Activity_0nrtdju" />
+    <bpmn:sequenceFlow id="Flow_1rm5t0s" sourceRef="ServiceTask_StoreBicycleToShelf" targetRef="SendTask_StoredBicycleToShelf" />
     <bpmn:sequenceFlow id="SequenceFlow_StoreBicycleYes2" name="Yes" sourceRef="Gateway_StoreBicycle2" targetRef="ServiceTask_PickBicycleFromShopFloor">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=task = "store"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1ogkuts" sourceRef="ServiceTask_MoveBicycleToLoadingDock" targetRef="Activity_1bct2kp" />
+    <bpmn:sequenceFlow id="Flow_1ogkuts" sourceRef="ServiceTask_MoveBicycleToLoadingDock" targetRef="SendTask_MovedBicycleToDock" />
     <bpmn:sequenceFlow id="Flow_0bwtj70" sourceRef="ServiceTask_FetchBicycleFromShelf" targetRef="ServiceTask_MoveBicycleToLoadingDock" />
     <bpmn:sequenceFlow id="SequenceFlow_StoreBicycleNo2" name="No" sourceRef="Gateway_StoreBicycle2" targetRef="ServiceTask_FetchBicycleFromShelf">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=task = "retrieve"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1rejccn" sourceRef="StartEvent_StartWarehouseRobot" targetRef="Gateway_StoreBicycle2" />
-    <bpmn:sendTask id="Activity_1bct2kp" name="Moved bicycle to dock">
+    <bpmn:sendTask id="SendTask_MovedBicycleToDock" name="Moved bicycle to dock">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="moved-bicycle-to-dock" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1ogkuts</bpmn:incoming>
       <bpmn:outgoing>Flow_01xe0cm</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:sendTask id="Activity_0nrtdju" name="Stored bicycle to shelf">
+    <bpmn:sendTask id="SendTask_StoredBicycleToShelf" name="Stored bicycle to shelf">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="stored-to-shelf" />
       </bpmn:extensionElements>
@@ -460,11 +460,11 @@
           <dc:Bounds x="310" y="883" width="81" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1w11p44_di" bpmnElement="Activity_1bct2kp">
+      <bpmndi:BPMNShape id="Activity_1w11p44_di" bpmnElement="SendTask_MovedBicycleToDock">
         <dc:Bounds x="970" y="740" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_08uu8yf_di" bpmnElement="Activity_0nrtdju">
+      <bpmndi:BPMNShape id="Activity_08uu8yf_di" bpmnElement="SendTask_StoredBicycleToShelf">
         <dc:Bounds x="1060" y="920" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>

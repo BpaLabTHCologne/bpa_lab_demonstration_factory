@@ -2,7 +2,6 @@
 const { ZBClient } = require('zeebe-node');
 require('./sendMail');
 require('./storePurchasingOrder'); 
-require('./message');
 require('./reply');
 require('./completePurchasingOrder');
 require('./rejectPurchasingOrder');

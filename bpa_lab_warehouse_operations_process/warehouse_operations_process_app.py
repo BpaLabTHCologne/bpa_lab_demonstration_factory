@@ -256,7 +256,7 @@ async def pickup_ready_throw(job: Job, **variables) -> dict:
     await client.publish_message(
         name=MOVED_TO_DOCK_MESSAGE_ID,
         message_id=generate(),
-        correlation_key=str(variables.get("transactionId")),
+        correlation_key=str(variables.get("correlationValue")),
         variables=variables
     )
 
@@ -363,7 +363,7 @@ async def store_success_throw(job: Job, **variables) -> dict:
     await client.publish_message(
         name=STORED_TO_SHELF_MESSAGE_ID,
         message_id=generate(),
-        correlation_key=str(variables.get("transactionId")),
+        correlation_key=str(variables.get("correlationValue")),
         variables=variables
     )
 

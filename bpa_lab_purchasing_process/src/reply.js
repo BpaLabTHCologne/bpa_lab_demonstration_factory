@@ -5,7 +5,7 @@ const zbc = new ZB.ZBClient({
 });
 
 const receiveConfirmation = zbc.createWorker({
-  taskType: 'send_reply_purchasing',
+  taskType: 'send-reply-purchasing',
   taskHandler: handler,
   // debug: true,
   // loglevel: 'INFO',
@@ -16,7 +16,7 @@ function handler(job) {
   console.log("receiveConfirmation");
     console.log(job.variables);
     zbc.publishMessage({
-      name: 'replymessage_purchasing',
+      name: 'receiveFromPurchasing',
       correlationKey: job.variables["correlationValue"],
       variables: {
       },

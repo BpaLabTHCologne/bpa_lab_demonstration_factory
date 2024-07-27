@@ -139,7 +139,7 @@ function checkStock(componentName, componentQuantityAvailable, orderProduct, ord
     purchasingRequired = "yes";
     quantityNeededToPurchase = orderQuantity - componentQuantityAvailable;
   }
-  purchasingRequired = "yes"
+  //purchasingRequired = "yes"
   return {
     componentName,
     orderQuantity,

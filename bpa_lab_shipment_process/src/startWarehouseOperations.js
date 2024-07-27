@@ -25,14 +25,11 @@ let item = ''
 let place_id = ''
 let shelf_id = ''
 let task = ''
-let shippingAddress = ''
 
-const sendCustomerOrderForProduction = zbc.createWorker({
-  taskType: 'sendCustomerOrderForProduction',
+const sendToWarehouseOperations = zbc.createWorker({
+  taskType: 'startWarehouseOperations',
   taskHandler: handler,
-  // debug: true,
-  // loglevel: 'INFO',
-  onReady: () => sendCustomerOrderForProduction.log('Job worker started successfully!')
+  onReady: () => sendToWarehouseOperations.log('Job worker started successfully!')
 });
 
 function handler(job) {
@@ -58,11 +55,10 @@ function handler(job) {
   place_id = job.variables.place_id;
   shelf_id = job.variables.shelf_id;
   task = job.variables.task;
-  shippingAddress = job.variables.shippingAddress;
 
 
   zbc.publishStartMessage({
-    name: 'receiveProductionOrder',
+    name: 'Msg_StartWarehouseOperation',
     variables: {
       correlationValue,
       orderID: orderID,
@@ -86,7 +82,6 @@ function handler(job) {
       place_id: place_id,
       shelf_id: shelf_id,
       task: task,
-      shippingAddress: shippingAddress,
     },
   })
 
@@ -94,7 +89,7 @@ function handler(job) {
 }
 
 
-module.exports = sendCustomerOrderForProduction;
+module.exports = sendToWarehouseOperations;
 
 
 

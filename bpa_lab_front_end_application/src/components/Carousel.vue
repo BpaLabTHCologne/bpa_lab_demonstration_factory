@@ -229,7 +229,7 @@ export default {
                             task: "retrieve",
                             place_id: 3,
                             shelf_id: 1,
-                            transactionId: 0,
+                            //transactionId: 0,
                             //orderType: this.orderType,
                             //key: 'value', //To send additional variables
                         },

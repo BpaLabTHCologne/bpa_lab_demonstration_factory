@@ -21,11 +21,6 @@ let quantityNeededForProduction = '';
 let customerOrderDate = '';
 let customerOrderTime = '';
 let productMass = '';
-let item = ''
-let place_id = ''
-let shelf_id = ''
-let task = ''
-let transactionId = ''
 let approve_key = ''
 let material_key = ''
 let price_key = ''
@@ -41,7 +36,7 @@ const sendProductionOrderToPurchasing = zbc.createWorker({
 });
 
 function handler(job) {
-  const correlationValue = 124;
+  const correlationValue = job.variables.orderID;
   orderID = job.variables.orderID;
   customerName = job.variables.customerName;
   customerEmail = job.variables.customerEmail;
@@ -59,11 +54,6 @@ function handler(job) {
   customerOrderDate = job.variables.customerOrderDate;
   customerOrderTime = job.variables.customerOrderTime;
   productMass = job.variables.productMass;
-  item = job.variables.item;
-  place_id = job.variables.place_id;
-  shelf_id = job.variables.shelf_id;
-  task = job.variables.task;
-  transactionId = job.variables.transactionId;
   approve_key = job.variables.approve_key;
   material_key = job.variables.material_key;
   price_key = job.variables.price_key;
@@ -92,11 +82,6 @@ function handler(job) {
       customerOrderDate: customerOrderDate,
       customerOrderTime: customerOrderTime,
       productMass: productMass,
-      item: item,
-      place_id: place_id,
-      shelf_id: shelf_id,
-      task: task,
-      transactionId: transactionId,
       approve_key: job.variables.approve_key,
       material_key: job.variables.material_key,
       price_key: job.variables.price_key,

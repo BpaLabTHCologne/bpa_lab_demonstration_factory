@@ -77,15 +77,12 @@ order for production</bpmn:text>
     <bpmn:association id="Association_18wb1by" sourceRef="ServiceTask_UpdateCustomerOrderStatusToRejected" targetRef="TextAnnotation_1sk69p2" />
     <bpmn:association id="Association_13km4xp" sourceRef="UserTask_CheckCustomerOrderStatus" targetRef="TextAnnotation_12j53y1" />
     <bpmn:association id="Association_1144nmy" sourceRef="ReceiveTask_ReceiveFinishedProductionOrder" targetRef="TextAnnotation_0akzdn3" />
-    <bpmn:association id="Association_0cewwfm" sourceRef="SendTask_SendCustomerOrderForShipment" targetRef="TextAnnotation_0rohnr1" />
-    <bpmn:association id="Association_116r22c" sourceRef="ReceiveTask_ReceiveShipmentConfirmation" targetRef="TextAnnotation_10t7u34" />
-    <bpmn:association id="Association_0xzknng" sourceRef="ServiceTask_UpdateCustomerOrderStatusToShipped" targetRef="TextAnnotation_1tm6hp0" />
     <bpmn:association id="Association_1ghx8u6" sourceRef="ServiceTask_UpdateCustomerOrderStatusToInProduction" targetRef="TextAnnotation_1s50v8k" />
     <bpmn:association id="Association_0z3oruy" sourceRef="UserTask_CreateProductionOrder" targetRef="TextAnnotation_1uygfg2" />
     <bpmn:association id="Association_0spy2m0" sourceRef="SendTask_SendToDistributionWarehouse" targetRef="TextAnnotation_0hvqoqf" />
-    <bpmn:association id="Association_1sond9t" sourceRef="UserTask_SendProductionOrder" targetRef="TextAnnotation_1c6x79i" />
     <bpmn:association id="Association_1tfrw10" sourceRef="EndEvent_ProductionOrderCompleted" targetRef="TextAnnotation_0g7taqv" />
     <bpmn:association id="Association_1webfcp" sourceRef="ReceiveTask_ReceiveFromDistributionWarehouse" targetRef="TextAnnotation_1ro5ra0" />
+    <bpmn:association id="Association_0xzknng" sourceRef="ServiceTask_UpdateCustomerOrderStatusToShipped" targetRef="TextAnnotation_1tm6hp0" />
   </bpmn:collaboration>
   <bpmn:message id="Message_215fh3u" name="finishedProductReceived">
     <bpmn:extensionElements>
@@ -671,13 +668,6 @@ order for production</bpmn:text>
     <bpmn:dataStoreReference id="DataStoreReference_1vxvggz" name="production_&#10;order_DB (MySQL)" />
     <bpmn:dataStoreReference id="DataStoreReference_08tm2cl" name="customer_DB (MySQL)" />
     <bpmn:dataStoreReference id="DataStoreReference_1gti6u4" name="component_DB (MySQL)" />
-    <bpmn:userTask id="UserTask_OrderComponents" name="Order components">
-      <bpmn:extensionElements>
-        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_310cghf" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1sll2tw</bpmn:incoming>
-      <bpmn:outgoing>Flow_176igqt</bpmn:outgoing>
-    </bpmn:userTask>
     <bpmn:serviceTask id="ServiceTask_CheckComponentsAvailability" name="Check components availability">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="checkComponentsAvailability" />
@@ -688,12 +678,7 @@ order for production</bpmn:text>
         <bpmn:targetRef>DataStoreReference_1gti6u4</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
-    <bpmn:exclusiveGateway id="Gateway_ProductionStatus" name="Production status?">
-      <bpmn:incoming>Flow_1pm9mvp</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_ProductionStatusStopped</bpmn:outgoing>
-      <bpmn:outgoing>SequenceFlow_ProductionStatusCompleted</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:task id="Task_ProductionOrderProcessingCompleted" name="Production order processing completed">
+    <bpmn:task id="Task_UpdateCustomerOrderToProduced" name="Update customer order status to &#34;produced&#34;">
       <bpmn:incoming>SequenceFlow_ProductionStatusCompleted</bpmn:incoming>
       <bpmn:outgoing>Flow_00skklp</bpmn:outgoing>
     </bpmn:task>
@@ -715,30 +700,6 @@ order for production</bpmn:text>
       <bpmn:incoming>Flow_00skklp</bpmn:incoming>
       <bpmn:outgoing>Flow_0th9p77</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:sendTask id="SendTask_SendToPurchasing" name="Send to purchasing">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="sendProductionOrderToPurchasing" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_176igqt</bpmn:incoming>
-      <bpmn:outgoing>Flow_0d0wk0g</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:exclusiveGateway id="Gateway_PurchasingRequired" name="Purchasing required?">
-      <bpmn:incoming>Flow_0zxsfsd</bpmn:incoming>
-      <bpmn:outgoing>Flow_1sll2tw</bpmn:outgoing>
-      <bpmn:outgoing>Flow_05vjcax</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:receiveTask id="ReceiveTask_ReceiveFromPurchasing" name="Receive from purchasing" messageRef="Message_0t3h4e9">
-      <bpmn:incoming>Flow_0d0wk0g</bpmn:incoming>
-      <bpmn:outgoing>Flow_12zqwf7</bpmn:outgoing>
-    </bpmn:receiveTask>
-    <bpmn:userTask id="UserTask_SendProductionOrder" name="Send production order">
-      <bpmn:extensionElements>
-        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_14l3918" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_12zqwf7</bpmn:incoming>
-      <bpmn:incoming>Flow_05vjcax</bpmn:incoming>
-      <bpmn:outgoing>Flow_1pm9mvp</bpmn:outgoing>
-    </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1x3ryl7" sourceRef="StartEvent_ReceiveProductionOrder" targetRef="UserTask_CreateProductionOrder" />
     <bpmn:sequenceFlow id="Flow_0y9x7h6" sourceRef="UserTask_CreateProductionOrder" targetRef="ServiceTask_StoreProductionOrder" />
     <bpmn:sequenceFlow id="Flow_1pcfhcv" sourceRef="ServiceTask_StoreProductionOrder" targetRef="ServiceTask_UpdateCustomerOrderStatusToInProduction" />
@@ -748,24 +709,71 @@ order for production</bpmn:text>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_176igqt" sourceRef="UserTask_OrderComponents" targetRef="SendTask_SendToPurchasing" />
     <bpmn:sequenceFlow id="Flow_0zxsfsd" sourceRef="ServiceTask_CheckComponentsAvailability" targetRef="Gateway_PurchasingRequired" />
-    <bpmn:sequenceFlow id="Flow_1pm9mvp" sourceRef="UserTask_SendProductionOrder" targetRef="Gateway_ProductionStatus" />
-    <bpmn:sequenceFlow id="SequenceFlow_ProductionStatusStopped" name="Stopped" sourceRef="Gateway_ProductionStatus" targetRef="EndEvent_ProductionOrderStopped">
+    <bpmn:sequenceFlow id="Flow_1pm9mvp" sourceRef="UserTask_CheckProductionOrder" targetRef="Gateway_ProductionStatus" />
+    <bpmn:sequenceFlow id="SequenceFlow_ProductionStatusStopped" name="Stopped" sourceRef="Gateway_ProductionStatus" targetRef="Task_UpdateCustomerOrderToCancelled">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=productionOrderStatus = "stopped"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="SequenceFlow_ProductionStatusCompleted" name="Completed" sourceRef="Gateway_ProductionStatus" targetRef="Task_ProductionOrderProcessingCompleted">
+    <bpmn:sequenceFlow id="SequenceFlow_ProductionStatusCompleted" name="Completed" sourceRef="Gateway_ProductionStatus" targetRef="Task_UpdateCustomerOrderToProduced">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=productionOrderStatus = "completed"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_00skklp" sourceRef="Task_ProductionOrderProcessingCompleted" targetRef="SendTask_SendToDistributionWarehouse" />
+    <bpmn:sequenceFlow id="Flow_00skklp" sourceRef="Task_UpdateCustomerOrderToProduced" targetRef="SendTask_SendToDistributionWarehouse" />
     <bpmn:sequenceFlow id="Flow_0xcfihw" sourceRef="ReceiveTask_ReceiveFromDistributionWarehouse" targetRef="EndEvent_ProductionOrderCompleted" />
     <bpmn:sequenceFlow id="Flow_0th9p77" sourceRef="SendTask_SendToDistributionWarehouse" targetRef="ReceiveTask_ReceiveFromDistributionWarehouse" />
     <bpmn:sequenceFlow id="Flow_0d0wk0g" sourceRef="SendTask_SendToPurchasing" targetRef="ReceiveTask_ReceiveFromPurchasing" />
-    <bpmn:sequenceFlow id="Flow_05vjcax" name="No" sourceRef="Gateway_PurchasingRequired" targetRef="UserTask_SendProductionOrder">
+    <bpmn:sequenceFlow id="Flow_05vjcax" name="No" sourceRef="Gateway_PurchasingRequired" targetRef="Gateway_19z66jr">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=purchasingRequired = "no"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_12zqwf7" sourceRef="ReceiveTask_ReceiveFromPurchasing" targetRef="UserTask_SendProductionOrder" />
-    <bpmn:endEvent id="EndEvent_ProductionOrderStopped" name="Production order stopped">
-      <bpmn:incoming>SequenceFlow_ProductionStatusStopped</bpmn:incoming>
+    <bpmn:sequenceFlow id="Flow_12zqwf7" sourceRef="ReceiveTask_ReceiveFromPurchasing" targetRef="Gateway_19z66jr" />
+    <bpmn:sequenceFlow id="Flow_1mnpfyq" sourceRef="Gateway_19z66jr" targetRef="UserTask_CheckProductionOrder" />
+    <bpmn:exclusiveGateway id="Gateway_PurchasingRequired" name="Purchasing required?">
+      <bpmn:incoming>Flow_0zxsfsd</bpmn:incoming>
+      <bpmn:outgoing>Flow_1sll2tw</bpmn:outgoing>
+      <bpmn:outgoing>Flow_05vjcax</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="UserTask_OrderComponents" name="Order components">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_310cghf" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1sll2tw</bpmn:incoming>
+      <bpmn:outgoing>Flow_176igqt</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sendTask id="SendTask_SendToPurchasing" name="Send to purchasing">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendProductionOrderToPurchasing" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_176igqt</bpmn:incoming>
+      <bpmn:outgoing>Flow_0d0wk0g</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="ReceiveTask_ReceiveFromPurchasing" name="Receive from purchasing" messageRef="Message_0t3h4e9">
+      <bpmn:incoming>Flow_0d0wk0g</bpmn:incoming>
+      <bpmn:outgoing>Flow_12zqwf7</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:exclusiveGateway id="Gateway_19z66jr">
+      <bpmn:incoming>Flow_05vjcax</bpmn:incoming>
+      <bpmn:incoming>Flow_12zqwf7</bpmn:incoming>
+      <bpmn:outgoing>Flow_1mnpfyq</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="UserTask_CheckProductionOrder" name="Check production order">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_14l3918" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1mnpfyq</bpmn:incoming>
+      <bpmn:outgoing>Flow_1pm9mvp</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_ProductionStatus" name="Production status?">
+      <bpmn:incoming>Flow_1pm9mvp</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_ProductionStatusStopped</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_ProductionStatusCompleted</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="EndEvent_ProductionOrderStopped" name="Production order cancelled">
+      <bpmn:incoming>Flow_0d8e4s9</bpmn:incoming>
     </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0d8e4s9" sourceRef="Task_UpdateCustomerOrderToCancelled" targetRef="EndEvent_ProductionOrderStopped" />
+    <bpmn:task id="Task_UpdateCustomerOrderToCancelled" name="Update customer order status to &#34;cancelled&#34;">
+      <bpmn:incoming>SequenceFlow_ProductionStatusStopped</bpmn:incoming>
+      <bpmn:outgoing>Flow_0d8e4s9</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:association id="Association_1sond9t" sourceRef="UserTask_CheckProductionOrder" targetRef="TextAnnotation_1c6x79i" />
   </bpmn:process>
   <bpmn:process id="OrderManagementProcess" isExecutable="false">
     <bpmn:extensionElements>
@@ -1049,36 +1057,10 @@ order for production</bpmn:text>
       <bpmn:incoming>Flow_14tjs3k</bpmn:incoming>
       <bpmn:outgoing>Flow_144ub2b</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:dataStoreReference id="DataStoreReference_1vhwh6e" name="customer_DB (MySQL)" />
     <bpmn:receiveTask id="ReceiveTask_ReceiveFinishedProductionOrder" name="Receive finished production order" messageRef="Message_215fh3u">
       <bpmn:incoming>Flow_0923deq</bpmn:incoming>
       <bpmn:outgoing>Flow_0ffsgk7</bpmn:outgoing>
     </bpmn:receiveTask>
-    <bpmn:serviceTask id="ServiceTask_UpdateCustomerOrderStatusToShipped" name="Update customer order status to &#34;shipped&#34;">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="customerOrderStatusShipped" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_149fb0r</bpmn:incoming>
-      <bpmn:outgoing>Flow_1679yn3</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_0kvpumd">
-        <bpmn:targetRef>DataStoreReference_092cr36</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
-    </bpmn:serviceTask>
-    <bpmn:receiveTask id="ReceiveTask_ReceiveShipmentConfirmation" name="Receive shipment confirmation" messageRef="Message_0gb3nov">
-      <bpmn:incoming>Flow_0808v6q</bpmn:incoming>
-      <bpmn:outgoing>Flow_149fb0r</bpmn:outgoing>
-    </bpmn:receiveTask>
-    <bpmn:sendTask id="SendTask_SendCustomerOrderForShipment" name="Send customer order for shipment">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="sendShipmentConfirmation" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>SequenceFlow_ProductionOrderRequiredNo</bpmn:incoming>
-      <bpmn:incoming>Flow_0ffsgk7</bpmn:incoming>
-      <bpmn:outgoing>Flow_0808v6q</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:endEvent id="EndEvent_OrderShippedSuccessfully" name="Order shipped successfully">
-      <bpmn:incoming>Flow_1679yn3</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:serviceTask id="ServiceTask_SendRejectionEmail" name="Send rejection email">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="sendRejectionEmail" />
@@ -1097,7 +1079,6 @@ order for production</bpmn:text>
       <bpmn:outgoing>Flow_0m018yf</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:dataStoreReference id="DataStoreReference_1fazgu0" name="customer_DB (MySQL)" />
-    <bpmn:dataStoreReference id="DataStoreReference_092cr36" name="customer_DB (MySQL)" />
     <bpmn:sequenceFlow id="Flow_0m018yf" sourceRef="StartEvent_StartProcessUponCustomerOrderReceival" targetRef="ServiceTask_StoreCustomerOrder" />
     <bpmn:sequenceFlow id="Flow_0wzmhve" sourceRef="ServiceTask_StoreCustomerOrder" targetRef="BusinessRuleTask_ApproveCustomerOrder" />
     <bpmn:sequenceFlow id="Flow_14tjs3k" sourceRef="BusinessRuleTask_ApproveCustomerOrder" targetRef="UserTask_CheckCustomerOrderStatus" />
@@ -1116,20 +1097,54 @@ order for production</bpmn:text>
     <bpmn:sequenceFlow id="SequenceFlow_ProductionOrderRequiredYes" name="Yes" sourceRef="Gateway_ProductionOrderRequired" targetRef="ServiceTask_UpdateCustomerOrderStatusToProductionRequired">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=productionRequired = "yes"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="SequenceFlow_ProductionOrderRequiredNo" name="No" sourceRef="Gateway_ProductionOrderRequired" targetRef="SendTask_SendCustomerOrderForShipment">
+    <bpmn:sequenceFlow id="SequenceFlow_ProductionOrderRequiredNo" name="No" sourceRef="Gateway_ProductionOrderRequired" targetRef="Gateway_1wpaskq">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=productionRequired = "no"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1m4btu3" sourceRef="ServiceTask_UpdateCustomerOrderStatusToProductionRequired" targetRef="SendTask_SendCustomerOrderForProduction" />
     <bpmn:sequenceFlow id="Flow_0923deq" sourceRef="SendTask_SendCustomerOrderForProduction" targetRef="ReceiveTask_ReceiveFinishedProductionOrder" />
-    <bpmn:sequenceFlow id="Flow_0ffsgk7" sourceRef="ReceiveTask_ReceiveFinishedProductionOrder" targetRef="SendTask_SendCustomerOrderForShipment" />
+    <bpmn:sequenceFlow id="Flow_0ffsgk7" sourceRef="ReceiveTask_ReceiveFinishedProductionOrder" targetRef="Gateway_1wpaskq" />
+    <bpmn:dataStoreReference id="DataStoreReference_092cr36" name="customer_DB (MySQL)" />
+    <bpmn:sendTask id="SendTask_SendCustomerOrderForShipment" name="Send customer order for shipment">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendShipmentConfirmation" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_16ezqxm</bpmn:incoming>
+      <bpmn:outgoing>Flow_0808v6q</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="ReceiveTask_ReceiveShipmentConfirmation" name="Receive shipment confirmation" messageRef="Message_0gb3nov">
+      <bpmn:incoming>Flow_0808v6q</bpmn:incoming>
+      <bpmn:outgoing>Flow_149fb0r</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:serviceTask id="ServiceTask_UpdateCustomerOrderStatusToShipped" name="Update customer order status to &#34;shipped&#34;">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="customerOrderStatusShipped" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_149fb0r</bpmn:incoming>
+      <bpmn:outgoing>Flow_1679yn3</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0kvpumd">
+        <bpmn:targetRef>DataStoreReference_092cr36</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_OrderShippedSuccessfully" name="Order shipped successfully">
+      <bpmn:incoming>Flow_1679yn3</bpmn:incoming>
+    </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_149fb0r" sourceRef="ReceiveTask_ReceiveShipmentConfirmation" targetRef="ServiceTask_UpdateCustomerOrderStatusToShipped" />
     <bpmn:sequenceFlow id="Flow_1679yn3" sourceRef="ServiceTask_UpdateCustomerOrderStatusToShipped" targetRef="EndEvent_OrderShippedSuccessfully" />
     <bpmn:sequenceFlow id="Flow_0808v6q" sourceRef="SendTask_SendCustomerOrderForShipment" targetRef="ReceiveTask_ReceiveShipmentConfirmation" />
+    <bpmn:sequenceFlow id="Flow_16ezqxm" sourceRef="Gateway_1wpaskq" targetRef="SendTask_SendCustomerOrderForShipment" />
+    <bpmn:exclusiveGateway id="Gateway_1wpaskq">
+      <bpmn:incoming>SequenceFlow_ProductionOrderRequiredNo</bpmn:incoming>
+      <bpmn:incoming>Flow_0ffsgk7</bpmn:incoming>
+      <bpmn:outgoing>Flow_16ezqxm</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:dataStoreReference id="DataStoreReference_1vhwh6e" name="customer_DB (MySQL)" />
+    <bpmn:association id="Association_0cewwfm" sourceRef="SendTask_SendCustomerOrderForShipment" targetRef="TextAnnotation_0rohnr1" />
+    <bpmn:association id="Association_116r22c" sourceRef="ReceiveTask_ReceiveShipmentConfirmation" targetRef="TextAnnotation_10t7u34" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_12fblkz">
       <bpmndi:BPMNShape id="Participant_19m935s_di" bpmnElement="Participant_19m935s" isHorizontal="true">
-        <dc:Bounds x="160" y="120" width="2130" height="480" />
+        <dc:Bounds x="160" y="120" width="2200" height="480" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0go2af6_di" bpmnElement="ServiceTask_StoreCustomerOrder">
@@ -1179,6 +1194,7 @@ order for production</bpmn:text>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0ms0z5v_di" bpmnElement="ServiceTask_CheckFinishedProductAvailability">
         <dc:Bounds x="1360" y="440" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_123zro0_di" bpmnElement="Gateway_ProductionOrderRequired" isMarkerVisible="true">
         <dc:Bounds x="1545" y="455" width="50" height="50" />
@@ -1197,32 +1213,9 @@ order for production</bpmn:text>
       <bpmndi:BPMNShape id="Activity_0pwcb0s_di" bpmnElement="UserTask_CheckCustomerOrderStatus">
         <dc:Bounds x="710" y="340" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataStoreReference_1vhwh6e_di" bpmnElement="DataStoreReference_1vhwh6e">
-        <dc:Bounds x="1625" y="355" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1617" y="326" width="68" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0iz4j54_di" bpmnElement="ReceiveTask_ReceiveFinishedProductionOrder">
         <dc:Bounds x="1970" y="440" width="100" height="80" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1o1e37r_di" bpmnElement="ServiceTask_UpdateCustomerOrderStatusToShipped">
-        <dc:Bounds x="1970" y="230" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0vhltx9_di" bpmnElement="ReceiveTask_ReceiveShipmentConfirmation">
-        <dc:Bounds x="1810" y="230" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1oac1ch_di" bpmnElement="SendTask_SendCustomerOrderForShipment">
-        <dc:Bounds x="1650" y="230" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1f3dmc2_di" bpmnElement="EndEvent_OrderShippedSuccessfully">
-        <dc:Bounds x="2152" y="252" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2135" y="295" width="70" height="27" />
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_02wu1y9_di" bpmnElement="ServiceTask_SendRejectionEmail">
         <dc:Bounds x="1180" y="230" width="100" height="80" />
@@ -1243,11 +1236,45 @@ order for production</bpmn:text>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_092cr36_di" bpmnElement="DataStoreReference_092cr36">
-        <dc:Bounds x="2055" y="155" width="50" height="50" />
+        <dc:Bounds x="2185" y="155" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2047" y="126" width="68" height="27" />
+          <dc:Bounds x="2177" y="126" width="68" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1oac1ch_di" bpmnElement="SendTask_SendCustomerOrderForShipment">
+        <dc:Bounds x="1780" y="230" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0vhltx9_di" bpmnElement="ReceiveTask_ReceiveShipmentConfirmation">
+        <dc:Bounds x="1940" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1o1e37r_di" bpmnElement="ServiceTask_UpdateCustomerOrderStatusToShipped">
+        <dc:Bounds x="2100" y="230" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1f3dmc2_di" bpmnElement="EndEvent_OrderShippedSuccessfully">
+        <dc:Bounds x="2282" y="252" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2265" y="295" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1wpaskq_di" bpmnElement="Gateway_1wpaskq" isMarkerVisible="true">
+        <dc:Bounds x="1695" y="245" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1vhwh6e_di" bpmnElement="DataStoreReference_1vhwh6e">
+        <dc:Bounds x="1645" y="365" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1637" y="336" width="68" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0cewwfm_di" bpmnElement="Association_0cewwfm">
+        <di:waypoint x="1789" y="230" />
+        <di:waypoint x="1761" y="204" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_116r22c_di" bpmnElement="Association_116r22c">
+        <di:waypoint x="1974" y="230" />
+        <di:waypoint x="1960" y="197" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0m018yf_di" bpmnElement="Flow_0m018yf">
         <di:waypoint x="278" y="380" />
         <di:waypoint x="390" y="380" />
@@ -1310,7 +1337,7 @@ order for production</bpmn:text>
       <bpmndi:BPMNEdge id="Flow_09pj2l2_di" bpmnElement="SequenceFlow_ProductionOrderRequiredNo">
         <di:waypoint x="1570" y="455" />
         <di:waypoint x="1570" y="270" />
-        <di:waypoint x="1650" y="270" />
+        <di:waypoint x="1695" y="270" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1578" y="360" width="15" height="14" />
         </bpmndi:BPMNLabel>
@@ -1325,24 +1352,28 @@ order for production</bpmn:text>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ffsgk7_di" bpmnElement="Flow_0ffsgk7">
         <di:waypoint x="2020" y="440" />
-        <di:waypoint x="2020" y="400" />
-        <di:waypoint x="1700" y="400" />
-        <di:waypoint x="1700" y="310" />
+        <di:waypoint x="2020" y="350" />
+        <di:waypoint x="1720" y="350" />
+        <di:waypoint x="1720" y="295" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_149fb0r_di" bpmnElement="Flow_149fb0r">
-        <di:waypoint x="1910" y="270" />
-        <di:waypoint x="1970" y="270" />
+        <di:waypoint x="2040" y="270" />
+        <di:waypoint x="2100" y="270" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1679yn3_di" bpmnElement="Flow_1679yn3">
-        <di:waypoint x="2070" y="270" />
-        <di:waypoint x="2152" y="270" />
+        <di:waypoint x="2200" y="270" />
+        <di:waypoint x="2282" y="270" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0808v6q_di" bpmnElement="Flow_0808v6q">
-        <di:waypoint x="1750" y="270" />
-        <di:waypoint x="1810" y="270" />
+        <di:waypoint x="1880" y="270" />
+        <di:waypoint x="1940" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16ezqxm_di" bpmnElement="Flow_16ezqxm">
+        <di:waypoint x="1745" y="270" />
+        <di:waypoint x="1780" y="270" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_1o4at5h_di" bpmnElement="Participant_1o4at5h" isHorizontal="true">
-        <dc:Bounds x="160" y="660" width="2130" height="430" />
+        <dc:Bounds x="160" y="660" width="2200" height="430" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_046aj7l_di" bpmnElement="StartEvent_ReceiveProductionOrder">
@@ -1379,19 +1410,10 @@ order for production</bpmn:text>
           <dc:Bounds x="893" y="731" width="77" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0swjnse_di" bpmnElement="UserTask_OrderComponents">
-        <dc:Bounds x="950" y="970" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_002m6bg_di" bpmnElement="ServiceTask_CheckComponentsAvailability">
         <dc:Bounds x="810" y="850" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0h9p9po_di" bpmnElement="Gateway_ProductionStatus" isMarkerVisible="true">
-        <dc:Bounds x="1425" y="865" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1485" y="876" width="53" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_05v8r40_di" bpmnElement="Task_ProductionOrderProcessingCompleted">
+      <bpmndi:BPMNShape id="Activity_05v8r40_di" bpmnElement="Task_UpdateCustomerOrderToProduced">
         <dc:Bounds x="1560" y="750" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
@@ -1409,29 +1431,50 @@ order for production</bpmn:text>
         <dc:Bounds x="1730" y="750" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0lknd2q_di" bpmnElement="SendTask_SendToPurchasing">
-        <dc:Bounds x="1090" y="970" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0ih1uvy_di" bpmnElement="Gateway_PurchasingRequired" isMarkerVisible="true">
-        <dc:Bounds x="975" y="865" width="50" height="50" />
+        <dc:Bounds x="965" y="865" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="972" y="828" width="56" height="27" />
+          <dc:Bounds x="962" y="828" width="56" height="27" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0swjnse_di" bpmnElement="UserTask_OrderComponents">
+        <dc:Bounds x="940" y="970" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0lknd2q_di" bpmnElement="SendTask_SendToPurchasing">
+        <dc:Bounds x="1070" y="970" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0naxakz_di" bpmnElement="ReceiveTask_ReceiveFromPurchasing">
-        <dc:Bounds x="1250" y="970" width="100" height="80" />
+        <dc:Bounds x="1200" y="970" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_06szl6e_di" bpmnElement="UserTask_SendProductionOrder">
-        <dc:Bounds x="1250" y="850" width="100" height="80" />
+      <bpmndi:BPMNShape id="Gateway_19z66jr_di" bpmnElement="Gateway_19z66jr" isMarkerVisible="true">
+        <dc:Bounds x="1225" y="865" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1wv9h3q_di" bpmnElement="EndEvent_ProductionOrderStopped">
-        <dc:Bounds x="1582" y="967" width="36" height="36" />
+      <bpmndi:BPMNShape id="Activity_06szl6e_di" bpmnElement="UserTask_CheckProductionOrder">
+        <dc:Bounds x="1310" y="850" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0h9p9po_di" bpmnElement="Gateway_ProductionStatus" isMarkerVisible="true">
+        <dc:Bounds x="1445" y="865" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1559" y="1010" width="83" height="27" />
+          <dc:Bounds x="1505" y="876" width="53" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1wv9h3q_di" bpmnElement="EndEvent_ProductionOrderStopped">
+        <dc:Bounds x="1722" y="967" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1699" y="1010" width="83" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0myf5gd" bpmnElement="Task_UpdateCustomerOrderToCancelled">
+        <dc:Bounds x="1560" y="945" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1sond9t_di" bpmnElement="Association_1sond9t">
+        <di:waypoint x="1356" y="850" />
+        <di:waypoint x="1352" y="810" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1x3ryl7_di" bpmnElement="Flow_1x3ryl7">
         <di:waypoint x="278" y="890" />
         <di:waypoint x="330" y="890" />
@@ -1449,38 +1492,38 @@ order for production</bpmn:text>
         <di:waypoint x="810" y="890" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1sll2tw_di" bpmnElement="Flow_1sll2tw">
-        <di:waypoint x="1000" y="915" />
-        <di:waypoint x="1000" y="970" />
+        <di:waypoint x="990" y="915" />
+        <di:waypoint x="990" y="970" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1006" y="940" width="18" height="14" />
+          <dc:Bounds x="993" y="928" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_176igqt_di" bpmnElement="Flow_176igqt">
-        <di:waypoint x="1050" y="1010" />
-        <di:waypoint x="1090" y="1010" />
+        <di:waypoint x="1040" y="1010" />
+        <di:waypoint x="1070" y="1010" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0zxsfsd_di" bpmnElement="Flow_0zxsfsd">
         <di:waypoint x="910" y="890" />
-        <di:waypoint x="975" y="890" />
+        <di:waypoint x="965" y="890" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1pm9mvp_di" bpmnElement="Flow_1pm9mvp">
-        <di:waypoint x="1350" y="890" />
-        <di:waypoint x="1425" y="890" />
+        <di:waypoint x="1410" y="890" />
+        <di:waypoint x="1445" y="890" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0dudybd_di" bpmnElement="SequenceFlow_ProductionStatusStopped">
-        <di:waypoint x="1450" y="915" />
-        <di:waypoint x="1450" y="985" />
-        <di:waypoint x="1582" y="985" />
+        <di:waypoint x="1470" y="915" />
+        <di:waypoint x="1470" y="985" />
+        <di:waypoint x="1560" y="985" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1469" y="963" width="41" height="14" />
+          <dc:Bounds x="1481" y="963" width="41" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_09898js_di" bpmnElement="SequenceFlow_ProductionStatusCompleted">
-        <di:waypoint x="1450" y="865" />
-        <di:waypoint x="1450" y="790" />
+        <di:waypoint x="1470" y="865" />
+        <di:waypoint x="1470" y="790" />
         <di:waypoint x="1560" y="790" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1463" y="803" width="54" height="14" />
+          <dc:Bounds x="1475" y="803" width="54" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_00skklp_di" bpmnElement="Flow_00skklp">
@@ -1496,19 +1539,27 @@ order for production</bpmn:text>
         <di:waypoint x="1900" y="790" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0d0wk0g_di" bpmnElement="Flow_0d0wk0g">
-        <di:waypoint x="1190" y="1010" />
-        <di:waypoint x="1250" y="1010" />
+        <di:waypoint x="1170" y="1010" />
+        <di:waypoint x="1200" y="1010" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_05vjcax_di" bpmnElement="Flow_05vjcax">
-        <di:waypoint x="1025" y="890" />
-        <di:waypoint x="1250" y="890" />
+        <di:waypoint x="1015" y="890" />
+        <di:waypoint x="1225" y="890" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1130" y="872" width="15" height="14" />
+          <dc:Bounds x="1135" y="872" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_12zqwf7_di" bpmnElement="Flow_12zqwf7">
-        <di:waypoint x="1300" y="970" />
-        <di:waypoint x="1300" y="930" />
+        <di:waypoint x="1250" y="970" />
+        <di:waypoint x="1250" y="915" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mnpfyq_di" bpmnElement="Flow_1mnpfyq">
+        <di:waypoint x="1275" y="890" />
+        <di:waypoint x="1310" y="890" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0d8e4s9_di" bpmnElement="Flow_0d8e4s9">
+        <di:waypoint x="1660" y="985" />
+        <di:waypoint x="1722" y="985" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_083w23x_di" bpmnElement="Association_083w23x">
         <di:waypoint x="402" y="420" />
@@ -1546,18 +1597,6 @@ order for production</bpmn:text>
         <di:waypoint x="2062" y="519" />
         <di:waypoint x="2091" y="546" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0xzknng_di" bpmnElement="Association_0xzknng">
-        <di:waypoint x="2061" y="310" />
-        <di:waypoint x="2102" y="350" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_116r22c_di" bpmnElement="Association_116r22c">
-        <di:waypoint x="1844" y="230" />
-        <di:waypoint x="1830" y="197" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0cewwfm_di" bpmnElement="Association_0cewwfm">
-        <di:waypoint x="1659" y="230" />
-        <di:waypoint x="1631" y="204" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_1b97p92_di" bpmnElement="Association_1b97p92">
         <di:waypoint x="1276" y="232" />
         <di:waypoint x="1317" y="197" />
@@ -1574,21 +1613,21 @@ order for production</bpmn:text>
         <di:waypoint x="680" y="930" />
         <di:waypoint x="660" y="970" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1tfrw10_di" bpmnElement="Association_1tfrw10">
-        <di:waypoint x="2073" y="807" />
-        <di:waypoint x="2048" y="869" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1sond9t_di" bpmnElement="Association_1sond9t">
-        <di:waypoint x="1320" y="850" />
-        <di:waypoint x="1340" y="810" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1webfcp_di" bpmnElement="Association_1webfcp">
-        <di:waypoint x="1932" y="830" />
-        <di:waypoint x="1920" y="856" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_0spy2m0_di" bpmnElement="Association_0spy2m0">
         <di:waypoint x="1780" y="750" />
         <di:waypoint x="1780" y="736" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0xzknng_di" bpmnElement="Association_0xzknng">
+        <di:waypoint x="2150" y="310" />
+        <di:waypoint x="2150" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1webfcp_di" bpmnElement="Association_1webfcp">
+        <di:waypoint x="1945" y="830" />
+        <di:waypoint x="1942" y="856" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1tfrw10_di" bpmnElement="Association_1tfrw10">
+        <di:waypoint x="2080" y="808" />
+        <di:waypoint x="2080" y="854" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_13pvht0_di" bpmnElement="TextAnnotation_13pvht0">
         <dc:Bounds x="910" y="540" width="140" height="27" />
@@ -1634,18 +1673,6 @@ order for production</bpmn:text>
         <dc:Bounds x="2080" y="546" width="179" height="37" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0o7lxk0" bpmnElement="TextAnnotation_0rohnr1">
-        <dc:Bounds x="1570" y="164" width="210" height="40" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0mjqilc" bpmnElement="TextAnnotation_10t7u34">
-        <dc:Bounds x="1790" y="171" width="210" height="26" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_1tm6hp0_di" bpmnElement="TextAnnotation_1tm6hp0">
-        <dc:Bounds x="2050" y="350" width="118" height="26" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_059jvku" bpmnElement="TextAnnotation_1s50v8k">
         <dc:Bounds x="550" y="970" width="225" height="30" />
         <bpmndi:BPMNLabel />
@@ -1656,10 +1683,6 @@ order for production</bpmn:text>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0d6vgz4" bpmnElement="TextAnnotation_1c6x79i">
         <dc:Bounds x="1300" y="770" width="100" height="40" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1widkfe" bpmnElement="TextAnnotation_0g7taqv">
-        <dc:Bounds x="1990" y="869" width="210" height="41" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="DataOutputAssociation_0y9z1mi_di" bpmnElement="DataOutputAssociation_0y9z1mi">
@@ -1679,8 +1702,8 @@ order for production</bpmn:text>
         <di:waypoint x="1100" y="215" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_1248uxr_di" bpmnElement="DataOutputAssociation_1248uxr">
-        <di:waypoint x="1683" y="440" />
-        <di:waypoint x="1668" y="405" />
+        <di:waypoint x="1690" y="440" />
+        <di:waypoint x="1683" y="415" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0tw80c1_di" bpmnElement="Flow_0tw80c1">
         <di:waypoint x="1860" y="520" />
@@ -1694,10 +1717,6 @@ order for production</bpmn:text>
         <di:waypoint x="2020" y="621" />
         <di:waypoint x="2020" y="520" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataOutputAssociation_0kvpumd_di" bpmnElement="DataOutputAssociation_0kvpumd">
-        <di:waypoint x="2048" y="230" />
-        <di:waypoint x="2066" y="205" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_081mhis_di" bpmnElement="DataOutputAssociation_081mhis">
         <di:waypoint x="567" y="850" />
         <di:waypoint x="591" y="815" />
@@ -1710,12 +1729,32 @@ order for production</bpmn:text>
         <di:waypoint x="892" y="850" />
         <di:waypoint x="919" y="815" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="BPMNShape_1cauki4" bpmnElement="TextAnnotation_1ro5ra0">
-        <dc:Bounds x="1800" y="856" width="135" height="67" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1e466gr" bpmnElement="TextAnnotation_0hvqoqf">
         <dc:Bounds x="1682" y="670" width="195" height="55" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0o7lxk0" bpmnElement="TextAnnotation_0rohnr1">
+        <dc:Bounds x="1700" y="164" width="210" height="40" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0mjqilc" bpmnElement="TextAnnotation_10t7u34">
+        <dc:Bounds x="1920" y="171" width="210" height="26" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0kvpumd_di" bpmnElement="DataOutputAssociation_0kvpumd">
+        <di:waypoint x="2178" y="230" />
+        <di:waypoint x="2196" y="205" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1tm6hp0_di" bpmnElement="TextAnnotation_1tm6hp0">
+        <dc:Bounds x="2091" y="330" width="118" height="26" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1cauki4" bpmnElement="TextAnnotation_1ro5ra0">
+        <dc:Bounds x="1830" y="856" width="135" height="67" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1widkfe" bpmnElement="TextAnnotation_0g7taqv">
+        <dc:Bounds x="2030" y="854" width="210" height="41" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>

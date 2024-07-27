@@ -25,7 +25,6 @@ let item = ''
 let place_id = ''
 let shelf_id = ''
 let task = ''
-let transactionId = ''
 
 const receiveFinishedProduct = zbc.createWorker({
   taskType: 'receiveFinishedProduct',
@@ -36,7 +35,7 @@ const receiveFinishedProduct = zbc.createWorker({
 });
 
 function handler(job) {
-  const correlationValue = 124;
+  const correlationValue = job.variables.orderID;
   orderID = job.variables.orderID;
   customerName = job.variables.customerName;
   customerEmail = job.variables.customerEmail;
@@ -58,7 +57,6 @@ function handler(job) {
   place_id = job.variables.place_id;
   shelf_id = job.variables.shelf_id;
   task = job.variables.task;
-  transactionId = job.variables.transactionId;
 
 
   zbc.publishMessage({
@@ -87,7 +85,6 @@ function handler(job) {
       place_id: place_id,
       shelf_id: shelf_id,
       task: task,
-      transactionId: transactionId,
     },
   })
   console.log("\nProduction order has been successfully completed. Sending process back to order management...")

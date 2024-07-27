@@ -4,6 +4,7 @@ const { ZBClient } = require('zeebe-node');
 require('./sendDeliveryEmail');
 require('./sendShippedEmail');
 require('./shipmentCompleted');
+require('./startWarehouseOperations')
 
 
 // Define an async main function to deploy a process, create a process instance, and log the outcome

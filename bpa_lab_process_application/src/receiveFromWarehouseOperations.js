@@ -15,7 +15,7 @@ function handler(job) {
     console.log(job.variables);
     zbc.publishMessage({
       name: 'receiveWarehouseOperations',
-      correlationKey: "124",
+      correlationKey: job.variables["correlationValue"],
       variables: {
       },
     })
