@@ -62,7 +62,6 @@ CREATE TABLE `warehouse`.`place`
     `item` VARCHAR(45) NULL DEFAULT NULL , 
     `status` INT NULL DEFAULT NULL , 
     `last_change` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL , 
-    `last_user` VARCHAR(45) NULL DEFAULT NULL , 
     PRIMARY KEY (`item_id`)
 ) ENGINE = InnoDB;
 
@@ -101,9 +100,9 @@ VALUES
 USE warehouse;
 INSERT INTO `place` (`shelf_id`, `place_id`, `item`, `status`)
 VALUES 
-(1,1,'Mountain Bike',1),
-(1,2,'empty',0),
-(1,3,'empty',0),
-(1,4,'empty',0),
-(1,5,'empty',0),
-(1,6,'empty',0);
+(1, 1,'Mountain Bike', 1),
+(1, 2,'Hybrid 40000 Bicycle', 1),
+(1, 3,'Speed Thriller Electric 147 Bicycle', 1),
+(1, 4,'empty', 0),
+(1, 5,'empty', 0),
+(1, 6,'empty', 0);

@@ -196,7 +196,7 @@ async def check_inventory(job: Job, **variables) -> dict:
         logging.info("Database connection established.")
         mycursor = piMySqlDB.cursor()
 
-        item = variables.get("item")
+        item = variables.get("customerProduct")
         sql_check_item = "SELECT EXISTS (SELECT * FROM place WHERE item = %s)"
         mycursor.execute(sql_check_item, (item,))
 
@@ -274,7 +274,7 @@ async def update_retrieve_inventory(job: Job, place_id):
             return {"error": "Database connection failed"}
 
         mycursor = piMySqlDB.cursor()
-        sql_update = "UPDATE place SET item = 'empty', status = 0, last_user = 'Warehouse Robot 1' WHERE place_id = %s"
+        sql_update = "UPDATE place SET item = 'empty', status = 0 WHERE place_id = %s"
         mycursor.execute(sql_update, (place_id,))
         piMySqlDB.commit()
 
@@ -380,7 +380,7 @@ async def update_storage_inventory(job: Job, item, place_id):
             return {"error": "Database connection failed"}
 
         mycursor = piMySqlDB.cursor()
-        sql_update = "UPDATE place SET item = %s, status = 1, last_user = 'Warehouse Robot 1' WHERE place_id = %s"
+        sql_update = "UPDATE place SET item = %s, status = 1 WHERE place_id = %s"
         mycursor.execute(sql_update, (item, place_id))
         piMySqlDB.commit()
 

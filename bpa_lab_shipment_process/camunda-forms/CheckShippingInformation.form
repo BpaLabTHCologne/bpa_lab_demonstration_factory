@@ -1,0 +1,63 @@
+{
+  "components": [
+    {
+      "label": "Warehouse address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1n6mpll",
+        "columns": null
+      },
+      "id": "Field_17hf7nq",
+      "key": "warehouseAddress",
+      "defaultValue": "Steinmüllerallee 1, 51643 Gummersbach",
+      "readonly": true,
+      "disabled": false
+    },
+    {
+      "label": "Latitude of warehouse address",
+      "type": "number",
+      "layout": {
+        "row": "Row_05uluxt",
+        "columns": null
+      },
+      "id": "Field_1axjiqh",
+      "key": "latitudeWA",
+      "serializeToString": false,
+      "defaultValue": 51.023238338791835,
+      "readonly": true,
+      "properties": {}
+    },
+    {
+      "label": "Longitude of warehouse address",
+      "type": "number",
+      "layout": {
+        "row": "Row_05uluxt",
+        "columns": null
+      },
+      "id": "Field_04vssbx",
+      "key": "longitudeWA",
+      "defaultValue": 7.562013168617832,
+      "readonly": true
+    },
+    {
+      "label": "Shipping address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1a29gd2",
+        "columns": null
+      },
+      "id": "Field_0v9tqif",
+      "key": "shippingAddress",
+      "readonly": true
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.24.0"
+  },
+  "schemaVersion": 16,
+  "type": "default",
+  "id": "Form_ShippingInformation"
+}
