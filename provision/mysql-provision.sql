@@ -2,7 +2,7 @@ CREATE DATABASE finished_product_DB;
 CREATE DATABASE production_order_DB;
 CREATE DATABASE component_DB;
 CREATE DATABASE purchasing_DB;
-CREATE DATABASE warehouse;
+-- CREATE DATABASE warehouse;
 
 CREATE TABLE `customer_DB`.`customer_order` 
 (
@@ -22,6 +22,7 @@ CREATE TABLE `finished_product_DB`.`finished_product_stock`
 (
     `id` INT NOT NULL AUTO_INCREMENT , 
     `productName` VARCHAR(255) NOT NULL , 
+    `place_id` INT NOT NULL,
     `productQuantity` INT NOT NULL , PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
@@ -54,16 +55,16 @@ CREATE TABLE `purchasing_DB`.`purchasing_order`
 ) ENGINE = InnoDB;
 
 
-CREATE TABLE `warehouse`.`place` 
-(
-    `item_id` INT NOT NULL AUTO_INCREMENT ,
-    `shelf_id` INT NOT NULL , 
-    `place_id` INT NOT NULL , 
-    `item` VARCHAR(45) NULL DEFAULT NULL , 
-    `status` INT NULL DEFAULT NULL , 
-    `last_change` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL , 
-    PRIMARY KEY (`item_id`)
-) ENGINE = InnoDB;
+-- CREATE TABLE `warehouse`.`place` 
+-- (
+--     `item_id` INT NOT NULL AUTO_INCREMENT ,
+--     `shelf_id` INT NOT NULL , 
+--     `place_id` INT NOT NULL , 
+--     `item` VARCHAR(45) NULL DEFAULT NULL , 
+--     `status` INT NULL DEFAULT NULL , 
+--     `last_change` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL , 
+--     PRIMARY KEY (`item_id`)
+-- ) ENGINE = InnoDB;
 
 GRANT ALL PRIVILEGES ON customer_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
 FLUSH PRIVILEGES;
@@ -80,15 +81,15 @@ FLUSH PRIVILEGES;
 GRANT ALL PRIVILEGES ON component_DB.* TO 'dev'@'%' IDENTIFIED BY 'dev';
 FLUSH PRIVILEGES;
 
-GRANT ALL PRIVILEGES ON warehouse.* TO 'dev'@'%' IDENTIFIED BY 'dev';
-FLUSH PRIVILEGES;
+-- GRANT ALL PRIVILEGES ON warehouse.* TO 'dev'@'%' IDENTIFIED BY 'dev';
+-- FLUSH PRIVILEGES;
 
 USE finished_product_DB;
-INSERT INTO `finished_product_stock` (`productName`, `productQuantity`) 
+INSERT INTO `finished_product_stock` (`productName`, `place_id`, `productQuantity`) 
 VALUES 
-  ('Mountain Bike', '50'), 
-  ('Hybrid 40000 Bicycle', '50'), 
-  ('Speed Thriller Electric 147 Bicycle', '50');
+  ('Mountain Bike', 1, '50'), 
+  ('Hybrid 40000 Bicycle', 2, '50'), 
+  ('Speed Thriller Electric 147 Bicycle', 3, '50');
 
 USE component_DB;
 INSERT INTO `component_stock` (`componentName`, `componentQuantity`) 
@@ -97,12 +98,12 @@ VALUES
 ('Hybrid bicycle wheels', '50'),
 ('Electric bicycle frame', '50');
 
-USE warehouse;
-INSERT INTO `place` (`shelf_id`, `place_id`, `item`, `status`)
-VALUES 
-(1, 1,'Mountain Bike', 1),
-(1, 2,'Hybrid 40000 Bicycle', 1),
-(1, 3,'Speed Thriller Electric 147 Bicycle', 1),
-(1, 4,'empty', 0),
-(1, 5,'empty', 0),
-(1, 6,'empty', 0);
+-- USE warehouse;
+-- INSERT INTO `place` (`shelf_id`, `place_id`, `item`, `status`)
+-- VALUES 
+-- (1, 1,'Mountain Bike', 1),
+-- (1, 2,'Hybrid 40000 Bicycle', 1),
+-- (1, 3,'Speed Thriller Electric 147 Bicycle', 1),
+-- (1, 4,'empty', 0),
+-- (1, 5,'empty', 0),
+-- (1, 6,'empty', 0);

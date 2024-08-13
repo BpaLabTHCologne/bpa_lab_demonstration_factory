@@ -226,11 +226,6 @@ export default {
                             mass: this.mass,
                             productMass: this.productMasses,
                             orderStatus: this.orderStatus,
-                            //task: "retrieve",
-                            //place_id: 3,
-                            shelf_id: 1,
-                            //transactionId: 0,
-                            //orderType: this.orderType,
                             //key: 'value', //To send additional variables
                         },
                     }),

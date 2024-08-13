@@ -291,6 +291,8 @@ services:
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
       MYSQL_DATABASE_PURCHASING: purchasing_DB
+      MYSQL_DATABASE_PRODUCTION: production_order_DB
+      MYSQL_DATABASE_COMPONENTS: component_DB
       MYSQL_HOST_PORT: 3306
 
 # Warehouse operations process container including job workers
@@ -316,7 +318,7 @@ services:
         MYSQL_HOST_NAME: mysql
         MYSQL_USER: dev
         MYSQL_PASSWORD: dev
-        MYSQL_DATABASE: warehouse
+        MYSQL_DATABASE: finished_product_DB
         MYSQL_HOST_PORT: 3306
 
 # Warehouse robot process container including job workers

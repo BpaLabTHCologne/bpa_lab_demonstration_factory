@@ -67,7 +67,7 @@ async function handler(job) {
     });
 
     orderProduct = productionOrderResults[0].customerProduct;
-    orderQuantity = productionOrderResults[0].quantityNeededForProduction;
+    orderQuantity = parseInt(job.variables.customerQuantity, 10); //productionOrderResults[0].quantityNeededForProduction;
     console.log("\nThe production order is: ", orderProduct);
     console.log("The quantity is: ", orderQuantity);
 
@@ -131,6 +131,17 @@ function checkStock(componentName, componentQuantityAvailable, orderProduct, ord
     console.log("\nComponent stock is empty! Purchasing needed.");
   }
   else if(componentQuantityAvailable >= orderQuantity) {
+    componentQuantityAvailable = componentQuantityAvailable - orderQuantity;
+    const componentDBPool = mysql.createPool({
+      connectionLimit: 10,
+      host: process.env.MYSQL_HOST_NAME,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE_COMPONENTS,
+      port: process.env.MYSQL_HOST_PORT,
+      server: 'localhost',
+    });
+    componentDBPool.query('UPDATE component_stock SET componentQuantity = ? WHERE componentName = ?', [componentQuantityAvailable, componentName])
     console.log("\nComponent stock available. Production starting...");
     purchasingRequired = "no";
   }
@@ -139,13 +150,11 @@ function checkStock(componentName, componentQuantityAvailable, orderProduct, ord
     purchasingRequired = "yes";
     quantityNeededToPurchase = orderQuantity - componentQuantityAvailable;
   }
-  //purchasingRequired = "yes"
   return {
     componentName,
     orderQuantity,
     orderProduct,
     componentQuantityAvailable,
-    orderQuantity,
     purchasingRequired
   };
 }

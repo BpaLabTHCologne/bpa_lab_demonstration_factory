@@ -6,6 +6,18 @@
       <bpmn:text>PURCHASING_APPROVED</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_0o08s89" sourceRef="ServiceTask_CompletePO" targetRef="TextAnnotation_19ms8as" />
+    <bpmn:textAnnotation id="TextAnnotation_15v804x">
+      <bpmn:text>HBWAvailabilityMessage</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_0r44wc7">
+      <bpmn:text>HBWStartMessage</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0xae5d7" sourceRef="Activity_0nal9jp" targetRef="TextAnnotation_0r44wc7" />
+    <bpmn:textAnnotation id="TextAnnotation_0idqqmk">
+      <bpmn:text>PURCHASING_REJECTED</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1uyae27" sourceRef="UserTask_RejectPO" targetRef="TextAnnotation_0idqqmk" />
+    <bpmn:association id="Association_0zlh5sn" sourceRef="Activity_0itobkx" targetRef="TextAnnotation_15v804x" />
   </bpmn:collaboration>
   <bpmn:process id="PurchasingProcess" name="Purchasing process" isExecutable="true">
     <bpmn:extensionElements>
@@ -665,8 +677,6 @@
         <bpmn:flowNodeRef>EndEvent_PurchasingRejected</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_0gpza1g</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>StartEvent_PurchasingOrderReceived</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ServiceTask_CompletePO</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_0itobkx</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_0nal9jp</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>UserTask_CheckApprovement</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>UserTask_CreatePurchasingOrder</bpmn:flowNodeRef>
@@ -678,6 +688,9 @@
         <bpmn:flowNodeRef>Gateway_0aiffyi</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>UserTask_ModifyPR</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_PRApproved</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_CompletePO</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0itobkx</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_UpdateComponentDB</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_1k3o3fs" name="Purchasing manager">
         <bpmn:flowNodeRef>UserTask_ApprovePurchaseRequestPR</bpmn:flowNodeRef>
@@ -708,8 +721,6 @@
       <bpmn:incoming>Flow_00a9tl7</bpmn:incoming>
       <bpmn:outgoing>Flow_0p60uuy</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:dataStoreReference id="DataStoreReference_0oul6ac" name="purchasing_DB (MySQL)" />
-    <bpmn:dataStoreReference id="DataStoreReference_1ler7el" name="purchasing_DB (MySQL)" />
     <bpmn:userTask id="UserTask_ApprovePurchaseRequestPR" name="Approve purchase request (PR)">
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_0iipld1" />
@@ -771,33 +782,18 @@
     <bpmn:sequenceFlow id="Flow_00a9tl7" sourceRef="ServiceTask_SendEmailToVendor" targetRef="UserTask_ReceiveApproveFromVendor" />
     <bpmn:sequenceFlow id="Flow_0p60uuy" sourceRef="UserTask_ReceiveApproveFromVendor" targetRef="UserTask_CheckApprovement" />
     <bpmn:sequenceFlow id="Flow_1x9zy3b" sourceRef="UserTask_CheckApprovement" targetRef="Activity_0nal9jp" />
-    <bpmn:sequenceFlow id="Flow_04drlby" sourceRef="Activity_0itobkx" targetRef="ServiceTask_CompletePO" />
+    <bpmn:sequenceFlow id="Flow_04drlby" sourceRef="Activity_0itobkx" targetRef="ServiceTask_UpdateComponentDB" />
     <bpmn:sequenceFlow id="Flow_0gvt124" sourceRef="ServiceTask_CompletePO" targetRef="EndEvent_PurchasingOrderProcessed" />
     <bpmn:sequenceFlow id="Flow_1n7ybxt" sourceRef="Activity_0nal9jp" targetRef="Activity_0itobkx" />
     <bpmn:sequenceFlow id="Flow_1l0l3up" sourceRef="Event_0gpza1g" targetRef="UserTask_CancelPO" />
     <bpmn:sequenceFlow id="Flow_1fodk2z" sourceRef="UserTask_CancelPO" targetRef="UserTask_RejectPO" />
     <bpmn:sequenceFlow id="Flow_0pn2957" sourceRef="UserTask_RejectPO" targetRef="EndEvent_PurchasingRejected" />
-    <bpmn:dataStoreReference id="DataStoreReference_1o3khyk" name="purchasing_DB (MySQL)" />
     <bpmn:startEvent id="StartEvent_PurchasingOrderReceived" name="Purchasing order received">
       <bpmn:extensionElements />
       <bpmn:outgoing>Flow_1svatmq</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0q88tpl" messageRef="Message_1f029v4" />
     </bpmn:startEvent>
-    <bpmn:serviceTask id="ServiceTask_CompletePO" name="Complete PO">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="completePurchasingOrder" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_04drlby</bpmn:incoming>
-      <bpmn:outgoing>Flow_0gvt124</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_0rixosc">
-        <bpmn:targetRef>DataStoreReference_1ler7el</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
-    </bpmn:serviceTask>
-    <bpmn:task id="Activity_0itobkx" name="Storing completed">
-      <bpmn:incoming>Flow_1n7ybxt</bpmn:incoming>
-      <bpmn:outgoing>Flow_04drlby</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:task id="Activity_0nal9jp" name="Store new materials">
+    <bpmn:task id="Activity_0nal9jp" name="Store purchased components">
       <bpmn:incoming>Flow_1x9zy3b</bpmn:incoming>
       <bpmn:outgoing>Flow_1n7ybxt</bpmn:outgoing>
     </bpmn:task>
@@ -882,18 +878,31 @@
       <bpmn:outgoing>SequenceFlow_PRApprovedYes</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_PRApprovedNo</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:textAnnotation id="TextAnnotation_0idqqmk">
-      <bpmn:text>PURCHASING_REJECTED</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:textAnnotation id="TextAnnotation_0r44wc7">
-      <bpmn:text>HBWStartMessage</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:textAnnotation id="TextAnnotation_15v804x">
-      <bpmn:text>HBWAvailabilityMessage</bpmn:text>
-    </bpmn:textAnnotation>
-    <bpmn:association id="Association_1uyae27" sourceRef="UserTask_RejectPO" targetRef="TextAnnotation_0idqqmk" />
-    <bpmn:association id="Association_0zlh5sn" sourceRef="Activity_0itobkx" targetRef="TextAnnotation_15v804x" />
-    <bpmn:association id="Association_0xae5d7" sourceRef="Activity_0nal9jp" targetRef="TextAnnotation_0r44wc7" />
+    <bpmn:serviceTask id="ServiceTask_CompletePO" name="Complete PO">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="completePurchasingOrder" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0iirzma</bpmn:incoming>
+      <bpmn:outgoing>Flow_0gvt124</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0rixosc">
+        <bpmn:targetRef>DataStoreReference_1ler7el</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:dataStoreReference id="DataStoreReference_1ler7el" name="purchasing_DB (MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_1o3khyk" name="purchasing_DB (MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_0oul6ac" name="purchasing_DB (MySQL)" />
+    <bpmn:sequenceFlow id="Flow_0iirzma" sourceRef="ServiceTask_UpdateComponentDB" targetRef="ServiceTask_CompletePO" />
+    <bpmn:task id="Activity_0itobkx" name="Receive message that components are stored">
+      <bpmn:incoming>Flow_1n7ybxt</bpmn:incoming>
+      <bpmn:outgoing>Flow_04drlby</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:serviceTask id="ServiceTask_UpdateComponentDB" name="Update component database">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="updateComponentDB" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_04drlby</bpmn:incoming>
+      <bpmn:outgoing>Flow_0iirzma</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:message id="Message_3mgrdce" name="message">
     <bpmn:extensionElements>
@@ -933,18 +942,6 @@
         <dc:Bounds x="1630" y="310" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataStoreReference_0oul6ac_di" bpmnElement="DataStoreReference_0oul6ac">
-        <dc:Bounds x="1455" y="215" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1442" y="186" width="76" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataStoreReference_1ler7el_di" bpmnElement="DataStoreReference_1ler7el">
-        <dc:Bounds x="2295" y="225" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2283" y="194" width="76" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1iwwbn1_di" bpmnElement="UserTask_ApprovePurchaseRequestPR">
         <dc:Bounds x="756" y="730" width="100" height="80" />
         <bpmndi:BPMNLabel />
@@ -963,25 +960,11 @@
           <dc:Bounds x="1973" y="575" width="56" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataStoreReference_1o3khyk_di" bpmnElement="DataStoreReference_1o3khyk">
-        <dc:Bounds x="1885" y="435" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1873" y="406" width="76" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_0sq2had" bpmnElement="StartEvent_PurchasingOrderReceived">
         <dc:Bounds x="282" y="332" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="257" y="290" width="86" height="27" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_1f48m3f" bpmnElement="ServiceTask_CompletePO">
-        <dc:Bounds x="2240" y="310" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1j7l4er_di" bpmnElement="Activity_0itobkx">
-        <dc:Bounds x="2060" y="310" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1mqna5f_di" bpmnElement="Activity_0nal9jp">
         <dc:Bounds x="1910" y="310" width="100" height="80" />
@@ -1029,24 +1012,34 @@
           <dc:Bounds x="933" y="590" width="71" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_0zlh5sn_di" bpmnElement="Association_0zlh5sn">
-        <di:waypoint x="2116" y="310" />
-        <di:waypoint x="2123" y="271" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0xae5d7_di" bpmnElement="Association_0xae5d7">
-        <di:waypoint x="1964" y="310" />
-        <di:waypoint x="1968" y="271" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="BPMNShape_01etjyp" bpmnElement="TextAnnotation_0idqqmk">
-        <dc:Bounds x="1700" y="620" width="189.99570495290314" height="26.67814113597246" />
+      <bpmndi:BPMNShape id="BPMNShape_1f48m3f" bpmnElement="ServiceTask_CompletePO">
+        <dc:Bounds x="2290" y="310" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_0r44wc7_di" bpmnElement="TextAnnotation_0r44wc7">
-        <dc:Bounds x="1900" y="230" width="140" height="41" />
+      <bpmndi:BPMNShape id="DataStoreReference_1ler7el_di" bpmnElement="DataStoreReference_1ler7el">
+        <dc:Bounds x="2315" y="225" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2303" y="194" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1o3khyk_di" bpmnElement="DataStoreReference_1o3khyk">
+        <dc:Bounds x="1815" y="435" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1803" y="406" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_0oul6ac_di" bpmnElement="DataStoreReference_0oul6ac">
+        <dc:Bounds x="1375" y="225" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1362" y="196" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1j7l4er_di" bpmnElement="Activity_0itobkx">
+        <dc:Bounds x="2040" y="310" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_15v804x_di" bpmnElement="TextAnnotation_15v804x">
-        <dc:Bounds x="2080" y="230" width="100" height="41" />
+      <bpmndi:BPMNShape id="BPMNShape_0et467f" bpmnElement="ServiceTask_UpdateComponentDB">
+        <dc:Bounds x="2170" y="310" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1umpuu2_di" bpmnElement="Event_0gpza1g">
@@ -1128,16 +1121,16 @@
         <di:waypoint x="1910" y="350" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_04drlby_di" bpmnElement="Flow_04drlby">
-        <di:waypoint x="2160" y="350" />
-        <di:waypoint x="2240" y="350" />
+        <di:waypoint x="2140" y="350" />
+        <di:waypoint x="2170" y="350" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0gvt124_di" bpmnElement="Flow_0gvt124">
-        <di:waypoint x="2340" y="350" />
+        <di:waypoint x="2390" y="350" />
         <di:waypoint x="2432" y="350" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1n7ybxt_di" bpmnElement="Flow_1n7ybxt">
         <di:waypoint x="2010" y="350" />
-        <di:waypoint x="2060" y="350" />
+        <di:waypoint x="2040" y="350" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1l0l3up_di" bpmnElement="Flow_1l0l3up">
         <di:waypoint x="1700" y="408" />
@@ -1151,10 +1144,6 @@
         <di:waypoint x="1890" y="550" />
         <di:waypoint x="1982" y="550" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1uyae27_di" bpmnElement="Association_1uyae27">
-        <di:waypoint x="1813" y="590" />
-        <di:waypoint x="1793" y="620" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0oc6rq9_di" bpmnElement="Flow_0oc6rq9">
         <di:waypoint x="415" y="350" />
         <di:waypoint x="450" y="350" />
@@ -1163,24 +1152,52 @@
         <di:waypoint x="1155" y="350" />
         <di:waypoint x="1200" y="350" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0iirzma_di" bpmnElement="Flow_0iirzma">
+        <di:waypoint x="2270" y="350" />
+        <di:waypoint x="2290" y="350" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_0o08s89_di" bpmnElement="Association_0o08s89">
-        <di:waypoint x="2269" y="390" />
-        <di:waypoint x="2253" y="420" />
+        <di:waypoint x="2340" y="390" />
+        <di:waypoint x="2340" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0xae5d7_di" bpmnElement="Association_0xae5d7">
+        <di:waypoint x="1960" y="310" />
+        <di:waypoint x="1960" y="254" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1uyae27_di" bpmnElement="Association_1uyae27">
+        <di:waypoint x="1840" y="590" />
+        <di:waypoint x="1840" y="617" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0zlh5sn_di" bpmnElement="Association_0zlh5sn">
+        <di:waypoint x="2090" y="310" />
+        <di:waypoint x="2090" y="260" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_1mn7o20_di" bpmnElement="DataOutputAssociation_1mn7o20">
-        <di:waypoint x="1431" y="310" />
-        <di:waypoint x="1466" y="265" />
+        <di:waypoint x="1400" y="310" />
+        <di:waypoint x="1400" y="275" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_0rixosc_di" bpmnElement="DataOutputAssociation_0rixosc">
-        <di:waypoint x="2303" y="310" />
-        <di:waypoint x="2315" y="275" />
+        <di:waypoint x="2341" y="310" />
+        <di:waypoint x="2342" y="275" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_1lfbzgt_di" bpmnElement="DataOutputAssociation_1lfbzgt">
-        <di:waypoint x="1873" y="510" />
-        <di:waypoint x="1894" y="485" />
+        <di:waypoint x="1842" y="510" />
+        <di:waypoint x="1844" y="485" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_19ms8as_di" bpmnElement="TextAnnotation_19ms8as">
-        <dc:Bounds x="2195" y="420" width="190" height="40" />
+        <dc:Bounds x="2260" y="430" width="170" height="40" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0r44wc7_di" bpmnElement="TextAnnotation_0r44wc7">
+        <dc:Bounds x="1890" y="224" width="140" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_01etjyp" bpmnElement="TextAnnotation_0idqqmk">
+        <dc:Bounds x="1756" y="617" width="190" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_15v804x_di" bpmnElement="TextAnnotation_15v804x">
+        <dc:Bounds x="2044" y="230" width="150" height="30" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>

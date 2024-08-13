@@ -5,6 +5,7 @@ require('./storePurchasingOrder');
 require('./reply');
 require('./completePurchasingOrder');
 require('./rejectPurchasingOrder');
+require('./updateComponentDB');
 
 
 // Define an async main function to deploy a process, create a process instance, and log the outcome

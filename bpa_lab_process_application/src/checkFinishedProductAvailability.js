@@ -102,16 +102,16 @@ function checkStock(customerOrderProduct, customerOrderQuantity, finishedProduct
   }
   // Check if finishedProductQuantityAvailable is greater than customerOrderQuantity
   else if(finishedProductQuantityAvailable > customerOrderQuantity){
-    finishedProductQuantityAvailable = finishedProductQuantityAvailable - customerOrderQuantity;
-    const finishedProductDBPool = mysql.createPool({
-      connectionLimit: 10,
-      host: process.env.MYSQL_HOST_NAME,
-      user: process.env.MYSQL_USER,
-      password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_DATABASE_FINISHED_PRODUCT,
-      port: process.env.MYSQL_HOST_PORT,
-    });
-    finishedProductDBPool.query('UPDATE finished_product_stock SET productQuantity = ? WHERE productName = ?', [finishedProductQuantityAvailable, finishedProductName])
+    // finishedProductQuantityAvailable = finishedProductQuantityAvailable - customerOrderQuantity;
+    // const finishedProductDBPool = mysql.createPool({
+    //   connectionLimit: 10,
+    //   host: process.env.MYSQL_HOST_NAME,
+    //   user: process.env.MYSQL_USER,
+    //   password: process.env.MYSQL_PASSWORD,
+    //   database: process.env.MYSQL_DATABASE_FINISHED_PRODUCT,
+    //   port: process.env.MYSQL_HOST_PORT,
+    // });
+    // //finishedProductDBPool.query('UPDATE finished_product_stock SET productQuantity = ? WHERE productName = ?', [finishedProductQuantityAvailable, finishedProductName])
     productionRequired = "no";
     console.log("\nFinished product stock is available. PREPARING FOR SHIPMENT...")
   }
@@ -126,7 +126,7 @@ function checkStock(customerOrderProduct, customerOrderQuantity, finishedProduct
     customerOrderProduct,
     customerOrderQuantity,
     finishedProductName,
-    finishedProductQuantityAvailable,
+    //finishedProductQuantityAvailable,
     quantityNeededForProduction,
     productionRequired
   };
