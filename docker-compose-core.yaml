@@ -352,8 +352,24 @@ services:
       - elasticsearch
     volumes:
       - ./bpa_lab_manufacturing_process/src:/app/src
-    # environment:
-    #   - IS_PROD=false  # oder true, je nach Umgebung
+    environment:
+    # Zeebe Client Configuration (Self-Managed)
+      - zeebe.client.broker.gateway-address=zeebe:26500
+      - zeebe.client.security.plaintext=true
+      - zeebe.client.connection-mode=ADDRESS
+    # MQTT Client Configuration
+      - ftfactorymqttclient.broker=ws://10.0.0.21:8081
+      - ftfactorymqttclient.clientId=FTFactoryMQTTClient
+    # MQTT Topics Configuration
+      - ftfactorymqttclient.cloudTopicPrefix=bpalab/ftfactory
+      - ftfactorymqttclient.cloudPubOrderTopic=bpalab/ftfactory/f/o/order
+      - ftfactorymqttclient.cloudBroadcastTopic=bpalab/ftfactory/o/broadcast
+      - ftfactorymqttclient.cloudSubOrderTopic=bpalab/ftfactory/f/i/order
+      - ftfactorymqttclient.cloudHBWTopic=bpalab/ftfactory/f/i/stock
+      - ftfactorymqttclient.cloudBME680Topic=bpalab/ftfactory/i/bme680
+    # Tomcat Server Configuration
+      - server.port=8083
+    # - IS_PROD=false  # oder true, je nach Umgebung
 
 # MQTT-Broker for communication between warehouse robot process and warehouse operations process
   mqtt-broker:
