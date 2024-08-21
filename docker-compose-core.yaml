@@ -337,6 +337,24 @@ services:
     environment:
         IS_PROD: ${IS_PROD}
 
+  bpa_lab_manufacturing_process:
+    build:
+      context: ./bpa_lab_manufacturing_process
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_manufacturing_process
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "8083:8083"  # maybe needed to change
+    depends_on:
+      - zeebe
+      - elasticsearch
+    volumes:
+      - ./bpa_lab_manufacturing_process/src:/app/src
+    # environment:
+    #   - IS_PROD=false  # oder true, je nach Umgebung
+
 # MQTT-Broker for communication between warehouse robot process and warehouse operations process
   mqtt-broker:
     image: eclipse-mosquitto:latest

@@ -1,0 +1,78 @@
+{
+  "components": [
+    {
+      "text": "Start form for **BPALab Proto Process Application**",
+      "type": "text",
+      "id": "Field_0on5fea",
+      "layout": {
+        "row": "Row_06dp3ra"
+      }
+    },
+    {
+      "text": "# Fahrrad Bestellung",
+      "type": "text",
+      "id": "Field_0hspg3y",
+      "layout": {
+        "row": "Row_0yfqcx4"
+      }
+    },
+    {
+      "label": "Wie soll das Fahrrad heißen?",
+      "type": "textfield",
+      "id": "Field_0zw73e5",
+      "key": "bike_name",
+      "properties": {},
+      "layout": {
+        "row": "Row_0w46iyd",
+        "columns": 4
+      }
+    },
+    {
+      "values": [
+        {
+          "label": "White",
+          "value": "WHITE"
+        },
+        {
+          "label": "Red",
+          "value": "RED"
+        },
+        {
+          "label": "Blue",
+          "value": "BLUE"
+        }
+      ],
+      "label": "Farbe",
+      "type": "select",
+      "id": "Field_11cbqbp",
+      "key": "OrderType",
+      "layout": {
+        "row": "Row_0w46iyd",
+        "columns": 2
+      },
+      "searchable": false
+    },
+    {
+      "action": "submit",
+      "label": "Submit",
+      "type": "button",
+      "id": "Field_06dxrz8",
+      "key": "field_176zxn8",
+      "properties": {
+        "key1": "value"
+      },
+      "layout": {
+        "row": "Row_0kjfu84"
+      }
+    }
+  ],
+  "schemaVersion": 10,
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.15.0"
+  },
+  "type": "default",
+  "id": "Form_4425dcb7-41ae-4258-9cac-0d40ea6bee09",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "1.3"
+}
