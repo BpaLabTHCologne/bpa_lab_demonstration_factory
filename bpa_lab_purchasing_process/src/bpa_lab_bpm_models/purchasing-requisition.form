@@ -204,12 +204,12 @@
     }
   ],
   "executionPlatform": "Camunda Cloud",
-  "executionPlatformVersion": "8.3.0",
+  "executionPlatformVersion": "8.5.0",
   "exporter": {
     "name": "Camunda Modeler",
-    "version": "5.17.0"
+    "version": "5.24.0"
   },
-  "schemaVersion": 12,
+  "schemaVersion": 16,
   "type": "default",
   "id": "Purchasing_Form"
 }

@@ -1,0 +1,113 @@
+{
+  "components": [
+    {
+      "text": "### Production order details",
+      "type": "text",
+      "layout": {
+        "row": "row_1",
+        "col": "auto"
+      },
+      "id": "Heading_1"
+    },
+    {
+      "text": "##### Product selection",
+      "type": "text",
+      "layout": {
+        "row": "row_5",
+        "col": "auto"
+      },
+      "id": "Subheading_2"
+    },
+    {
+      "label": "Customer's ordered product",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03uc6il",
+        "columns": 8
+      },
+      "id": "Field_0d253hn",
+      "key": "customerProduct",
+      "readonly": true,
+      "defaultValue": "${customerProduct}"
+    },
+    {
+      "label": "Customer's ordered quantity",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03uc6il",
+        "columns": null
+      },
+      "id": "Field_0pu9dbd",
+      "key": "customerQuantity",
+      "defaultValue": "${customerQuantity}",
+      "readonly": true
+    },
+    {
+      "label": "Customer's order date",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03pdfkq",
+        "columns": 8
+      },
+      "id": "Field_16iv9bh",
+      "key": "customerOrderDate",
+      "defaultValue": "${customerOrderDate}",
+      "readonly": true
+    },
+    {
+      "label": "Customer's order time",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_03pdfkq",
+        "columns": null
+      },
+      "id": "Field_1uwq3hu",
+      "key": "customerOrderTime",
+      "defaultValue": "${customerOrderTime}",
+      "readonly": true
+    },
+    {
+      "text": "##### Production information",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_0bbptj9",
+        "columns": null
+      },
+      "id": "Field_1vnhccm"
+    },
+    {
+      "label": "Quantity to be produced",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1kafdi3",
+        "columns": 8
+      },
+      "id": "Field_0yglumh",
+      "key": "quantityNeededForProduction",
+      "disabled": false,
+      "defaultValue": "${quantityNeededForProduction}",
+      "readonly": true
+    },
+    {
+      "text": "##### Confirm production order details?",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_10w5s84",
+        "columns": null
+      },
+      "id": "Field_1catgqk"
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.24.0"
+  },
+  "schemaVersion": 16,
+  "id": "Form_j8qsukg",
+  "generated": true,
+  "type": "default"
+}
