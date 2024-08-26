@@ -65,22 +65,26 @@ public class FtfactoryZeebeWorker extends AWorker {
 	}
 	
 	@JobWorker(type="completedManufacturingOrder")
-    public void completedManufacturingOrder(final ActivatedJob job) {
-        logJobStart(job);
+	public void completedManufacturingOrder(final ActivatedJob job) {
+		logJobStart(job);
 
-        String correlationValue = (String) job.getVariablesAsMap().get("correlationValue");
+		// Abrufen des correlationValue als Integer
+		Integer correlationValue = (Integer) job.getVariablesAsMap().get("correlationValue");
 
-        if (correlationValue == null || correlationValue.isEmpty()) {
-            throw new ZeebeBpmnError("correlationValueError", "No correlation value found");
-        }
+		if (correlationValue == null) {
+			throw new ZeebeBpmnError("correlationValueError", "No correlation value found");
+		}
 
-        this.ftfactoryZEEBEClient.newPublishMessageCommand()
-            .messageName("manufacturingOrderCompleted")
-            .correlationKey(correlationValue)
-            .send()
-            .join(); // Die Nachricht wird synchron gesendet
+		// Konvertieren des Integer-Werts in einen String für die Nachricht
+		String correlationValueStr = correlationValue.toString();
 
-        log.info("Published message 'manufacturingOrderCompleted' with correlationValue {}", correlationValue);
-        logJobEnd(job);
-    }
+		this.ftfactoryZEEBEClient.newPublishMessageCommand()
+			.messageName("manufacturingOrderCompleted")
+			.correlationKey(correlationValueStr)
+			.send()
+			.join(); // Die Nachricht wird synchron gesendet
+
+		log.info("Published message 'manufacturingOrderCompleted' with correlationValue {}", correlationValueStr);
+		logJobEnd(job);
+	}
 }
