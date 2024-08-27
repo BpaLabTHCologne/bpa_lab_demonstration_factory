@@ -20,6 +20,7 @@ require('./receiveFromWarehouseOperations');
 require('./sendProductionOrderToPurchasing');
 require('./sendPurchasingReply');
 require('./removeRequiredComponentsForManufacturing');
+require('./startManufacturingProcess');
 
 // Define an async main function to deploy a process, create a process instance, and log the outcome
 async function main() {
@@ -68,6 +69,21 @@ async function main() {
     // Log the warehouse robot BPMN diagram
     console.log('\nWarehouse robot BPMN deployed successfully:', JSON.stringify(warehouseRobot, null, 2));
 
+    // Deploy the warehouse robot BPMN diagram
+    const manufacturing = await zbc.deployResource({
+      processFilename: `./bpa_lab_bpm_models/ManufacturingProcess.bpmn`,
+    });
+
+    // Log the warehouse robot BPMN diagram
+    console.log('\nManufacturing Process BPMN deployed successfully:', JSON.stringify(manufacturing, null, 2));
+
+    // Deploy the warehouse robot BPMN diagram
+    const hbwStorage = await zbc.deployResource({
+      processFilename: `./bpa_lab_bpm_models/HBWStorageProcess.bpmn`,
+    });
+
+    // Log the warehouse robot BPMN diagram
+    console.log('\nHBW Storage Process BPMN deployed successfully:', JSON.stringify(hbwStorage, null, 2));
 
   } catch (error) {
     // Handle any errors that occur during deployment

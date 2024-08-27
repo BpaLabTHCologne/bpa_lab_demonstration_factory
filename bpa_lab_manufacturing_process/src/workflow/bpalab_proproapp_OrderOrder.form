@@ -1,0 +1,59 @@
+{
+  "components": [
+    {
+      "label": "Temp",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0fhe8h7",
+        "columns": 2
+      },
+      "id": "Field_0xuz2eb",
+      "key": "f_temperatur",
+      "disabled": true
+    },
+    {
+      "label": "Humid",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0fhe8h7",
+        "columns": 2
+      },
+      "id": "Field_1l6xxin",
+      "key": "f_luftfeuchtigkeit",
+      "disabled": true
+    },
+    {
+      "values": [
+        {
+          "label": "BLAU",
+          "value": "BLUE"
+        },
+        {
+          "label": "ROT",
+          "value": "RED"
+        },
+        {
+          "label": "WEISS",
+          "value": "WHITE"
+        }
+      ],
+      "label": "Werkstück wählen",
+      "type": "select",
+      "layout": {
+        "row": "Row_0p7fr1r",
+        "columns": null
+      },
+      "id": "Field_1h99yte",
+      "key": "OrderType"
+    }
+  ],
+  "schemaVersion": 9,
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "bed7ea1"
+  },
+  "type": "default",
+  "id": "Form_047a7583-58b0-4376-9643-9245818a6254",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0"
+}

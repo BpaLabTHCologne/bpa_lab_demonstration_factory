@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0" camunda:diagramRelationId="6dde65ea-0d47-4a4f-86b5-48bb9a2d42cf">
+  <bpmn:collaboration id="bpalab_hbwstorage_collab">
+    <bpmn:participant id="Participant_135yowl" name="HBWStorage" processRef="bpalab_proproapp_Storage" />
+    <bpmn:participant id="Participant_02cnhjb" name="Ftfactory" processRef="Process_108399q" />
+    <bpmn:messageFlow id="Flow_139kqw2" name="HBWStart&#10;Message" sourceRef="Participant_02cnhjb" targetRef="StartEvent_1" />
+    <bpmn:messageFlow id="Flow_050bjc5" name="HBWAvailable&#10;Message" sourceRef="Event_1uhjv1b" targetRef="Participant_02cnhjb" />
+  </bpmn:collaboration>
+  <bpmn:process id="bpalab_proproapp_Storage" name="bpalab_proproapp_Storage" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="HBWStart&#10;Message">
+      <bpmn:outgoing>Flow_0c6gr8d</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_00qme4i" messageRef="Message_0fk7sva" />
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_0f3ygf9" default="Flow_0hxkiv6">
+      <bpmn:incoming>Flow_1w67nc0</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hewutr</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0hxkiv6</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_1wlgzjj">
+      <bpmn:incoming>Flow_0c6gr8d</bpmn:incoming>
+      <bpmn:incoming>Flow_1jzvu3o</bpmn:incoming>
+      <bpmn:outgoing>Flow_0pa5x3c</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_1uhjv1b" name="HBWAvailable&#10;Message">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendFtfactoryStorageMessage" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0hxkiv6</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1ilccrj" />
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_1xxna82" name="retrieve HBWStorage state with end message">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="retrieveHBWStorageState" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0pa5x3c</bpmn:incoming>
+      <bpmn:outgoing>Flow_1w67nc0</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0xdccno">
+        <bpmn:targetRef>DataObjectReference_0nz838a</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0c6gr8d" sourceRef="StartEvent_1" targetRef="Gateway_1wlgzjj" />
+    <bpmn:sequenceFlow id="Flow_1w67nc0" sourceRef="Activity_1xxna82" targetRef="Gateway_0f3ygf9" />
+    <bpmn:sequenceFlow id="Flow_1hewutr" name="not availble" sourceRef="Gateway_0f3ygf9" targetRef="Activity_1pbb9i2">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(available)</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0hxkiv6" sourceRef="Gateway_0f3ygf9" targetRef="Event_1uhjv1b" />
+    <bpmn:sequenceFlow id="Flow_1jzvu3o" sourceRef="Activity_1pbb9i2" targetRef="Gateway_1wlgzjj" />
+    <bpmn:sequenceFlow id="Flow_0pa5x3c" sourceRef="Gateway_1wlgzjj" targetRef="Activity_1xxna82" />
+    <bpmn:userTask id="Activity_1pbb9i2" name="prompt to store">
+      <bpmn:incoming>Flow_1hewutr</bpmn:incoming>
+      <bpmn:outgoing>Flow_1jzvu3o</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmn:message id="Message_0fk7sva" name="HBWStartMessage" />
+  <bpmn:process id="Process_108399q" isExecutable="false">
+    <bpmn:dataObjectReference id="DataObjectReference_0nz838a" name="FtfactoryHBW" dataObjectRef="DataObject_0fb9xs6" />
+    <bpmn:dataObject id="DataObject_0fb9xs6" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="bpalab_hbwstorage_collab">
+      <bpmndi:BPMNShape id="Participant_135yowl_di" bpmnElement="Participant_135yowl" isHorizontal="true">
+        <dc:Bounds x="150" y="80" width="800" height="300" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1dq7st9_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="232" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="226" y="205" width="49" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0f3ygf9_di" bpmnElement="Gateway_0f3ygf9" isMarkerVisible="true">
+        <dc:Bounds x="565" y="235" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1wlgzjj_di" bpmnElement="Gateway_1wlgzjj" isMarkerVisible="true">
+        <dc:Bounds x="305" y="235" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_00nbk2b_di" bpmnElement="Event_1uhjv1b">
+        <dc:Bounds x="692" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="675" y="204.5" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1wo4ndn_di" bpmnElement="Activity_1xxna82">
+        <dc:Bounds x="390" y="220" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1gnz7t9_di" bpmnElement="Activity_1pbb9i2">
+        <dc:Bounds x="390" y="110" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0c6gr8d_di" bpmnElement="Flow_0c6gr8d">
+        <di:waypoint x="268" y="260" />
+        <di:waypoint x="305" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1w67nc0_di" bpmnElement="Flow_1w67nc0">
+        <di:waypoint x="490" y="260" />
+        <di:waypoint x="565" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hewutr_di" bpmnElement="Flow_1hewutr">
+        <di:waypoint x="590" y="235" />
+        <di:waypoint x="590" y="150" />
+        <di:waypoint x="490" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="602" y="173" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hxkiv6_di" bpmnElement="Flow_0hxkiv6">
+        <di:waypoint x="615" y="260" />
+        <di:waypoint x="692" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1jzvu3o_di" bpmnElement="Flow_1jzvu3o">
+        <di:waypoint x="390" y="150" />
+        <di:waypoint x="330" y="150" />
+        <di:waypoint x="330" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pa5x3c_di" bpmnElement="Flow_0pa5x3c">
+        <di:waypoint x="355" y="260" />
+        <di:waypoint x="390" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_02cnhjb_di" bpmnElement="Participant_02cnhjb" isHorizontal="true">
+        <dc:Bounds x="150" y="450" width="600" height="90" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0nz838a_di" bpmnElement="DataObjectReference_0nz838a">
+        <dc:Bounds x="422" y="475" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="465" y="493" width="69" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0xdccno_di" bpmnElement="DataOutputAssociation_0xdccno">
+        <di:waypoint x="440" y="300" />
+        <di:waypoint x="442" y="475" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_139kqw2_di" bpmnElement="Flow_139kqw2">
+        <di:waypoint x="250" y="450" />
+        <di:waypoint x="250" y="278" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="265" y="396" width="49" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_050bjc5_di" bpmnElement="Flow_050bjc5">
+        <di:waypoint x="710" y="278" />
+        <di:waypoint x="710" y="450" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="715" y="396" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

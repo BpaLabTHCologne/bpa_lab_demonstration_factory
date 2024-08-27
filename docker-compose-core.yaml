@@ -337,6 +337,41 @@ services:
     environment:
         IS_PROD: ${IS_PROD}
 
+  bpa_lab_manufacturing_process:
+    build:
+      context: ./bpa_lab_manufacturing_process
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_manufacturing_process
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "8083:8083"  # maybe needed to change
+    depends_on:
+      - zeebe
+      - elasticsearch
+    volumes:
+      - ./bpa_lab_manufacturing_process/src:/app/src
+    environment:
+    # Can be set "true" in the .env if FT-factory is set up and connected
+      - FACTORY_PROD=${FACTORY_PROD}
+    # Zeebe Client Configuration (Self-Managed)
+      - zeebe.client.broker.gateway-address=zeebe:26500
+      - zeebe.client.security.plaintext=true
+      - zeebe.client.connection-mode=ADDRESS
+    # MQTT Client Configuration
+      - ftfactorymqttclient.broker=ws://10.0.0.21:8081
+      - ftfactorymqttclient.clientId=FTFactoryMQTTClient
+    # MQTT Topics Configuration
+      - ftfactorymqttclient.cloudTopicPrefix=bpalab/ftfactory
+      - ftfactorymqttclient.cloudPubOrderTopic=bpalab/ftfactory/f/o/order
+      - ftfactorymqttclient.cloudBroadcastTopic=bpalab/ftfactory/o/broadcast
+      - ftfactorymqttclient.cloudSubOrderTopic=bpalab/ftfactory/f/i/order
+      - ftfactorymqttclient.cloudHBWTopic=bpalab/ftfactory/f/i/stock
+      - ftfactorymqttclient.cloudBME680Topic=bpalab/ftfactory/i/bme680
+    # Tomcat Server Configuration
+      - server.port=8083
+
 # MQTT-Broker for communication between warehouse robot process and warehouse operations process
   mqtt-broker:
     image: eclipse-mosquitto:latest
