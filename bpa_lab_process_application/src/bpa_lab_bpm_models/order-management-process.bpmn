@@ -680,10 +680,6 @@ order for production</bpmn:text>
       <bpmn:incoming>Flow_0oo7ajn</bpmn:incoming>
       <bpmn:outgoing>Flow_1pm9mvp</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:task id="ReceiveTask_ReceiveFinishedProductsFromManufacturing" name="Receive finished products from manufacturing">
-      <bpmn:incoming>Flow_054jg90</bpmn:incoming>
-      <bpmn:outgoing>Flow_0oo7ajn</bpmn:outgoing>
-    </bpmn:task>
     <bpmn:sequenceFlow id="Flow_1pm9mvp" sourceRef="UserTask_CheckProductionOrder" targetRef="Gateway_ProductionStatus" />
     <bpmn:sequenceFlow id="Flow_00skklp" sourceRef="Task_UpdateCustomerOrderToProduced" targetRef="SendTask_SendToDistributionWarehouse" />
     <bpmn:sequenceFlow id="Flow_0xcfihw" sourceRef="ReceiveTask_ReceiveFromDistributionWarehouse" targetRef="EndEvent_ProductionOrderCompleted" />
@@ -709,10 +705,17 @@ order for production</bpmn:text>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1mmj8ek" sourceRef="ServiceTask_RemoveRequiredComponentsForManufacturing" targetRef="SendTask_ManufactureTheOrderedProducts" />
-    <bpmn:task id="SendTask_ManufactureTheOrderedProducts" name="Manufacture the ordered products">
+    <bpmn:sendTask id="SendTask_ManufactureTheOrderedProducts" name="Manufacture the ordered products">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="startManufacturingProcess" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1mmj8ek</bpmn:incoming>
       <bpmn:outgoing>Flow_054jg90</bpmn:outgoing>
-    </bpmn:task>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="ReceiveTask_ReceiveFinishedProductsFromManufacturing" name="Receive finished products from manufacturing" messageRef="Message_3o814ji">
+      <bpmn:incoming>Flow_054jg90</bpmn:incoming>
+      <bpmn:outgoing>Flow_0oo7ajn</bpmn:outgoing>
+    </bpmn:receiveTask>
     <bpmn:association id="Association_0spy2m0" sourceRef="SendTask_SendToDistributionWarehouse" targetRef="TextAnnotation_0hvqoqf" />
     <bpmn:association id="Association_1sond9t" sourceRef="UserTask_CheckProductionOrder" targetRef="TextAnnotation_1c6x79i" />
     <bpmn:association id="Association_1tfrw10" sourceRef="EndEvent_ProductionOrderCompleted" targetRef="TextAnnotation_0g7taqv" />
@@ -1072,6 +1075,11 @@ order for production</bpmn:text>
       <bpmn:incoming>Flow_1679yn3</bpmn:incoming>
     </bpmn:endEvent>
   </bpmn:process>
+  <bpmn:message id="Message_3o814ji" name="manufacturingOrderCompleted">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=correlationValue" />
+    </bpmn:extensionElements>
+  </bpmn:message>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_12fblkz">
       <bpmndi:BPMNShape id="Participant_1o4at5h_di" bpmnElement="Participant_1o4at5h" isHorizontal="true">
@@ -1173,10 +1181,6 @@ order for production</bpmn:text>
         <dc:Bounds x="1860" y="850" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0wo0gfn_di" bpmnElement="ReceiveTask_ReceiveFinishedProductsFromManufacturing">
-        <dc:Bounds x="1730" y="850" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_19sf4uc" bpmnElement="DataStoreReference_0sqh3j1">
         <dc:Bounds x="1475" y="755" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -1186,9 +1190,11 @@ order for production</bpmn:text>
       <bpmndi:BPMNShape id="Activity_1u84k74_di" bpmnElement="ServiceTask_RemoveRequiredComponentsForManufacturing">
         <dc:Bounds x="1450" y="850" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1pe1kz0_di" bpmnElement="SendTask_ManufactureTheOrderedProducts">
+      <bpmndi:BPMNShape id="Activity_0830z2d_di" bpmnElement="SendTask_ManufactureTheOrderedProducts">
         <dc:Bounds x="1590" y="850" width="100" height="80" />
-        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_09ya9lp_di" bpmnElement="ReceiveTask_ReceiveFinishedProductsFromManufacturing">
+        <dc:Bounds x="1730" y="850" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0177tat_di" bpmnElement="Flow_0177tat">
         <di:waypoint x="1365" y="890" />
