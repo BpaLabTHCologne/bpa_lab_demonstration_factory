@@ -679,8 +679,8 @@
         <bpmn:flowNodeRef>UserTask_ModifyPR</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Gateway_PRApproved</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ServiceTask_CompletePO</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ServiceTask_UpdateComponentDB</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>UserTask_CheckApprovement</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_UpdateComponentDB</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_1k3o3fs" name="Purchasing manager">
         <bpmn:flowNodeRef>UserTask_ApprovePurchaseRequestPR</bpmn:flowNodeRef>
@@ -871,6 +871,11 @@
     <bpmn:dataStoreReference id="DataStoreReference_1o3khyk" name="purchasing_DB (MySQL)" />
     <bpmn:dataStoreReference id="DataStoreReference_0oul6ac" name="purchasing_DB (MySQL)" />
     <bpmn:sequenceFlow id="Flow_0iirzma" sourceRef="ServiceTask_UpdateComponentDB" targetRef="ServiceTask_CompletePO" />
+    <bpmn:sequenceFlow id="Flow_1v184pq" sourceRef="UserTask_CheckApprovement" targetRef="ServiceTask_UpdateComponentDB" />
+    <bpmn:userTask id="UserTask_CheckApprovement" name="Check approvement">
+      <bpmn:incoming>Flow_0p60uuy</bpmn:incoming>
+      <bpmn:outgoing>Flow_1v184pq</bpmn:outgoing>
+    </bpmn:userTask>
     <bpmn:serviceTask id="ServiceTask_UpdateComponentDB" name="Update component database">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="updateComponentDB" />
@@ -878,11 +883,6 @@
       <bpmn:incoming>Flow_1v184pq</bpmn:incoming>
       <bpmn:outgoing>Flow_0iirzma</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_1v184pq" sourceRef="UserTask_CheckApprovement" targetRef="ServiceTask_UpdateComponentDB" />
-    <bpmn:userTask id="UserTask_CheckApprovement" name="Check approvement">
-      <bpmn:incoming>Flow_0p60uuy</bpmn:incoming>
-      <bpmn:outgoing>Flow_1v184pq</bpmn:outgoing>
-    </bpmn:userTask>
   </bpmn:process>
   <bpmn:message id="Message_3mgrdce" name="message">
     <bpmn:extensionElements>
@@ -1006,12 +1006,12 @@
           <dc:Bounds x="1362" y="196" width="76" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0et467f" bpmnElement="ServiceTask_UpdateComponentDB">
-        <dc:Bounds x="2170" y="310" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1x9a61f_di" bpmnElement="UserTask_CheckApprovement">
         <dc:Bounds x="1870" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0et467f" bpmnElement="ServiceTask_UpdateComponentDB">
+        <dc:Bounds x="2070" y="310" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1umpuu2_di" bpmnElement="Event_0gpza1g">
@@ -1113,12 +1113,12 @@
         <di:waypoint x="1200" y="350" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0iirzma_di" bpmnElement="Flow_0iirzma">
-        <di:waypoint x="2270" y="350" />
+        <di:waypoint x="2170" y="350" />
         <di:waypoint x="2290" y="350" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1v184pq_di" bpmnElement="Flow_1v184pq">
         <di:waypoint x="1970" y="350" />
-        <di:waypoint x="2170" y="350" />
+        <di:waypoint x="2070" y="350" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_19ms8as_di" bpmnElement="TextAnnotation_19ms8as">
         <dc:Bounds x="2260" y="430" width="170" height="40" />
