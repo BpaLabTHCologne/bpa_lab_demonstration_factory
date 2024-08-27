@@ -44,24 +44,42 @@ public class FtfactoryOrderWorker extends AWorker {
 	public Map<String, Object> orderWithShippedReplyMessage(final ActivatedJob job) {
 		logJobStart(job);
 
+		String factoryProdEnv = System.getenv("FACTORY_PROD");
+		boolean isFactoryProd = factoryProdEnv != null && factoryProdEnv.equalsIgnoreCase("true");
+
+		Integer correlationValue = (Integer) job.getVariablesAsMap().get("correlationValue");
+		String correlationValueStr = correlationValue.toString();
+
 		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
 
-		if (!this.ftfactoryMQTTClient.isConnected()) {
-			  throw new ZeebeBpmnError("factoryOrderError", "factory order failed due to an error");						
+		if (isFactoryProd) {
+			if (!this.ftfactoryMQTTClient.isConnected()) {
+				throw new ZeebeBpmnError("factoryOrderError", "factory order failed due to an error");						
+			}
+			if (this.ftfactoryOrder.isOrdered()) {
+				throw new ZeebeBpmnError("factoryOrderOtherError", "factory busy for another order");						
+			}
+	//		prepare and publish Order to ftfactoryMQTT
+	//		FtfactoryPubOrder pubOrder = new FtfactoryPubOrder(job.getVariables());
+			pubOrder.updateOrder(job.getVariables());
+			this.ftfactoryMQTTClient.publish(pubOrder.getTopicPayload());
+
+	//		prepare ReplyMessage
+			ftfactoryOrder.initTypeCorrelationValue(correlationValueStr); //normally "pubOrder.type" instead of correlationValueStr needs be tested if it works with factory connected!!!
+			
+	//		set process variable for MessageEvent
+	//		variables.put("orderReplyMessage", ftfactoryOrder.getReplyMessageName());
+	
+		}else{
+
+			this.ftfactoryZEEBEClient.newPublishMessageCommand()
+			.messageName("OrderShippedMessage")
+			.correlationKey(correlationValueStr)
+			.send()
+			.join();
+
+			log.info("FACTORY_PROD is not true. Skipping actual business logic of the worker.");
 		}
-		if (this.ftfactoryOrder.isOrdered()) {
-			  throw new ZeebeBpmnError("factoryOrderOtherError", "factory busy for another order");						
-		}
-//		prepare and publish Order to ftfactoryMQTT
-//		FtfactoryPubOrder pubOrder = new FtfactoryPubOrder(job.getVariables());
-		pubOrder.updateOrder(job.getVariables());
-		this.ftfactoryMQTTClient.publish(pubOrder.getTopicPayload());
-		
-//		prepare ReplyMessage
-		ftfactoryOrder.initTypeCorrelationValue(pubOrder.type);
-		
-//		set process variable for MessageEvent
-//		variables.put("orderReplyMessage", ftfactoryOrder.getReplyMessageName());
 		
 		logJobEnd(job);
 
@@ -72,19 +90,26 @@ public class FtfactoryOrderWorker extends AWorker {
 	public Map<String, Object> orderState(final ActivatedJob job) {
 		logJobStart(job);
 
+		String factoryProdEnv = System.getenv("FACTORY_PROD");
+		boolean isFactoryProd = factoryProdEnv != null && factoryProdEnv.equalsIgnoreCase("true");
+
 		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
-		if (this.ftfactoryOrder != null && this.ftfactoryOrder.isMessageReceived()) {
-			if (variables.get("OrderType") != null && variables.get("OrderType").equals(this.ftfactoryOrder.getType())) {
-				variables.put("f_orderType", this.ftfactoryOrder.getType());
-				variables.put("f_orderState", this.ftfactoryOrder.getState());
+
+		if (isFactoryProd) {
+			if (this.ftfactoryOrder != null && this.ftfactoryOrder.isMessageReceived()) {
+				if (variables.get("OrderType") != null && variables.get("OrderType").equals(this.ftfactoryOrder.getType())) {
+					variables.put("f_orderType", this.ftfactoryOrder.getType());
+					variables.put("f_orderState", this.ftfactoryOrder.getState());
+				}
+			} else {
+				variables.put("f_orderType", "NONE");
+				variables.put("f_orderState", "NONE");			
 			}
-		} else {
-			variables.put("f_orderType", "NONE");
-			variables.put("f_orderState", "NONE");			
+		}else{
+			log.info("FACTORY_PROD is not true. Skipping actual business logic of the worker.");
 		}
 
 		logJobEnd(job);
-		
 		return variables;
 	}
 

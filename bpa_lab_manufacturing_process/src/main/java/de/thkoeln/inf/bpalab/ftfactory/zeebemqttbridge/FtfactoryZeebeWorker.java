@@ -39,18 +39,30 @@ public class FtfactoryZeebeWorker extends AWorker {
 	public Map<String, Object> ensureStorageAvailable(final ActivatedJob job) {
 		logJobStart(job);
 
-		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
+		String factoryProdEnv = System.getenv("FACTORY_PROD");
+		boolean isFactoryProd = factoryProdEnv != null && factoryProdEnv.equalsIgnoreCase("true");
 
-		if (!this.ftfactoryMQTTClient.isConnected()) {
-			  throw new ZeebeBpmnError("factoryOrderError", "factory order failed due to an error");						
+		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());		
+
+		if (isFactoryProd) {
+			if (!this.ftfactoryMQTTClient.isConnected()) {
+				throw new ZeebeBpmnError("factoryOrderError", "factory order failed due to an error");						
+			}
+		}else{
+			log.info("FACTORY_PROD is not true. Skipping actual business logic of the worker.");
 		}
 
 		Order order = new Order(job.getVariables());
-		ftfactoryHBWStartMessage.setReplyMessageCorrelationValue(order.type);
-		
+
+		Integer correlationValue = (Integer) job.getVariablesAsMap().get("correlationValue");
+		String correlationValueStr = correlationValue.toString();
+
+		ftfactoryHBWStartMessage.setReplyMessageCorrelationValue(correlationValueStr);
+			
 		HashMap<String, Object> sendVariables = new HashMap<>();
 		sendVariables.put("OrderType", order.type);
-				
+		sendVariables.put("correlationValue", correlationValue);
+					
 		this.ftfactoryZEEBEClient.newPublishMessageCommand()
 					.messageName(ftfactoryHBWStartMessage.getReplyMessageName())
 					.correlationKey(ftfactoryHBWStartMessage.getReplyMessageCorrelationValue())
@@ -59,6 +71,7 @@ public class FtfactoryZeebeWorker extends AWorker {
 					.send();		
 
 		log.info("\npublished zeebemessage {} correlationvalue {}", ftfactoryHBWStartMessage.getReplyMessageName(), ftfactoryHBWStartMessage.getReplyMessageCorrelationValue());
+
 		logJobEnd(job);
 
 		return variables;

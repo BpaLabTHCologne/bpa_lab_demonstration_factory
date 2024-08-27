@@ -249,12 +249,12 @@
   <bpmn:message id="Message_0fk7sva" name="HBWStartMessage" />
   <bpmn:message id="Message_2k10jfi" name="OrderShippedMessage">
     <bpmn:extensionElements>
-      <zeebe:subscription correlationKey="=OrderType" />
+      <zeebe:subscription correlationKey="=correlationValue" />
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmn:message id="Message_0ra02tj" name="HBWAvailableMessage">
     <bpmn:extensionElements>
-      <zeebe:subscription correlationKey="=OrderType" />
+      <zeebe:subscription correlationKey="=correlationValue" />
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmn:message id="Message_04nmec7" name="manufacturingStartMessage" />
@@ -469,13 +469,13 @@
         <di:waypoint x="745" y="790" />
         <di:waypoint x="782" y="790" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataInputAssociation_0dkfw8p_di" bpmnElement="DataInputAssociation_0dkfw8p">
-        <di:waypoint x="330" y="585" />
-        <di:waypoint x="330" y="320" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_0029uuh_di" bpmnElement="DataOutputAssociation_0029uuh">
         <di:waypoint x="940" y="320" />
         <di:waypoint x="940" y="565" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0dkfw8p_di" bpmnElement="DataInputAssociation_0dkfw8p">
+        <di:waypoint x="330" y="585" />
+        <di:waypoint x="330" y="320" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataInputAssociation_0tmjfdt_di" bpmnElement="DataInputAssociation_0tmjfdt">
         <di:waypoint x="591" y="655" />

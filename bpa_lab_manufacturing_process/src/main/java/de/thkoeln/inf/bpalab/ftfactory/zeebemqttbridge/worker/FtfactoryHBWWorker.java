@@ -34,9 +34,18 @@ public class FtfactoryHBWWorker extends AWorker {
 	
 	@JobWorker(type = "sendFtfactoryStorageMessage")
 	public void sendFtfactoryStorageMessage(final ActivatedJob job) {
-		Order order = new Order(job.getVariables());
-		if (this.ftfactoryHBW.isMessageReceived() && this.ftfactoryHBW.isAvailable(order.type)) {
+
+		String factoryProdEnv = System.getenv("FACTORY_PROD");
+		boolean isFactoryProd = factoryProdEnv != null && factoryProdEnv.equalsIgnoreCase("true");
+
+		if (isFactoryProd) {
+			Order order = new Order(job.getVariables());
+			if (this.ftfactoryHBW.isMessageReceived() && this.ftfactoryHBW.isAvailable(order.type)) {
+				this.ftfactoryHBW.sendFtfactoryStorageMessage();
+			}
+		}else{
 			this.ftfactoryHBW.sendFtfactoryStorageMessage();
+			log.info("FACTORY_PROD is not true. Skipping actual business logic of the worker.");
 		}
 	}
 	
@@ -44,27 +53,44 @@ public class FtfactoryHBWWorker extends AWorker {
 	public Map<String, Object> retrieveHBWStorageState(final ActivatedJob job) {
 		logJobStart(job);
 
-		if (!this.ftfactoryMQTTClient.isConnected()) {
-			  throw new ZeebeBpmnError("factoryStateError", "Retrieve of factory state failed due to an error");						
-		}
-
-		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
+		String factoryProdEnv = System.getenv("FACTORY_PROD");
+		boolean isFactoryProd = factoryProdEnv != null && factoryProdEnv.equalsIgnoreCase("true");
 		
-//		prepare ReplyMessage 
+		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
 
-		Order order = new Order(job.getVariables());
-		ftfactoryHBW.setReplyMessageCorrelationValue(order.type);
-				
-		if (this.ftfactoryHBW.isMessageReceived()) {
-			variables.put("f_redItems", ftfactoryHBW.getWorkpieceCountRED());
-			variables.put("f_whiteItems", ftfactoryHBW.getWorkpieceCountWHITE());
-			variables.put("f_blueItems", ftfactoryHBW.getWorkpieceCountBLUE());
-			if (ftfactoryHBW.isAvailable(order.type)) 
-				variables.put("available", true);			
-			else
+		if (isFactoryProd) {
+			if (!this.ftfactoryMQTTClient.isConnected()) {
+				throw new ZeebeBpmnError("factoryStateError", "Retrieve of factory state failed due to an error");						
+			}
+			
+			//prepare ReplyMessage 
+			Order order = new Order(job.getVariables());
+
+			Integer correlationValue = (Integer) job.getVariablesAsMap().get("correlationValue");
+			String correlationValueStr = correlationValue.toString();
+
+			ftfactoryHBW.setReplyMessageCorrelationValue(correlationValueStr);
+					
+			if (this.ftfactoryHBW.isMessageReceived()) {
+				variables.put("f_redItems", ftfactoryHBW.getWorkpieceCountRED());
+				variables.put("f_whiteItems", ftfactoryHBW.getWorkpieceCountWHITE());
+				variables.put("f_blueItems", ftfactoryHBW.getWorkpieceCountBLUE());
+				if (ftfactoryHBW.isAvailable(order.type)) 
+					variables.put("available", true);			
+				else
+					variables.put("available", false);			
+			}  else {
 				variables.put("available", false);			
-		}  else {
-			variables.put("available", false);			
+			}
+		} else {
+			Integer correlationValue = (Integer) job.getVariablesAsMap().get("correlationValue");
+			String correlationValueStr = correlationValue.toString();
+
+			ftfactoryHBW.setReplyMessageCorrelationValue(correlationValueStr);
+
+			variables.put("available", true);
+			
+			log.info("FACTORY_PROD is not true. Skipping actual business logic of the worker.");
 		}
 
 		logJobEnd(job);
