@@ -63,6 +63,7 @@ function handler(job) {
 
   zbc.publishStartMessage({
     name: 'startmessagePurchasing',
+    correlationKey: correlationValue,
     variables: {
       correlationValue,
       orderID: orderID,

@@ -39,12 +39,13 @@ zeebe_adress=os.getenv("ZEEBE_ADRESS")
 seperateChannel = grpc.insecure_channel(zeebe_adress)
 
 
-async def publish_start_message(**variables):
+async def publish_start_message(correlationKey, **variables):
     variables_json = json.dumps(variables)
 
     stub = gateway_pb2_grpc.GatewayStub(seperateChannel)
     request = gateway_pb2.PublishMessageRequest()
     request.name = START_WAREHOUSE_ROBOT_MESSAGE_ID
+    request.correlationKey = correlationKey
     request.timeToLive = 10000  # 10 seconds in milliseconds
     request.messageId = generate()
     request.variables = variables_json
@@ -224,7 +225,12 @@ UPDATE_SHELF_STATUS_ID = "update-shelf-status"
 async def get_bicycle_from_shelf(job: Job, **variables)-> dict:
     logging.info(f'{GET_BICYCLE_FROM_SHELF_TASK_ID}:: {variables}')
 
-    await publish_start_message(**variables)
+    correlation_key = str(job.variables.get("correlationValue"))
+
+    if not correlation_key:
+        raise ValueError("correlationValue not found in job variables")
+
+    await publish_start_message(correlationKey=correlation_key, **variables)
 
     return variables
 
@@ -348,7 +354,12 @@ async def update_retrieve_inventory(job: Job, **variables):
 async def store_bicycle_to_shelf(job: Job, **variables)-> dict:
     logging.info(f'{STORE_BICYCLE_TO_SHELF_TASK_ID}:: {variables}')
 
-    await publish_start_message(**variables)
+    correlation_key = str(job.variables.get("correlationValue"))
+
+    if not correlation_key:
+        raise ValueError("correlationValue not found in job variables")
+
+    await publish_start_message(correlationKey=correlation_key, **variables)
     
     return variables
 
