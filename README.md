@@ -38,7 +38,7 @@ Navigate the BPA Lab containers:
 
 In addition to the local environment setup with docker compose, you can download the [Camunda Desktop Modeler](https://camunda.com/download/modeler/) to locally model BPMN diagrams for execution and directly deploy them to your local environment.
 
-> :information_source: This project deployes all the process diagrams automatically including order management, production control, purchasing, shipment and warehouse operations.
+> :information_source: This project deployes all the process diagrams automatically including order management, production control, purchasing, shipment, warehouse operations and manufacturing.
 
 ### Start the process
 
