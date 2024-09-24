@@ -59,7 +59,6 @@ async function handler(job) {
     orderProduct = productResults[0].product_name;
     
     console.log("\nThe production order is: ", orderProduct);
-    console.log("The quantity is: ", orderQuantity);
 
     // Looks only for the first components 
     if(orderProduct === "Mountain Bike") {
@@ -89,7 +88,7 @@ async function handler(job) {
 
     componentQuantityAvailable = componentQuantityAvailable - quantityNeeded
 
-    availableComponentsDBPool.query('UPDATE component_stock SET component_quantity = ? WHERE component_name = ?', [componentQuantityAvailable, componentName])
+    db.query('UPDATE component_stock SET component_quantity = ? WHERE component_name = ?', [componentQuantityAvailable, componentName])
 
     // Use updateToBrokerVariables as needed
     const updateToBrokerVariables = {

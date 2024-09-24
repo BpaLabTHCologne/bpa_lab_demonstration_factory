@@ -13,9 +13,7 @@ const checkFinishedProductAvailability = zbc.createWorker({
 
 async function handler(job) {
   try {
-    //let finishedProductName;
     let finishedProductQuantityAvailable;
-    //let customerOrderProduct;
     let customerOrderQuantity;
 
     const db = mysql.createPool({
@@ -41,10 +39,8 @@ async function handler(job) {
     });
 
     console.log("\nCustomer product results: ", customerOrderResults);
-    //customerOrderProduct = customerOrderResults[0].product;
     customerOrderQuantity = customerOrderResults[0].ordered_quantity;
     customerProductID = customerOrderResults[0].product_id;
-    //console.log("\nCustomer ordered product is: ", customerOrderProduct);
     console.log("\nCustomer ordered quantity is: ", customerOrderQuantity);
 
     // Query finished_product_stock
@@ -61,12 +57,10 @@ async function handler(job) {
     });
 
     console.log("\nProduct results: ", productResults);
-    //finishedProductName = finishedProductResults[0].productName;
-    finishedProductQuantityAvailable = productResults[0].productQuantity;
-    //console.log("\nFinished product found same as what customer ordered: ", finishedProductName);
+    finishedProductQuantityAvailable = productResults[0].product_quantity;
     console.log("\nProduct quantity available: ", finishedProductQuantityAvailable);
 
-    const result = checkStock(customerOrderProduct, customerOrderQuantity, finishedProductName, finishedProductQuantityAvailable);
+    const result = checkStock(customerOrderQuantity, finishedProductQuantityAvailable);
     console.log("\nFinal results after checking stock: ", result);
 
     // Use updateToBrokerVariables as needed...
@@ -82,7 +76,7 @@ async function handler(job) {
   }
 }
 
-function checkStock(customerOrderProduct, customerOrderQuantity, finishedProductName, finishedProductQuantityAvailable) {
+function checkStock(customerOrderQuantity, finishedProductQuantityAvailable) {
   let productionRequired = "no";
   let quantityNeededForProduction = 0;
 
@@ -105,9 +99,7 @@ function checkStock(customerOrderProduct, customerOrderQuantity, finishedProduct
   }
 
   return {
-    //customerOrderProduct,
     customerOrderQuantity,
-    //finishedProductName,
     quantityNeededForProduction,
     productionRequired
   };

@@ -116,7 +116,17 @@ function checkStock(componentName, componentQuantityAvailable, orderedProduct, o
   else if(componentQuantityAvailable >= orderedQuantity) {
     componentQuantityAvailable = componentQuantityAvailable - orderedQuantity;
 
+    const db = mysql.createPool({
+      connectionLimit: 10,
+      host: process.env.MYSQL_HOST_NAME,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
+      port: process.env.MYSQL_HOST_PORT,
+      server: 'localhost',
+    });
     db.query('UPDATE component_stock SET component_quantity = ? WHERE component_name = ?', [componentQuantityAvailable, componentName])
+
     console.log("\nComponent stock available. Production starting...");
     purchasingRequired = "no";
   }

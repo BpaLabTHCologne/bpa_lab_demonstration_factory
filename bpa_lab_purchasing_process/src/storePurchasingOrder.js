@@ -39,7 +39,7 @@ function handler(job) {
     }
   });
 
-  db.query('SELECT component_id FROM product_stock WHERE product_name = ?', [job.varables.customerProduct], 
+  db.query('SELECT component_id FROM product_stock WHERE product_name = ?', [job.variables.customerProduct], 
     (err, productResults) => {
     if (err) {
       console.error('Error executing product query:', err.message);
@@ -48,7 +48,7 @@ function handler(job) {
 
     const componentId = productResults[0].component_id;
 
-    db.query('SELECT vendor_id FROM vendor WHERE vendor_name = ?', [job.varables.vendor_key], 
+    db.query('SELECT vendor_id FROM vendor WHERE vendor_name = ?', [job.variables.vendor_key], 
       (err, vendorResults) => {
       if (err) {
         console.error('Error executing product query:', err.message);
@@ -57,9 +57,8 @@ function handler(job) {
 
     const vendorId = vendorResults[0].vendor_id;
 
-
       db.query('INSERT INTO purchasing_order (component_id, vendor_id, price, purchasing_quantity, approved) VALUES (?, ?, ?, ?, ?)',
-      [componentId, vendorId, job.variables.price_key, job.variables.quantity_key, approve_key],
+      [componentId, vendorId, job.variables.price_key, job.variables.quantity_key, job.variables.approve_key],
       (err, insertResults) => {
         if (err) {
             console.error('Error executing insert query:', err.message);

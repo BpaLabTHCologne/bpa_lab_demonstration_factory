@@ -18,7 +18,7 @@ require('./sendToWarehouseOperations');
 require('./receiveFinishedProduct');
 require('./receiveFromWarehouseOperations');
 require('./sendProductionOrderToPurchasing');
-require('./sendPurchasingReply');
+//require('./sendPurchasingReply');
 require('./removeRequiredComponentsForManufacturing');
 require('./startManufacturingProcess');
 

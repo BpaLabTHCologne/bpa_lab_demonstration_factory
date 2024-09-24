@@ -18,6 +18,7 @@ services:
       - "26500:26500"
       - "9600:9600"
     environment: # https://docs.camunda.io/docs/self-managed/zeebe-deployment/configuration/environment-variables/
+      - TZ=Europe/Berlin
       - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_CLASSNAME=io.camunda.zeebe.exporter.ElasticsearchExporter
       - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_ARGS_URL=http://elasticsearch:9200
       # default is 1000, see here: https://github.com/camunda/zeebe/blob/main/exporters/elasticsearch-exporter/src/main/java/io/camunda/zeebe/exporter/ElasticsearchExporterConfiguration.java#L259
@@ -46,6 +47,7 @@ services:
     ports:
       - "8081:8080"
     environment: # https://docs.camunda.io/docs/self-managed/operate-deployment/configuration/
+      - TZ=Europe/Berlin
       - CAMUNDA_OPERATE_ZEEBE_GATEWAYADDRESS=zeebe:26500
       - CAMUNDA_OPERATE_ELASTICSEARCH_URL=http://elasticsearch:9200
       - CAMUNDA_OPERATE_ZEEBEELASTICSEARCH_URL=http://elasticsearch:9200
@@ -167,6 +169,7 @@ services:
     ports:
       - "3070:3306"
     environment:
+      TZ: Europe/Berlin
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db
       MYSQL_USER: dev
