@@ -168,7 +168,7 @@ services:
       - "3070:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: customer_DB
+      MYSQL_DATABASE: db
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
       MYSQL_MAX_CONNECTIONS: 100
@@ -227,12 +227,12 @@ services:
       MYSQL_HOST_NAME: mysql
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
-      MYSQL_DATABASE: customer_DB
+      MYSQL_DATABASE: db
       MYSQL_HOST_PORT: 3306
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE_FINISHED_PRODUCT: finished_product_DB
-      MYSQL_DATABASE_PRODUCTION: production_order_DB
-      MYSQL_DATABASE_COMPONENTS: component_DB
+      # MYSQL_DATABASE_FINISHED_PRODUCT: finished_product_DB
+      # MYSQL_DATABASE_PRODUCTION: production_order_DB
+      # MYSQL_DATABASE_COMPONENTS: component_DB
 
 # REST middleware server container used to communicate between the front-end and zeebe broker
   bpa_lab_rest_middleware_server:
@@ -290,9 +290,9 @@ services:
       MYSQL_HOST_NAME: mysql
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
-      MYSQL_DATABASE_PURCHASING: purchasing_DB
-      MYSQL_DATABASE_PRODUCTION: production_order_DB
-      MYSQL_DATABASE_COMPONENTS: component_DB
+      MYSQL_DATABASE: db
+      # MYSQL_DATABASE_PRODUCTION: production_order_DB
+      # MYSQL_DATABASE_COMPONENTS: component_DB
       MYSQL_HOST_PORT: 3306
 
 # Warehouse operations process container including job workers
@@ -318,7 +318,7 @@ services:
         MYSQL_HOST_NAME: mysql
         MYSQL_USER: dev
         MYSQL_PASSWORD: dev
-        MYSQL_DATABASE: finished_product_DB
+        MYSQL_DATABASE: db
         MYSQL_HOST_PORT: 3306
 
 # Warehouse robot process container including job workers

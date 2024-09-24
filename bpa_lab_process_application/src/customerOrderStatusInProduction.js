@@ -15,38 +15,60 @@ const customerOrderStatusInProduction = zbc.createWorker({
 });
 
 function handler(job) {
-	// customerOrderStatusInProduction.log('Task variables', job.variables)
-    try {
-        const orderID = parseInt(job.variables.orderID)
-        var connection = mysql.createConnection({
-            connectionLimit: 50,
-            host: process.env.MYSQL_HOST_NAME,
-            user: process.env.MYSQL_USER,
-            password: process.env.MYSQL_PASSWORD,
-            database: process.env.MYSQL_DATABASE,
-            port: process.env.MYSQL_HOST_PORT,
-            server: 'localhost',
-        });
-    
-        connection.connect();
-    
-        connection.query('UPDATE `customer_order` SET `orderStatus` = "ORDER_IN_PRODUCTION" WHERE `customer_order`.`id` = ' + orderID + ';',
-          async function (error, results, fields) {
-            if (error) throw error;
-            console.log('Results: ', JSON.stringify(results));
-          });
-    
-        
-    
-      } catch (error) {
-        console.log(error)
-      }
+  try {
+    // Create MySQL connection
+    var dbConnection = mysql.createConnection({
+      connectionLimit: 10,
+      host: process.env.MYSQL_HOST_NAME,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
+      port: process.env.MYSQL_HOST_PORT,
+      server: 'localhost',
+    });
 
-      const updateToBrokerVariables = {
-        orderStatus: 'ORDER_IN_PRODUCTION',
-	}
-  connection.end();
-	return job.complete(updateToBrokerVariables)
+    dbConnection.connect((error) => {
+      if (error) {
+        console.log("Error connecting to MySQL database", error);
+        return job.fail(error.message);
+      }
+    });
+
+    // Retrieve the orderID from the Zeebe job variables
+    const orderID = parseInt(job.variables.orderID);
+
+    // Insert the 'ORDER_IN_PRODUCTION' status into the customer_order_status table
+    dbConnection.query(
+      'INSERT INTO customer_order_status (co_id, order_status) VALUES (?, ?)',
+      [orderID, 'ORDER_IN_PRODUCTION'],
+      (err, insertResults) => {
+        if (err) {
+          console.error('Error inserting order status:', err.message);
+          dbConnection.end();
+          return job.fail(err.message);
+        }
+
+        // Return the new order status to Zeebe as a variable
+        const updateToBrokerVariables = {
+          orderStatus: 'ORDER_IN_PRODUCTION',
+        };
+
+        // Close the database connection
+        dbConnection.end((endError) => {
+          if (endError) {
+            console.error("Error closing MySQL connection:", endError.message);
+            return job.fail(endError.message);
+          }
+
+          // Complete the Zeebe job and return the updated variables
+          return job.complete(updateToBrokerVariables);
+        });
+      }
+    );
+  } catch (error) {
+    console.error('Error handling the job:', error.message);
+    return job.fail(error.message);
+  }
 }
 
-  module.exports = customerOrderStatusInProduction;
+module.exports = customerOrderStatusInProduction;

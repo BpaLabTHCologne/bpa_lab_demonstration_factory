@@ -30,8 +30,6 @@ let shippingAddress = ''
 const sendCustomerOrderForProduction = zbc.createWorker({
   taskType: 'sendCustomerOrderForProduction',
   taskHandler: handler,
-  // debug: true,
-  // loglevel: 'INFO',
   onReady: () => sendCustomerOrderForProduction.log('Job worker started successfully!')
 });
 

@@ -7,8 +7,6 @@ const zbc = new ZB.ZBClient({
 
 //External job worker for sending order rejection email
 const sendRejectionEmail = zbc.createWorker({
-	// debug: true,
-	// loglevel: "DEBUG", 
 	taskType: 'sendRejectionEmail',
 	taskHandler: handler,
 	 // Called when the connection to the broker is (re-)established
@@ -50,12 +48,8 @@ async function handler(job) {
 
 			  console.log("Message sent: %s", info.messageId);
 			  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-
-			// Task worker business logic goes here
-			const updateToBrokerVariables = {
-			}
 		
-			return job.complete(updateToBrokerVariables)
+			return job.complete()
 
 	} catch (error) {
 		console.log("Got error:", error)

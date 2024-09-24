@@ -30,8 +30,6 @@ let vendor_key = ''
 const sendProductionOrderToPurchasing = zbc.createWorker({
   taskType: 'sendProductionOrderToPurchasing',
   taskHandler: handler,
-  // debug: true,
-  // loglevel: 'INFO',
   onReady: () => sendProductionOrderToPurchasing.log('Job worker started successfully!')
 });
 

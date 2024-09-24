@@ -9,21 +9,14 @@ const zbc = new ZB.ZBClient({
 const storeCustomerOrder = zbc.createWorker({
   taskType: 'storeCustomerOrder',
   taskHandler: handler,
-  // debug: true,
-  // loglevel: 'INFO',
   onReady: () => storeCustomerOrder.log('Job worker started successfully!')
 });
 
 function handler(job) {
-  let insertId = 0; // Declare insertId in the outer scope
   let orderDateTime = '';
 
-  storeCustomerOrder.log('\nTask variables', job.variables);
-
-  // Accessing optional variables
-  console.log('Optional variables: ', job.variables);
-
-  var customerOrderConnection = mysql.createConnection({
+  // Establishing MySQL connection
+  var dbConnection = mysql.createConnection({
     connectionLimit: 50,
     host: process.env.MYSQL_HOST_NAME,
     user: process.env.MYSQL_USER,
@@ -33,31 +26,67 @@ function handler(job) {
     server: 'localhost',
   });
 
-  customerOrderConnection.connect((error) => {
+ dbConnection.connect((error) => {
     if(error){
       console.log("storeCustomerOrder:: Error connecting to mysql database", error)
+      return job.fail(error.message);
     }
   });
 
-  customerOrderConnection.query('INSERT INTO `customer_order` (`id`, `name`, `email`, `phone`, `address`, `product`, `quantity`, `orderStatus`) VALUES (NULL, "' + job.variables.customerName +'", "' + job.variables.customerEmail +'", "'+ job.variables.customerPhone +'", "' + job.variables.customerAddress + '", "' + job.variables.customerProduct + '", "'+ job.variables.customerQuantity + '", "'+ job.variables.orderStatus + '");', 
-  (err, insertResults, fields) => {
+
+  // Retrieve the product_id based on the product name
+  const productName = job.variables.customerProduct;
+
+  dbConnection.query('SELECT product_id FROM product_stock WHERE product_name = ?', [productName], (err, productResults) => {
     if (err) {
-        console.error('Error executing insert query:', err.message);
-        return;
+      console.error('Error executing product query:', err.message);
+      return job.fail(err.message); 
     }
 
-    // Access the insertId from the callback
-    const insertId = insertResults.insertId;
-    // console.log("\ninsertId:", insertId);
-
-    // Now, perform the SELECT query using the insertId
-    const updateToBrokerVariables = {
-      orderID: insertId,
-      orderDateTime: orderDateTime,
+    if (productResults.length === 0) {
+      console.error('No product found with the name:', productName);
+      return job.fail('Product not found');
     }
-    return job.complete(updateToBrokerVariables)
-});
 
+    const product_id = productResults[0].product_id;
+
+    // Debugging
+    console.log("Product ID: ", product_id);
+
+    // Insert the customer order into the customer_order table
+    dbConnection.query('INSERT INTO customer_order (product_id, customer_name, customer_email, customer_phone_number, ordered_quantity) VALUES (?, ?, ?, ?, ?)', 
+      [product_id, job.variables.customerName, job.variables.customerEmail, job.variables.customerPhone, job.variables.customerQuantity], 
+      (err, insertResults) => {
+        if (err) {
+          console.error('Error executing insert query:', err.message);
+          return job.fail(err.message); 
+        }
+
+        // Access the insertId (co_id) from the callback
+        const insertId = insertResults.insertId;
+
+        // Insert the order status into the customer_order_status table
+        const orderStatus = job.variables.orderStatus;
+
+        dbConnection.query('INSERT INTO customer_order_status (co_id, order_status) VALUES (?, ?)', 
+          [insertId, orderStatus], 
+          (err, statusInsertResults) => {
+            if (err) {
+              console.error('Error inserting order status:', err.message);
+              return job.fail(err.message); 
+            }
+
+            console.log("Order and status inserted successfully");
+
+            const updateToBrokerVariables = {
+              orderID: insertId,
+              orderDateTime: orderDateTime,
+            };
+
+            return job.complete(updateToBrokerVariables);  
+        });
+    });
+  });
 }
 
-module.exports = storeCustomerOrder;
+module.exports = storeCustomerOrder;  

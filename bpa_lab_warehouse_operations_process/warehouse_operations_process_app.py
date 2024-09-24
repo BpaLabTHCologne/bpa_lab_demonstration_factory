@@ -184,42 +184,6 @@ UPDATE_SHELF_STATUS_ID = "update-shelf-status"
 # WORKERS FOR RETRIEVAL
 #*************************************************************************
 
-# CheckBicycleAvailability =========================================================
-# @worker.task(task_type=CHECK_BICYCLE_AVAILABILITY_ID, exception_handler=error_handler)
-# async def check_inventory(job: Job, **variables) -> dict:
-#     piMySqlDB = None
-#     try:
-#         piMySqlDB = await connect_to_db()
-#         if piMySqlDB is None:
-#             logging.error("Failed to connect to the database.")
-#             return {"error": "Database connection failed"}
-        
-#         logging.info("Database connection established.")
-
-#         mycursor = piMySqlDB.cursor()
-
-#         item = variables.get("customerProduct")
-#         sql_check_item = "SELECT EXISTS (SELECT * FROM place WHERE item = %s)"
-#         mycursor.execute(sql_check_item, (item,))
-
-#         result = mycursor.fetchone()
-#         if result is None:
-#             logging.error("No data returned from database query.")
-#             return {"error": "No data or invalid data"}
-
-#         item_exists = result[0]
-
-#         variables = {"stock": "stock" if item_exists else None}
-
-#         return variables
-    
-#     except mysql.connector.Error as err:
-#         await handle_db_error(job, err)
-
-#     finally:
-#         if piMySqlDB is not None and piMySqlDB.is_connected():
-#             piMySqlDB.close()
-
 # GetBicycleFromShelf ============================================================
 @worker.task(task_type=GET_BICYCLE_FROM_SHELF_TASK_ID, exception_handler=error_handler)
 async def get_bicycle_from_shelf(job: Job, **variables)-> dict:
@@ -285,12 +249,13 @@ async def update_retrieve_inventory(job: Job, **variables):
         quantityOrdered = int(variables.get("customerQuantity"))
 
         # Get the avilable quantity in the warehouse for the ordered product
-        queryAvailableQuantity = "SELECT productQuantity FROM finished_product_stock WHERE place_id = %s"
+        queryAvailableQuantity = "SELECT product_id, product_quantity FROM product_stock WHERE place_id = %s"
         mycursor.execute(queryAvailableQuantity, (place_id,))
 
         data = mycursor.fetchone()
-        if data and data[0] is not None:
-            availableQuantity = int(data[0])
+        if data and data[0] is not None and data[1] is not None:
+            product_id = int(data[0])
+            availableQuantity = int(data[1])
         else:
             logging.error("No data returned from database query.")
             return {"error": "No data or invalid data"}
@@ -298,8 +263,13 @@ async def update_retrieve_inventory(job: Job, **variables):
         availableQuantity = availableQuantity - quantityOrdered
 
         # Reduce the number available based on the number ordered
-        updateQuantity = "UPDATE finished_product_stock SET productQuantity = %s WHERE place_id = %s"
+        updateQuantity = "UPDATE product_stock SET product_quantity = %s WHERE place_id = %s"
         mycursor.execute(updateQuantity, (availableQuantity, place_id))
+        piMySqlDB.commit()
+
+        # Capture product transaction
+        captureProductTransaction = "INSERT INTO product_transaction (product_id, transaction_type, quantity) VALUES (%s, %s, %s)"
+        mycursor.execute(captureProductTransaction, (product_id, "sale", quantityOrdered))
         piMySqlDB.commit()
 
     except mysql.connector.Error as err:
@@ -314,40 +284,6 @@ async def update_retrieve_inventory(job: Job, **variables):
 #****************************************************************************
 # WORKERS FOR STORAGE
 #****************************************************************************
-
-# # CheckSpaceAvailability ====================================================
-# @worker.task(task_type="check-space-availability", exception_handler=error_handler)
-# async def check_storage(job: Job, **variables) -> dict:
-#     piMySqlDB = None
-#     try:
-#         piMySqlDB = await connect_to_db()
-#         if piMySqlDB is None:
-#             logging.error("Failed to connect to the database.")
-#             return {"error": "Database connection failed"}
-
-#         mycursor = piMySqlDB.cursor()
-
-#         shelf_id = variables.get("shelf_id")
-#         place_id = variables.get("place_id")
-
-#         sql_select_check = "SELECT status FROM place WHERE shelf_id = %s AND place_id = %s"
-#         mycursor.execute(sql_select_check, (shelf_id, place_id))
-        
-#         data = mycursor.fetchone()
-#         if data and data[0] is not None:
-#             status = int(data[0])
-#             return {"space": "space" if status == 1 else None}
-#         else:
-#             logging.error("No data returned from database query.")
-#             return {"error": "No data or invalid data"}
-
-#     except mysql.connector.Error as err:
-#         await handle_db_error(job, err)
-
-#     finally:
-#         if piMySqlDB is not None and piMySqlDB.is_connected():
-#             piMySqlDB.close()
-
         
 # StoreBicycleToShelf
 @worker.task(task_type=STORE_BICYCLE_TO_SHELF_TASK_ID, exception_handler=error_handler)
@@ -413,13 +349,14 @@ async def update_storage_inventory(job: Job, **variables):
         place_id = variables.get("place_id")
         quantityProduced = int(variables.get("quantityNeededForProduction"))
 
-        # Get the avilable quantity in the warehouse for the produced product
-        queryAvailableQuantity = "SELECT productQuantity FROM finished_product_stock WHERE place_id = %s"
+        # Get the available quantity in the warehouse for the produced product
+        queryAvailableQuantity = "SELECT product_id, product_quantity FROM product_stock WHERE place_id = %s"
         mycursor.execute(queryAvailableQuantity, (place_id,))
 
         data = mycursor.fetchone()
-        if data and data[0] is not None:
-            availableQuantity = int(data[0])
+        if data and data[0] is not None and data[1] is not None:
+            product_id = int(data[0])
+            availableQuantity = int(data[1])
         else:
             logging.error("No data returned from database query.")
             return {"error": "No data or invalid data"}
@@ -427,8 +364,13 @@ async def update_storage_inventory(job: Job, **variables):
         availableQuantity = availableQuantity + quantityProduced
 
         # Increase the number available based on the produced number
-        updateQuantity = "UPDATE finished_product_stock SET productQuantity = %s WHERE place_id = %s"
+        updateQuantity = "UPDATE product_stock SET product_quantity = %s WHERE place_id = %s"
         mycursor.execute(updateQuantity, (availableQuantity, place_id))
+        piMySqlDB.commit()
+
+        # Capture product transaction
+        captureProductTransaction = "INSERT INTO product_transaction (product_id, transaction_type, quantity) VALUES (%s, %s, %s)"
+        mycursor.execute(captureProductTransaction, (product_id, "restock", quantityProduced))
         piMySqlDB.commit()
 
     except mysql.connector.Error as err:

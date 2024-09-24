@@ -4,7 +4,6 @@ const mysql = require('mysql');
 const zbc = new ZB.ZBClient({
   hostname: 'zeebe'
 });
-let purchasingStatus = '';
 
 //External job worker to store customer order
 const completePurchasingOrder = zbc.createWorker({
@@ -14,38 +13,42 @@ const completePurchasingOrder = zbc.createWorker({
 });
 
 function handler(job) {
-	// completePurchasingOrder.log('Task variables', job.variables)
-  purchasingStatus = job.variables.approve_key;
     try {
-        const purchasingOrderID = parseInt(job.variables.purchasingOrderID)
-        console.log("Purchasing order ID from job variables is: ", purchasingOrderID)
-        var connection = mysql.createConnection({
+        
+        var db = mysql.createConnection({
           connectionLimit: 50,
           host: process.env.MYSQL_HOST_NAME,
           user: process.env.MYSQL_USER,
           password: process.env.MYSQL_PASSWORD,
-          database: process.env.MYSQL_DATABASE_PURCHASING,
+          database: process.env.MYSQL_DATABASE,
           port: process.env.MYSQL_HOST_PORT,
           server: 'localhost',
         });
+
+        const purchasingOrderID = parseInt(job.variables.purchasingOrderID)
+        console.log("Purchasing order ID from job variables is: ", purchasingOrderID)
     
-        connection.connect();
+        db.connect();
     
-        connection.query('UPDATE `purchasing_order` SET `approved` = "PURCHASING_APPROVED" WHERE `purchasing_order`.`purchasingOrderID` = ' + purchasingOrderID + ';',
-          async function (error, results, fields) {
-            if (error) throw error;
-            console.log('Results: ', JSON.stringify(results));
-          });
+        db.query('UPDATE purchasing_order SET status = ? WHERE po_id = ?',
+          ["PURCHASING_COMPLETED", purchasingOrderID],
+          (err, updateResults) => {
+          if (err) {
+            console.error('Error executing update query:', err.message);
+            return;
+          }
+        });
+
       } catch (error) {
         console.log(error)
       }
 
       const updateToBrokerVariables = {
-        purchasingStatus: 'PURCHASING_APPROVED',
+        purchasingStatus: 'PURCHASING_COMPLETED',
       }
-  console.log("Purchasing order has been approved!");
-  connection.end();
+  console.log("Purchasing order has been completed!");
+  db.end();
 	return job.complete(updateToBrokerVariables)
 }
 
-  module.exports = completePurchasingOrder;
+module.exports = completePurchasingOrder;

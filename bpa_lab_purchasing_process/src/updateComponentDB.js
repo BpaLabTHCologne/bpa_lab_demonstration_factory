@@ -14,89 +14,82 @@ const updateComponentDB = zbc.createWorker({
 async function handler(job) {
   try {
 
-    //trobuleshooting
-    console.log('Worker handling task. Job variables:', job.variables);
-
     let componentName;
     let componentQuantityAvailable;
-    let orderProduct;
-    let orderQuantity;
+    let orderedProduct;
+    let orderedQuantity;
 
-    const availableComponentsDBPool = mysql.createPool({
+    const db = mysql.createPool({
       connectionLimit: 10,
       host: process.env.MYSQL_HOST_NAME,
       user: process.env.MYSQL_USER,
       password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_DATABASE_COMPONENTS,
+      database: process.env.MYSQL_DATABASE,
       port: process.env.MYSQL_HOST_PORT,
       server: 'localhost',
     });
 
-    const productionOrderDBPool = mysql.createPool({
-        connectionLimit: 10,
-        host: process.env.MYSQL_HOST_NAME,
-        user: process.env.MYSQL_USER,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE_PRODUCTION,
-        port: process.env.MYSQL_HOST_PORT,
-        server: 'localhost',
-    });
-
-    const productionOrderResults = await new Promise((resolve, reject) => {
-        productionOrderDBPool.query('SELECT * FROM `production_order` WHERE `production_order`.`orderID` = ?', [job.variables.orderID], (queryErr, results, fields) => {
-          if (queryErr) {
-            console.error('Error selecting from production_order ID error???', queryErr.message);
-            reject(queryErr);
-          } else {
-            //troubleshooting
-            console.log('Query successful. Results:', results);
-            
-            resolve(results);
-          }
-        });
-    });
-
-    orderProduct = productionOrderResults[0].customerProduct;
-    orderQuantity = parseInt(job.variables.customerQuantity, 10); //productionOrderResults[0].quantityNeededForProduction;
-    console.log("\nThe production order is: ", orderProduct);
-    console.log("The quantity is: ", orderQuantity);
-
-    // Looks only for the first components 
-    
-    if(orderProduct === "Mountain Bike") {
-      componentName = "Mountain bike frame";
-    }
-    else if(orderProduct === "Hybrid 40000 Bicycle") {
-      componentName = "Hybrid bicycle wheels";
-    }
-    else if(orderProduct === "Speed Thriller Electric 147 Bicycle") {
-      componentName = "Electric bicycle frame"
-    }
-
-    //troubleshooting
-    console.log('Executing update for component_stock');
-    
-    const componentResults = await new Promise((resolve, reject) => {
-      availableComponentsDBPool.query('SELECT * FROM component_stock WHERE componentName = ?', [componentName], (queryErr, results, fields) => {
+    const productIdQuery = await new Promise((resolve, reject) => {
+      db.query('SELECT * FROM production_order WHERE co_id = ?', [job.variables.orderID], 
+        (queryErr, results) => {
         if (queryErr) {
-          console.error('Error selecting from component_stock', queryErr.message);
+          console.error('Error selecting from production_order by co_id', queryErr.message);
           reject(queryErr);
         } else {
-          //troubleshooting
-          console.log('Query successful. Results:', results);
-
           resolve(results);
         }
       });
     });
 
-    componentQuantityAvailable = componentResults[0].componentQuantity;
+    productId = productIdQuery[0].product_id;
+
+    const productResults = await new Promise((resolve, reject) => {
+      db.query('SELECT * FROM product_stock WHERE product_id = ?', [productId], 
+        (queryErr, results) => {
+        if (queryErr) {
+          console.error('Error selecting from production_order by co_id', queryErr.message);
+          reject(queryErr);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+
+    orderedProduct = productResults[0].product_name;
+    orderedQuantity = parseInt(job.variables.customerQuantity, 10);
+    console.log("\nThe production order is: ", orderedProduct);
+    console.log("The quantity is: ", orderedQuantity);
+
+    // Looks only for the first components 
+    
+    if(orderedProduct === "Mountain Bike") {
+      componentName = "Mountain bike frame";
+    }
+    else if(orderedProduct === "Hybrid 40000 Bicycle") {
+      componentName = "Hybrid bicycle wheels";
+    }
+    else if(orderedProduct === "Speed Thriller Electric 147 Bicycle") {
+      componentName = "Electric bicycle frame"
+    }
+
+    const componentResults = await new Promise((resolve, reject) => {
+      db.query('SELECT * FROM component_stock WHERE component_name = ?', [componentName], (queryErr, results, fields) => {
+        if (queryErr) {
+          console.error('Error selecting from component_stock', queryErr.message);
+          reject(queryErr);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+
+    componentQuantityAvailable = componentResults[0].component_quantity;
     console.log("\Component name from component_stock: ", componentName);
     console.log("Component quantity available in component_stock: ", componentQuantityAvailable);
 
     componentQuantityAvailable = componentQuantityAvailable + job.variables.quantity_key
 
-    availableComponentsDBPool.query('UPDATE component_stock SET componentQuantity = ? WHERE componentName = ?', [componentQuantityAvailable, componentName])
+    db.query('UPDATE component_stock SET component_quantity = ? WHERE component_name = ?', [componentQuantityAvailable, componentName])
 
     // Use updateToBrokerVariables as needed
     const updateToBrokerVariables = {
