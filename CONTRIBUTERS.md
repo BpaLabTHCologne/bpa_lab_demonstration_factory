@@ -1,13 +1,15 @@
-Current maintainer of this repository
+### Current maintainer of this repository
 
-Domenic Gonzalez <domenic.gonzaez@smail.th-koeln.de>
+Domenic Gonzalez <domenic.gonzalez@smail.th-koeln.de>
 
 
-Thanks to all contributors for their work on this project!
+### Thanks to all contributors for their work on this project!
 
-Uwe Poborski <uwe.poborski@th-koeln.de>
-Rahib Nazir Butt <rahib_nazir.butt@smail.th-koeln.de>
-Berrak Kuecuk <berrak.kuecuek@smail.th-koeln.de>
-Shirina Loeber <shirina.loeber@smail.th-koeln.de>
-Shaira Rahman Shuchi <shaira_rahman.shuchi@smail.th-koeln.de>
-Javier Bonilla <javier.bonilla@smail.th-koeln.de>
+* Uwe Poborski <uwe.poborski@th-koeln.de>
+
+* Rahib Nazir Butt <rahib_nazir.butt@smail.th-koeln.de>
+  
+* Berrak Kuecuk <berrak.kuecuek@smail.th-koeln.de>
+* Shirina Loeber <shirina.loeber@smail.th-koeln.de>
+* Shaira Rahman Shuchi <shaira_rahman.shuchi@smail.th-koeln.de>
+* Javier Bonilla <javier.bonilla@smail.th-koeln.de>
