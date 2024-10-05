@@ -5,6 +5,7 @@ Domenic Gonzalez <domenic.gonzaez@smail.th-koeln.de>
 
 Thanks to all contributors for their work on this project!
 
+Uwe Poborski <uwe.poborski@th-koeln.de>
 Rahib Nazir Butt <rahib_nazir.butt@smail.th-koeln.de>
 Berrak Kuecuk <berrak.kuecuek@smail.th-koeln.de>
 Shirina Loeber <shirina.loeber@smail.th-koeln.de>
