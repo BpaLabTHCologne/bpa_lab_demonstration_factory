@@ -389,6 +389,95 @@ services:
       - mosquitto-config:/mosquitto/config
 
 
+# Kafka containers for event streaming and processing
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo 'ruok' | nc localhost 2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - camunda-platform
+
+  kafka:
+    image: confluentinc/cp-kafka:7.0.1
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_NUM_PARTITIONS: 1
+    ports:
+      - "9092:9092"
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "bash", "-c", "kafka-broker-api-versions --bootstrap-server kafka:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - camunda-platform
+
+  kafka-producer:
+    build:
+      context: ./kafka/pipeline/producer
+    depends_on:
+      kafka:
+        condition: service_healthy
+      operate:
+        condition: service_healthy
+      # kafka-stream:
+      #   condition: service_healthy
+    volumes:
+      - ./kafka/pipeline/producer:/app
+    networks:
+      - camunda-platform
+      
+  kafka-test-consumer:
+    build:
+      context: ./kafka/pipeline/test_consumer
+    depends_on:
+      kafka:
+        condition: service_healthy
+      operate:
+        condition: service_healthy
+    volumes:
+      - ./kafka/pipeline/test_consumer:/app
+    networks:
+      - camunda-platform
+
+  kafka-stream:
+    build:
+      context: ./kafka/pipeline/stream
+    depends_on:
+      kafka:
+        condition: service_healthy
+      operate:
+        condition: service_healthy
+    volumes:
+      - ./kafka/pipeline/stream/src:/app/src
+    networks:
+      - camunda-platform
+    restart: always
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -f http://localhost:9095/health || exit 1"]
+    #   interval: 30s
+    #   timeout: 5s
+    #   retries: 3
+    ports:
+      - "9095:9095"
+
 volumes:
   zeebe:
   elastic:
