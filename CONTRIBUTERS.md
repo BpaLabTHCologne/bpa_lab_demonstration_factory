@@ -21,6 +21,6 @@ Among other, main contributors are:
 * Jörg Beck delivering the first proof of concept project for the Firschertechnik robot
 
 ### Additional thanks to contributors on underlying concepts
-Additional contributors like Saphira Gonzalez <Saphira Franziska Gonzalez <saphira_franziska.gonzalez@smail.th-koeln.de> and Joel Iyebi have strongly supported the concept development phase. 
+Additional contributors like Saphira Gonzalez <saphira_franziska.gonzalez@smail.th-koeln.de> and Joel Iyebi have strongly supported the concept development phase. 
 
 An overview about all thesis can be found on my website: https://blogs.gm.fh-koeln.de/zapp/projekt-und-abschlussarbeiten/
