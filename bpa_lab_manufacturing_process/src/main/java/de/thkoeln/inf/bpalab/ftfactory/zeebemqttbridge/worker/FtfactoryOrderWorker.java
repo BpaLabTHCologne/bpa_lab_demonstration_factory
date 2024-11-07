@@ -68,18 +68,16 @@ public class FtfactoryOrderWorker extends AWorker {
 			ftfactoryOrder.initTypeCorrelationValue(correlationValueStr); //normally "pubOrder.type" instead of correlationValueStr needs be tested if it works with factory connected!!!
 			
 	//		set process variable for MessageEvent
-	//		variables.put("orderReplyMessage", ftfactoryOrder.getReplyMessageName());
-	
-		}else{
-
-			this.ftfactoryZEEBEClient.newPublishMessageCommand()
-			.messageName("OrderShippedMessage")
-			.correlationKey(correlationValueStr)
-			.send()
-			.join();
-
-			log.info("FACTORY_PROD is not true. Skipping actual business logic of the worker.");
+	//		variables.put("orderReplyMessage", ftfactoryOrder.getReplyMessageName());	
 		}
+
+		this.ftfactoryZEEBEClient.newPublishMessageCommand()
+		.messageName("OrderShippedMessage")
+		.correlationKey(correlationValueStr)
+		.send()
+		.join();
+
+		log.info("FACTORY_PROD is not true. Skipping actual business logic of the worker.");
 		
 		logJobEnd(job);
 

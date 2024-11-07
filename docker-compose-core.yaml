@@ -358,7 +358,7 @@ services:
       - zeebe.client.security.plaintext=true
       - zeebe.client.connection-mode=ADDRESS
     # MQTT Client Configuration
-      - ftfactorymqttclient.broker=ws://10.0.0.21:8081
+      - ftfactorymqttclient.broker=ws://10.0.0.21:8081/mqtt
       - ftfactorymqttclient.clientId=FTFactoryMQTTClient
     # MQTT Topics Configuration
       - ftfactorymqttclient.cloudTopicPrefix=bpalab/ftfactory
