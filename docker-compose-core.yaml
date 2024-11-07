@@ -153,8 +153,8 @@ services:
       - camunda-platform
     depends_on:
       - elasticsearch
-    profiles:
-      - kibana
+    # profiles:
+    #   - kibana
   
   # MySQL container for master's data 
   mysql:
@@ -233,9 +233,6 @@ services:
       MYSQL_DATABASE: db
       MYSQL_HOST_PORT: 3306
       MYSQL_ROOT_PASSWORD: root
-      # MYSQL_DATABASE_FINISHED_PRODUCT: finished_product_DB
-      # MYSQL_DATABASE_PRODUCTION: production_order_DB
-      # MYSQL_DATABASE_COMPONENTS: component_DB
 
 # REST middleware server container used to communicate between the front-end and zeebe broker
   bpa_lab_rest_middleware_server:
@@ -294,8 +291,6 @@ services:
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
       MYSQL_DATABASE: db
-      # MYSQL_DATABASE_PRODUCTION: production_order_DB
-      # MYSQL_DATABASE_COMPONENTS: component_DB
       MYSQL_HOST_PORT: 3306
 
 # Warehouse operations process container including job workers
@@ -349,7 +344,7 @@ services:
       - camunda-platform
     restart: always
     ports:
-      - "8083:8083"  # maybe needed to change
+      - "8083:8083"
     depends_on:
       - zeebe
       - elasticsearch
@@ -375,7 +370,8 @@ services:
     # Tomcat Server Configuration
       - server.port=8083
 
-# MQTT-Broker for communication between warehouse robot process and warehouse operations process
+# MQTT-Broker for communication between warehouse robot process and warehouse operations process 
+# ONLY NECESSARY AS A REPLACEMENT IN THE TEST SETUP WITHOUT CONNECTION TO THE BPA-LAB MQTT_BROKER (RASPBERRY PI) AND FT_FACTORY!
   mqtt-broker:
     image: eclipse-mosquitto:latest
     container_name: mqtt-broker
@@ -387,6 +383,55 @@ services:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
       - mosquitto-data:/mosquitto/data
       - mosquitto-config:/mosquitto/config
+    profiles:
+      - TestSetup
+
+# Filebeat to ingest data from MQTT-Broker to ElasticSearch 
+# ONLY POSSIBLE WITH THE PROD SETUP IF THERE IS A CONNECTION TO THE MQTT_BROKER (RASPBERRY PI) AND FT_FACTORY OF THE BPA-LAB!
+  filebeat:
+    build:
+      context: ./filebeat
+      dockerfile: Dockerfile.filebeat
+    environment:
+      - ELASTICSEARCH_HOST=http://elasticsearch:9200
+    networks:
+      - camunda-platform
+    depends_on:
+      - elasticsearch
+    profiles:
+      - ProdSetup
+
+# Trino data virtualization layer for processing data
+  trino:
+    image: trinodb/trino:latest
+    container_name: trino
+    ports:
+      - "8087:8080"
+    environment:
+      TZ: Europe/Berlin
+    networks:
+      - camunda-platform
+    depends_on:
+      - elasticsearch
+      - mysql
+    volumes:
+      - ./trino-config:/etc/trino/catalog
+
+# Grafana for data visualization and process reporting
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3008:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Password for admin user
+      - GF_USERS_ALLOW_SIGN_UP=false      # optional setting: false = User registration deactivated, true = User registration activated
+    depends_on:
+      - trino
+    networks:
+      - camunda-platform
+    volumes:
+      - grafana-storage:/var/lib/grafana
 
 
 volumes:
@@ -395,6 +440,7 @@ volumes:
   kibana:
   mosquitto-data:
   mosquitto-config:
+  grafana-storage:
 
 networks:
   camunda-platform:
