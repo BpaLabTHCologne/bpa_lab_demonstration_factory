@@ -307,7 +307,6 @@ services:
       - zeebe
       - elasticsearch
       - mysql
-      - mqtt-broker
     environment:
         IS_PROD: ${IS_PROD}
         ZEEBE_ADRESS: host.docker.internal:26500
@@ -331,7 +330,6 @@ services:
       - "3300:3300"
     depends_on:
       - bpa_lab_warehouse_operations_process
-      - mqtt-broker
     environment:
         IS_PROD: ${IS_PROD}
 
