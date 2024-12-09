@@ -143,7 +143,7 @@ async def manage_item(function, place_id, task_type):
         'task_type': task_type
     })
 
-    MqttClient.publish(pub_topic, mqtt_message)  # Publish the message under the topic
+    MqttClient.publish(pub_topic, mqtt_message, qos = 2)  # Publish the message under the topic
 
     # Wait in the loop until action_completed is True
     while not action_completed:
@@ -400,7 +400,7 @@ if __name__ == '__main__':
     MqttClient.loop_start()
 
     # Subscribe to the topic to receive messages
-    MqttClient.subscribe(sub_topic)
+    MqttClient.subscribe(sub_topic, qos=2)
 
     # Begin worker process
     loop = asyncio.get_event_loop()

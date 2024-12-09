@@ -25,11 +25,10 @@ if (os.getenv('IS_PROD') == 'true'):
         while not highbay_domain.put_product(place_id):
             continue
 
-
 # Functions for MQTT
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
-    client.subscribe("Warehouse_Operations/start")
+    client.subscribe("Warehouse_Operations/start", qos=2)
 
 def on_message(client, userdata, msg):
     print(msg.topic + " " + str(msg.payload))
@@ -66,7 +65,7 @@ def on_message(client, userdata, msg):
     }
 
     # Send the response that the task is completed
-    client.publish('Warehouse_Operations/ready', json.dumps(completed_message))
+    client.publish('Warehouse_Operations/ready', json.dumps(completed_message), qos=2)
 
 
 # MQTT client is started and waits for message from the workers

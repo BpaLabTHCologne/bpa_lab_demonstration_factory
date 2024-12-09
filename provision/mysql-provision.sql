@@ -101,8 +101,8 @@ VALUES
 INSERT INTO product_stock (component_id, product_name, product_mass, product_quantity, place_id) 
 VALUES 
 (1, 'Mountain Bike', 10, 50, 1), 
-(2, 'Hybrid 40000 Bicycle', 15, 50, 2), 
-(3, 'Speed Thriller Electric 147 Bicycle', 20, 50, 3);
+(2, 'Hybrid 40000 Bicycle', 15, 50, 3), 
+(3, 'Speed Thriller Electric 147 Bicycle', 20, 50, 5);
 
 -- Beispiel-Daten für Lieferanten
 INSERT INTO vendor (vendor_name)

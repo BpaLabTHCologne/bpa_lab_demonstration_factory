@@ -1,10 +1,10 @@
 FROM docker.elastic.co/beats/filebeat:8.8.2
 
-# Create a writable directory for the configuration and copy filebeat.yml there
+# Creates a writable directory for the configuration and copies filebeat.yml there
 USER root
 RUN mkdir -p /usr/share/filebeat/config
 COPY filebeat.yml /usr/share/filebeat/config/filebeat.yml
 RUN chmod 600 /usr/share/filebeat/config/filebeat.yml
 
-# Set the path to the configuration for Filebeat
+# Sets the path to the configuration for filebeat
 CMD ["filebeat", "-e", "-c", "/usr/share/filebeat/config/filebeat.yml"]

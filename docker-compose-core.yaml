@@ -194,7 +194,7 @@ services:
       PMA_PASSWORD: root
       PMA_ARBITRARY: 1
 
-# Front-end application container
+  # Front-end application container
   bpa_lab_front_end_application:
     build: 
       context: ./bpa_lab_front_end_application
@@ -402,7 +402,6 @@ services:
 # Trino data virtualization layer for processing data
   trino:
     image: trinodb/trino:latest
-    container_name: trino
     ports:
       - "8087:8080"
     environment:

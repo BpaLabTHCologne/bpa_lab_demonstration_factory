@@ -7,21 +7,21 @@ filebeat.inputs:
       - "bpalab/ftfactory/i/ldr"
     client_id: "filebeat_mqtt_client"
     keep_alive: "60s"
-    qos: 0  # Quality of Service
+    qos: 1  # Quality of Service
 
     processors:
       - add_fields:
           target: ""
           fields:
-            topic: "%{[mqtt.topic]}"  # add topic as field in index
+            topic: "%{[mqtt.topic]}"  # Add topic as field in index
     
       - decode_json_fields:
-          fields: ["message"]  # Hier wird das Feld, das JSON enthält, entpackt
-          target: ""  # Lässt die entpackten Felder im obersten Level der Struktur erscheinen
-          overwrite_keys: true  # Überschreibt existierende Felder mit denselben Namen, wenn vorhanden
+          fields: ["message"]  # The Field that contains the JSON is unpacked
+          target: ""  # Makes the unpacked fields appear in the top level of the structure
+          overwrite_keys: true  # Overwrites existing fields with the same name, if available
 
 output.elasticsearch:
   hosts: ["http://elasticsearch:9200"]
-  index: "ft-factory-sensor-data-%{+yyyy.MM.dd}"
+  index: "ft-factory-sensor-data"
 
 setup.template.enabled: false

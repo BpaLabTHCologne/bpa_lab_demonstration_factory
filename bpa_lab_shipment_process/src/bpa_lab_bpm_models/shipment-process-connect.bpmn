@@ -418,7 +418,7 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="startWarehouseOperations" />
         <zeebe:ioMapping>
-          <zeebe:input source="=if (customerProduct = &#34;Mountain Bike&#34;) then 1&#10;  else if (customerProduct = &#34;Hybrid 40000 Bicycle&#34;) then 2&#10;  else if (customerProduct = &#34;Speed Thriller Electric 147 Bicycle&#34;) then 3&#10;  else null&#10;" target="place_id" />
+          <zeebe:input source="=if (customerProduct = &#34;Mountain Bike&#34;) then 1&#10;  else if (customerProduct = &#34;Hybrid 40000 Bicycle&#34;) then 3&#10;  else if (customerProduct = &#34;Speed Thriller Electric 147 Bicycle&#34;) then 5&#10;  else null&#10;" target="place_id" />
           <zeebe:input source="=&#34;retrieve&#34;" target="task" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
