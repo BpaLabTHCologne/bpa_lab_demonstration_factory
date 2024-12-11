@@ -6,6 +6,11 @@ filebeat.inputs:
     topics:
       - "bpalab/ftfactory/i/bme680"
       - "bpalab/ftfactory/i/ldr"
+      - "bpalab/ftfactory/f/i/state/hbw"
+      - "bpalab/ftfactory/f/i/state/vgr"
+      - "bpalab/ftfactory/f/i/state/mpo"
+      - "bpalab/ftfactory/f/i/state/sld"
+      - "bpalab/ftfactory/f/i/order"
     client_id: "filebeat_mqtt_client"
     keep_alive: "60s"
     qos: 1
