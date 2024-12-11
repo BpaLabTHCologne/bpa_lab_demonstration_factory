@@ -17,7 +17,7 @@ filebeat.inputs:
           fields:
             topic: "%{[mqtt.topic]}"
 
-      # Dekodierung der JSON-Struktur der MQTT-Nachrichten, damit separiert auf alle Felder der Nachricht zugegriffen werden kann
+      # Dekodierung der MQTT-Nachrichten, damit separiert auf alle Felder der Nachricht zugegriffen werden kann
       - decode_json_fields:
           fields: ["message"]
           target: ""
