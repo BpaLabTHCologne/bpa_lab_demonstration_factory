@@ -1,0 +1,488 @@
+# While the Docker images themselves are supported for production usage,
+# this docker-compose.yaml is designed to be used by developers to run
+# an environment locally. It is not designed to be used in production.
+# We recommend to use Kubernetes in production with our Helm Charts:
+# https://docs.camunda.io/docs/self-managed/platform-deployment/kubernetes-helm/
+# For local development, we recommend using KIND instead of `docker-compose`:
+# https://docs.camunda.io/docs/self-managed/platform-deployment/helm-kubernetes/guides/local-kubernetes-cluster/
+
+# This is a lightweight configuration with Zeebe, Operate, Tasklist, and Elasticsearch
+# See docker-compose.yml for a configuration that also includes Optimize, Identity, and Keycloak.
+
+services:
+
+  zeebe: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#zeebe
+    image: camunda/zeebe:${CAMUNDA_PLATFORM_VERSION}
+    # for ARM Macs
+    platform: linux/amd64
+    container_name: zeebe
+    ports:
+      - "26500:26500"
+      - "9600:9600"
+    environment: # https://docs.camunda.io/docs/self-managed/zeebe-deployment/configuration/environment-variables/
+      - TZ=Europe/Berlin
+      - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_CLASSNAME=io.camunda.zeebe.exporter.ElasticsearchExporter
+      - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_ARGS_URL=http://elasticsearch:9200
+      # default is 1000, see here: https://github.com/camunda/zeebe/blob/main/exporters/elasticsearch-exporter/src/main/java/io/camunda/zeebe/exporter/ElasticsearchExporterConfiguration.java#L259
+      - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_ARGS_BULK_SIZE=1
+      # allow running with low disk space
+      - ZEEBE_BROKER_DATA_DISKUSAGECOMMANDWATERMARK=0.998
+      - ZEEBE_BROKER_DATA_DISKUSAGEREPLICATIONWATERMARK=0.999
+      - "JAVA_TOOL_OPTIONS=-Xms512m -Xmx512m"
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "timeout 10s bash -c ':> /dev/tcp/127.0.0.1/9600' || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - zeebe:/usr/local/zeebe/data
+    networks:
+      - camunda-platform
+    depends_on:
+      - elasticsearch
+
+  operate: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#operate
+    image: camunda/operate:${CAMUNDA_PLATFORM_VERSION}
+    # for ARM Macs
+    platform: linux/amd64
+    container_name: operate
+    ports:
+      - "8081:8080"
+    environment: # https://docs.camunda.io/docs/self-managed/operate-deployment/configuration/
+      - TZ=Europe/Berlin
+      - CAMUNDA_OPERATE_ZEEBE_GATEWAYADDRESS=zeebe:26500
+      - CAMUNDA_OPERATE_ELASTICSEARCH_URL=http://elasticsearch:9200
+      - CAMUNDA_OPERATE_ZEEBEELASTICSEARCH_URL=http://elasticsearch:9200
+      - management.endpoints.web.exposure.include=health
+      - management.endpoint.health.probes.enabled=true
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -O - -q 'http://localhost:8080/actuator/health/readiness'" ]
+      interval: 30s
+      timeout: 1s
+      retries: 5
+      start_period: 30s
+    networks:
+      - camunda-platform
+    depends_on:
+      - zeebe
+      - elasticsearch
+
+  tasklist: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#tasklist
+    image: camunda/tasklist:${CAMUNDA_PLATFORM_VERSION}
+    # for ARM Macs
+    platform: linux/amd64
+    container_name: tasklist
+    ports:
+      - "8082:8080"
+    environment: # https://docs.camunda.io/docs/self-managed/tasklist-deployment/configuration/
+      - CAMUNDA_TASKLIST_ZEEBE_GATEWAYADDRESS=zeebe:26500
+      - CAMUNDA_TASKLIST_ELASTICSEARCH_URL=http://elasticsearch:9200
+      - CAMUNDA_TASKLIST_ZEEBEELASTICSEARCH_URL=http://elasticsearch:9200
+      - management.endpoints.web.exposure.include=health
+      - management.endpoint.health.probes.enabled=true
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health/readiness" ]
+      interval: 30s
+      timeout: 1s
+      retries: 5
+      start_period: 30s
+    networks:
+      - camunda-platform
+    depends_on:
+      - zeebe
+      - elasticsearch
+
+  connectors: # https://docs.camunda.io/docs/components/integration-framework/connectors/out-of-the-box-connectors/available-connectors-overview/
+    image: camunda/connectors-bundle:${CAMUNDA_CONNECTORS_VERSION}
+    # for ARM Macs
+    platform: linux/amd64
+    container_name: connectors
+    ports:
+      - "8085:8080"
+    environment:
+      - ZEEBE_CLIENT_BROKER_GATEWAY-ADDRESS=zeebe:26500
+      - ZEEBE_CLIENT_SECURITY_PLAINTEXT=true
+      - CAMUNDA_OPERATE_CLIENT_URL=http://operate:8080
+      - CAMUNDA_OPERATE_CLIENT_USERNAME=demo
+      - CAMUNDA_OPERATE_CLIENT_PASSWORD=demo
+      - management.endpoints.web.exposure.include=health
+      - management.endpoint.health.probes.enabled=true
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health/readiness" ]
+      interval: 30s
+      timeout: 1s
+      retries: 5
+      start_period: 30s
+    env_file: connector-secrets.txt
+    networks:
+      - camunda-platform
+    depends_on:
+      - zeebe
+      - operate
+
+  elasticsearch: # https://hub.docker.com/_/elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
+    # for ARM Macs
+    platform: linux/amd64
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      # allow running with low disk space
+      - cluster.routing.allocation.disk.threshold_enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:9200/_cat/health | grep -q green" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - elastic:/usr/share/elasticsearch/data
+    networks:
+      - camunda-platform
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
+    # for ARM Macs
+    platform: linux/amd64
+    container_name: kibana
+    ports:
+      - 5601:5601
+    volumes:
+      - kibana:/usr/share/kibana/data
+    networks:
+      - camunda-platform
+    depends_on:
+      - elasticsearch
+    # profiles:
+    #   - kibana
+  
+  # MySQL container for master's data 
+  mysql:
+    container_name: mysqldb
+    # for ARM Macs
+    platform: linux/amd64
+    image: mysql:5
+    networks:
+      - camunda-platform
+    hostname: mysql
+    volumes:
+      - ./data/mysql-db:/var/lib/mysql
+      - ./provision:/docker-entrypoint-initdb.d
+    ports:
+      - "3070:3306"
+    environment:
+      TZ: Europe/Berlin
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_MAX_CONNECTIONS: 100
+      MYSQL_HOST_PORT: 3306
+
+  # phpMyAdmin container for database adminstration tasks
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    # for ARM Macs
+    platform: linux/amd64
+
+    container_name: phpMyAdmin
+    networks:
+      - camunda-platform
+    restart: always
+    links:
+      - mysql
+    ports:
+      - "8183:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+      PMA_ARBITRARY: 1
+
+  # Front-end application container
+  bpa_lab_front_end_application:
+    # for ARM Macs
+    platform: linux/amd64
+
+    build: 
+      context: ./bpa_lab_front_end_application
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_front_end_application
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./bpa_lab_front_end_application/public:/app/public
+      - ./bpa_lab_front_end_application/src:/app/src
+
+# Process application container including job workers
+  bpa_lab_process_application:
+    # for ARM Macs
+    platform: linux/amd64
+
+    build:
+      context: ./bpa_lab_process_application
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_process_application
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - zeebe
+      - elasticsearch
+      - mysql
+    volumes:
+      - ./bpa_lab_process_application/src:/app/src
+    environment:
+      MYSQL_HOST_NAME: mysql
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_DATABASE: db
+      MYSQL_HOST_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+
+# REST middleware server container used to communicate between the front-end and zeebe broker
+  bpa_lab_rest_middleware_server:
+    # for ARM Macs
+    platform: linux/amd64
+
+    build:
+      context: ./bpa_lab_rest_middleware_server
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_rest_middleware_server
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "3005:3005"
+    volumes:
+      - ./bpa_lab_rest_middleware_server/src:/app/src
+    depends_on:
+      - zeebe
+      - bpa_lab_front_end_application
+
+# Shipment process container including job workers
+  bpa_lab_shipment_process:
+    # for ARM Macs
+    platform: linux/amd64
+
+    build:
+      context: ./bpa_lab_shipment_process
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_shipment_process
+    networks:
+      - camunda-platform
+    #restart: always
+    ports:
+      - "3194:3194"
+    depends_on:
+      - zeebe
+      - elasticsearch
+      - mysql
+    volumes:
+      - ./bpa_lab_shipment_process/src:/app/src
+
+# Purchasing process container including job workers
+  bpa_lab_purchasing_process:
+    # for ARM Macs
+    platform: linux/amd64
+
+    build:
+      context: ./bpa_lab_purchasing_process
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_purchasing_process
+    networks:
+      - camunda-platform
+    #restart: always
+    ports:
+      - "3100:3100"
+    depends_on:
+      - zeebe
+      - elasticsearch
+      - mysql
+    volumes:
+      - ./bpa_lab_purchasing_process/src:/app/src
+    environment:
+      MYSQL_HOST_NAME: mysql
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+      MYSQL_DATABASE: db
+      MYSQL_HOST_PORT: 3306
+
+# Warehouse operations process container including job workers
+  bpa_lab_warehouse_operations_process:
+    # for ARM Macs
+    platform: linux/amd64
+    build: 
+      context: ./bpa_lab_warehouse_operations_process
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_warehouse_operations_process
+    networks:
+      - camunda-platform
+    ports:
+      - "3200:3200"
+    depends_on:
+      - zeebe
+      - elasticsearch
+      - mysql
+    environment:
+        IS_PROD: ${IS_PROD}
+        ZEEBE_ADRESS: host.docker.internal:26500
+        ZEEBE_ADRESS_HOST: host.docker.internal
+        ZEEBE_ADRESS_PORT: 26500
+        MYSQL_HOST_NAME: mysql
+        MYSQL_USER: dev
+        MYSQL_PASSWORD: dev
+        MYSQL_DATABASE: db
+        MYSQL_HOST_PORT: 3306
+
+# Warehouse robot process container including job workers
+  bpa_lab_warehouse_robot_process:
+    # for ARM Macs
+    platform: linux/amd64
+
+    build:
+      context: ./bpa_lab_warehouse_operations_process/TXT_Controller_Apps
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_warehouse_robot_process
+    networks:
+      - camunda-platform
+    ports:
+      - "3300:3300"
+    depends_on:
+      - bpa_lab_warehouse_operations_process
+    environment:
+        IS_PROD: ${IS_PROD}
+
+  bpa_lab_manufacturing_process:
+    # for ARM Macs
+    platform: linux/amd64
+    build:
+      context: ./bpa_lab_manufacturing_process
+      dockerfile: dev.Dockerfile
+    container_name: bpa_lab_manufacturing_process
+    networks:
+      - camunda-platform
+    restart: always
+    ports:
+      - "8083:8083"
+    depends_on:
+      - zeebe
+      - elasticsearch
+    volumes:
+      - ./bpa_lab_manufacturing_process/src:/app/src
+    environment:
+    # Can be set "true" in the .env if FT-factory is set up and connected
+      - FACTORY_PROD=${FACTORY_PROD}
+    # Zeebe Client Configuration (Self-Managed)
+      - zeebe.client.broker.gateway-address=zeebe:26500
+      - zeebe.client.security.plaintext=true
+      - zeebe.client.connection-mode=ADDRESS
+    # MQTT Client Configuration
+      - ftfactorymqttclient.broker=ws://10.0.0.21:8081/mqtt
+      - ftfactorymqttclient.clientId=FTFactoryMQTTClient
+    # MQTT Topics Configuration
+      - ftfactorymqttclient.cloudTopicPrefix=bpalab/ftfactory
+      - ftfactorymqttclient.cloudPubOrderTopic=bpalab/ftfactory/f/o/order
+      - ftfactorymqttclient.cloudBroadcastTopic=bpalab/ftfactory/o/broadcast
+      - ftfactorymqttclient.cloudSubOrderTopic=bpalab/ftfactory/f/i/order
+      - ftfactorymqttclient.cloudHBWTopic=bpalab/ftfactory/f/i/stock
+      - ftfactorymqttclient.cloudBME680Topic=bpalab/ftfactory/i/bme680
+    # Tomcat Server Configuration
+      - server.port=8083
+
+# MQTT-Broker for communication between warehouse robot process and warehouse operations process 
+# ONLY NECESSARY AS A REPLACEMENT IN THE TEST SETUP WITHOUT CONNECTION TO THE BPA-LAB MQTT_BROKER (RASPBERRY PI) AND FT_FACTORY!
+  mqtt-broker:
+    # for ARM Macs
+    platform: linux/amd64
+    image: eclipse-mosquitto:latest
+    container_name: mqtt-broker
+    networks:
+      - camunda-platform
+    ports:
+      - "2020:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-config:/mosquitto/config
+    profiles:
+      - TestSetup
+
+# Filebeat to ingest data from MQTT-Broker to ElasticSearch 
+# ONLY POSSIBLE WITH THE PROD SETUP IF THERE IS A CONNECTION TO THE MQTT_BROKER (RASPBERRY PI) AND FT_FACTORY OF THE BPA-LAB!
+  filebeat:
+    build:
+      context: ./filebeat
+      dockerfile: Dockerfile.filebeat
+    environment:
+      - ELASTICSEARCH_HOST=http://elasticsearch:9200
+    networks:
+      - camunda-platform
+    depends_on:
+      - elasticsearch
+    profiles:
+      - ProdSetup
+
+# Trino data virtualization layer for processing data
+  trino:
+    # for ARM Macs
+    platform: linux/amd64
+    image: trinodb/trino:latest
+    ports:
+      - "8087:8080"
+    environment:
+      TZ: Europe/Berlin
+    networks:
+      - camunda-platform
+    depends_on:
+      - elasticsearch
+      - mysql
+    volumes:
+      - ./trino-config:/etc/trino/catalog
+
+# Grafana for data visualization and process reporting
+  grafana:
+    # for ARM Macs
+    platform: linux/amd64
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3008:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Password for admin user
+      - GF_USERS_ALLOW_SIGN_UP=false      # optional setting: false = User registration deactivated, true = User registration activated
+    depends_on:
+      - trino
+    networks:
+      - camunda-platform
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+
+volumes:
+  zeebe:
+  elastic:
+  kibana:
+  mosquitto-data:
+  mosquitto-config:
+  grafana-storage:
+
+networks:
+  camunda-platform:
