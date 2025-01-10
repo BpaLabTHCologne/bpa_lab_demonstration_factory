@@ -1,7 +1,7 @@
-paho-mqtt
-python-dotenv
-nanoid
-pyzeebe
-mysql-connector-python
-grpcio
-zeebe-grpc
+paho-mqtt==2.1.0
+python-dotenv==1.0.1
+nanoid==2.0.0
+pyzeebe==3.0.4
+mysql-connector-python==9.0.0
+grpcio==1.66.1
+zeebe-grpc==1.3.7
