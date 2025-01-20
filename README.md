@@ -13,7 +13,7 @@ This repository contains the source code and configuration files for automating 
 > :information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
 
 1. Clone this repository to a directory of your choice
-2. The next steps are depending of the environment you want to use (Test or Prod)
+2. The next steps depend on the environment you want to use (Test or Prod)
 
 ### Test environment (A connection to the physiscal components is not needed!)
 
