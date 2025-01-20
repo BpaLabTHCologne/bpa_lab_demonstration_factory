@@ -13,7 +13,9 @@ This repository contains the source code and configuration files for automating 
 > :information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
 
 1. Clone this repository to a directory of your choice
-2. The next steps depend on the environment you want to use (Test or Prod)
+2. The next steps depend on the environment you want to use ([Test](#test-environment-a-connection-to-the-physiscal-components-is-not-needed) or [Prod](#prod-environment-a-connection-to-the-physiscal-components-is-needed)
+
+---
 
 ### Test environment (A connection to the physiscal components is not needed!)
 
@@ -46,6 +48,8 @@ docker compose -f docker-compose-core.yaml --profile==ProdSetup up -d
 ```
 docker compose -f docker-compose-core.yaml --profile==ProdSetup down
 ```
+
+---
 
 Wait a few minutes for the environment to start up and settle down. Monitor the logs inside the containers, to ensure the all the containers have started successfully.
 
