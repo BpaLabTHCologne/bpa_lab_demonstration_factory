@@ -10,18 +10,41 @@ This repository contains the source code and configuration files for automating 
 
 > :information_source: Docker 20.10.16+ is required.
 
-> :information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform) 
+> :information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
 
-Clone this repo and run the following command from the root directory of the project to pull, create and run all the containers:
+1. Clone this repository to a directory of your choice
+2. The next steps are depending of the environment you want to use (Test or Prod)
+
+### Test environment (A connection to the physiscal components is not needed!)
+
+3. Go into the .env-file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'false'
+
+4. Run the following command from the directory of the project to pull, create and run all the containers:
 
 ```
-docker compose -f docker-compose-core.yaml up -d
+docker compose -f docker-compose-core.yaml --profile==TestSetup up -d
 ```
 
-> :information_source: Run the following command only to shut down the containers gracefully.
+5. Run the following command only to shut down the containers gracefully
 
 ```
-docker compose -f docker-compose-core.yaml down
+docker compose -f docker-compose-core.yaml --profile==TestSetup down
+```
+
+### Prod environment (A connection to the physiscal components is needed!)
+
+3. Go into the .env-file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'true'
+
+4. Run the following command from the directory of the project to pull, create and run all the containers:
+
+```
+docker compose -f docker-compose-core.yaml --profile==ProdSetup up -d
+```
+
+5. Run the following command only to shut down the containers gracefully
+
+```
+docker compose -f docker-compose-core.yaml --profile==ProdSetup down
 ```
 
 Wait a few minutes for the environment to start up and settle down. Monitor the logs inside the containers, to ensure the all the containers have started successfully.
