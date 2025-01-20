@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xmzs53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.24.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xmzs53" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.31.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
   <bpmn:collaboration id="Collaboration_12fblkz">
     <bpmn:participant id="Participant_1o4at5h" name="Production Control" processRef="PorductionControlProcess" />
     <bpmn:participant id="Participant_19m935s" name="Order Management" processRef="OrderManagementProcess" />
@@ -559,9 +559,9 @@ order for production</bpmn:text>
     <bpmn:sequenceFlow id="Flow_1pcfhcv" sourceRef="ServiceTask_StoreProductionOrder" targetRef="ServiceTask_UpdateCustomerOrderStatusToInProduction" />
     <bpmn:sequenceFlow id="Flow_0y9x7h6" sourceRef="UserTask_CreateProductionOrder" targetRef="ServiceTask_StoreProductionOrder" />
     <bpmn:sequenceFlow id="Flow_1x3ryl7" sourceRef="StartEvent_ReceiveProductionOrder" targetRef="UserTask_CreateProductionOrder" />
-    <bpmn:dataStoreReference id="DataStoreReference_1gti6u4" name="component_DB (MySQL)" />
-    <bpmn:dataStoreReference id="DataStoreReference_08tm2cl" name="customer_DB (MySQL)" />
-    <bpmn:dataStoreReference id="DataStoreReference_1vxvggz" name="production_&#10;order_DB (MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_1gti6u4" name="component_stock (MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_08tm2cl" name="customer_order_&#10;status&#10; (MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_1vxvggz" name="production_order&#10; (MySQL)" />
     <bpmn:receiveTask id="ReceiveTask_ReceiveFromPurchasing" name="Receive from purchasing" messageRef="Message_0t3h4e9">
       <bpmn:incoming>Flow_0d0wk0g</bpmn:incoming>
       <bpmn:outgoing>Flow_12zqwf7</bpmn:outgoing>
@@ -693,7 +693,7 @@ order for production</bpmn:text>
     <bpmn:sequenceFlow id="Flow_1o8o6th" sourceRef="Task_UpdateCustomerOrderToCancelled" targetRef="EndEvent_ProductionOrderStopped" />
     <bpmn:sequenceFlow id="Flow_0oo7ajn" sourceRef="ReceiveTask_ReceiveFinishedProductsFromManufacturing" targetRef="UserTask_CheckProductionOrder" />
     <bpmn:sequenceFlow id="Flow_054jg90" sourceRef="SendTask_ManufactureTheOrderedProducts" targetRef="ReceiveTask_ReceiveFinishedProductsFromManufacturing" />
-    <bpmn:dataStoreReference id="DataStoreReference_0sqh3j1" name="component_DB (MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_0sqh3j1" name="component_stock (MySQL)" />
     <bpmn:serviceTask id="ServiceTask_RemoveRequiredComponentsForManufacturing" name="Remove required components for manufacturing">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="removeRequiredComponentsForManufacturing" />
@@ -1051,12 +1051,11 @@ order for production</bpmn:text>
       <bpmn:incoming>Flow_0ffsgk7</bpmn:incoming>
       <bpmn:outgoing>Flow_1cvaqt5</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:dataStoreReference id="DataStoreReference_0l4n13a" name="customer_DB (MySQL)" />
-    <bpmn:dataStoreReference id="DataStoreReference_1fazgu0" name="customer_DB (MySQL)" />
-    <bpmn:dataStoreReference id="DataStoreReference_159u5ii" name="customer_DB (MySQL)" />
-    <bpmn:dataStoreReference id="DataStoreReference_0v55xn9" name="finished_product_&#10;DB (MySQL)" />
-    <bpmn:dataStoreReference id="DataStoreReference_1vhwh6e" name="customer_DB (MySQL)" />
-    <bpmn:dataStoreReference id="DataStoreReference_092cr36" name="customer_DB (MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_0l4n13a" name="customer_order&#10;(MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_1fazgu0" name="customer_order_&#10;status&#10;(MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_159u5ii" name="customer_order_&#10;status&#10;(MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_0v55xn9" name="product_stock&#10;(MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_092cr36" name="customer_order_&#10;status&#10;(MySQL)" />
     <bpmn:serviceTask id="ServiceTask_UpdateCustomerOrderStatusToShipped" name="Update customer order status to &#34;shipped&#34;">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="customerOrderStatusShipped" />
@@ -1074,6 +1073,7 @@ order for production</bpmn:text>
     <bpmn:endEvent id="EndEvent_OrderShippedSuccessfully" name="Order shipped successfully">
       <bpmn:incoming>Flow_1679yn3</bpmn:incoming>
     </bpmn:endEvent>
+    <bpmn:dataStoreReference id="DataStoreReference_1vhwh6e" name="customer_order_&#10;status&#10; (MySQL)" />
   </bpmn:process>
   <bpmn:message id="Message_3o814ji" name="manufacturingOrderCompleted">
     <bpmn:extensionElements>
@@ -1089,19 +1089,19 @@ order for production</bpmn:text>
       <bpmndi:BPMNShape id="BPMNShape_0g2sy17" bpmnElement="DataStoreReference_1gti6u4">
         <dc:Bounds x="895" y="765" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="883" y="731" width="77" height="27" />
+          <dc:Bounds x="879" y="731" width="87" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_08tm2cl_di" bpmnElement="DataStoreReference_08tm2cl">
         <dc:Bounds x="735" y="765" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="727" y="731" width="68" height="27" />
+          <dc:Bounds x="717" y="720" width="85" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_1vxvggz_di" bpmnElement="DataStoreReference_1vxvggz">
         <dc:Bounds x="577" y="765" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="573" y="725" width="59" height="40" />
+          <dc:Bounds x="560" y="725" width="85" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0naxakz_di" bpmnElement="ReceiveTask_ReceiveFromPurchasing">
@@ -1184,7 +1184,7 @@ order for production</bpmn:text>
       <bpmndi:BPMNShape id="BPMNShape_19sf4uc" bpmnElement="DataStoreReference_0sqh3j1">
         <dc:Bounds x="1475" y="755" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1463" y="721" width="77" height="27" />
+          <dc:Bounds x="1459" y="721" width="87" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1u84k74_di" bpmnElement="ServiceTask_RemoveRequiredComponentsForManufacturing">
@@ -1389,37 +1389,31 @@ order for production</bpmn:text>
       <bpmndi:BPMNShape id="DataStoreReference_0l4n13a_di" bpmnElement="DataStoreReference_0l4n13a">
         <dc:Bounds x="425" y="255" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="417" y="226" width="68" height="27" />
+          <dc:Bounds x="412" y="226" width="79" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_18keapn" bpmnElement="DataStoreReference_1fazgu0">
         <dc:Bounds x="1035" y="155" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1027" y="126" width="68" height="27" />
+          <dc:Bounds x="1019" y="110" width="85" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_159u5ii_di" bpmnElement="DataStoreReference_159u5ii">
         <dc:Bounds x="1215" y="365" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1207" y="336" width="68" height="27" />
+          <dc:Bounds x="1198" y="324" width="85" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_0v55xn9_di" bpmnElement="DataStoreReference_0v55xn9">
         <dc:Bounds x="1395" y="365" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1379" y="335" width="87" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataStoreReference_1vhwh6e_di" bpmnElement="DataStoreReference_1vhwh6e">
-        <dc:Bounds x="1685" y="365" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1677" y="336" width="68" height="27" />
+          <dc:Bounds x="1389" y="335" width="69" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_092cr36_di" bpmnElement="DataStoreReference_092cr36">
         <dc:Bounds x="2195" y="155" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2187" y="126" width="68" height="27" />
+          <dc:Bounds x="2177" y="110" width="85" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1o1e37r_di" bpmnElement="ServiceTask_UpdateCustomerOrderStatusToShipped">
@@ -1433,6 +1427,12 @@ order for production</bpmn:text>
         <dc:Bounds x="2582" y="252" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2565" y="295" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1vhwh6e_di" bpmnElement="DataStoreReference_1vhwh6e">
+        <dc:Bounds x="1685" y="375" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1670" y="330" width="85" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0m018yf_di" bpmnElement="Flow_0m018yf">
@@ -1634,7 +1634,7 @@ order for production</bpmn:text>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_1248uxr_di" bpmnElement="DataOutputAssociation_1248uxr">
         <di:waypoint x="1710" y="440" />
-        <di:waypoint x="1710" y="415" />
+        <di:waypoint x="1710" y="425" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataOutputAssociation_0kvpumd_di" bpmnElement="DataOutputAssociation_0kvpumd">
         <di:waypoint x="2220" y="230" />
