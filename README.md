@@ -48,9 +48,10 @@ The process can be started by placing an order from the front-end single page ap
 
 ![process image](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/OrderManagementProcess.png?raw=true)
 
+
 ### Docker overview
 
-![process image](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/docker-overview.png?raw=true)
+![docker_overview](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/docker-overview.png?raw=true)
 
 ## Deployment diagram
 UML deployment diagram
