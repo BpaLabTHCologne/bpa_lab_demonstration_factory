@@ -46,7 +46,7 @@ The process can be started by placing an order from the front-end single page ap
 
 ### Process overview
 
-![process image](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/bicycle-process-model.png?raw=true)
+![process image](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/OrderManagementProcess.png?raw=true)
 
 ### Docker overview
 
