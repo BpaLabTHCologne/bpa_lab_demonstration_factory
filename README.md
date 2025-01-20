@@ -53,6 +53,6 @@ The process can be started by placing an order from the front-end single page ap
 
 ![docker_overview](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/docker-overview.png?raw=true)
 
-## UML Deployment diagram
+### UML Deployment diagram
 
 ![deployment](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/BPALABDeploymentDiagram.png?raw=true")
