@@ -88,12 +88,10 @@
     <bpmn:sequenceFlow id="Flow_006jisw" sourceRef="StartEvent_ReceivedManufacturingOrder" targetRef="ServiceTask_RetrieveFactoryState" />
     <bpmn:sequenceFlow id="Flow_149n65e" sourceRef="UserTask_PlaceOrder" targetRef="Gateway_1cv0dao" />
     <bpmn:sequenceFlow id="Flow_1grfc27" sourceRef="UserTask_ShowOrder" targetRef="EndEvent_CompletedManufacturingOrder" />
-    <bpmn:sequenceFlow id="Flow_0wiiuaq" sourceRef="ReceiveTask_ReceiveOrderShippedMessage" targetRef="Gateway_0s0mn86" />
-    <bpmn:sequenceFlow id="Flow_1bhxluw" sourceRef="Event_0mltw8f" targetRef="Gateway_0s0mn86" />
+    <bpmn:sequenceFlow id="Flow_0wiiuaq" sourceRef="ReceiveTask_ReceiveOrderShippedMessage" targetRef="UserTask_ShowOrder" />
     <bpmn:sequenceFlow id="Flow_101jtft" sourceRef="Event_13wecep" targetRef="UserTask_ShowFactoryFailure" />
     <bpmn:sequenceFlow id="Flow_0sose0c" sourceRef="UserTask_ShowFactoryFailure" targetRef="Event_14bs0zz" />
     <bpmn:sequenceFlow id="Flow_13qmu6q" sourceRef="SendTask_EnsureStorageAvailability" targetRef="ReceiveTask_ReceiveAvailability" />
-    <bpmn:sequenceFlow id="Flow_0svmvz9" sourceRef="Gateway_0s0mn86" targetRef="UserTask_ShowOrder" />
     <bpmn:sequenceFlow id="Flow_1md0nk2" sourceRef="ServiceTask_RetrieveFactoryState" targetRef="UserTask_PlaceOrder" />
     <bpmn:sequenceFlow id="Flow_0bx3m17" sourceRef="StartEvent_SinglePageApp" targetRef="Gateway_1cv0dao" />
     <bpmn:sequenceFlow id="Flow_1vwptfm" sourceRef="Gateway_1cv0dao" targetRef="SendTask_EnsureStorageAvailability" />
@@ -112,11 +110,6 @@
     <bpmn:endEvent id="Event_14bs0zz">
       <bpmn:incoming>Flow_0sose0c</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:exclusiveGateway id="Gateway_0s0mn86">
-      <bpmn:incoming>Flow_0wiiuaq</bpmn:incoming>
-      <bpmn:incoming>Flow_1bhxluw</bpmn:incoming>
-      <bpmn:outgoing>Flow_0svmvz9</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
     <bpmn:sendTask id="SendTask_StartOrderWithShippedReplyMessage" name="Start order with shipped reply message">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="orderWithShippedReplyMessage" />
@@ -130,11 +123,6 @@
     <bpmn:userTask id="UserTask_ShowFactoryFailure" name="Show factory failure">
       <bpmn:incoming>Flow_101jtft</bpmn:incoming>
       <bpmn:outgoing>Flow_0sose0c</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:userTask id="UserTask_ShowOrder" name="Show order">
-      <bpmn:extensionElements />
-      <bpmn:incoming>Flow_0svmvz9</bpmn:incoming>
-      <bpmn:outgoing>Flow_1grfc27</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:boundaryEvent id="Event_13wecep" attachedToRef="SendTask_StartOrderWithShippedReplyMessage">
       <bpmn:outgoing>Flow_101jtft</bpmn:outgoing>
@@ -150,12 +138,6 @@
       <bpmn:outgoing>Flow_0wiiuaq</bpmn:outgoing>
     </bpmn:receiveTask>
     <bpmn:sequenceFlow id="Flow_1eigst2" sourceRef="SendTask_StartOrderWithShippedReplyMessage" targetRef="ReceiveTask_ReceiveOrderShippedMessage" />
-    <bpmn:boundaryEvent id="Event_0mltw8f" name="5min" attachedToRef="ReceiveTask_ReceiveOrderShippedMessage">
-      <bpmn:outgoing>Flow_1bhxluw</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TimerEventDefinition_1rvl89y">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT2M</bpmn:timeDuration>
-      </bpmn:timerEventDefinition>
-    </bpmn:boundaryEvent>
     <bpmn:userTask id="UserTask_PlaceOrder" name="Place order">
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_2o6n530" />
@@ -190,6 +172,11 @@
       <bpmn:incoming>Flow_1grfc27</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0jwm7st" />
     </bpmn:endEvent>
+    <bpmn:userTask id="UserTask_ShowOrder" name="Show order">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_0wiiuaq</bpmn:incoming>
+      <bpmn:outgoing>Flow_1grfc27</bpmn:outgoing>
+    </bpmn:userTask>
   </bpmn:process>
   <bpmn:process id="Process_0846z8g" isExecutable="false">
     <bpmn:dataObjectReference id="DataObjectReference_00j7oqp" name="FtfactoryOrder" dataObjectRef="DataObject_0cq8g8j" />
@@ -275,19 +262,12 @@
       <bpmndi:BPMNShape id="Event_14bs0zz_di" bpmnElement="Event_14bs0zz">
         <dc:Bounds x="1002" y="102" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0s0mn86_di" bpmnElement="Gateway_0s0mn86" isMarkerVisible="true">
-        <dc:Bounds x="1175" y="145" width="50" height="50" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1gqz8zj_di" bpmnElement="SendTask_StartOrderWithShippedReplyMessage">
         <dc:Bounds x="860" y="240" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_11bda5o" bpmnElement="UserTask_ShowFactoryFailure">
         <dc:Bounds x="870" y="80" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_059472j_di" bpmnElement="UserTask_ShowOrder">
-        <dc:Bounds x="1270" y="130" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0oo1hfv_di" bpmnElement="ReceiveTask_ReceiveAvailability">
@@ -319,16 +299,14 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0biuujc_di" bpmnElement="EndEvent_CompletedManufacturingOrder">
-        <dc:Bounds x="1422" y="152" width="36" height="36" />
+        <dc:Bounds x="1402" y="262" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1410" y="195" width="70" height="40" />
+          <dc:Bounds x="1390" y="305" width="70" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_13zf6vi_di" bpmnElement="Event_0mltw8f">
-        <dc:Bounds x="1082" y="222" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1068" y="203" width="24" height="14" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNShape id="Activity_059472j_di" bpmnElement="UserTask_ShowOrder">
+        <dc:Bounds x="1210" y="240" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_07w6ilu_di" bpmnElement="Event_13wecep">
         <dc:Bounds x="902" y="222" width="36" height="36" />
@@ -342,18 +320,12 @@
         <di:waypoint x="525" y="280" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1grfc27_di" bpmnElement="Flow_1grfc27">
-        <di:waypoint x="1370" y="170" />
-        <di:waypoint x="1422" y="170" />
+        <di:waypoint x="1310" y="280" />
+        <di:waypoint x="1402" y="280" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0wiiuaq_di" bpmnElement="Flow_0wiiuaq">
         <di:waypoint x="1140" y="280" />
-        <di:waypoint x="1200" y="280" />
-        <di:waypoint x="1200" y="195" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1bhxluw_di" bpmnElement="Flow_1bhxluw">
-        <di:waypoint x="1100" y="222" />
-        <di:waypoint x="1100" y="170" />
-        <di:waypoint x="1175" y="170" />
+        <di:waypoint x="1210" y="280" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_101jtft_di" bpmnElement="Flow_101jtft">
         <di:waypoint x="920" y="222" />
@@ -366,10 +338,6 @@
       <bpmndi:BPMNEdge id="Flow_13qmu6q_di" bpmnElement="Flow_13qmu6q">
         <di:waypoint x="690" y="280" />
         <di:waypoint x="720" y="280" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0svmvz9_di" bpmnElement="Flow_0svmvz9">
-        <di:waypoint x="1225" y="170" />
-        <di:waypoint x="1270" y="170" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1md0nk2_di" bpmnElement="Flow_1md0nk2">
         <di:waypoint x="380" y="280" />
@@ -492,7 +460,7 @@
         <di:waypoint x="1090" y="440" />
         <di:waypoint x="1090" y="320" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1096" y="342" width="69" height="27" />
+          <dc:Bounds x="1095" y="376" width="69" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0r001af_di" bpmnElement="Flow_0r001af">
@@ -520,7 +488,7 @@
         <di:waypoint x="770" y="440" />
         <di:waypoint x="770" y="320" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="775" y="384" width="71" height="27" />
+          <dc:Bounds x="776" y="376" width="70" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

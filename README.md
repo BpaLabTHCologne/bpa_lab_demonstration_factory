@@ -44,13 +44,14 @@ In addition to the local environment setup with docker compose, you can download
 
 The process can be started by placing an order from the front-end single page application: [http://localhost:5173](http://localhost:5173)
 
-### Process overview
+### Order management process overview
 
-![process image](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/bicycle-process-model.png?raw=true)
+![process image](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/OrderManagementProcess.png?raw=true)
+
 
 ### Docker overview
 
-![process image](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/docker-overview.png?raw=true)
+![docker_overview](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/docker-overview.png?raw=true)
 
 ## Deployment diagram
 UML deployment diagram
