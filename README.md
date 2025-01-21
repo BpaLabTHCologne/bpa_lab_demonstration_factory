@@ -19,7 +19,7 @@ This repository contains the source code and configuration files for automating 
 
 ### Test environment (No connection to the physiscal components of the model factory needed!)
 
-3. Go into the .env-file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'false'
+3. Go into the **.env** file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'false'
 
 4. Run the following command from the directory of the project to pull, create and run all the containers:
 
@@ -35,7 +35,7 @@ docker compose -f docker-compose-core.yaml --profile==TestSetup down
 
 ### Producitve environment
 
-3. Go into the .env-file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'true'
+3. Go into the **.env** file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'true'
 
 4. Before running the productive environment, [further preparations](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/wiki/Use-of-the-productive-environment-of-the-model-factory#preparations) must be made to the physical environment of the model factory
 
