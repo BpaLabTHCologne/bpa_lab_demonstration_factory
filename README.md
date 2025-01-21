@@ -17,7 +17,7 @@ This repository contains the source code and configuration files for automating 
 
 ---
 
-### Test environment (A connection to the physiscal components is not needed!)
+### Test environment (No connection to the physiscal components of the model factory needed!)
 
 3. Go into the .env-file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'false'
 
@@ -33,7 +33,7 @@ docker compose -f docker-compose-core.yaml --profile==TestSetup up -d
 docker compose -f docker-compose-core.yaml --profile==TestSetup down
 ```
 
-### Prod environment (A connection to the physiscal components is needed!)
+### Producitve environment
 
 3. Go into the .env-file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'true'
 
