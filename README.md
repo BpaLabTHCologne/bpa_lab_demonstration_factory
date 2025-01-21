@@ -35,6 +35,8 @@ docker compose -f docker-compose-core.yaml --profile==TestSetup down
 
 ### Producitve environment
 
+> :information_source: Error-free use of the productive environment is currently only possible with the BPA-Lab computer
+
 3. Go into the **.env** file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'true'
 
 4. Before running the productive environment, [further preparations](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/wiki/Use-of-the-productive-environment-of-the-model-factory#preparations) must be made to the physical environment of the model factory
