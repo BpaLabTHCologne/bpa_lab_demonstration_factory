@@ -13,7 +13,7 @@ This repository contains the source code and configuration files for automating 
 > :information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
 
 1. Clone this repository to a directory of your choice
-2. The next steps depend on the environment you want to use ([Test](#test-environment-a-connection-to-the-physiscal-components-is-not-needed) or [Prod](#prod-environment-a-connection-to-the-physiscal-components-is-needed))
+2. The next steps depend on the environment you want to use ([Test](#test-environment-no-connection-to-the-physical-components-of-the-model-factory-needed) or [Productive](#productive-environment))
 
 ---
 
@@ -33,7 +33,7 @@ docker compose -f docker-compose-core.yaml --profile==TestSetup up -d
 docker compose -f docker-compose-core.yaml --profile==TestSetup down
 ```
 
-### Producitve environment
+### Productive environment
 
 > :information_source: Error-free use of the productive environment is currently only possible with the BPA-Lab computer
 
