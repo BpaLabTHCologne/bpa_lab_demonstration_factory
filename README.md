@@ -17,7 +17,7 @@ This repository contains the source code and configuration files for automating 
 
 ---
 
-### Test environment (No connection to the physiscal components of the model factory needed!)
+### Test environment (No connection to the physical components of the model factory needed!)
 
 3. Go into the **.env** file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'false'
 
