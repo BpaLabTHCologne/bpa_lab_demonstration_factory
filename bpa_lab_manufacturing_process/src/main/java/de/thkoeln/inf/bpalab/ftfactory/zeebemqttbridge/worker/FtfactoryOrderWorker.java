@@ -65,7 +65,7 @@ public class FtfactoryOrderWorker extends AWorker {
 			this.ftfactoryMQTTClient.publish(pubOrder.getTopicPayload());
 
 	//		prepare ReplyMessage
-			ftfactoryOrder.initTypeCorrelationValue(correlationValueStr); //normally "pubOrder.type" instead of correlationValueStr needs be tested if it works with factory connected!!!
+			ftfactoryOrder.initTypeCorrelationValue(pubOrder.type); //normally "pubOrder.type" instead of correlationValueStr needs be tested if it works with factory connected!!!
 			
 	//		set process variable for MessageEvent
 	//		variables.put("orderReplyMessage", ftfactoryOrder.getReplyMessageName());	
