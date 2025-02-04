@@ -75,6 +75,8 @@ In addition to the local environment setup with docker compose, you can download
 
 The process can be started by placing an order from the front-end single page application: [http://localhost:5173](http://localhost:5173)
 
+If you want to go through an end-to-end process instance with a production process using instructions, you can look into this wiki entry: [User guide for end‐to‐end process execution](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/wiki/User-guide-for-end%E2%80%90to%E2%80%90end-process-execution)
+
 ### Order management process overview
 
 ![process image](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/OrderManagementProcess.png?raw=true)
