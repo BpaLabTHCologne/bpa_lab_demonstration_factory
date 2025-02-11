@@ -1,0 +1,160 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "case_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 149
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "activity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 463
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "start_timestamp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 217
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "end_timestamp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 234
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "sorting_column"
+          }
+        ]
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "trino-datasource",
+            "uid": "de5zt5g5uujgga"
+          },
+          "format": 1,
+          "rawSQL": "SELECT\r\n    variable.orderID AS case_id,\r\n    flownode.flowNodeId AS activity,\r\n    flownode.startDate AS start_timestamp,\r\n    flownode.endDate AS end_timestamp,\r\n    flownode.position AS sorting_column,\r\n    flownode.state AS activity_state,\r\n    flownode.incident AS incident_occured,\r\n    orders.customer_name,\r\n    products.product_name\r\nFROM\r\n    elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\" AS flownode\r\nLEFT JOIN\r\n    (\r\n        SELECT DISTINCT\r\n            processInstanceKey,\r\n            CAST(value AS VARCHAR) AS orderID\r\n        FROM\r\n            elasticsearch.default.\"operate-variable-8.3.0_alias\"\r\n        WHERE\r\n            name = 'orderID'\r\n    ) AS variable\r\nON\r\n    flownode.processInstanceKey = variable.processInstanceKey\r\nLEFT JOIN\r\n    mysql.db.customer_order AS orders\r\nON\r\n    variable.orderID = CAST(orders.co_id AS VARCHAR)\r\nLEFT JOIN\r\n    mysql.db.product_stock AS products\r\nON\r\n    orders.product_id = products.product_id\r\nWHERE\r\n    flownode.type NOT IN ('EXCLUSIVE_GATEWAY', 'RECEIVE_TASK')\r\n    AND variable.orderID IS NOT NULL\r\n    AND flownode.flowNodeId IS NOT NULL\r\n    AND flownode.startDate IS NOT NULL\r\n    AND flownode.endDate IS NOT NULL\r\n    AND flownode.startDate BETWEEN $__timeFrom() AND $__timeTo()\r\nORDER BY\r\n    sorting_column",
+          "refId": "A"
+        }
+      ],
+      "title": "Ereignisprotokoll",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-2y",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Ereignisprotokoll für Process Mining",
+  "uid": "ce5ztwholpvcwe",
+  "version": 29,
+  "weekStart": ""
+}

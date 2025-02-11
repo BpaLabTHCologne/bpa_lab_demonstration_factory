@@ -1,0 +1,579 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "format": 1,
+          "hide": false,
+          "rawSQL": "WITH completed_cases AS (\n    SELECT DISTINCT\n        variable.orderID AS case_id\n    FROM \n        elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\" AS flownode\n    LEFT JOIN \n        (\n            SELECT DISTINCT\n                processInstanceKey,\n                CAST(value AS VARCHAR) AS orderID\n            FROM \n                elasticsearch.default.\"operate-variable-8.3.0_alias\"\n            WHERE \n                name = 'orderID'\n        ) AS variable\n    ON \n        flownode.processInstanceKey = variable.processInstanceKey\n    WHERE\n        flownode.processInstanceKey NOT IN (\n            SELECT DISTINCT \n                processInstanceKey\n            FROM \n                elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\"\n            WHERE \n                state = 'ACTIVE'\n        )\n        AND flownode.endDate BETWEEN $__timeFrom() AND $__timeTo()\n)\nSELECT \n    COUNT(DISTINCT case_id) AS completed_process_count\nFROM \n    completed_cases",
+          "refId": "Abgeschlossene Vorgänge"
+        }
+      ],
+      "title": "Abgeschlossene Vorgänge",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "description": "Bezogen auf die Vorgänge, die erfolgreich abgeschlossen wurden",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 8,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "format": 0,
+          "rawSQL": "WITH completed_cases AS (\n    SELECT\n        DISTINCT CAST(variable.orderID AS VARCHAR) AS case_id\n    FROM\n        elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\" AS flownode\n    LEFT JOIN\n        (\n            SELECT DISTINCT\n                processInstanceKey,\n                CAST(value AS VARCHAR) AS orderID\n            FROM\n                elasticsearch.default.\"operate-variable-8.3.0_alias\"\n            WHERE\n                name = 'orderID'\n        ) AS variable\n    ON\n        flownode.processInstanceKey = variable.processInstanceKey\n    WHERE\n        flownode.type NOT IN ('EXCLUSIVE_GATEWAY', 'RECEIVE_TASK')\n        AND flownode.startDate BETWEEN $__timeFrom() AND $__timeTo()\n    GROUP BY\n        variable.orderID\n    HAVING\n        SUM(CASE WHEN flownode.state = 'ACTIVE' THEN 1 ELSE 0 END) = 0\n        AND SUM(CASE WHEN flownode.state = 'TERMINATED' THEN 1 ELSE 0 END) = 0\n)\nSELECT\n    SUM(orders.ordered_quantity) AS total_sold_products\nFROM\n    mysql.db.customer_order AS orders\nWHERE\n    CAST(orders.co_id AS VARCHAR) IN (SELECT case_id FROM completed_cases)",
+          "refId": "A"
+        }
+      ],
+      "title": "Anzahl der verkauften Fahrräder",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_duration_seconds"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Durchschnittliche Bearbeitungszeit"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 11,
+        "x": 13,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "format": 0,
+          "rawSQL": "WITH activity_durations AS (\n    SELECT\n        flownode.flowNodeId AS activity,\n        AVG(DATE_DIFF('second', flownode.startDate, flownode.endDate)) AS avg_duration_seconds\n    FROM\n        elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\" AS flownode\n    LEFT JOIN\n        (\n            SELECT DISTINCT\n                processInstanceKey,\n                CAST(value AS VARCHAR) AS orderID\n            FROM\n                elasticsearch.default.\"operate-variable-8.3.0_alias\"\n            WHERE\n                name = 'orderID'\n        ) AS variable\n    ON\n        flownode.processInstanceKey = variable.processInstanceKey\n    WHERE\n        flownode.processInstanceKey NOT IN (\n            SELECT DISTINCT \n                processInstanceKey\n            FROM \n                elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\"\n            WHERE \n                state = 'ACTIVE'\n        )\n        AND flownode.type NOT IN ('EXCLUSIVE_GATEWAY', 'RECEIVE_TASK')\n        AND flownode.startDate IS NOT NULL\n        AND flownode.endDate IS NOT NULL\n        AND flownode.startDate BETWEEN $__timeFrom() AND $__timeTo()\n    GROUP BY\n        flownode.flowNodeId\n)\nSELECT\n    activity,\n    avg_duration_seconds\nFROM\n    activity_durations\nORDER BY\n    avg_duration_seconds DESC\nLIMIT 3",
+          "refId": "A"
+        }
+      ],
+      "title": "Aktivitäten mit der höchsten Bearbeitungszeit",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 6
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "trino-datasource",
+            "uid": "de2jazyrji39cb"
+          },
+          "format": 1,
+          "rawSQL": "WITH completed_cases AS (\n    SELECT\n        variable.orderID AS case_id\n    FROM\n        elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\" AS flownode\n    LEFT JOIN\n        (\n            SELECT\n                processInstanceKey,\n                CAST(value AS VARCHAR) AS orderID\n            FROM\n                elasticsearch.default.\"operate-variable-8.3.0_alias\"\n            WHERE\n                name = 'orderID'\n        ) AS variable\n    ON\n        flownode.processInstanceKey = variable.processInstanceKey\n    GROUP BY\n        variable.orderID\n    HAVING\n        SUM(CASE WHEN flownode.state = 'ACTIVE' THEN 1 ELSE 0 END) = 0\n),\nunique_activities AS (\n    SELECT DISTINCT\n        variable.orderID AS case_id,\n        flownode.startDate,\n        flownode.endDate\n    FROM\n        elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\" AS flownode\n    LEFT JOIN\n        (\n            SELECT\n                processInstanceKey,\n                CAST(value AS VARCHAR) AS orderID\n            FROM\n                elasticsearch.default.\"operate-variable-8.3.0_alias\"\n            WHERE\n                name = 'orderID'\n        ) AS variable\n    ON\n        flownode.processInstanceKey = variable.processInstanceKey\n    WHERE\n        variable.orderID IN (SELECT case_id FROM completed_cases)\n        AND flownode.type NOT IN ('EXCLUSIVE_GATEWAY', 'RECEIVE_TASK')\n        AND flownode.startDate IS NOT NULL\n        AND flownode.endDate IS NOT NULL\n        AND flownode.startDate BETWEEN $__timeFrom() AND $__timeTo()\n),\ncase_durations AS (\n    SELECT\n        case_id,\n        SUM(DATE_DIFF('second', startDate, endDate)) AS total_duration_seconds\n    FROM\n        unique_activities\n    GROUP BY\n        case_id\n)\nSELECT\n    AVG(total_duration_seconds) AS avg_end_to_end_duration_seconds\nFROM\n    case_durations",
+          "refId": "A"
+        }
+      ],
+      "title": "Durchschnittliche Durchlaufzeit",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "description": "Anteil der abgeschlossenen Vorgänge, die manuell abgebrochen werden mussten z. B. aufgrund von Fehlern",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 6
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^error_rate_percentage$/",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "format": 1,
+          "rawSQL": "WITH cases_counts AS (\n    SELECT\n        COUNT(DISTINCT CASE WHEN flownode.state = 'COMPLETED' THEN variable.orderID END) AS completed_count,\n        COUNT(DISTINCT CASE WHEN flownode.state = 'TERMINATED' THEN variable.orderID END) AS terminated_count\n    FROM\n        elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\" AS flownode\n    LEFT JOIN\n        (\n            SELECT DISTINCT\n                processInstanceKey,\n                CAST(value AS VARCHAR) AS orderID\n            FROM\n                elasticsearch.default.\"operate-variable-8.3.0_alias\"\n            WHERE\n                name = 'orderID'\n        ) AS variable\n    ON\n        flownode.processInstanceKey = variable.processInstanceKey\n    WHERE\n        flownode.startDate BETWEEN $__timeFrom() AND $__timeTo()\n)\nSELECT\n    CASE\n        WHEN cases_counts.completed_count > 0 THEN \n            ROUND((cases_counts.terminated_count * 100.0 / cases_counts.completed_count), 2)\n        ELSE \n            NULL\n    END AS error_rate_percentage\nFROM\n    cases_counts",
+          "refId": "A"
+        }
+      ],
+      "title": "Abbruch-/Fehlerquote",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "description": "Bezogen auf die Vorgänge, die erfolgreich abgeschlossen wurden",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 5,
+        "x": 8,
+        "y": 6
+      },
+      "id": 7,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^sold_count$/",
+          "values": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "format": 0,
+          "rawSQL": "WITH completed_cases AS (\n    SELECT\n        DISTINCT CAST(variable.orderID AS VARCHAR) AS case_id\n    FROM\n        elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\" AS flownode\n    LEFT JOIN\n        (\n            SELECT DISTINCT\n                processInstanceKey,\n                CAST(value AS VARCHAR) AS orderID\n            FROM\n                elasticsearch.default.\"operate-variable-8.3.0_alias\"\n            WHERE\n                name = 'orderID'\n        ) AS variable\n    ON\n        flownode.processInstanceKey = variable.processInstanceKey\n    WHERE\n        flownode.type NOT IN ('EXCLUSIVE_GATEWAY', 'RECEIVE_TASK')\n        AND variable.orderID IS NOT NULL\n        AND flownode.startDate BETWEEN $__timeFrom() AND $__timeTo()\n    GROUP BY\n        variable.orderID\n    HAVING\n        SUM(CASE WHEN flownode.state = 'ACTIVE' THEN 1 ELSE 0 END) = 0\n        AND SUM(CASE WHEN flownode.state = 'TERMINATED' THEN 1 ELSE 0 END) = 0\n)\nSELECT\n    products.product_name AS product,\n    SUM(ordered_quantity) AS sold_count\nFROM\n    mysql.db.customer_order AS orders\nLEFT JOIN\n    mysql.db.product_stock AS products\nON\n    orders.product_id = products.product_id\nWHERE\n    CAST(orders.co_id AS VARCHAR) IN (SELECT case_id FROM completed_cases)\nGROUP BY\n    products.product_name\nORDER BY\n    sold_count DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Anteil pro Fahrradmodell",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "description": "Anteil der abgeschlossenen Vorgänge, in denen der Produktionsprozess gestartet wurde ",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 11
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^production_control_percentage$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "format": 0,
+          "rawSQL": "WITH case_counts AS (\n    SELECT DISTINCT\n        CAST(variable.orderID AS VARCHAR) AS case_id,\n        flownode.bpmnProcessId\n    FROM\n        elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\" AS flownode\n    LEFT JOIN\n        (\n            SELECT DISTINCT\n                processInstanceKey,\n                CAST(value AS VARCHAR) AS orderID\n            FROM\n                elasticsearch.default.\"operate-variable-8.3.0_alias\"\n            WHERE\n                name = 'orderID'\n        ) AS variable\n    ON\n        flownode.processInstanceKey = variable.processInstanceKey\n    WHERE\n        flownode.processInstanceKey NOT IN (\n            SELECT DISTINCT \n                processInstanceKey\n            FROM \n                elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\"\n            WHERE \n                state = 'ACTIVE'\n        )\n        AND flownode.startDate BETWEEN $__timeFrom() AND $__timeTo()\n)\nSELECT\n    CASE\n        WHEN COUNT(DISTINCT case_id) > 0 THEN \n            (COUNT(DISTINCT CASE WHEN bpmnProcessId = 'ProductionControlProcess' THEN case_id END) * 100.0 / COUNT(DISTINCT case_id)) \n        ELSE \n            NULL    \n    END AS production_control_percentage\nFROM\n    case_counts",
+          "refId": "A"
+        }
+      ],
+      "title": "Produktionsanteil",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "description": "Anteil der abgeschlossenen Vorgänge, in denen der Einkaufsprozess gestartet wurde",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 11
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^purchasing_process_percentage$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "format": 1,
+          "rawSQL": "WITH case_counts AS (\n    SELECT DISTINCT\n        CAST(variable.orderID AS VARCHAR) AS case_id,\n        flownode.bpmnProcessId\n    FROM\n        elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\" AS flownode\n    LEFT JOIN\n        (\n            SELECT DISTINCT\n                processInstanceKey,\n                CAST(value AS VARCHAR) AS orderID\n            FROM\n                elasticsearch.default.\"operate-variable-8.3.0_alias\"\n            WHERE\n                name = 'orderID'\n        ) AS variable\n    ON\n        flownode.processInstanceKey = variable.processInstanceKey\n    WHERE\n        flownode.processInstanceKey NOT IN (\n            SELECT DISTINCT \n                processInstanceKey\n            FROM \n                elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\"\n            WHERE \n                state = 'ACTIVE'\n        )\n        AND flownode.startDate BETWEEN $__timeFrom() AND $__timeTo()\n)\nSELECT\n    CASE\n        WHEN COUNT(DISTINCT case_id) > 0 THEN \n            (COUNT(DISTINCT CASE WHEN bpmnProcessId = 'PurchasingProcess' THEN case_id END) * 100.0 / COUNT(DISTINCT case_id))\n        ELSE \n            NULL\n    END AS purchasing_process_percentage\nFROM\n    case_counts",
+          "refId": "A"
+        }
+      ],
+      "title": "Einkaufsanteil",
+      "type": "stat"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Taktische Übersicht für den End-to-End-Prozess",
+  "uid": "ce2jcdyqsy7swf",
+  "version": 127,
+  "weekStart": ""
+}
