@@ -26,13 +26,13 @@ This repository contains the source code and configuration files of the implemen
 4. Run the following command from the directory of the project to pull, create and run all the containers (docker service need to be running):
 
 ```
-docker compose -f docker-compose-core.yaml --profile==TestSetup up -d
+docker compose -f docker-compose-core.yaml --profile=TestSetup up -d
 ```
 
 5. Run the following command only to shut down the containers gracefully
 
 ```
-docker compose -f docker-compose-core.yaml --profile==TestSetup down
+docker compose -f docker-compose-core.yaml --profile=TestSetup down
 ```
 
 ### Productive environment
@@ -46,13 +46,13 @@ docker compose -f docker-compose-core.yaml --profile==TestSetup down
 5. Run the following command from the directory of the project to pull, create and run all the containers:
 
 ```
-docker compose -f docker-compose-core.yaml --profile==ProdSetup up -d
+docker compose -f docker-compose-core.yaml --profile=ProdSetup up -d
 ```
 
 6. Run the following command only to shut down the containers gracefully
 
 ```
-docker compose -f docker-compose-core.yaml --profile==ProdSetup down
+docker compose -f docker-compose-core.yaml --profile=ProdSetup down
 ```
 
 ---
