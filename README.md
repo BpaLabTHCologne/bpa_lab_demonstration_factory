@@ -23,7 +23,7 @@ This repository contains the source code and configuration files of the implemen
 
 3. Go into the **.env** file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'false'
 
-4. Run the following command from the directory of the project to pull, create and run all the containers:
+4. Run the following command from the directory of the project to pull, create and run all the containers (docker service need to be running):
 
 ```
 docker compose -f docker-compose-core.yaml --profile==TestSetup up -d
