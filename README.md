@@ -1,6 +1,8 @@
 # BPA Lab Bicycle Manufacturing Factory
 
-This repository contains the source code and configuration files for automating a small bicycle factory model using Camunda 8, a powerful workflow automation platform. The automation system orchestrates various manufacturing processes involved in the production of bicycles, streamlining the entire production lifecycle from order management to production control and purchasing to shipment. Most of the job workers are implemented using official zeebe-node repository [Zeebe Node](https://github.com/camunda-community-hub/zeebe-client-node-js) provided by the Camunda Platform. Moreover, the robots for the warehouse operations like storing or retrieving items are implemented in Python.
+The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (companies, students, ...).
+
+This repository contains the source code and configuration files of the implementation of the demonstration scenario: the ordering, manufacturing and shipping of custom-made bicycles. The implementation is based on Camunda 8, a Business Process Management System. This BPMS orchestrates different job workers for different processes. Most of the process applications (job workers) are implemented using the official zeebe node repository. [Zeebe Node](https://github.com/camunda-community-hub/zeebe-client-node-js) provided by the Camunda Platform. Moreover, the robots for the warehouse operations like storing or retrieving items are implemented in Python.
 
 ## Prerequisites
 
