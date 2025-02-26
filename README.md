@@ -73,6 +73,11 @@ In addition to the local environment setup with docker compose, you can download
 
 > :information_source: This project deployes all the process diagrams automatically including order management, production control, purchasing, shipment, warehouse operations and manufacturing.
 
+### Before starting a process for the first time after installation!
+
+If you want to use the possibilities of the model factory for process analysis and monitoring, you need to carry out a few one-off configurations. 
+See wiki entry: https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/wiki/Necessary-configurations-for-the-use-of-the-data-architecture-during-initial-installation-or-reinstallation
+
 ### Start the process
 
 The process can be started by placing an order from the front-end single page application: [http://localhost:5173](http://localhost:5173)
@@ -82,7 +87,6 @@ If you want to go through an end-to-end process instance with a production proce
 ### Order management process overview
 
 ![process image](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/OrderManagementProcess.png?raw=true)
-
 
 ### Docker overview
 
