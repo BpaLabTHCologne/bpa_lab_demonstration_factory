@@ -67,12 +67,6 @@ Navigate the BPA Lab containers:
 - Front-end (Single Page Application): [http://localhost:5173](http://localhost:5173)
 - phpMyAdmin: [http://localhost:8183](http://localhost:8183)
 
-### Deploying BPMN diagrams
-
-In addition to the local environment setup with docker compose, you can download the [Camunda Desktop Modeler](https://camunda.com/download/modeler/) to locally model BPMN diagrams for execution and directly deploy them to your local environment.
-
-> :information_source: This project deployes all the process diagrams automatically including order management, production control, purchasing, shipment, warehouse operations and manufacturing.
-
 ### Before starting a process for the first time after installation!
 
 If you want to use the possibilities of the model factory for process analysis and monitoring, you need to carry out a few one-off configurations. 
@@ -83,6 +77,12 @@ See wiki entry: https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory
 The process can be started by placing an order from the front-end single page application: [http://localhost:5173](http://localhost:5173)
 
 If you want to go through an end-to-end process instance with a production process using instructions, you can look into this wiki entry: [User guide for end‐to‐end process execution](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/wiki/User-guide-for-end%E2%80%90to%E2%80%90end-process-execution)
+
+### Deploying BPMN diagrams
+
+In addition to the local environment setup with docker compose, you can download the [Camunda Desktop Modeler](https://camunda.com/download/modeler/) to locally model BPMN diagrams for execution and directly deploy them to your local environment.
+
+> :information_source: This project deployes all the process diagrams automatically including order management, production control, purchasing, shipment, warehouse operations and manufacturing.
 
 ### Order management process overview
 
