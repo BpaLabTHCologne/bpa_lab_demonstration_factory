@@ -69,7 +69,7 @@ Navigate the BPA Lab containers:
 
 ### Before starting a process for the first time after installation!
 
-If you want to use the possibilities of the model factory for process analysis and monitoring, you need to carry out a few one-off configurations. 
+If you want to use the possibilities of the model factory for **process analysis and monitoring**, you need to carry out a few one-off configurations. 
 See wiki entry: https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/wiki/Necessary-configurations-for-the-use-of-the-data-architecture-during-initial-installation-or-reinstallation
 
 ### Start the process
