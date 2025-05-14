@@ -12,13 +12,13 @@
 services:
 
   zeebe: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#zeebe
-    image: camunda/zeebe:${CAMUNDA_PLATFORM_VERSION}
+    image: camunda/zeebe:${CAMUNDA_ZEEBE_VERSION}
     container_name: zeebe
     ports:
       - "26500:26500"
       - "9600:9600"
+      - "8088:8080"
     environment: # https://docs.camunda.io/docs/self-managed/zeebe-deployment/configuration/environment-variables/
-      - TZ=Europe/Berlin
       - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_CLASSNAME=io.camunda.zeebe.exporter.ElasticsearchExporter
       - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_ARGS_URL=http://elasticsearch:9200
       # default is 1000, see here: https://github.com/camunda/zeebe/blob/main/exporters/elasticsearch-exporter/src/main/java/io/camunda/zeebe/exporter/ElasticsearchExporterConfiguration.java#L259
@@ -26,8 +26,9 @@ services:
       # allow running with low disk space
       - ZEEBE_BROKER_DATA_DISKUSAGECOMMANDWATERMARK=0.998
       - ZEEBE_BROKER_DATA_DISKUSAGEREPLICATIONWATERMARK=0.999
+      - CAMUNDA_DATABASE_URL=http://elasticsearch:9200
       - "JAVA_TOOL_OPTIONS=-Xms512m -Xmx512m"
-    restart: always
+    restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "timeout 10s bash -c ':> /dev/tcp/127.0.0.1/9600' || exit 1" ]
       interval: 30s
@@ -42,19 +43,20 @@ services:
       - elasticsearch
 
   operate: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#operate
-    image: camunda/operate:${CAMUNDA_PLATFORM_VERSION}
+    image: camunda/operate:${CAMUNDA_OPERATE_VERSION}
     container_name: operate
     ports:
       - "8081:8080"
     environment: # https://docs.camunda.io/docs/self-managed/operate-deployment/configuration/
-      - TZ=Europe/Berlin
       - CAMUNDA_OPERATE_ZEEBE_GATEWAYADDRESS=zeebe:26500
       - CAMUNDA_OPERATE_ELASTICSEARCH_URL=http://elasticsearch:9200
       - CAMUNDA_OPERATE_ZEEBEELASTICSEARCH_URL=http://elasticsearch:9200
+      - CAMUNDA_OPERATE_CSRFPREVENTIONENABLED=false
+      - CAMUNDA_DATABASE_URL=http://elasticsearch:9200
       - management.endpoints.web.exposure.include=health
       - management.endpoint.health.probes.enabled=true
     healthcheck:
-      test: [ "CMD-SHELL", "wget -O - -q 'http://localhost:8080/actuator/health/readiness'" ]
+      test: [ "CMD-SHELL", "wget -O - -q 'http://localhost:9600/actuator/health/readiness'" ]
       interval: 30s
       timeout: 1s
       retries: 5
@@ -66,18 +68,21 @@ services:
       - elasticsearch
 
   tasklist: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#tasklist
-    image: camunda/tasklist:${CAMUNDA_PLATFORM_VERSION}
+    image: camunda/tasklist:${CAMUNDA_TASKLIST_VERSION}
     container_name: tasklist
     ports:
       - "8082:8080"
     environment: # https://docs.camunda.io/docs/self-managed/tasklist-deployment/configuration/
       - CAMUNDA_TASKLIST_ZEEBE_GATEWAYADDRESS=zeebe:26500
+      - CAMUNDA_TASKLIST_ZEEBE_RESTADDRESS=http://zeebe:8080
       - CAMUNDA_TASKLIST_ELASTICSEARCH_URL=http://elasticsearch:9200
       - CAMUNDA_TASKLIST_ZEEBEELASTICSEARCH_URL=http://elasticsearch:9200
+      - CAMUNDA_TASKLIST_CSRFPREVENTIONENABLED=false
+      - CAMUNDA_DATABASE_URL=http://elasticsearch:9200
       - management.endpoints.web.exposure.include=health
       - management.endpoint.health.probes.enabled=true
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health/readiness" ]
+      test: [ "CMD-SHELL", "wget -O - -q 'http://localhost:9600/actuator/health/readiness'" ]
       interval: 30s
       timeout: 1s
       retries: 5
@@ -94,11 +99,10 @@ services:
     ports:
       - "8085:8080"
     environment:
-      - ZEEBE_CLIENT_BROKER_GATEWAY-ADDRESS=zeebe:26500
-      - ZEEBE_CLIENT_SECURITY_PLAINTEXT=true
-      - CAMUNDA_OPERATE_CLIENT_URL=http://operate:8080
-      - CAMUNDA_OPERATE_CLIENT_USERNAME=demo
-      - CAMUNDA_OPERATE_CLIENT_PASSWORD=demo
+      - CAMUNDA_CLIENT_MODE=self-managed
+      - CAMUNDA_CLIENT_ZEEBE_GRPCADDRESS=http://zeebe:26500
+      - OPERATE_CLIENT_BASEURL=http://operate:8080
+      - OPERATE_CLIENT_PROFILE=simple
       - management.endpoints.web.exposure.include=health
       - management.endpoint.health.probes.enabled=true
     healthcheck:
@@ -131,7 +135,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    restart: always
+    restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:9200/_cat/health | grep -q green" ]
       interval: 30s
@@ -144,6 +148,8 @@ services:
 
   kibana:
     image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
+    # for ARM Macs
+    platform: linux/amd64
     container_name: kibana
     ports:
       - 5601:5601
@@ -159,6 +165,8 @@ services:
   # MySQL container for master's data 
   mysql:
     container_name: mysqldb
+    # for ARM Macs
+    platform: linux/amd64
     image: mysql:5
     networks:
       - camunda-platform
@@ -180,6 +188,9 @@ services:
   # phpMyAdmin container for database adminstration tasks
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
+    # for ARM Macs
+    platform: linux/amd64
+
     container_name: phpMyAdmin
     networks:
       - camunda-platform
@@ -196,6 +207,9 @@ services:
 
   # Front-end application container
   bpa_lab_front_end_application:
+    # for ARM Macs
+    platform: linux/amd64
+
     build: 
       context: ./bpa_lab_front_end_application
       dockerfile: dev.Dockerfile
@@ -211,6 +225,9 @@ services:
 
 # Process application container including job workers
   bpa_lab_process_application:
+    # for ARM Macs
+    platform: linux/amd64
+
     build:
       context: ./bpa_lab_process_application
       dockerfile: dev.Dockerfile
@@ -236,6 +253,9 @@ services:
 
 # REST middleware server container used to communicate between the front-end and zeebe broker
   bpa_lab_rest_middleware_server:
+    # for ARM Macs
+    platform: linux/amd64
+
     build:
       context: ./bpa_lab_rest_middleware_server
       dockerfile: dev.Dockerfile
@@ -253,6 +273,9 @@ services:
 
 # Shipment process container including job workers
   bpa_lab_shipment_process:
+    # for ARM Macs
+    platform: linux/amd64
+
     build:
       context: ./bpa_lab_shipment_process
       dockerfile: dev.Dockerfile
@@ -271,6 +294,9 @@ services:
 
 # Purchasing process container including job workers
   bpa_lab_purchasing_process:
+    # for ARM Macs
+    platform: linux/amd64
+
     build:
       context: ./bpa_lab_purchasing_process
       dockerfile: dev.Dockerfile
@@ -295,6 +321,8 @@ services:
 
 # Warehouse operations process container including job workers
   bpa_lab_warehouse_operations_process:
+    # for ARM Macs
+    platform: linux/amd64
     build: 
       context: ./bpa_lab_warehouse_operations_process
       dockerfile: dev.Dockerfile
@@ -320,6 +348,9 @@ services:
 
 # Warehouse robot process container including job workers
   bpa_lab_warehouse_robot_process:
+    # for ARM Macs
+    platform: linux/amd64
+
     build:
       context: ./bpa_lab_warehouse_operations_process/TXT_Controller_Apps
       dockerfile: dev.Dockerfile
@@ -334,6 +365,8 @@ services:
         IS_PROD: ${IS_PROD}
 
   bpa_lab_manufacturing_process:
+    # for ARM Macs
+    platform: linux/amd64
     build:
       context: ./bpa_lab_manufacturing_process
       dockerfile: dev.Dockerfile
@@ -371,6 +404,8 @@ services:
 # MQTT-Broker for communication between warehouse robot process and warehouse operations process 
 # ONLY NECESSARY AS A REPLACEMENT IN THE TEST SETUP WITHOUT CONNECTION TO THE BPA-LAB MQTT_BROKER (RASPBERRY PI) AND FT_FACTORY!
   mqtt-broker:
+    # for ARM Macs
+    platform: linux/amd64
     image: eclipse-mosquitto:latest
     container_name: mqtt-broker
     networks:
@@ -401,6 +436,8 @@ services:
 
 # Trino data virtualization layer for processing data
   trino:
+    # for ARM Macs
+    platform: linux/amd64
     image: trinodb/trino:latest
     ports:
       - "8087:8080"
@@ -416,6 +453,8 @@ services:
 
 # Grafana for data visualization and process reporting
   grafana:
+    # for ARM Macs
+    platform: linux/amd64
     image: grafana/grafana:latest
     container_name: grafana
     ports:
