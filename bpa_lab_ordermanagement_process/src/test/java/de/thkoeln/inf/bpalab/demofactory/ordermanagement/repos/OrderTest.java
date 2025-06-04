@@ -1,0 +1,89 @@
+package de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.BikeModel;
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.BikeModelDTO;
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.CustomerOrderCustomerDTO;
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OfferOrderDTO;
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OrderOrderDTO;
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.CustomerOrderService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+@SpringBootTest
+class OrderTest {
+    static final Logger LOG = LoggerFactory.getLogger(OrderTest.class);
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    CustomerOrderRepository customerOrderRepository;
+
+    @Autowired
+    CustomerOrderService customerOrderService;
+
+    OfferOrderDTO offerOrderDTO;
+
+    @Autowired
+    private BikeModelRepository bikeModelRepository;
+
+    @BeforeEach
+    void setUp() {
+        offerOrderDTO = new OfferOrderDTO();
+        offerOrderDTO.orderCustomer = new CustomerOrderCustomerDTO();
+        offerOrderDTO.orderCustomer.name = "Paul Paulsen";
+        offerOrderDTO.orderCustomer.email = "paul@paulsen.de";
+        offerOrderDTO.orderCustomer.adress = "Paul Straße 12, 51611 Pauldorf";
+        offerOrderDTO.orderDate = LocalDate.now().toString();
+        offerOrderDTO.offerBikeModelList = new ArrayList<>();
+        for (BikeModel bikeModel : bikeModelRepository.findAll()) {
+            BikeModelDTO bikeModelDTO = new BikeModelDTO();
+            bikeModelDTO.amount = 2;
+            bikeModelDTO.color = bikeModel.getColor();
+            bikeModelDTO.title = bikeModel.getTitle();
+            bikeModelDTO.weight = bikeModel.getWeight();
+            offerOrderDTO.offerBikeModelList.add(bikeModelDTO);
+        }
+    }
+
+    @AfterEach
+    void tearDown() {
+    }
+
+    @Test
+    void findAllOrders() throws JsonProcessingException {
+        for (CustomerOrder order : customerOrderRepository.findAll()) {
+            LOG.info("findAllOrders {}", objectMapper.writeValueAsString(order));
+        }
+    }
+
+    @Test
+    void testPutOrder() throws JsonProcessingException {
+        LOG.info("testPutOrder offerOrderDTO {}", objectMapper.writeValueAsString(offerOrderDTO));
+        if (customerOrderRepository.count() < 1)
+            return;
+        CustomerOrder customerOrder = customerOrderRepository.findAll().getFirst();
+        LOG.info("testPutOrder customerOrder {}", objectMapper.writeValueAsString(customerOrder));
+        OrderOrderDTO orderOrderDTO = customerOrderService.getOrderOrderDTO(customerOrder);
+        LOG.info("testPutOrder orderOrderDTO {}", objectMapper.writeValueAsString(orderOrderDTO));
+    }
+
+    @Test
+    void testSaveOrder() throws JsonProcessingException {
+        LOG.info("testSaveOrder {}", objectMapper.writeValueAsString(offerOrderDTO));
+        if (customerOrderRepository.count() > 0)
+            return;
+        CustomerOrder customerOrder = customerOrderService.createCustomerOrder(offerOrderDTO);
+        LOG.info("testSaveOrder created {}", objectMapper.writeValueAsString(customerOrder));
+    }
+
+}

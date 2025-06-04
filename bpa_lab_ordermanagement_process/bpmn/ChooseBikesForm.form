@@ -1,0 +1,129 @@
+{
+  "components": [
+    {
+      "label": "Bike Models",
+      "components": [
+        {
+          "label": "Title",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1ir90z1",
+            "columns": 6
+          },
+          "id": "Field_17sgzym",
+          "key": "title",
+          "readonly": true
+        },
+        {
+          "label": "Weight",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1ir90z1",
+            "columns": 4
+          },
+          "id": "Field_1ttjyce",
+          "key": "weight",
+          "readonly": true
+        },
+        {
+          "label": "Color",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1ir90z1",
+            "columns": 3
+          },
+          "id": "Field_01h2v3l",
+          "key": "color",
+          "readonly": true
+        },
+        {
+          "label": "Amount",
+          "type": "number",
+          "layout": {
+            "row": "Row_1ir90z1",
+            "columns": 2
+          },
+          "id": "Field_0yjqaxj",
+          "key": "amount",
+          "readonly": false,
+          "defaultValue": 0
+        }
+      ],
+      "showOutline": true,
+      "isRepeating": true,
+      "allowAddRemove": false,
+      "defaultRepetitions": 1,
+      "type": "dynamiclist",
+      "layout": {
+        "row": "Row_1jlt6wn",
+        "columns": null
+      },
+      "id": "Field_1yrz78n",
+      "path": "offerBikeModelList"
+    },
+    {
+      "label": "Customer",
+      "components": [
+        {
+          "label": "Name",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1g81o5z",
+            "columns": 6
+          },
+          "id": "Field_15b4duk",
+          "key": "name"
+        },
+        {
+          "label": "Email",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1g81o5z",
+            "columns": 6
+          },
+          "id": "Field_04tmiuh",
+          "key": "email"
+        },
+        {
+          "label": "Adress",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1049son",
+            "columns": 12
+          },
+          "id": "Field_1xe8qkw",
+          "key": "adress"
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
+      "layout": {
+        "row": "Row_1tkxr3d",
+        "columns": null
+      },
+      "id": "Field_1ew2xu8",
+      "path": "orderCustomer"
+    },
+    {
+      "subtype": "date",
+      "dateLabel": "Order Date",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_0tuz1fp",
+        "columns": 4
+      },
+      "id": "Field_01j0tcb",
+      "key": "orderDate",
+      "disallowPassedDates": true
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.7.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "schemaVersion": 18,
+  "id": "chooseBikesForm",
+  "type": "default"
+}

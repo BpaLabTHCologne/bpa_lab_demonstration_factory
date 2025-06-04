@@ -1,0 +1,167 @@
+{
+  "components": [
+    {
+      "label": "Customer",
+      "components": [
+        {
+          "label": "Name",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1g81o5z",
+            "columns": 6
+          },
+          "id": "Field_15b4duk",
+          "key": "name",
+          "readonly": true
+        },
+        {
+          "label": "Email",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1g81o5z",
+            "columns": 6
+          },
+          "id": "Field_04tmiuh",
+          "key": "email",
+          "readonly": "on"
+        },
+        {
+          "label": "Adress",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1049son",
+            "columns": 12
+          },
+          "id": "Field_1xe8qkw",
+          "key": "adress",
+          "readonly": true
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
+      "layout": {
+        "row": "Row_1tkxr3d",
+        "columns": null
+      },
+      "id": "Field_1ew2xu8",
+      "path": "orderCustomer"
+    },
+    {
+      "label": "Order Number",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0w6b62t",
+        "columns": 4
+      },
+      "id": "Field_0dxiw3c",
+      "key": "orderNumber",
+      "readonly": "on"
+    },
+    {
+      "subtype": "date",
+      "dateLabel": "Order Date",
+      "type": "datetime",
+      "layout": {
+        "row": "Row_0w6b62t",
+        "columns": 4
+      },
+      "id": "Field_01j0tcb",
+      "key": "orderDate",
+      "disallowPassedDates": true,
+      "readonly": true
+    },
+    {
+      "type": "separator",
+      "layout": {
+        "row": "Row_1ssyg5k",
+        "columns": null
+      },
+      "id": "Field_1uf6zpw"
+    },
+    {
+      "label": "Bikes on Stock",
+      "components": [
+        {
+          "label": "Title",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1ir90z1",
+            "columns": 12
+          },
+          "id": "Field_17sgzym",
+          "key": "title",
+          "readonly": "on"
+        },
+        {
+          "label": "Quantity",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1ir90z1",
+            "columns": 3
+          },
+          "id": "Field_07rxh3w",
+          "key": "amount",
+          "readonly": true
+        }
+      ],
+      "showOutline": true,
+      "isRepeating": true,
+      "allowAddRemove": false,
+      "defaultRepetitions": 1,
+      "type": "dynamiclist",
+      "layout": {
+        "row": "Row_06mgm3w",
+        "columns": 8
+      },
+      "id": "Field_1yrz78n",
+      "path": "availableBikeInstanceList"
+    },
+    {
+      "label": "Bikes to Produce",
+      "components": [
+        {
+          "label": "Title",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_15l0dsk",
+            "columns": 9
+          },
+          "id": "Field_0hdtdf7",
+          "key": "title",
+          "readonly": "on"
+        },
+        {
+          "label": "Quantity",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_15l0dsk",
+            "columns": 4
+          },
+          "id": "Field_0aqqx06",
+          "key": "amount",
+          "readonly": true
+        }
+      ],
+      "showOutline": true,
+      "isRepeating": true,
+      "allowAddRemove": false,
+      "defaultRepetitions": 1,
+      "type": "dynamiclist",
+      "layout": {
+        "row": "Row_06mgm3w",
+        "columns": null
+      },
+      "id": "Field_1kald2a",
+      "path": "produceBikeModelList"
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.7.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "schemaVersion": 18,
+  "id": "showOrderForm",
+  "type": "default"
+}

@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3070/bpa_lab_demonstration_factory?serverTimezone=UTC}
+    username: ${JDBC_DATABASE_USERNAME:root}
+    password: ${JDBC_DATABASE_PASSWORD:P4ssword!}
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        id:
+          new_generator_mappings: true
+        type:
+          preferred_uuid_jdbc_type: CHAR
+  docker:
+    compose:
+      lifecycle-management: start-only
+server:
+  port: 9090
+camunda:
+  client:
+    mode: self-managed
