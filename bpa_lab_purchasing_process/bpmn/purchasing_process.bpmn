@@ -1,0 +1,1153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.24.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0" camunda:diagramRelationId="3f004bd5-3647-41a6-9d4d-aef3f6c1143a">
+  <bpmn:collaboration id="Collaboration_0kaj0bf">
+    <bpmn:participant id="Participant_03c2iwl" name="Bike GmbH" processRef="PurchasingProcess" />
+    <bpmn:textAnnotation id="TextAnnotation_19ms8as">
+      <bpmn:text>PURCHASING_APPROVED</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0o08s89" sourceRef="ServiceTask_CompletePO" targetRef="TextAnnotation_19ms8as" />
+    <bpmn:textAnnotation id="TextAnnotation_0idqqmk">
+      <bpmn:text>PURCHASING_REJECTED</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1uyae27" sourceRef="UserTask_RejectPO" targetRef="TextAnnotation_0idqqmk" />
+  </bpmn:collaboration>
+  <bpmn:process id="PurchasingProcess" name="Purchasing process" isExecutable="true">
+    <bpmn:extensionElements>
+      <zeebe:userTaskForm id="UserTaskForm_0iipld1">{
+  "components": [
+    {
+      "components": [
+        {
+          "values": [
+            {
+              "label": "Mountain bike frame",
+              "value": "Mountain bike frame"
+            },
+            {
+              "label": "Mountain bike wheels",
+              "value": "Mountain bike wheels"
+            },
+            {
+              "label": "Mountain bike seat",
+              "value": "Mountain bike seat"
+            },
+            {
+              "label": "Hybrid bicycle frame ",
+              "value": "Hybrid bicycle frame"
+            },
+            {
+              "label": "Hybrid bicycle wheels ",
+              "value": "Hybrid bicycle wheels"
+            },
+            {
+              "label": "Hybrid bicycle seat",
+              "value": "Hybrid bicycle seat"
+            },
+            {
+              "label": "Electric bicycle frame",
+              "value": "Electric bicycle frame"
+            },
+            {
+              "label": "Electric bicycle wheels",
+              "value": "Electric bicycle wheels"
+            },
+            {
+              "label": "Electric bicycle seat",
+              "value": "Electric bicycle seat"
+            }
+          ],
+          "label": "Material",
+          "type": "select",
+          "layout": {
+            "row": "Row_0ixkml6",
+            "columns": null
+          },
+          "id": "Field_10409i5",
+          "key": "material_key",
+          "readonly": "=if orderdetailvisible or modification then true else false",
+          "disabled": false
+        },
+        {
+          "label": "Quantity",
+          "type": "number",
+          "layout": {
+            "row": "Row_0ixkml6",
+            "columns": null
+          },
+          "id": "Field_0vmdv7i",
+          "key": "quantity_key",
+          "readonly": "=if orderdetailvisible or modification then true else false"
+        }
+      ],
+      "showOutline": true,
+      "label": "Order",
+      "type": "group",
+      "layout": {
+        "row": "Row_185rn1d",
+        "columns": null
+      },
+      "id": "Field_1h94l9l"
+    },
+    {
+      "components": [
+        {
+          "label": "Vendor",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_0c35ncv",
+            "columns": null
+          },
+          "id": "Field_0om6lv0",
+          "key": "vendor_key",
+          "disabled": false,
+          "properties": {},
+          "readonly": "=if orderdetailvisible then true else false",
+          "defaultValue": "\"Test\""
+        },
+        {
+          "label": "Price ",
+          "type": "number",
+          "layout": {
+            "row": "Row_0c35ncv",
+            "columns": null
+          },
+          "id": "Field_09eg069",
+          "key": "price_key",
+          "readonly": "=if orderdetailvisible then true else false",
+          "properties": {}
+        }
+      ],
+      "showOutline": true,
+      "label": "Order Details",
+      "type": "group",
+      "layout": {
+        "row": "Row_01cduoc",
+        "columns": 16
+      },
+      "id": "Field_0l1384c",
+      "conditional": {
+        "hide": "=not(orderdetailvisible) "
+      }
+    },
+    {
+      "label": "Approve",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_1rqpraw",
+        "columns": null
+      },
+      "id": "Field_18xyh42",
+      "key": "approve_key",
+      "readonly": false,
+      "disabled": false,
+      "conditional": {
+        "hide": "=not(orderdetailvisible)"
+      }
+    },
+    {
+      "components": [
+        {
+          "values": [
+            {
+              "label": "Mountain bike frame",
+              "value": "Mountain bike frame"
+            },
+            {
+              "label": "Mountain bike wheels",
+              "value": "Mountain bike wheels"
+            },
+            {
+              "label": "Mountain bike seat",
+              "value": "Mountain bike seat"
+            },
+            {
+              "label": "Hybrid bicycle frame ",
+              "value": "Hybrid bicycle frame"
+            },
+            {
+              "label": "Hybrid bicycle wheels ",
+              "value": "Hybrid bicycle wheels"
+            },
+            {
+              "label": "Hybrid bicycle seat",
+              "value": "Hybrid bicycle seat"
+            },
+            {
+              "label": "Electric bicycle frame",
+              "value": "Electric bicycle frame"
+            },
+            {
+              "label": "Electric bicycle wheels",
+              "value": "Electric bicycle wheels"
+            },
+            {
+              "label": "Electric bicycle seat",
+              "value": "Electric bicycle seat"
+            }
+          ],
+          "label": "Material New ",
+          "type": "select",
+          "layout": {
+            "row": "Row_0921d07",
+            "columns": null
+          },
+          "id": "Field_1xlcpp6",
+          "key": "material2_key"
+        },
+        {
+          "label": "Quantity New ",
+          "type": "number",
+          "layout": {
+            "row": "Row_0921d07",
+            "columns": null
+          },
+          "id": "Field_0afgbxb",
+          "key": "quantity2_key"
+        }
+      ],
+      "showOutline": true,
+      "label": "Modified Order",
+      "type": "group",
+      "layout": {
+        "row": "Row_1smgl3r",
+        "columns": null
+      },
+      "id": "Field_0dznc3t",
+      "conditional": {
+        "hide": "=not(modification)"
+      }
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.17.0"
+  },
+  "schemaVersion": 12,
+  "type": "default",
+  "id": "Purchasing_Form"
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_1ja5tg0">{
+  "components": [
+    {
+      "components": [
+        {
+          "values": [
+            {
+              "label": "Mountain bike frame",
+              "value": "Mountain bike frame"
+            },
+            {
+              "label": "Mountain bike wheels",
+              "value": "Mountain bike wheels"
+            },
+            {
+              "label": "Mountain bike seat",
+              "value": "Mountain bike seat"
+            },
+            {
+              "label": "Hybrid bicycle frame ",
+              "value": "Hybrid bicycle frame"
+            },
+            {
+              "label": "Hybrid bicycle wheels ",
+              "value": "Hybrid bicycle wheels"
+            },
+            {
+              "label": "Hybrid bicycle seat",
+              "value": "Hybrid bicycle seat"
+            },
+            {
+              "label": "Electric bicycle frame",
+              "value": "Electric bicycle frame"
+            },
+            {
+              "label": "Electric bicycle wheels",
+              "value": "Electric bicycle wheels"
+            },
+            {
+              "label": "Electric bicycle seat",
+              "value": "Electric bicycle seat"
+            }
+          ],
+          "label": "Material",
+          "type": "select",
+          "layout": {
+            "row": "Row_0ixkml6",
+            "columns": null
+          },
+          "id": "Field_10409i5",
+          "key": "material_key",
+          "readonly": "=if orderdetailvisible or modification then true else false",
+          "disabled": false
+        },
+        {
+          "label": "Quantity",
+          "type": "number",
+          "layout": {
+            "row": "Row_0ixkml6",
+            "columns": null
+          },
+          "id": "Field_0vmdv7i",
+          "key": "quantity_key",
+          "readonly": "=if orderdetailvisible or modification then true else false"
+        }
+      ],
+      "showOutline": true,
+      "label": "Order",
+      "type": "group",
+      "layout": {
+        "row": "Row_185rn1d",
+        "columns": null
+      },
+      "id": "Field_1h94l9l"
+    },
+    {
+      "components": [
+        {
+          "label": "Vendor",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_0c35ncv",
+            "columns": null
+          },
+          "id": "Field_0om6lv0",
+          "key": "vendor_key",
+          "disabled": false,
+          "properties": {},
+          "readonly": "=if orderdetailvisible then true else false",
+          "defaultValue": "\"Test\""
+        },
+        {
+          "label": "Price ",
+          "type": "number",
+          "layout": {
+            "row": "Row_0c35ncv",
+            "columns": null
+          },
+          "id": "Field_09eg069",
+          "key": "price_key",
+          "readonly": "=if orderdetailvisible then true else false",
+          "properties": {}
+        }
+      ],
+      "showOutline": true,
+      "label": "Order Details",
+      "type": "group",
+      "layout": {
+        "row": "Row_01cduoc",
+        "columns": 16
+      },
+      "id": "Field_0l1384c",
+      "conditional": {
+        "hide": "=not(orderdetailvisible) "
+      }
+    },
+    {
+      "label": "Approve",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_1rqpraw",
+        "columns": null
+      },
+      "id": "Field_18xyh42",
+      "key": "approve_key",
+      "readonly": false,
+      "disabled": false,
+      "conditional": {
+        "hide": "=not(orderdetailvisible)"
+      }
+    },
+    {
+      "components": [
+        {
+          "values": [
+            {
+              "label": "Mountain bike frame",
+              "value": "Mountain bike frame"
+            },
+            {
+              "label": "Mountain bike wheels",
+              "value": "Mountain bike wheels"
+            },
+            {
+              "label": "Mountain bike seat",
+              "value": "Mountain bike seat"
+            },
+            {
+              "label": "Hybrid bicycle frame ",
+              "value": "Hybrid bicycle frame"
+            },
+            {
+              "label": "Hybrid bicycle wheels ",
+              "value": "Hybrid bicycle wheels"
+            },
+            {
+              "label": "Hybrid bicycle seat",
+              "value": "Hybrid bicycle seat"
+            },
+            {
+              "label": "Electric bicycle frame",
+              "value": "Electric bicycle frame"
+            },
+            {
+              "label": "Electric bicycle wheels",
+              "value": "Electric bicycle wheels"
+            },
+            {
+              "label": "Electric bicycle seat",
+              "value": "Electric bicycle seat"
+            }
+          ],
+          "label": "Material New ",
+          "type": "select",
+          "layout": {
+            "row": "Row_0921d07",
+            "columns": null
+          },
+          "id": "Field_1xlcpp6",
+          "key": "material2_key"
+        },
+        {
+          "label": "Quantity New ",
+          "type": "number",
+          "layout": {
+            "row": "Row_0921d07",
+            "columns": null
+          },
+          "id": "Field_0afgbxb",
+          "key": "quantity2_key"
+        }
+      ],
+      "showOutline": true,
+      "label": "Modified Order",
+      "type": "group",
+      "layout": {
+        "row": "Row_1smgl3r",
+        "columns": null
+      },
+      "id": "Field_0dznc3t",
+      "conditional": {
+        "hide": "=not(modification)"
+      }
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.17.0"
+  },
+  "schemaVersion": 12,
+  "type": "default",
+  "id": "Purchasing_Form"
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_3u2pjc8">{
+  "components": [
+    {
+      "components": [
+        {
+          "values": [
+            {
+              "label": "Mountain bike frame",
+              "value": "Mountain bike frame"
+            },
+            {
+              "label": "Mountain bike wheels",
+              "value": "Mountain bike wheels"
+            },
+            {
+              "label": "Mountain bike seat",
+              "value": "Mountain bike seat"
+            },
+            {
+              "label": "Hybrid bicycle frame ",
+              "value": "Hybrid bicycle frame"
+            },
+            {
+              "label": "Hybrid bicycle wheels ",
+              "value": "Hybrid bicycle wheels"
+            },
+            {
+              "label": "Hybrid bicycle seat",
+              "value": "Hybrid bicycle seat"
+            },
+            {
+              "label": "Electric bicycle frame",
+              "value": "Electric bicycle frame"
+            },
+            {
+              "label": "Electric bicycle wheels",
+              "value": "Electric bicycle wheels"
+            },
+            {
+              "label": "Electric bicycle seat",
+              "value": "Electric bicycle seat"
+            }
+          ],
+          "label": "Material",
+          "type": "select",
+          "layout": {
+            "row": "Row_0ixkml6",
+            "columns": null
+          },
+          "id": "Field_10409i5",
+          "key": "material_key",
+          "readonly": "=if orderdetailvisible or modification then true else false",
+          "disabled": false
+        },
+        {
+          "label": "Quantity",
+          "type": "number",
+          "layout": {
+            "row": "Row_0ixkml6",
+            "columns": null
+          },
+          "id": "Field_0vmdv7i",
+          "key": "quantity_key",
+          "readonly": "=if orderdetailvisible or modification then true else false"
+        }
+      ],
+      "showOutline": true,
+      "label": "Order",
+      "type": "group",
+      "layout": {
+        "row": "Row_185rn1d",
+        "columns": null
+      },
+      "id": "Field_1h94l9l"
+    },
+    {
+      "components": [
+        {
+          "label": "Vendor",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_0c35ncv",
+            "columns": null
+          },
+          "id": "Field_0om6lv0",
+          "key": "vendor_key",
+          "disabled": false,
+          "properties": {},
+          "readonly": "=if orderdetailvisible then true else false",
+          "defaultValue": "\"Test\""
+        },
+        {
+          "label": "Price ",
+          "type": "number",
+          "layout": {
+            "row": "Row_0c35ncv",
+            "columns": null
+          },
+          "id": "Field_09eg069",
+          "key": "price_key",
+          "readonly": "=if orderdetailvisible then true else false",
+          "properties": {}
+        }
+      ],
+      "showOutline": true,
+      "label": "Order Details",
+      "type": "group",
+      "layout": {
+        "row": "Row_01cduoc",
+        "columns": 16
+      },
+      "id": "Field_0l1384c",
+      "conditional": {
+        "hide": "=not(orderdetailvisible) "
+      }
+    },
+    {
+      "label": "Approve",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_1rqpraw",
+        "columns": null
+      },
+      "id": "Field_18xyh42",
+      "key": "approve_key",
+      "readonly": false,
+      "disabled": false,
+      "conditional": {
+        "hide": "=not(orderdetailvisible)"
+      }
+    },
+    {
+      "components": [
+        {
+          "values": [
+            {
+              "label": "Mountain bike frame",
+              "value": "Mountain bike frame"
+            },
+            {
+              "label": "Mountain bike wheels",
+              "value": "Mountain bike wheels"
+            },
+            {
+              "label": "Mountain bike seat",
+              "value": "Mountain bike seat"
+            },
+            {
+              "label": "Hybrid bicycle frame ",
+              "value": "Hybrid bicycle frame"
+            },
+            {
+              "label": "Hybrid bicycle wheels ",
+              "value": "Hybrid bicycle wheels"
+            },
+            {
+              "label": "Hybrid bicycle seat",
+              "value": "Hybrid bicycle seat"
+            },
+            {
+              "label": "Electric bicycle frame",
+              "value": "Electric bicycle frame"
+            },
+            {
+              "label": "Electric bicycle wheels",
+              "value": "Electric bicycle wheels"
+            },
+            {
+              "label": "Electric bicycle seat",
+              "value": "Electric bicycle seat"
+            }
+          ],
+          "label": "Material New ",
+          "type": "select",
+          "layout": {
+            "row": "Row_0921d07",
+            "columns": null
+          },
+          "id": "Field_1xlcpp6",
+          "key": "material2_key"
+        },
+        {
+          "label": "Quantity New ",
+          "type": "number",
+          "layout": {
+            "row": "Row_0921d07",
+            "columns": null
+          },
+          "id": "Field_0afgbxb",
+          "key": "quantity2_key"
+        }
+      ],
+      "showOutline": true,
+      "label": "Modified Order",
+      "type": "group",
+      "layout": {
+        "row": "Row_1smgl3r",
+        "columns": null
+      },
+      "id": "Field_0dznc3t",
+      "conditional": {
+        "hide": "=not(modification)"
+      }
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.17.0"
+  },
+  "schemaVersion": 12,
+  "type": "default",
+  "id": "Purchasing_Form"
+}</zeebe:userTaskForm>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_116i4yp">
+      <bpmn:lane id="Lane_1vy1wrs" name="Purchasing clerk">
+        <bpmn:flowNodeRef>Gateway_PriceKey</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>BusinessRuleTask_DecideOnPrice</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_ReceiveApproveFromVendor</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_CancelPO</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_RejectPO</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_PurchasingRejected</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0gpza1g</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartEvent_PurchasingOrderReceived</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_CreatePurchasingOrder</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_StrorePOInDatabase</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_SendEmailToVendor</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_PurchasingOrderProcessed</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1tkvwgt</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>BusinessRuleTask_DecideOnVendor</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0aiffyi</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_ModifyPR</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_PRApproved</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_CompletePO</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_CheckApprovement</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_UpdateComponentDB</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1k3o3fs" name="Purchasing manager">
+        <bpmn:flowNodeRef>UserTask_ApprovePurchaseRequestPR</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:exclusiveGateway id="Gateway_PriceKey" name="Price key &#60;= 10 ?" default="SequenceFlow_PriceKeyNo">
+      <bpmn:incoming>Flow_1enk23v</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_PriceKeyNo</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:businessRuleTask id="BusinessRuleTask_DecideOnPrice" name="Decide on price">
+      <bpmn:extensionElements>
+        <zeebe:calledDecision decisionId="Decision_0awueeq" resultVariable="price_key" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=quantity_key" target="amount" />
+          <zeebe:input source="=vendor_key" target="vendor" />
+          <zeebe:input source="=material_key" target="material" />
+          <zeebe:output source="=true" target="orderdetailvisible" />
+          <zeebe:output source="=price_key" target="price_key" />
+          <zeebe:output source="=true" target="approve_key" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1vnt5da</bpmn:incoming>
+      <bpmn:outgoing>Flow_1enk23v</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:userTask id="UserTask_ReceiveApproveFromVendor" name="Receive approve from vendor">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_00a9tl7</bpmn:incoming>
+      <bpmn:outgoing>Flow_0p60uuy</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_ApprovePurchaseRequestPR" name="Approve purchase request (PR)">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_0iipld1" />
+        <zeebe:ioMapping>
+          <zeebe:output source="=if approve_key then orderdetailvisible else orderdetailvisible= false" target="orderdetailvisible" />
+          <zeebe:output source="=approve_key" target="approve_key" />
+          <zeebe:output source="=true" target="modification" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_</bpmn:incoming>
+      <bpmn:outgoing>Flow_0cm7rwp</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_CancelPO" name="Cancel PO">
+      <bpmn:incoming>Flow_1l0l3up</bpmn:incoming>
+      <bpmn:outgoing>Flow_1fodk2z</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="UserTask_RejectPO" name="Reject PO">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="rejectPurchasingOrder" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1fodk2z</bpmn:incoming>
+      <bpmn:outgoing>Flow_0pn2957</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1lfbzgt">
+        <bpmn:targetRef>DataStoreReference_1o3khyk</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_PurchasingRejected" name="Purchasing rejected">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-reply-purchasing" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0pn2957</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1cq9lvd" />
+    </bpmn:endEvent>
+    <bpmn:boundaryEvent id="Event_0gpza1g" name="receive response within 3 minutes" attachedToRef="UserTask_ReceiveApproveFromVendor">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:output source="=false" target="approve_key" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_1l0l3up</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0zavgge">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT3M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_1enk23v" sourceRef="BusinessRuleTask_DecideOnPrice" targetRef="Gateway_PriceKey" />
+    <bpmn:sequenceFlow id="SequenceFlow_" name="Yes" sourceRef="Gateway_PriceKey" targetRef="UserTask_ApprovePurchaseRequestPR">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=price_key&gt;=10</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_PriceKeyNo" name="No" sourceRef="Gateway_PriceKey" targetRef="Gateway_0aiffyi" />
+    <bpmn:sequenceFlow id="Flow_0cm7rwp" sourceRef="UserTask_ApprovePurchaseRequestPR" targetRef="Gateway_PRApproved" />
+    <bpmn:sequenceFlow id="SequenceFlow_PRApprovedYes" name="Yes" sourceRef="Gateway_PRApproved" targetRef="Gateway_0aiffyi">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=approve_key= true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0lgi25s" sourceRef="UserTask_ModifyPR" targetRef="Gateway_1tkvwgt" />
+    <bpmn:sequenceFlow id="Flow_1svatmq" sourceRef="StartEvent_PurchasingOrderReceived" targetRef="Gateway_1tkvwgt" />
+    <bpmn:sequenceFlow id="Flow_1vnt5da" sourceRef="BusinessRuleTask_DecideOnVendor" targetRef="BusinessRuleTask_DecideOnPrice" />
+    <bpmn:sequenceFlow id="Flow_1e9y0ow" sourceRef="UserTask_CreatePurchasingOrder" targetRef="ServiceTask_StrorePOInDatabase" />
+    <bpmn:sequenceFlow id="Flow_0ansei1" sourceRef="ServiceTask_StrorePOInDatabase" targetRef="ServiceTask_SendEmailToVendor" />
+    <bpmn:sequenceFlow id="Flow_00a9tl7" sourceRef="ServiceTask_SendEmailToVendor" targetRef="UserTask_ReceiveApproveFromVendor" />
+    <bpmn:sequenceFlow id="Flow_0p60uuy" sourceRef="UserTask_ReceiveApproveFromVendor" targetRef="UserTask_CheckApprovement" />
+    <bpmn:sequenceFlow id="Flow_0gvt124" sourceRef="ServiceTask_CompletePO" targetRef="EndEvent_PurchasingOrderProcessed" />
+    <bpmn:sequenceFlow id="Flow_1l0l3up" sourceRef="Event_0gpza1g" targetRef="UserTask_CancelPO" />
+    <bpmn:sequenceFlow id="Flow_1fodk2z" sourceRef="UserTask_CancelPO" targetRef="UserTask_RejectPO" />
+    <bpmn:sequenceFlow id="Flow_0pn2957" sourceRef="UserTask_RejectPO" targetRef="EndEvent_PurchasingRejected" />
+    <bpmn:startEvent id="StartEvent_PurchasingOrderReceived" name="Purchasing order received">
+      <bpmn:extensionElements />
+      <bpmn:outgoing>Flow_1svatmq</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0q88tpl" messageRef="Message_1f029v4" />
+    </bpmn:startEvent>
+    <bpmn:userTask id="UserTask_CreatePurchasingOrder" name="Create purchasing order (PO)">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_3u2pjc8" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=false" target="modification" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1dbsjhz</bpmn:incoming>
+      <bpmn:outgoing>Flow_1e9y0ow</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="ServiceTask_StrorePOInDatabase" name="Store PO in database">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="storePurchasingOrder" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1e9y0ow</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ansei1</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1mn7o20">
+        <bpmn:targetRef>DataStoreReference_0oul6ac</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ServiceTask_SendEmailToVendor" name="Send email to vendor ">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendVendorMail" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ansei1</bpmn:incoming>
+      <bpmn:outgoing>Flow_00a9tl7</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_PurchasingOrderProcessed" name="Purchasing order processed">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-reply-purchasing" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0gvt124</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_10y2wy3" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0oc6rq9" sourceRef="Gateway_1tkvwgt" targetRef="BusinessRuleTask_DecideOnVendor" />
+    <bpmn:exclusiveGateway id="Gateway_1tkvwgt">
+      <bpmn:incoming>Flow_1svatmq</bpmn:incoming>
+      <bpmn:incoming>Flow_0lgi25s</bpmn:incoming>
+      <bpmn:outgoing>Flow_0oc6rq9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:businessRuleTask id="BusinessRuleTask_DecideOnVendor" name="Decide on vendor">
+      <bpmn:extensionElements>
+        <zeebe:calledDecision decisionId="Decision_0duh4xd" resultVariable="vendor_key" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=material_key" target="material" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0oc6rq9</bpmn:incoming>
+      <bpmn:outgoing>Flow_1vnt5da</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="SequenceFlow_PRApprovedNo" name="No" sourceRef="Gateway_PRApproved" targetRef="UserTask_ModifyPR">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=approve_key = false</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1dbsjhz" sourceRef="Gateway_0aiffyi" targetRef="UserTask_CreatePurchasingOrder" />
+    <bpmn:exclusiveGateway id="Gateway_0aiffyi">
+      <bpmn:incoming>SequenceFlow_PRApprovedYes</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_PriceKeyNo</bpmn:incoming>
+      <bpmn:outgoing>Flow_1dbsjhz</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="UserTask_ModifyPR" name="Modify PR">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_1ja5tg0" />
+        <zeebe:ioMapping>
+          <zeebe:output source="=false" target="approve_key" />
+          <zeebe:output source="=false" target="modification" />
+          <zeebe:output source="=material2_key" target="material_key" />
+          <zeebe:output source="=quantity2_key" target="quantity_key" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_PRApprovedNo</bpmn:incoming>
+      <bpmn:outgoing>Flow_0lgi25s</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_PRApproved" name="PR approved?">
+      <bpmn:incoming>Flow_0cm7rwp</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_PRApprovedYes</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_PRApprovedNo</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="ServiceTask_CompletePO" name="Complete PO">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="completePurchasingOrder" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0iirzma</bpmn:incoming>
+      <bpmn:outgoing>Flow_0gvt124</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0rixosc">
+        <bpmn:targetRef>DataStoreReference_1ler7el</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:dataStoreReference id="DataStoreReference_1ler7el" name="purchasing_DB (MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_1o3khyk" name="purchasing_DB (MySQL)" />
+    <bpmn:dataStoreReference id="DataStoreReference_0oul6ac" name="purchasing_DB (MySQL)" />
+    <bpmn:sequenceFlow id="Flow_0iirzma" sourceRef="ServiceTask_UpdateComponentDB" targetRef="ServiceTask_CompletePO" />
+    <bpmn:sequenceFlow id="Flow_1v184pq" sourceRef="UserTask_CheckApprovement" targetRef="ServiceTask_UpdateComponentDB" />
+    <bpmn:userTask id="UserTask_CheckApprovement" name="Check approvement">
+      <bpmn:incoming>Flow_0p60uuy</bpmn:incoming>
+      <bpmn:outgoing>Flow_1v184pq</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="ServiceTask_UpdateComponentDB" name="Update component database">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="updateComponentDB" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1v184pq</bpmn:incoming>
+      <bpmn:outgoing>Flow_0iirzma</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmn:message id="Message_3mgrdce" name="message">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=1" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:message id="Message_0lbujlu" name="Message_0lbujlu">
+    <bpmn:extensionElements />
+  </bpmn:message>
+  <bpmn:error id="Error_0z7pt9t" name="ErrorPurchasing" errorCode="Purchasing is not completed" />
+  <bpmn:message id="Message_1f029v4" name="startmessagePurchasing" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0kaj0bf">
+      <bpmndi:BPMNShape id="Participant_03c2iwl_di" bpmnElement="Participant_03c2iwl" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="2370" height="780" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1k3o3fs_di" bpmnElement="Lane_1k3o3fs" isHorizontal="true">
+        <dc:Bounds x="190" y="690" width="2340" height="170" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1vy1wrs_di" bpmnElement="Lane_1vy1wrs" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="2340" height="610" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1avlzdj_di" bpmnElement="Gateway_PriceKey" isMarkerVisible="true">
+        <dc:Bounds x="781" y="325" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="763" y="303" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bikdhz_di" bpmnElement="BusinessRuleTask_DecideOnPrice">
+        <dc:Bounds x="610" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1o38yp3_di" bpmnElement="UserTask_ReceiveApproveFromVendor">
+        <dc:Bounds x="1630" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1iwwbn1_di" bpmnElement="UserTask_ApprovePurchaseRequestPR">
+        <dc:Bounds x="756" y="730" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1w6l3cw_di" bpmnElement="UserTask_CancelPO">
+        <dc:Bounds x="1650" y="510" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ykf42b_di" bpmnElement="UserTask_RejectPO">
+        <dc:Bounds x="1790" y="510" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_158d583_di" bpmnElement="EndEvent_PurchasingRejected">
+        <dc:Bounds x="1982" y="532" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1973" y="575" width="56" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0sq2had" bpmnElement="StartEvent_PurchasingOrderReceived">
+        <dc:Bounds x="282" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="257" y="290" width="86" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ivaex6_di" bpmnElement="UserTask_CreatePurchasingOrder">
+        <dc:Bounds x="1200" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_11ko6y8_di" bpmnElement="ServiceTask_StrorePOInDatabase">
+        <dc:Bounds x="1350" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0nqs8fc_di" bpmnElement="ServiceTask_SendEmailToVendor">
+        <dc:Bounds x="1490" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_00yuw6n_di" bpmnElement="EndEvent_PurchasingOrderProcessed">
+        <dc:Bounds x="2432" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2408" y="375" width="86" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1tkvwgt_di" bpmnElement="Gateway_1tkvwgt" isMarkerVisible="true">
+        <dc:Bounds x="365" y="325" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0wll7w0_di" bpmnElement="BusinessRuleTask_DecideOnVendor">
+        <dc:Bounds x="450" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0aiffyi_di" bpmnElement="Gateway_0aiffyi" isMarkerVisible="true">
+        <dc:Bounds x="1105" y="325" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1eg42ia_di" bpmnElement="UserTask_ModifyPR">
+        <dc:Bounds x="980" y="440" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0731a0a_di" bpmnElement="Gateway_PRApproved" isMarkerVisible="true">
+        <dc:Bounds x="1005" y="575" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="933" y="590" width="71" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1f48m3f" bpmnElement="ServiceTask_CompletePO">
+        <dc:Bounds x="2290" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1ler7el_di" bpmnElement="DataStoreReference_1ler7el">
+        <dc:Bounds x="2315" y="225" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2303" y="194" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1o3khyk_di" bpmnElement="DataStoreReference_1o3khyk">
+        <dc:Bounds x="1815" y="435" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1803" y="406" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_0oul6ac_di" bpmnElement="DataStoreReference_0oul6ac">
+        <dc:Bounds x="1375" y="225" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1362" y="196" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1x9a61f_di" bpmnElement="UserTask_CheckApprovement">
+        <dc:Bounds x="1870" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0et467f" bpmnElement="ServiceTask_UpdateComponentDB">
+        <dc:Bounds x="2070" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1umpuu2_di" bpmnElement="Event_0gpza1g">
+        <dc:Bounds x="1682" y="372" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1599" y="396" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1enk23v_di" bpmnElement="Flow_1enk23v">
+        <di:waypoint x="710" y="350" />
+        <di:waypoint x="781" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11f8vm2_di" bpmnElement="SequenceFlow_" bioc:fill="#22242a">
+        <di:waypoint x="806" y="375" />
+        <di:waypoint x="806" y="730" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="812" y="393" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1une4ys_di" bpmnElement="SequenceFlow_PriceKeyNo">
+        <di:waypoint x="831" y="350" />
+        <di:waypoint x="1105" y="350" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="961" y="332" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0cm7rwp_di" bpmnElement="Flow_0cm7rwp" bioc:fill="#22242a">
+        <di:waypoint x="856" y="770" />
+        <di:waypoint x="1030" y="770" />
+        <di:waypoint x="1030" y="625" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09bi0um_di" bpmnElement="SequenceFlow_PRApprovedYes">
+        <di:waypoint x="1055" y="600" />
+        <di:waypoint x="1130" y="600" />
+        <di:waypoint x="1130" y="375" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1084" y="582" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0lgi25s_di" bpmnElement="Flow_0lgi25s" bioc:fill="#22242a">
+        <di:waypoint x="1030" y="440" />
+        <di:waypoint x="1030" y="200" />
+        <di:waypoint x="390" y="200" />
+        <di:waypoint x="390" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1svatmq_di" bpmnElement="Flow_1svatmq">
+        <di:waypoint x="318" y="350" />
+        <di:waypoint x="365" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vnt5da_di" bpmnElement="Flow_1vnt5da">
+        <di:waypoint x="550" y="350" />
+        <di:waypoint x="610" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1e9y0ow_di" bpmnElement="Flow_1e9y0ow">
+        <di:waypoint x="1300" y="350" />
+        <di:waypoint x="1350" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ansei1_di" bpmnElement="Flow_0ansei1">
+        <di:waypoint x="1450" y="350" />
+        <di:waypoint x="1490" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00a9tl7_di" bpmnElement="Flow_00a9tl7">
+        <di:waypoint x="1590" y="350" />
+        <di:waypoint x="1630" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0p60uuy_di" bpmnElement="Flow_0p60uuy">
+        <di:waypoint x="1730" y="350" />
+        <di:waypoint x="1870" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gvt124_di" bpmnElement="Flow_0gvt124">
+        <di:waypoint x="2390" y="350" />
+        <di:waypoint x="2432" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1l0l3up_di" bpmnElement="Flow_1l0l3up">
+        <di:waypoint x="1700" y="408" />
+        <di:waypoint x="1700" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1fodk2z_di" bpmnElement="Flow_1fodk2z">
+        <di:waypoint x="1750" y="550" />
+        <di:waypoint x="1790" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pn2957_di" bpmnElement="Flow_0pn2957">
+        <di:waypoint x="1890" y="550" />
+        <di:waypoint x="1982" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0oc6rq9_di" bpmnElement="Flow_0oc6rq9">
+        <di:waypoint x="415" y="350" />
+        <di:waypoint x="450" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_014qxmd_di" bpmnElement="SequenceFlow_PRApprovedNo" bioc:fill="#22242a">
+        <di:waypoint x="1030" y="575" />
+        <di:waypoint x="1030" y="520" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1032" y="553" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dbsjhz_di" bpmnElement="Flow_1dbsjhz">
+        <di:waypoint x="1155" y="350" />
+        <di:waypoint x="1200" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0iirzma_di" bpmnElement="Flow_0iirzma">
+        <di:waypoint x="2170" y="350" />
+        <di:waypoint x="2290" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v184pq_di" bpmnElement="Flow_1v184pq">
+        <di:waypoint x="1970" y="350" />
+        <di:waypoint x="2070" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_19ms8as_di" bpmnElement="TextAnnotation_19ms8as">
+        <dc:Bounds x="2260" y="430" width="170" height="40" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_01etjyp" bpmnElement="TextAnnotation_0idqqmk">
+        <dc:Bounds x="1756" y="617" width="190" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1lfbzgt_di" bpmnElement="DataOutputAssociation_1lfbzgt">
+        <di:waypoint x="1842" y="510" />
+        <di:waypoint x="1844" y="485" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1mn7o20_di" bpmnElement="DataOutputAssociation_1mn7o20">
+        <di:waypoint x="1400" y="310" />
+        <di:waypoint x="1400" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0rixosc_di" bpmnElement="DataOutputAssociation_0rixosc">
+        <di:waypoint x="2341" y="310" />
+        <di:waypoint x="2342" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0o08s89_di" bpmnElement="Association_0o08s89">
+        <di:waypoint x="2340" y="390" />
+        <di:waypoint x="2340" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1uyae27_di" bpmnElement="Association_1uyae27">
+        <di:waypoint x="1840" y="590" />
+        <di:waypoint x="1840" y="617" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

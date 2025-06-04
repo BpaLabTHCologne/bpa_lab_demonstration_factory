@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="transportcompany" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.18.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
+  <decision id="transportCompany" name="transportCompany">
+    <decisionTable id="DecisionTable_0sy31y3">
+      <input id="Input_1" label="Postcode">
+        <inputExpression id="InputExpression_1" typeRef="number">
+          <text>Postcode</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0yqb6fv" label="Weight">
+        <inputExpression id="LiteralExpression_1bx0tm7" typeRef="number">
+          <text>Weight</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Company" name="Company" typeRef="string" biodi:width="424" />
+      <rule id="DecisionRule_1b86u7i">
+        <description>Compnay 01 is the provider of this area</description>
+        <inputEntry id="UnaryTests_09rb4sd">
+          <text>"42109"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1m75wps">
+          <text>"10"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ba5xqf">
+          <text>"Company-01-Regular/Small Transport"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0654zqk">
+        <description>Compnay 01 is the provider of this area</description>
+        <inputEntry id="UnaryTests_1mxk8tr">
+          <text>"42109"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zntu44">
+          <text>"11"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0o72fsv">
+          <text>"Campany-01-Standard/Medium Transport"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1jd8n5c">
+        <description>Compnay 01 is the provider of this area</description>
+        <inputEntry id="UnaryTests_1ji3b5j">
+          <text>"42109"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z21oq6">
+          <text>"12"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_14wzcfr">
+          <text>"Campany-01-Express/Large Transport"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1drbpdw">
+        <description>Compnay 02 is the provider of this area</description>
+        <inputEntry id="UnaryTests_126safs">
+          <text>"42108"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kkr7cl">
+          <text>"10"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02twb54">
+          <text>"Company-02-Regular/Small Transport"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_17f1nqn">
+        <description>Compnay 02 is the provider of this area</description>
+        <inputEntry id="UnaryTests_08pe00p">
+          <text>"42108"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1veiwy5">
+          <text>"11"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1n6n4zv">
+          <text>"Campany-02-Standard/Medium Transport"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1us8l3l">
+        <description>Compnay 02 is the provider of this area</description>
+        <inputEntry id="UnaryTests_1lihw75">
+          <text>"42108"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1pvg1rl">
+          <text>"12"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1swg4kj">
+          <text>"Campany-02-Express/Large Transport"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1mclyly">
+        <description>Compnay 03 is the provider of this area</description>
+        <inputEntry id="UnaryTests_1ple2a1">
+          <text>"42107"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dta601">
+          <text>"10"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1j2soe9">
+          <text>"Company-03-Regular/Small Transport"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1dipwez">
+        <description>Compnay 03 is the provider of this area</description>
+        <inputEntry id="UnaryTests_0rl1lp5">
+          <text>"42107"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ecqo3r">
+          <text>"11"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nacsqd">
+          <text>"Campany-03-Standard/Medium Transport"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_04po9hh">
+        <description>Compnay 03 is the provider of this area</description>
+        <inputEntry id="UnaryTests_0k54hd1">
+          <text>"42107"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07rau4c">
+          <text>"12"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1lupu1i">
+          <text>"Campany-03-Express/Large Transport"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="transportCompany">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

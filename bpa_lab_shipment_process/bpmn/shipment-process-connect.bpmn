@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_08qpqnf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.24.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0" camunda:diagramRelationId="67af45b5-cc6c-4546-9323-90b495908be3">
+  <bpmn:collaboration id="ship">
+    <bpmn:participant id="Participant_shipment" name="Shipment" processRef="ShipmentProcess" />
+  </bpmn:collaboration>
+  <bpmn:process id="ShipmentProcess" name="Shipment process" isExecutable="true">
+    <bpmn:extensionElements>
+      <zeebe:userTaskForm id="UserTaskForm_0bsaibc">{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "7da525c"
+  },
+  "schemaVersion": 13,
+  "id": "Shipping_info_form",
+  "components": [
+    {
+      "label": "Customer name",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1nd96bd",
+        "columns": null
+      },
+      "id": "Field_1tap452",
+      "key": "Name",
+      "properties": { }
+    },
+    {
+      "label": "Phone number",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_001m6nf",
+        "columns": null
+      },
+      "id": "Field_18m7kaf",
+      "key": "number"
+    },
+    {
+      "label": "Address",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_1pw9b0e",
+        "columns": null
+      },
+      "id": "Field_1k4z8g9",
+      "key": "address"
+    },
+    {
+      "label": "Email",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0al5src",
+        "columns": null
+      },
+      "id": "Field_1f14g8b",
+      "key": "Email"
+    }
+  ],
+  "type": "default"
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_3h2gdkr">{
+  "components": [
+    {
+      "label": "Enter city",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0fe1h3w",
+        "columns": null
+      },
+      "id": "Field_146sco4",
+      "key": "City",
+      "validate": {
+        "required": false
+      }
+    },
+    {
+      "label": "Postal code",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1hcu37u",
+        "columns": null
+      },
+      "id": "Field_1hncjej",
+      "key": "Postcode",
+      "validate": {
+        "required": false
+      }
+    },
+    {
+      "label": "Address Checked",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_0y47t48",
+        "columns": null
+      },
+      "id": "Field_0ubeqgv",
+      "key": "checkbox_postcode",
+      "defaultValue": false,
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.18.0"
+  },
+  "schemaVersion": 13,
+  "id": "Form_check",
+  "type": "default"
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_1565lpk">{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "0fa2a54"
+  },
+  "schemaVersion": 10,
+  "components": [
+    {
+      "label": "Warehouse address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1n6mpll",
+        "columns": null
+      },
+      "id": "Field_17hf7nq",
+      "key": "warehouseAddress",
+      "defaultValue": "Steinmüllerallee 1, 51643 Gummersbach"
+    },
+    {
+      "label": "Latitude of warehouse address",
+      "type": "number",
+      "layout": {
+        "row": "Row_1rbqhrj",
+        "columns": null
+      },
+      "id": "Field_1nkw34c",
+      "key": "latitudeWA",
+      "defaultValue": 51.023238338791835
+    },
+    {
+      "label": "Longitude of warehouse address",
+      "type": "number",
+      "layout": {
+        "row": null,
+        "columns": null
+      },
+      "id": "Field_19vwb6i",
+      "key": "longitudeWA",
+      "defaultValue": 7.562013168617832
+    },
+    {
+      "label": "Shipping address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0xggxhx",
+        "columns": null
+      },
+      "id": "Field_0v9tqif",
+      "key": "shippingAddress"
+    }
+  ],
+  "type": "default",
+  "id": "Form_ShippingInformation"
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_2epkjtt">{
+  "components": [
+    {
+      "label": "Post code",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_091o99v",
+        "columns": null
+      },
+      "id": "Field_1ns6iyc",
+      "key": "Postcode"
+    },
+    {
+      "label": "Compnay",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1v48fb9",
+        "columns": null
+      },
+      "id": "Field_10o4nsi",
+      "key": "Company"
+    },
+    {
+      "label": "Send notification to Warehouse",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_0gmtm8a",
+        "columns": null
+      },
+      "id": "Field_0y4pegi",
+      "key": "approve"
+    }
+  ],
+  "type": "default",
+  "id": "company",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.18.0"
+  },
+  "schemaVersion": 13
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_3iki37l">{
+  "components": [
+    {
+      "label": "Warehouse address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1n6mpll",
+        "columns": null
+      },
+      "id": "Field_17hf7nq",
+      "key": "warehouseAddress",
+      "defaultValue": "Steinmüllerallee 1, 51643 Gummersbach",
+      "readonly": true,
+      "disabled": false
+    },
+    {
+      "label": "Latitude of warehouse address",
+      "type": "number",
+      "layout": {
+        "row": "Row_05uluxt",
+        "columns": null
+      },
+      "id": "Field_1axjiqh",
+      "key": "latitudeWA",
+      "serializeToString": false,
+      "defaultValue": 51.023238338791835,
+      "readonly": true,
+      "properties": {}
+    },
+    {
+      "label": "Longitude of warehouse address",
+      "type": "number",
+      "layout": {
+        "row": "Row_05uluxt",
+        "columns": null
+      },
+      "id": "Field_04vssbx",
+      "key": "longitudeWA",
+      "defaultValue": 7.562013168617832,
+      "readonly": true
+    },
+    {
+      "label": "Shipping address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1a29gd2",
+        "columns": null
+      },
+      "id": "Field_0v9tqif",
+      "key": "shippingAddress",
+      "readonly": true
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.24.0"
+  },
+  "schemaVersion": 16,
+  "type": "default",
+  "id": "Form_ShippingInformation"
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_3jvpgr0">{
+  "components": [
+    {
+      "label": "Warehouse address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1n6mpll",
+        "columns": 7
+      },
+      "id": "Field_17hf7nq",
+      "key": "warehouseAddress",
+      "defaultValue": "Steinmüllerallee 1, 51643 Gummersbach",
+      "readonly": true
+    },
+    {
+      "label": "Shipping address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1n6mpll",
+        "columns": 7
+      },
+      "id": "Field_0v9tqif",
+      "key": "shippingAddress",
+      "readonly": true
+    },
+    {
+      "label": "Calculated distance (KM)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0eu3x85",
+        "columns": 7
+      },
+      "id": "Field_0cum2qr",
+      "key": "distance",
+      "readonly": true
+    },
+    {
+      "label": "Duration (Minutes)",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0eu3x85",
+        "columns": 7
+      },
+      "id": "Field_1tzngtc",
+      "key": "duration",
+      "readonly": true
+    },
+    {
+      "label": "Product to be delivered",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1gtusqe",
+        "columns": 14
+      },
+      "id": "Field_1s6l1u3",
+      "key": "customerProduct",
+      "readonly": true
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.3.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.24.0"
+  },
+  "schemaVersion": 16,
+  "type": "default",
+  "id": "output_ShippingInformation"
+}</zeebe:userTaskForm>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent_ShipmentStarted" name="Shipment started">
+      <bpmn:outgoing>Flow_1pmdgh3</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1jf1bc0" messageRef="Message_099t73j" />
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="ServiceTask_GetCoordinatesOfShippingAdress" name="Get Coordinates of shipping adress" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="6" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:http-json:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="noAuth" target="authentication.type" />
+          <zeebe:input source="GET" target="method" />
+          <zeebe:input source="https://api.openrouteservice.org/geocode/search?" target="url" />
+          <zeebe:input source="={&#10; &#34;api_key&#34;: &#34;5b3ce3597851110001cf6248144e20c3fba54cdf8dba00a2ab8239b3&#34;,&#10; &#34;text&#34;: shippingAddress,&#10; &#34;size&#34;: 1&#10;}" target="queryParameters" />
+          <zeebe:input source="20" target="connectionTimeoutInSeconds" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultExpression" value="={&#10;  longitudeSA: response.body.features[1].geometry.coordinates[1],&#10;  latitudeSA: response.body.features[1].geometry.coordinates[2]&#10;}" />
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1l5p1qk</bpmn:incoming>
+      <bpmn:outgoing>Flow_0g8wzw1</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ServiceTask_CalculateTravelDistance" name="Calculate travel distance" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="6" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:http-json:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="noAuth" target="authentication.type" />
+          <zeebe:input source="GET" target="method" />
+          <zeebe:input source="https://api.openrouteservice.org/v2/directions/driving-car?" target="url" />
+          <zeebe:input source="={&#10; &#34;api_key&#34;: &#34;5b3ce3597851110001cf6248144e20c3fba54cdf8dba00a2ab8239b3&#34;,&#10; &#34;start&#34;: string(longitudeWA) + &#34;,&#34; + string(latitudeWA),&#10; &#34;end&#34;: string(longitudeSA) + &#34;,&#34; + string(latitudeSA)&#10;}" target="queryParameters" />
+          <zeebe:input source="20" target="connectionTimeoutInSeconds" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="resultExpression" value="={&#10; distance: decimal(response.body.features[1].properties.summary.distance / 1000, 2), &#10; duration: decimal(response.body.features[1].properties.summary.duration / 60, 2)&#10;}" />
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0g8wzw1</bpmn:incoming>
+      <bpmn:outgoing>Flow_14vpp19</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="UserTask_CheckShippingInformation" name="Check shipping information">
+      <bpmn:documentation>Input information where the customer details are store from a form.</bpmn:documentation>
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_3iki37l" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1pmdgh3</bpmn:incoming>
+      <bpmn:outgoing>Flow_1l5p1qk</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1pmdgh3" sourceRef="StartEvent_ShipmentStarted" targetRef="UserTask_CheckShippingInformation" />
+    <bpmn:sequenceFlow id="Flow_1l5p1qk" sourceRef="UserTask_CheckShippingInformation" targetRef="ServiceTask_GetCoordinatesOfShippingAdress" />
+    <bpmn:sequenceFlow id="Flow_0g8wzw1" sourceRef="ServiceTask_GetCoordinatesOfShippingAdress" targetRef="ServiceTask_CalculateTravelDistance" />
+    <bpmn:sequenceFlow id="Flow_14vpp19" sourceRef="ServiceTask_CalculateTravelDistance" targetRef="UserTask_CheckInformation" />
+    <bpmn:serviceTask id="ServiceTask_SendShippingConfirmationToCustomer" name="Send shipping confirmation to customer">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendShippedEmail" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_016y8kk</bpmn:incoming>
+      <bpmn:outgoing>Flow_15meqys</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:manualTask id="ManualTask_HandoverProductToCustomer" name="Handover product to customer">
+      <bpmn:incoming>Flow_15meqys</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nx1glf</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:endEvent id="EndEvent_ShipmentCompleted" name="Shipment completed">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="shipmentCompleted" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1nx1glf</bpmn:incoming>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1qoa11s" />
+    </bpmn:endEvent>
+    <bpmn:sendTask id="SendTask_StartWarehouseOperations" name="Start warehouse operations">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="startWarehouseOperations" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=if (customerProduct = &#34;Mountain Bike&#34;) then 1&#10;  else if (customerProduct = &#34;Hybrid 40000 Bicycle&#34;) then 3&#10;  else if (customerProduct = &#34;Speed Thriller Electric 147 Bicycle&#34;) then 5&#10;  else null&#10;" target="place_id" />
+          <zeebe:input source="=&#34;retrieve&#34;" target="task" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0we3fgn</bpmn:incoming>
+      <bpmn:outgoing>Flow_16azuuv</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:receiveTask id="ReceiveTask_ReceiveProductForShipment" name="Receive product for shipment" messageRef="Message_3062ti3">
+      <bpmn:incoming>Flow_16azuuv</bpmn:incoming>
+      <bpmn:outgoing>Flow_016y8kk</bpmn:outgoing>
+    </bpmn:receiveTask>
+    <bpmn:sequenceFlow id="Flow_1nx1glf" sourceRef="ManualTask_HandoverProductToCustomer" targetRef="EndEvent_ShipmentCompleted" />
+    <bpmn:sequenceFlow id="Flow_15meqys" sourceRef="ServiceTask_SendShippingConfirmationToCustomer" targetRef="ManualTask_HandoverProductToCustomer" />
+    <bpmn:sequenceFlow id="Flow_16azuuv" sourceRef="SendTask_StartWarehouseOperations" targetRef="ReceiveTask_ReceiveProductForShipment" />
+    <bpmn:sequenceFlow id="Flow_016y8kk" sourceRef="ReceiveTask_ReceiveProductForShipment" targetRef="ServiceTask_SendShippingConfirmationToCustomer" />
+    <bpmn:sequenceFlow id="Flow_0we3fgn" sourceRef="UserTask_CheckInformation" targetRef="SendTask_StartWarehouseOperations" />
+    <bpmn:userTask id="UserTask_CheckInformation" name="Check information">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_3jvpgr0" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_14vpp19</bpmn:incoming>
+      <bpmn:outgoing>Flow_0we3fgn</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmn:message id="Message_2173054" name="Message_startdelivery">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=startDelivery" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmn:message id="Message_0dkcuht" name="Message_0dkcuht">
+    <bpmn:extensionElements />
+  </bpmn:message>
+  <bpmn:message id="Message_2lm38rv" name="Message_2lm38rv">
+    <bpmn:extensionElements />
+  </bpmn:message>
+  <bpmn:message id="Message_2p93dko" name="Message_2p93dko" />
+  <bpmn:message id="Message_3b16462" name="Message_3b16462" />
+  <bpmn:message id="Message_099t73j" name="startShipment" />
+  <bpmn:message id="Message_3062ti3" name="receiveWarehouseOperations">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=correlationValue" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ship">
+      <bpmndi:BPMNShape id="Participant_0lfhd15_di" bpmnElement="Participant_shipment" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1410" height="410" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0hinj9n_di" bpmnElement="StartEvent_ShipmentStarted">
+        <dc:Bounds x="240" y="259" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="216" y="302" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17m9g15_di" bpmnElement="ServiceTask_GetCoordinatesOfShippingAdress">
+        <dc:Bounds x="470" y="237" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1bh0xjh" bpmnElement="ServiceTask_CalculateTravelDistance">
+        <dc:Bounds x="610" y="237" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_15yzkj2" bpmnElement="UserTask_CheckShippingInformation">
+        <dc:Bounds x="320" y="237" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06psarr_di" bpmnElement="ServiceTask_SendShippingConfirmationToCustomer">
+        <dc:Bounds x="1150" y="237" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bbsffu_di" bpmnElement="ManualTask_HandoverProductToCustomer">
+        <dc:Bounds x="1290" y="237" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_022i8rn_di" bpmnElement="EndEvent_ShipmentCompleted">
+        <dc:Bounds x="1482" y="259" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1476" y="302" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ndozv8_di" bpmnElement="SendTask_StartWarehouseOperations">
+        <dc:Bounds x="890" y="237" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1kgcc7x_di" bpmnElement="ReceiveTask_ReceiveProductForShipment">
+        <dc:Bounds x="1020" y="237" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1e2x74s_di" bpmnElement="UserTask_CheckInformation">
+        <dc:Bounds x="750" y="237" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1pmdgh3_di" bpmnElement="Flow_1pmdgh3">
+        <di:waypoint x="276" y="277" />
+        <di:waypoint x="320" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1l5p1qk_di" bpmnElement="Flow_1l5p1qk">
+        <di:waypoint x="420" y="277" />
+        <di:waypoint x="470" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0g8wzw1_di" bpmnElement="Flow_0g8wzw1">
+        <di:waypoint x="570" y="277" />
+        <di:waypoint x="610" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14vpp19_di" bpmnElement="Flow_14vpp19">
+        <di:waypoint x="710" y="277" />
+        <di:waypoint x="750" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nx1glf_di" bpmnElement="Flow_1nx1glf">
+        <di:waypoint x="1390" y="277" />
+        <di:waypoint x="1482" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15meqys_di" bpmnElement="Flow_15meqys">
+        <di:waypoint x="1250" y="277" />
+        <di:waypoint x="1290" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16azuuv_di" bpmnElement="Flow_16azuuv">
+        <di:waypoint x="990" y="277" />
+        <di:waypoint x="1020" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_016y8kk_di" bpmnElement="Flow_016y8kk">
+        <di:waypoint x="1120" y="277" />
+        <di:waypoint x="1150" y="277" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0we3fgn_di" bpmnElement="Flow_0we3fgn">
+        <di:waypoint x="850" y="277" />
+        <di:waypoint x="890" y="277" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
