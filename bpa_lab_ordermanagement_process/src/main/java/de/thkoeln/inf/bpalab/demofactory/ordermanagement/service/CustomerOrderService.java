@@ -62,7 +62,7 @@ public class CustomerOrderService {
         customerOrder.setCustomerEmail(offerOrderDTO.orderCustomer.email);
         customerOrderRepository.save(customerOrder);
         for (BikeModelDTO bikeModelDTO : offerOrderDTO.offerBikeModelList) {
-            if (bikeModelDTO.amount > 0) {
+            if (bikeModelDTO.amount != null && bikeModelDTO.amount > 0) {
                 orderItemService.save(customerOrder, bikeModelDTO);
             }
         }

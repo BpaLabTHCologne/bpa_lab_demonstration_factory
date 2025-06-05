@@ -10,6 +10,7 @@ import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OfferOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OfferDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OrderOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.BikeInstanceRepository;
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.CustomerOrderRepository;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.CustomerOrderService;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.OfferService;
 import io.camunda.zeebe.client.ZeebeClient;
@@ -34,6 +35,8 @@ public class CustomerOrderWorker {
 
 	@Autowired
 	private ZeebeClient zeebeClient;
+    @Autowired
+    private CustomerOrderRepository customerOrderRepository;
 
 	public CustomerOrderWorker(OfferService offerService, CustomerOrderService customerOrderService) {
 		this.offerService = offerService;
@@ -55,13 +58,24 @@ public class CustomerOrderWorker {
 	}
 
 	@JobWorker(type = "putOrder")
-	public OrderOrderDTO putOrder(final ActivatedJob job) throws JsonProcessingException {
+	public OfferOrderDTO putOrder(final ActivatedJob job) throws JsonProcessingException {
 		OfferOrderDTO offerOrderDTO = job.getVariablesAsType(OfferOrderDTO.class);
 		LOG.info("put Order offer {} ", objectMapper.writeValueAsString(offerOrderDTO));
 
 		CustomerOrder customerOrder = customerOrderService.createCustomerOrder(offerOrderDTO);
+		offerOrderDTO.orderNumber = customerOrder.getCustomerOrderNumber();
+		return offerOrderDTO;
+	}
+
+	@JobWorker(type = "createMaterialDemands")
+	public OrderOrderDTO createMaterialDemands(final ActivatedJob job) throws JsonProcessingException {
+		OfferOrderDTO offerOrderDTO = job.getVariablesAsType(OfferOrderDTO.class);
+		LOG.info("createMaterialDemands offer {} ", objectMapper.writeValueAsString(offerOrderDTO));
+
+		CustomerOrder customerOrder = customerOrderRepository.getReferenceById(offerOrderDTO.orderNumber);
+		LOG.info("createMaterialDemands customerOrder {}", objectMapper.writeValueAsString(customerOrder));
 		OrderOrderDTO orderOrderDTO = customerOrderService.getOrderOrderDTO(customerOrder);
-		LOG.info("put order customerOrder {}",
+		LOG.info("createMaterialDemand order {}",
 				objectMapper.writeValueAsString(orderOrderDTO));
 		return customerOrderService.getOrderOrderDTO(customerOrder);
 	}

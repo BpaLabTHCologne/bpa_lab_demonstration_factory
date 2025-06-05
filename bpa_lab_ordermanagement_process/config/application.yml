@@ -22,6 +22,7 @@ spring:
   docker:
     compose:
       lifecycle-management: start-only
+      file: ../docker-compose.yml
 server:
   port: 9090
 camunda:

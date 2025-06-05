@@ -1,12 +1,14 @@
 package de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Proxy;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 
 @Entity
+@Proxy(lazy = false)
 public class CustomerOrder {
 
     @Id

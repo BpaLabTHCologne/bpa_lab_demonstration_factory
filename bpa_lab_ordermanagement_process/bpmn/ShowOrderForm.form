@@ -79,7 +79,7 @@
       "id": "Field_1uf6zpw"
     },
     {
-      "label": "Bikes on Stock",
+      "label": "Bikes from Stock",
       "components": [
         {
           "label": "Title",
