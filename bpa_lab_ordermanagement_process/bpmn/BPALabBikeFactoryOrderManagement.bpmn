@@ -113,7 +113,7 @@
     </bpmn:task>
     <bpmn:dataStoreReference id="DataStoreReference_13dfi7g" name="CustomerOrder" />
     <bpmn:sequenceFlow id="Flow_12d54xg" name="any Bike Instances available" sourceRef="inc_gateway_split_production_or_available" targetRef="Activity_135jbkl">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(is empty(availableBikeInstanceList))</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(is empty(reserveBikeInstanceList))</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_04gu3tp" sourceRef="Activity_135jbkl" targetRef="inc_gateway_join_production_or_available" />
     <bpmn:sequenceFlow id="Flow_0a60ne1" sourceRef="Activity_1pyqn2z" targetRef="Activity_15wljsi" />

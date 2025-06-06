@@ -23,7 +23,7 @@ public class OrderOrderDTO {
 
     public String orderDate;
 
-    public ArrayList<BikeModelDTO> availableBikeInstanceList;
+    public ArrayList<BikeModelDTO> reserveBikeInstanceList;
 
     public ArrayList<BikeModelDTO> produceBikeModelList;
 

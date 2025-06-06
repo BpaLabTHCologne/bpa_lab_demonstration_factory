@@ -79,7 +79,7 @@
       "id": "Field_1uf6zpw"
     },
     {
-      "label": "Bikes from Stock",
+      "label": "Bikes To Reserve",
       "components": [
         {
           "label": "Title",
@@ -114,7 +114,7 @@
         "columns": 8
       },
       "id": "Field_1yrz78n",
-      "path": "availableBikeInstanceList"
+      "path": "reserveBikeInstanceList"
     },
     {
       "label": "Bikes to Produce",

@@ -8,6 +8,7 @@ import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.BikeModelDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.CustomerOrderCustomerDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OfferOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OrderOrderDTO;
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.BikeInstanceService;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.CustomerOrderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +36,9 @@ class OrderTest {
 
     @Autowired
     private BikeModelRepository bikeModelRepository;
+
+    @Autowired
+    private BikeInstanceService bikeInstanceService;
 
     @BeforeEach
     void setUp() {
@@ -86,4 +90,20 @@ class OrderTest {
         LOG.info("testSaveOrder created {}", objectMapper.writeValueAsString(customerOrder));
     }
 
+    @Test
+    void testOrderOrderDTO() throws JsonProcessingException {
+        for (BikeModel bikeModel : bikeModelRepository.findAll()) {
+            LOG.info("testOrderOrderDTO instanceCount free {} {}",
+                    objectMapper.writeValueAsString(bikeModel),
+                    objectMapper.writeValueAsString(bikeInstanceService.countBikeInstanceNotReserved(bikeModel)));
+        }
+        CustomerOrder customerOrder = customerOrderRepository.findAll().getFirst();
+        if (customerOrder != null) {
+            LOG.info("testOrderOrderDTO found {}", objectMapper.writeValueAsString(customerOrder));
+            OrderOrderDTO orderOrderDTO = customerOrderService.getOrderOrderDTO(customerOrder);
+//            LOG.info("testOrderOrderDTO orderOrder {}",
+//                    objectMapper.writeValueAsString(orderOrderDTO));
+        } else
+            LOG.info("testOrderOrderDTO customerOrder not found");
+    }
 }

@@ -1,5 +1,6 @@
 package de.thkoeln.inf.bpalab.demofactory.ordermanagement.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrderItem;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.BikeModelDTO;
@@ -20,17 +21,16 @@ import java.util.List;
 public class CustomerOrderService {
 
     private final CustomerOrderRepository customerOrderRepository;
-    private final CustomerOrderItemRepository customerOrderItemRepository;
     private final OrderItemService orderItemService;
-    private final BikeInstanceRepository bikeInstanceRepository;
+    private final BikeInstanceService bikeInstanceService;
 
     public CustomerOrderService(final CustomerOrderRepository customerOrderRepository
             , CustomerOrderItemRepository customerOrderItemRepository
-            , OrderItemService orderItemService, BikeInstanceRepository bikeInstanceRepository) {
+            , OrderItemService orderItemService, BikeInstanceRepository bikeInstanceRepository
+            , BikeInstanceService bikeInstanceService) {
         this.customerOrderRepository = customerOrderRepository;
-        this.customerOrderItemRepository = customerOrderItemRepository;
         this.orderItemService = orderItemService;
-        this.bikeInstanceRepository = bikeInstanceRepository;
+        this.bikeInstanceService = bikeInstanceService;
     }
 
     public String getNextOrderNumber() {
@@ -79,24 +79,35 @@ public class CustomerOrderService {
         return offerOrderDTO;
     }
 
-    public OrderOrderDTO getOrderOrderDTO(final CustomerOrder customerOrder) {
+    public OrderOrderDTO getOrderOrderDTO(final CustomerOrder customerOrder) throws JsonProcessingException {
         OrderOrderDTO orderOrderDTO = new OrderOrderDTO(customerOrder);
-        orderOrderDTO.availableBikeInstanceList = new ArrayList<>();
-        orderOrderDTO.produceBikeModelList = new ArrayList<>();
+        ArrayList<BikeModelDTO> reserveList = orderOrderDTO.reserveBikeInstanceList = new ArrayList<>();
+        ArrayList<BikeModelDTO> produceList = orderOrderDTO.produceBikeModelList = new ArrayList<>();
         for (CustomerOrderItem customerOrderItem : customerOrder.getOrderItems()) {
-            int availableBikeInstances = bikeInstanceRepository.countByBikeModelAndCustomerOrder(customerOrderItem.getBikeModel(), null);
             int quantity = customerOrderItem.getQuantity();
-            BikeModelDTO bikeModelDTO = new BikeModelDTO();
-            bikeModelDTO.title = customerOrderItem.getBikeModel().getTitle();
-            bikeModelDTO.color = customerOrderItem.getBikeModel().getColor();
-            bikeModelDTO.weight = customerOrderItem.getBikeModel().getWeight();
-            if (availableBikeInstances >= quantity) {
-                bikeModelDTO.amount = quantity;
-                orderOrderDTO.availableBikeInstanceList.add(bikeModelDTO);
-            }
-            if (availableBikeInstances < quantity) {
-                bikeModelDTO.amount = quantity - availableBikeInstances;
-                orderOrderDTO.produceBikeModelList.add(bikeModelDTO);
+            if (quantity > 0) {
+                int availableBikeInstances = bikeInstanceService.countBikeInstanceNotReserved(customerOrderItem.getBikeModel());
+                if (availableBikeInstances >= quantity) {
+                    BikeModelDTO bikeModelDTO = new BikeModelDTO(customerOrderItem.getBikeModel().getTitle()
+                            ,customerOrderItem.getBikeModel().getWeight()
+                            ,customerOrderItem.getBikeModel().getColor()
+                            ,quantity);
+                    reserveList.add(bikeModelDTO);
+                }
+                if (availableBikeInstances < quantity) {
+                    BikeModelDTO bikeModelDTO = new BikeModelDTO(customerOrderItem.getBikeModel().getTitle()
+                            ,customerOrderItem.getBikeModel().getWeight()
+                            ,customerOrderItem.getBikeModel().getColor()
+                            ,quantity - availableBikeInstances);
+                    produceList.add(bikeModelDTO);
+                    if (availableBikeInstances > 0) {
+                        bikeModelDTO = new BikeModelDTO(customerOrderItem.getBikeModel().getTitle()
+                                , customerOrderItem.getBikeModel().getWeight()
+                                , customerOrderItem.getBikeModel().getColor()
+                                , availableBikeInstances);
+                        reserveList.add(bikeModelDTO);
+                    }
+                }
             }
         }
         return orderOrderDTO;

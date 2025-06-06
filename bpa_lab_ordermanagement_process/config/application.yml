@@ -7,6 +7,7 @@ spring:
       connection-timeout: 30000
       maximum-pool-size: 10
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: update
     open-in-view: false
@@ -19,6 +20,7 @@ spring:
           new_generator_mappings: true
         type:
           preferred_uuid_jdbc_type: CHAR
+#        format_sql: true
   docker:
     compose:
       lifecycle-management: start-only
@@ -28,3 +30,10 @@ server:
 camunda:
   client:
     mode: self-managed
+    zeebe:
+      enabled: true
+      grpc-address: http://127.0.0.1:26500
+      rest-address: http://127.0.0.1:8080
+#    auth:
+#      client-id: zeebe
+#      client-secret: zecret
