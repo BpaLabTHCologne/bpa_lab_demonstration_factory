@@ -6,6 +6,8 @@ services:
       - MYSQL_ROOT_PASSWORD=P4ssword!
     ports:
       - 3070:3306
+    networks:
+      - camunda-platform
 
   zeebe: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#zeebe
     image: camunda/zeebe:${CAMUNDA_ZEEBE_VERSION}

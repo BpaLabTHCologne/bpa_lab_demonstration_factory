@@ -3,10 +3,7 @@ package de.thkoeln.inf.bpalab.demofactory.ordermanagement.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrderItem;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.BikeModelDTO;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.CustomerOrderCustomerDTO;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OfferOrderDTO;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OrderOrderDTO;
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.*;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.BikeInstanceRepository;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.CustomerOrderItemRepository;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.CustomerOrderRepository;
@@ -81,31 +78,27 @@ public class CustomerOrderService {
 
     public OrderOrderDTO getOrderOrderDTO(final CustomerOrder customerOrder) throws JsonProcessingException {
         OrderOrderDTO orderOrderDTO = new OrderOrderDTO(customerOrder);
-        ArrayList<BikeModelDTO> reserveList = orderOrderDTO.reserveBikeInstanceList = new ArrayList<>();
-        ArrayList<BikeModelDTO> produceList = orderOrderDTO.produceBikeModelList = new ArrayList<>();
+        ArrayList<OrderItemDTO> reserveList = orderOrderDTO.reserveBikeInstanceList = new ArrayList<>();
+        ArrayList<OrderItemDTO> produceList = orderOrderDTO.produceBikeModelList = new ArrayList<>();
         for (CustomerOrderItem customerOrderItem : customerOrder.getOrderItems()) {
             int quantity = customerOrderItem.getQuantity();
             if (quantity > 0) {
                 int availableBikeInstances = bikeInstanceService.countBikeInstanceNotReserved(customerOrderItem.getBikeModel());
                 if (availableBikeInstances >= quantity) {
-                    BikeModelDTO bikeModelDTO = new BikeModelDTO(customerOrderItem.getBikeModel().getTitle()
-                            ,customerOrderItem.getBikeModel().getWeight()
-                            ,customerOrderItem.getBikeModel().getColor()
-                            ,quantity);
-                    reserveList.add(bikeModelDTO);
-                }
-                if (availableBikeInstances < quantity) {
-                    BikeModelDTO bikeModelDTO = new BikeModelDTO(customerOrderItem.getBikeModel().getTitle()
-                            ,customerOrderItem.getBikeModel().getWeight()
-                            ,customerOrderItem.getBikeModel().getColor()
-                            ,quantity - availableBikeInstances);
-                    produceList.add(bikeModelDTO);
+                    OrderItemDTO orderItemDTO = new OrderItemDTO();
+                    orderItemDTO.title = customerOrderItem.getBikeModel().getTitle();
+                    orderItemDTO.amount = customerOrderItem.getQuantity();
+                    reserveList.add(orderItemDTO);
+                } else {
+                    OrderItemDTO orderItemDTO = new OrderItemDTO();
+                    orderItemDTO.title = customerOrderItem.getBikeModel().getTitle();
+                    orderItemDTO.amount = quantity - availableBikeInstances;
+                    produceList.add(orderItemDTO);
                     if (availableBikeInstances > 0) {
-                        bikeModelDTO = new BikeModelDTO(customerOrderItem.getBikeModel().getTitle()
-                                , customerOrderItem.getBikeModel().getWeight()
-                                , customerOrderItem.getBikeModel().getColor()
-                                , availableBikeInstances);
-                        reserveList.add(bikeModelDTO);
+                        orderItemDTO = new OrderItemDTO();
+                        orderItemDTO.title = customerOrderItem.getBikeModel().getTitle();
+                        orderItemDTO.amount = availableBikeInstances;
+                        reserveList.add(orderItemDTO);
                     }
                 }
             }

@@ -101,8 +101,8 @@ class OrderTest {
         if (customerOrder != null) {
             LOG.info("testOrderOrderDTO found {}", objectMapper.writeValueAsString(customerOrder));
             OrderOrderDTO orderOrderDTO = customerOrderService.getOrderOrderDTO(customerOrder);
-//            LOG.info("testOrderOrderDTO orderOrder {}",
-//                    objectMapper.writeValueAsString(orderOrderDTO));
+            LOG.info("testOrderOrderDTO orderOrder {}",
+                    objectMapper.writeValueAsString(orderOrderDTO));
         } else
             LOG.info("testOrderOrderDTO customerOrder not found");
     }

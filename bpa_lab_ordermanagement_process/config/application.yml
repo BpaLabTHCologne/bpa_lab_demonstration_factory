@@ -1,3 +1,7 @@
+camunda:
+  client:
+    mode: self-managed
+
 spring:
   datasource:
     url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3070/bpa_lab_demonstration_factory?serverTimezone=UTC}
@@ -27,13 +31,3 @@ spring:
       file: ../docker-compose.yml
 server:
   port: 9090
-camunda:
-  client:
-    mode: self-managed
-    zeebe:
-      enabled: true
-      grpc-address: http://127.0.0.1:26500
-      rest-address: http://127.0.0.1:8080
-#    auth:
-#      client-id: zeebe
-#      client-secret: zecret
