@@ -1,0 +1,59 @@
+package de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain;
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.Proxy;
+
+
+@Entity
+@Proxy(lazy = false)
+public class ProductionOrder {
+
+    @Id
+    @Column(nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private Integer quantity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bike_model_id", nullable = false)
+    private BikeModel bikeModel;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private CustomerOrder order;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(final Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public BikeModel getBikeModel() {
+        return bikeModel;
+    }
+
+    public void setBikeModel(final BikeModel bikeModel) {
+        this.bikeModel = bikeModel;
+    }
+
+    public CustomerOrder getOrder() {
+        return order;
+    }
+
+    public void setOrder(final CustomerOrder order) {
+        this.order = order;
+    }
+
+}

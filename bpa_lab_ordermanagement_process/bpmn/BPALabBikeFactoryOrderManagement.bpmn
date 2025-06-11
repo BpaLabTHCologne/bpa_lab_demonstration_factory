@@ -4,10 +4,6 @@
     <bpmn:participant id="Participant_064cb9h" name="Order Management" processRef="BPALabBikeFactoryOrderManagement" />
   </bpmn:collaboration>
   <bpmn:process id="BPALabBikeFactoryOrderManagement" name="BPALabBikeFactoryOrderManagement" isExecutable="true">
-    <bpmn:task id="Activity_135jbkl" name="reserve Bike Instances">
-      <bpmn:incoming>Flow_12d54xg</bpmn:incoming>
-      <bpmn:outgoing>Flow_04gu3tp</bpmn:outgoing>
-    </bpmn:task>
     <bpmn:serviceTask id="Activity_15wljsi" name="create Material Demands">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="createMaterialDemands" />
@@ -24,6 +20,7 @@
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="showOrderForm" />
+        <zeebe:assignmentDefinition assignee="demo" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_05uzrc5</bpmn:incoming>
       <bpmn:outgoing>Flow_03nu1yz</bpmn:outgoing>
@@ -52,14 +49,17 @@
         <bpmn:incoming>Flow_074tre5</bpmn:incoming>
         <bpmn:outgoing>Flow_05m9i0r</bpmn:outgoing>
       </bpmn:task>
-      <bpmn:task id="Activity_0ur05vd" name="save Production Order">
-        <bpmn:incoming>Flow_1e64mwr</bpmn:incoming>
-        <bpmn:outgoing>Flow_16377qg</bpmn:outgoing>
-      </bpmn:task>
       <bpmn:task id="Activity_0bnbuiu" name="send Production Order">
         <bpmn:incoming>Flow_16377qg</bpmn:incoming>
         <bpmn:outgoing>Flow_074tre5</bpmn:outgoing>
       </bpmn:task>
+      <bpmn:serviceTask id="Activity_0ur05vd" name="save Production Order">
+        <bpmn:extensionElements>
+          <zeebe:taskDefinition type="saveProductionOrder" />
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_1e64mwr</bpmn:incoming>
+        <bpmn:outgoing>Flow_16377qg</bpmn:outgoing>
+      </bpmn:serviceTask>
     </bpmn:subProcess>
     <bpmn:endEvent id="Event_009pzl1" name="Bikes delivered">
       <bpmn:incoming>Flow_1bh5un2</bpmn:incoming>
@@ -71,6 +71,7 @@
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="chooseBikesForm" />
+        <zeebe:assignmentDefinition assignee="demo" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1sgbuw1</bpmn:incoming>
       <bpmn:outgoing>Flow_0ca1n5e</bpmn:outgoing>
@@ -128,6 +129,18 @@
     <bpmn:sequenceFlow id="Flow_1sgbuw1" sourceRef="Activity_0ug7hx4" targetRef="Activity_1ynyvwb" />
     <bpmn:sequenceFlow id="Flow_0ca1n5e" sourceRef="Activity_1ynyvwb" targetRef="Activity_1pyqn2z" />
     <bpmn:sequenceFlow id="Flow_0o89vpv" sourceRef="inc_gateway_join_production_or_available" targetRef="Activity_0mncymk" />
+    <bpmn:serviceTask id="Activity_135jbkl" name="reserve Bike Instances">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="reserveBikeInstance" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_12d54xg</bpmn:incoming>
+      <bpmn:outgoing>Flow_04gu3tp</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true">
+        <bpmn:extensionElements>
+          <zeebe:loopCharacteristics inputCollection="=reserveBikeInstanceList" inputElement="reserveBikeInstance" />
+        </bpmn:extensionElements>
+      </bpmn:multiInstanceLoopCharacteristics>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:message id="Message_1tk6ndb" name="ReplyProductionBikeModelMessage">
     <bpmn:extensionElements>
@@ -139,10 +152,6 @@
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_10fxbv2">
       <bpmndi:BPMNShape id="Participant_064cb9h_di" bpmnElement="Participant_064cb9h" isHorizontal="true">
         <dc:Bounds x="120" y="80" width="1770" height="360" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_135jbkl_di" bpmnElement="Activity_135jbkl">
-        <dc:Bounds x="1235" y="90" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0geyc0u_di" bpmnElement="Activity_15wljsi">
@@ -163,6 +172,9 @@
           <dc:Bounds x="262" y="392" width="57" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02mbz43_di" bpmnElement="Activity_135jbkl">
+        <dc:Bounds x="1235" y="90" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_05cy17s_di" bpmnElement="production_subprocess" isExpanded="true">
         <dc:Bounds x="1000" y="200" width="570" height="140" />
       </bpmndi:BPMNShape>
@@ -176,13 +188,12 @@
         <dc:Bounds x="1370" y="220" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0ur05vd_di" bpmnElement="Activity_0ur05vd">
-        <dc:Bounds x="1090" y="220" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0bnbuiu_di" bpmnElement="Activity_0bnbuiu">
         <dc:Bounds x="1240" y="220" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0zbnatu_di" bpmnElement="Activity_0ur05vd">
+        <dc:Bounds x="1090" y="220" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_05m9i0r_di" bpmnElement="Flow_05m9i0r">
         <di:waypoint x="1470" y="260" />
