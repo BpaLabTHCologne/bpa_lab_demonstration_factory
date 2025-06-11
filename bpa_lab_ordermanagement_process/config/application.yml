@@ -1,6 +1,8 @@
 camunda:
   client:
     mode: self-managed
+    zeebe:
+      enabled: true
 
 spring:
   datasource:
