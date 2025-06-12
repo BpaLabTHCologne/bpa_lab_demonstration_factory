@@ -24,22 +24,18 @@ public class BikeInstanceService {
     @Autowired
     private CustomerOrderRepository customerOrderRepository;
 
-    public BikeInstanceService(BikeInstanceRepository bikeInstanceRepository) {
-        this.bikeInstanceRepository = bikeInstanceRepository;
-    }
-
     public int countBikeInstanceNotReserved(BikeModel bikeModel) {
-        return bikeInstanceRepository.countByBikeModelAndCustomerOrder(bikeModel, null);
+        return bikeInstanceRepository.countByBikeModelAndCustomerOrderNumber(bikeModel, null);
     }
 
     public List<BikeInstance> getBikeInstancesForCustomerOrder(String orderNumber) {
         CustomerOrder customerOrder = customerOrderRepository.getReferenceById(orderNumber);
-        return bikeInstanceRepository.findAllByCustomerOrder(customerOrder);
+        return bikeInstanceRepository.findAllByCustomerOrderNumber(customerOrder.getCustomerOrderNumber());
     }
 
-    public BikeInstance createBikeInstance(BikeModel bikeModel, CustomerOrder customerOrder) {
+    public BikeInstance createBikeInstance(BikeModel bikeModel, String customerOrderNumber) {
         BikeInstance bikeInstance = new BikeInstance();
-        bikeInstance.setCustomerOrder(customerOrder);
+        bikeInstance.setCustomerOrder(customerOrderNumber);
         bikeInstance.setBikeModel(bikeModel);
         return bikeInstanceRepository.save(bikeInstance);
     }
@@ -50,9 +46,9 @@ public class BikeInstanceService {
         BikeModel bikeModel = bikeModelRepository.findById(orderItemDTO.title).orElse(null);
         if (bikeModel != null) {
             BikeInstance bikeInstance = bikeInstanceRepository
-                    .findFirstByBikeModelAndCustomerOrderIsNull(bikeModel);
+                    .findFirstByBikeModelAndCustomerOrderNumberIsNull(bikeModel);
             if (bikeInstance != null) {
-                bikeInstance.setCustomerOrder(customerOrder);
+                bikeInstance.setCustomerOrder(customerOrder.getCustomerOrderNumber());
                 bikeInstanceRepository.save(bikeInstance);
             } else
                 throw new NoSuchElementException();

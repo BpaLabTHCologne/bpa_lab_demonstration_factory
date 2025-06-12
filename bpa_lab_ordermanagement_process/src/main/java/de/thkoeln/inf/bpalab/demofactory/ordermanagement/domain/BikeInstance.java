@@ -1,6 +1,5 @@
 package de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,18 +15,7 @@ import java.util.UUID;
 @Entity
 public class BikeInstance {
 
-//    @Id
-//    @Column(nullable = false, updatable = false)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-
     @Id
-//    @Column(
-//            nullable = false,
-//            updatable = false,
-//            columnDefinition = "UUID"
-//    )
-
     @GeneratedValue
     @UuidGenerator
     private UUID serialNumber;
@@ -36,27 +24,20 @@ public class BikeInstance {
     @JoinColumn(name = "bike_model_id", nullable = false)
     private BikeModel bikeModel;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "bike_stock_id")
-//    private BikeStock bikeStock;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id")
-    @JsonIgnore
-    private CustomerOrder customerOrder;
+    private String customerOrderNumber;
 
     @Column
     private Boolean shipped;
 
-    public CustomerOrder getCustomerOrder() {return customerOrder;}
+    public String getCustomerOrderNumber() {return customerOrderNumber;}
 
-    public void setCustomerOrder(CustomerOrder order) {this.customerOrder = order;}
+    public void setCustomerOrder(String customerOrderNumber) {this.customerOrderNumber = customerOrderNumber;}
 
     public Boolean getShipped() {return shipped;}
 
     public void setShipped(Boolean shipped) {this.shipped = shipped;}
 
-    public Boolean getReserved() {return customerOrder != null;}
+    public Boolean getReserved() {return customerOrderNumber != null;}
 
     public UUID getSerialNumber() {
         return serialNumber;
@@ -73,13 +54,5 @@ public class BikeInstance {
     public void setBikeModel(final BikeModel bikeModel) {
         this.bikeModel = bikeModel;
     }
-
-//    public BikeStock getBikeStock() {
-//        return bikeStock;
-//    }
-//
-//    public void setBikeStock(final BikeStock bikeStock) {
-//        this.bikeStock = bikeStock;
-//    }
 
 }

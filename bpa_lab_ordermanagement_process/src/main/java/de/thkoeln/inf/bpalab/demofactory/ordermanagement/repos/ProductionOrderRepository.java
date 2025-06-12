@@ -1,7 +1,6 @@
 package de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos;
 
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.BikeModel;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.ProductionOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,6 +11,6 @@ public interface ProductionOrderRepository extends JpaRepository<ProductionOrder
 
     ProductionOrder findFirstByBikeModel(BikeModel bikeModel);
 
-    List<ProductionOrder> findByOrder(CustomerOrder customerOrder);
+    List<ProductionOrder> findByCustomerOrderNumber(String customerOrderNumber);
 
 }

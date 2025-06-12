@@ -20,9 +20,15 @@ public class ProductionOrder {
     @JoinColumn(name = "bike_model_id", nullable = false)
     private BikeModel bikeModel;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private CustomerOrder order;
+    private String customerOrderNumber;
+
+    public String getCustomerOrderNumber() {
+        return customerOrderNumber;
+    }
+
+    public void setCustomerOrderNumber(String customerOrderNumber) {
+        this.customerOrderNumber = customerOrderNumber;
+    }
 
     public Long getId() {
         return id;
@@ -48,12 +54,5 @@ public class ProductionOrder {
         this.bikeModel = bikeModel;
     }
 
-    public CustomerOrder getOrder() {
-        return order;
-    }
-
-    public void setOrder(final CustomerOrder order) {
-        this.order = order;
-    }
 
 }

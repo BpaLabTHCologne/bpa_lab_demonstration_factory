@@ -31,7 +31,8 @@ public class ProductionOrderService {
     }
 
     public ProductionOrderDTO mapToDto(ProductionOrder productionOrder, ProductionOrderDTO productionOrderDTO) {
-        productionOrderDTO.orderNumber = productionOrder.getOrder().getCustomerOrderNumber();
+        productionOrderDTO.id = productionOrder.getId();
+        productionOrderDTO.orderNumber = productionOrder.getCustomerOrderNumber();
         productionOrderDTO.produceBikeModel = new OrderItemDTO();
         productionOrderDTO.produceBikeModel.title = productionOrder.getBikeModel().getTitle();
         productionOrderDTO.produceBikeModel.amount = productionOrder.getQuantity();
@@ -40,7 +41,7 @@ public class ProductionOrderService {
 
     public ProductionOrderDTO createProductionOrder(String orderNumber, OrderItemDTO orderItemDTO) {
         ProductionOrder productionOrder = new ProductionOrder();
-        productionOrder.setOrder(customerOrderRepository.getReferenceById(orderNumber));
+        productionOrder.setCustomerOrderNumber(orderNumber);
         productionOrder.setBikeModel(bikeModelRepository.getReferenceById(orderItemDTO.title));
         productionOrder.setQuantity(orderItemDTO.amount);
         productionOrder = productionOrderRepository.save(productionOrder);
@@ -50,7 +51,7 @@ public class ProductionOrderService {
     public List<ProductionOrderDTO> getAllProductionOrdersForCustomerOrder(String orderNumber) {
         List<ProductionOrder> productionOrderList
                 = new ArrayList<>(productionOrderRepository
-                        .findByOrder(customerOrderRepository.getReferenceById(orderNumber)));
+                        .findByCustomerOrderNumber(orderNumber));
         return productionOrderList.stream()
                 .map(productionOrder -> mapToDto(productionOrder, new ProductionOrderDTO()))
                 .toList();

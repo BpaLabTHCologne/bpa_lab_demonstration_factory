@@ -35,11 +35,6 @@ public class CustomerOrderWorker {
     @Autowired
     private ProductionOrderService productionOrderService;
 
-	public CustomerOrderWorker(OfferService offerService, CustomerOrderService customerOrderService) {
-		this.offerService = offerService;
-		this.customerOrderService = customerOrderService;
-	}
-
 	@JobWorker(type = "getOffer")
 	public OfferDTO getOffer(final ActivatedJob job) {
 		OfferDTO offerDTO = offerService.getOfferDTO();
