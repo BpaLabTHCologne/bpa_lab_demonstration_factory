@@ -45,14 +45,6 @@
       <bpmn:sequenceFlow id="Flow_074tre5" sourceRef="Activity_0bnbuiu" targetRef="Activity_1mnp0e2" />
       <bpmn:sequenceFlow id="Flow_16377qg" sourceRef="Activity_0ur05vd" targetRef="Activity_0bnbuiu" />
       <bpmn:sequenceFlow id="Flow_1e64mwr" sourceRef="Event_0sbo82x" targetRef="Activity_0ur05vd" />
-      <bpmn:task id="Activity_1mnp0e2" name="receive finished Production Order">
-        <bpmn:incoming>Flow_074tre5</bpmn:incoming>
-        <bpmn:outgoing>Flow_05m9i0r</bpmn:outgoing>
-      </bpmn:task>
-      <bpmn:task id="Activity_0bnbuiu" name="send Production Order">
-        <bpmn:incoming>Flow_16377qg</bpmn:incoming>
-        <bpmn:outgoing>Flow_074tre5</bpmn:outgoing>
-      </bpmn:task>
       <bpmn:serviceTask id="Activity_0ur05vd" name="save Production Order">
         <bpmn:extensionElements>
           <zeebe:taskDefinition type="saveProductionOrder" />
@@ -60,6 +52,17 @@
         <bpmn:incoming>Flow_1e64mwr</bpmn:incoming>
         <bpmn:outgoing>Flow_16377qg</bpmn:outgoing>
       </bpmn:serviceTask>
+      <bpmn:sendTask id="Activity_0bnbuiu" name="send Production Order">
+        <bpmn:extensionElements>
+          <zeebe:taskDefinition type="sendProductionOrder" />
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_16377qg</bpmn:incoming>
+        <bpmn:outgoing>Flow_074tre5</bpmn:outgoing>
+      </bpmn:sendTask>
+      <bpmn:receiveTask id="Activity_1mnp0e2" name="receive finished Production Order" messageRef="Message_22ck100">
+        <bpmn:incoming>Flow_074tre5</bpmn:incoming>
+        <bpmn:outgoing>Flow_05m9i0r</bpmn:outgoing>
+      </bpmn:receiveTask>
     </bpmn:subProcess>
     <bpmn:endEvent id="Event_009pzl1" name="Bikes delivered">
       <bpmn:incoming>Flow_1bh5un2</bpmn:incoming>
@@ -148,6 +151,11 @@
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmn:message id="Message_3lr8s78" name="BikeModelProductionOrder" />
+  <bpmn:message id="Message_22ck100" name="MsgProductionFinished">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=productionOrderCorrelation" />
+    </bpmn:extensionElements>
+  </bpmn:message>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_10fxbv2">
       <bpmndi:BPMNShape id="Participant_064cb9h_di" bpmnElement="Participant_064cb9h" isHorizontal="true">
@@ -172,9 +180,6 @@
           <dc:Bounds x="262" y="392" width="57" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_02mbz43_di" bpmnElement="Activity_135jbkl">
-        <dc:Bounds x="1235" y="90" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_05cy17s_di" bpmnElement="production_subprocess" isExpanded="true">
         <dc:Bounds x="1000" y="200" width="570" height="140" />
       </bpmndi:BPMNShape>
@@ -184,16 +189,14 @@
       <bpmndi:BPMNShape id="Event_1dy9o6j_di" bpmnElement="Event_1dy9o6j">
         <dc:Bounds x="1512" y="242" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1mnp0e2_di" bpmnElement="Activity_1mnp0e2">
-        <dc:Bounds x="1370" y="220" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0bnbuiu_di" bpmnElement="Activity_0bnbuiu">
-        <dc:Bounds x="1240" y="220" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0zbnatu_di" bpmnElement="Activity_0ur05vd">
         <dc:Bounds x="1090" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0vmzk41_di" bpmnElement="Activity_0bnbuiu">
+        <dc:Bounds x="1240" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_052nxcb_di" bpmnElement="Activity_1mnp0e2">
+        <dc:Bounds x="1370" y="220" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_05m9i0r_di" bpmnElement="Flow_05m9i0r">
         <di:waypoint x="1470" y="260" />
@@ -249,6 +252,9 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="505" y="392" width="76" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02mbz43_di" bpmnElement="Activity_135jbkl">
+        <dc:Bounds x="1235" y="90" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_12d54xg_di" bpmnElement="Flow_12d54xg">
         <di:waypoint x="930" y="235" />

@@ -45,13 +45,15 @@ public class BikeInstanceService {
         OrderItemDTO orderItemDTO = reserveOrderDTO.reserveBikeInstance;
         BikeModel bikeModel = bikeModelRepository.findById(orderItemDTO.title).orElse(null);
         if (bikeModel != null) {
-            BikeInstance bikeInstance = bikeInstanceRepository
-                    .findFirstByBikeModelAndCustomerOrderNumberIsNull(bikeModel);
-            if (bikeInstance != null) {
-                bikeInstance.setCustomerOrder(customerOrder.getCustomerOrderNumber());
-                bikeInstanceRepository.save(bikeInstance);
-            } else
-                throw new NoSuchElementException();
+            for (int i = 0; i < reserveOrderDTO.reserveBikeInstance.amount; i++) {
+                BikeInstance bikeInstance = bikeInstanceRepository
+                        .findFirstByBikeModelAndCustomerOrderNumberIsNull(bikeModel);
+                if (bikeInstance != null) {
+                    bikeInstance.setCustomerOrder(customerOrder.getCustomerOrderNumber());
+                    bikeInstanceRepository.save(bikeInstance);
+                } else
+                    throw new NoSuchElementException();
+            }
         }
     }
 }

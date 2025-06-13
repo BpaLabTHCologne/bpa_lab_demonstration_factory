@@ -17,6 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 public class CustomerOrderWorker {
 	private final static Logger LOG = LoggerFactory.getLogger(CustomerOrderWorker.class);
@@ -75,8 +78,10 @@ public class CustomerOrderWorker {
 	@JobWorker(type = "saveProductionOrder", fetchVariables={"orderNumber", "produceBikeModel"})
 	public ProductionOrderDTO saveProductionOrder(final ActivatedJob job) throws JsonProcessingException {
 		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
-		LOG.info("saveProductionOrder productionOrderDTO {} ", objectMapper.writeValueAsString(productionOrderDTO));
-		return productionOrderService.createProductionOrder(productionOrderDTO.orderNumber, productionOrderDTO.produceBikeModel);
+		LOG.info("saveProductionOrder {} ", objectMapper.writeValueAsString(productionOrderDTO));
+		productionOrderDTO = productionOrderService.createProductionOrder(productionOrderDTO.orderNumber, productionOrderDTO.produceBikeModel);
+		LOG.info("productionOrderSaved {} ", objectMapper.writeValueAsString(productionOrderDTO));
+		return productionOrderDTO;
 	}
 
 	@JobWorker(type = "reserveBikeInstance", fetchVariables={"orderNumber", "reserveBikeInstance"})
@@ -85,5 +90,24 @@ public class CustomerOrderWorker {
 		LOG.info("reserveBikeInstance reserveOrderDTO {} ", objectMapper.writeValueAsString(reserveOrderDTO));
 		bikeInstanceService.reserveBikeInstance(reserveOrderDTO);
 		return reserveOrderDTO;
+	}
+
+	@JobWorker(type = "sendProductionOrder", fetchVariables={"id", "orderNumber", "produceBikeModel"})
+	public Map<String, Object> sendProductionOrder(final ActivatedJob job) throws JsonProcessingException {
+		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
+		String productionOrderCorrelation = productionOrderDTO.orderNumber + "-" + productionOrderDTO.id;
+		Map<String, Object> variables = new HashMap<>();
+		variables.put("productionOrderCorrelation", productionOrderCorrelation);
+		variables.putAll(job.getVariablesAsMap());
+		LOG.info("sendProductionOrder productionOrderDTO {} correlationKey: {}"
+				, objectMapper.writeValueAsString(productionOrderDTO)
+				, productionOrderCorrelation);
+		LOG.info("sendProductionOrder variables {}", objectMapper.writeValueAsString(variables));
+		zeebeClient.newPublishMessageCommand()
+				.messageName("MsgStartProductionOrder")
+				.correlationKey(productionOrderCorrelation)
+				.variables(variables)
+				.send().join();
+		return variables;
 	}
 }
