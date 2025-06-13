@@ -92,10 +92,10 @@ public class CustomerOrderWorker {
 		return reserveOrderDTO;
 	}
 
-	@JobWorker(type = "sendProductionOrder", fetchVariables={"id", "orderNumber", "produceBikeModel"})
+	@JobWorker(type = "sendProductionOrder", fetchVariables={"productionOrderNumber", "orderNumber", "produceBikeModel"})
 	public Map<String, Object> sendProductionOrder(final ActivatedJob job) throws JsonProcessingException {
 		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
-		String productionOrderCorrelation = productionOrderDTO.orderNumber + "-" + productionOrderDTO.id;
+		String productionOrderCorrelation = productionOrderDTO.orderNumber + "-" + productionOrderDTO.productionOrderNumber;
 		Map<String, Object> variables = new HashMap<>();
 		variables.put("productionOrderCorrelation", productionOrderCorrelation);
 		variables.putAll(job.getVariablesAsMap());

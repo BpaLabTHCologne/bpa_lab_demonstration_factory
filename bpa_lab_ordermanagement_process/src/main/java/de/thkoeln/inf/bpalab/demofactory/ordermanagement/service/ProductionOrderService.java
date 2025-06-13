@@ -4,8 +4,8 @@ import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.ProductionOrder;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OrderItemDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.ProductionOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.BikeModelRepository;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.CustomerOrderRepository;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.ProductionOrderRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,12 +15,10 @@ import java.util.List;
 public class ProductionOrderService {
     private final BikeModelRepository bikeModelRepository;
     private final ProductionOrderRepository productionOrderRepository;
-    private final CustomerOrderRepository customerOrderRepository;
 
-    public ProductionOrderService(BikeModelRepository bikeModelRepository, ProductionOrderRepository productionOrderRepository, CustomerOrderRepository customerOrderRepository) {
+    public ProductionOrderService(BikeModelRepository bikeModelRepository, ProductionOrderRepository productionOrderRepository) {
         this.bikeModelRepository = bikeModelRepository;
         this.productionOrderRepository = productionOrderRepository;
-        this.customerOrderRepository = customerOrderRepository;
     }
 
     public List<ProductionOrderDTO> getAllProductionOrders() {
@@ -31,7 +29,7 @@ public class ProductionOrderService {
     }
 
     public ProductionOrderDTO mapToDto(ProductionOrder productionOrder, ProductionOrderDTO productionOrderDTO) {
-        productionOrderDTO.id = productionOrder.getId();
+        productionOrderDTO.productionOrderNumber = productionOrder.getProductionOrderNumber();
         productionOrderDTO.orderNumber = productionOrder.getCustomerOrderNumber();
         productionOrderDTO.produceBikeModel = new OrderItemDTO();
         productionOrderDTO.produceBikeModel.title = productionOrder.getBikeModel().getTitle();
@@ -39,8 +37,22 @@ public class ProductionOrderService {
         return productionOrderDTO;
     }
 
+    public String getNextOrderNumber() {
+        Long orderCount = productionOrderRepository.count();
+        String orderNumber;
+        if (orderCount > 0) {
+            ProductionOrder productionOrder = productionOrderRepository.findAll(Sort.by(Sort.Direction.DESC, "productionOrderNumber")).get(0);
+            Long foundOrderNumber = Long.parseLong(productionOrder.getProductionOrderNumber());
+            orderNumber = String.format("%08d", foundOrderNumber + 1);
+        } else {
+            orderNumber = String.format("%08d", 1);
+        }
+        return orderNumber;
+    }
+
     public ProductionOrderDTO createProductionOrder(String orderNumber, OrderItemDTO orderItemDTO) {
         ProductionOrder productionOrder = new ProductionOrder();
+        productionOrder.setProductionOrderNumber(getNextOrderNumber());
         productionOrder.setCustomerOrderNumber(orderNumber);
         productionOrder.setBikeModel(bikeModelRepository.getReferenceById(orderItemDTO.title));
         productionOrder.setQuantity(orderItemDTO.amount);

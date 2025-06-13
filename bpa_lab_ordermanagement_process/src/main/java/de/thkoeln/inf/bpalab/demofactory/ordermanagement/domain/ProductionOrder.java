@@ -10,8 +10,7 @@ public class ProductionOrder {
 
     @Id
     @Column(nullable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String productionOrderNumber;
 
     @Column
     private Integer quantity;
@@ -30,14 +29,6 @@ public class ProductionOrder {
         this.customerOrderNumber = customerOrderNumber;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
@@ -54,5 +45,11 @@ public class ProductionOrder {
         this.bikeModel = bikeModel;
     }
 
+    public String getProductionOrderNumber() {
+        return productionOrderNumber;
+    }
 
+    public void setProductionOrderNumber(String productionOrderNumber) {
+        this.productionOrderNumber = productionOrderNumber;
+    }
 }
