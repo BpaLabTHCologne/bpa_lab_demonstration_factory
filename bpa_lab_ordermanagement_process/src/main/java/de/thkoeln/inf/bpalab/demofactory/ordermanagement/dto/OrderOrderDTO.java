@@ -1,5 +1,6 @@
 package de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto;
 
+import de.thkoeln.inf.bpalab.demofactory.common.dto.OrderItemDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;
 
 import java.util.ArrayList;

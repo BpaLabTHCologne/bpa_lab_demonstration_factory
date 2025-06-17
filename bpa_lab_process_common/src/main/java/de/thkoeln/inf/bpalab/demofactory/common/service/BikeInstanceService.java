@@ -4,10 +4,8 @@ import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeInstance;
 import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeModel;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeInstanceRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeModelRepository;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OrderItemDTO;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.OrderItemDTO;
 import de.thkoeln.inf.bpalab.demofactory.common.dto.ReserveOrderDTO;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.CustomerOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +19,13 @@ public class BikeInstanceService {
     private BikeInstanceRepository bikeInstanceRepository;
     @Autowired
     private BikeModelRepository bikeModelRepository;
-    @Autowired
-    private CustomerOrderRepository customerOrderRepository;
 
     public int countBikeInstanceNotReserved(BikeModel bikeModel) {
         return bikeInstanceRepository.countByBikeModelAndCustomerOrderNumber(bikeModel, null);
     }
 
     public List<BikeInstance> getBikeInstancesForCustomerOrder(String orderNumber) {
-        CustomerOrder customerOrder = customerOrderRepository.getReferenceById(orderNumber);
-        return bikeInstanceRepository.findAllByCustomerOrderNumber(customerOrder.getCustomerOrderNumber());
+        return bikeInstanceRepository.findAllByCustomerOrderNumber(orderNumber);
     }
 
     public BikeInstance createBikeInstance(BikeModel bikeModel, String customerOrderNumber) {
@@ -41,7 +36,6 @@ public class BikeInstanceService {
     }
 
     public void reserveBikeInstance(ReserveOrderDTO reserveOrderDTO) throws NoSuchElementException {
-        CustomerOrder customerOrder = customerOrderRepository.getReferenceById(reserveOrderDTO.orderNumber);
         OrderItemDTO orderItemDTO = reserveOrderDTO.reserveBikeInstance;
         BikeModel bikeModel = bikeModelRepository.findById(orderItemDTO.title).orElse(null);
         if (bikeModel != null) {
@@ -49,7 +43,7 @@ public class BikeInstanceService {
                 BikeInstance bikeInstance = bikeInstanceRepository
                         .findFirstByBikeModelAndCustomerOrderNumberIsNull(bikeModel);
                 if (bikeInstance != null) {
-                    bikeInstance.setCustomerOrder(customerOrder.getCustomerOrderNumber());
+                    bikeInstance.setCustomerOrder(reserveOrderDTO.orderNumber);
                     bikeInstanceRepository.save(bikeInstance);
                 } else
                     throw new NoSuchElementException();

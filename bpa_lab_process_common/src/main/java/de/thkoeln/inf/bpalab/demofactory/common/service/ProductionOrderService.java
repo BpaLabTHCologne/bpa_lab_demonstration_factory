@@ -3,7 +3,7 @@ package de.thkoeln.inf.bpalab.demofactory.common.service;
 import de.thkoeln.inf.bpalab.demofactory.common.domain.ProductionOrder;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeModelRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.ProductionOrderRepository;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OrderItemDTO;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.OrderItemDTO;
 import de.thkoeln.inf.bpalab.demofactory.common.dto.ProductionOrderDTO;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

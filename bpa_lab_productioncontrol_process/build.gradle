@@ -1,0 +1,47 @@
+plugins {
+    id 'org.springframework.boot' version '3.5.0'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+}
+
+group = 'de.thkoeln.inf.bpalab.demofactory'
+
+java.sourceCompatibility = '21'
+
+bootRun {
+    environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: 'local'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir '../bpa_lab_process_common/src/main/java'
+        }
+    }
+    test {
+        java {
+            srcDir '../bpa_lab_process_common/src/main/java'
+        }
+    }
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    runtimeOnly('com.mysql:mysql-connector-j')
+    implementation('ch.qos.logback:logback-classic')
+    implementation("io.camunda:spring-boot-starter-camunda-sdk:8.7.5")
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs = ["-parameters"]
+}

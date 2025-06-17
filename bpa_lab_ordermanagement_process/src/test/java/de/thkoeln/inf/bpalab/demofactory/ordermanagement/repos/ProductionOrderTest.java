@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeModel;
 import de.thkoeln.inf.bpalab.demofactory.common.dto.BikeModelDTO;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.OrderItemDTO;
 import de.thkoeln.inf.bpalab.demofactory.common.dto.ProductionOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeModelRepository;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;

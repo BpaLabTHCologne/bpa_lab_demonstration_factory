@@ -2,6 +2,7 @@ package de.thkoeln.inf.bpalab.demofactory.ordermanagement.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.thkoeln.inf.bpalab.demofactory.common.dto.BikeModelDTO;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.OrderItemDTO;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeInstanceRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;
