@@ -5,7 +5,6 @@ plugins {
 }
 
 group = 'de.thkoeln.inf.bpalab.demofactory'
-//version = '0.0.1'
 
 java.sourceCompatibility = '21'
 
@@ -17,14 +16,25 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir '../bpa_lab_process_common/src/main/java'
+        }
+    }
+    test {
+        java {
+            srcDir '../bpa_lab_process_common/src/main/java'
+        }
+    }
+}
+
 dependencies {
-//    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     runtimeOnly('com.mysql:mysql-connector-j')
     implementation('ch.qos.logback:logback-classic')
     implementation("io.camunda:spring-boot-starter-camunda-sdk:8.7.5")
 
-    developmentOnly('org.springframework.boot:spring-boot-docker-compose')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 

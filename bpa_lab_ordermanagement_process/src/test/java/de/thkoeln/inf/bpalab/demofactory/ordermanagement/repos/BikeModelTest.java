@@ -2,10 +2,10 @@ package de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.BikeInstance;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.BikeModel;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.BikeInstanceService;
+import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeModel;
+import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeInstanceRepository;
+import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeModelRepository;
+import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.OfferService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
 
 @SpringBootTest
 class BikeModelTest {

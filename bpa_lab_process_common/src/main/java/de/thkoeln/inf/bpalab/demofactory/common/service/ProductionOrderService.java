@@ -1,10 +1,10 @@
-package de.thkoeln.inf.bpalab.demofactory.ordermanagement.service;
+package de.thkoeln.inf.bpalab.demofactory.common.service;
 
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.ProductionOrder;
+import de.thkoeln.inf.bpalab.demofactory.common.domain.ProductionOrder;
+import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeModelRepository;
+import de.thkoeln.inf.bpalab.demofactory.common.repos.ProductionOrderRepository;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OrderItemDTO;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.ProductionOrderDTO;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.BikeModelRepository;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.ProductionOrderRepository;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.ProductionOrderDTO;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 

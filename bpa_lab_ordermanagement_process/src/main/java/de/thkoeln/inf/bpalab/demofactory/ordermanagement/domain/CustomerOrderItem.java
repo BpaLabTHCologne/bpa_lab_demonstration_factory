@@ -1,6 +1,7 @@
 package de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

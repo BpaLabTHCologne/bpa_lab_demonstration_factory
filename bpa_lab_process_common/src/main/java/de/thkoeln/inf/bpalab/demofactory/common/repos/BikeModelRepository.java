@@ -1,6 +1,6 @@
-package de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos;
+package de.thkoeln.inf.bpalab.demofactory.common.repos;
 
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.BikeModel;
+import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

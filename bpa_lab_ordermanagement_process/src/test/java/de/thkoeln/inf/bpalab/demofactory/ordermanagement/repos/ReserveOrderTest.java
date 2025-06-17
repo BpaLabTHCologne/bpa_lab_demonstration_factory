@@ -2,10 +2,12 @@ package de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.BikeInstance;
+import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeInstance;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.ProductionOrderDTO;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.ReserveOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.*;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.BikeInstanceService;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.ProductionOrderService;
+import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
+import de.thkoeln.inf.bpalab.demofactory.common.service.ProductionOrderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,13 +39,14 @@ class ReserveOrderTest {
     @Test
     void testReserveOrder() throws JsonProcessingException {
         for (ProductionOrderDTO productionOrder :
-                productionOrderService.getAllProductionOrdersForCustomerOrder("00000009")) {
+                productionOrderService.getAllProductionOrdersForCustomerOrder("00000001")) {
             LOG.info("testReserveOrder allProductionOrders {}",
                     objectMapper.writeValueAsString(productionOrder));
             ReserveOrderDTO reserveOrderDTO = new ReserveOrderDTO();
             reserveOrderDTO.orderNumber = productionOrder.orderNumber;
             reserveOrderDTO.reserveBikeInstance = new OrderItemDTO();
             reserveOrderDTO.reserveBikeInstance.title = productionOrder.produceBikeModel.title;
+            reserveOrderDTO.reserveBikeInstance.amount = productionOrder.produceBikeModel.amount;
             for (int i = 1; i <= productionOrder.produceBikeModel.amount; i++) {
                 try {
                     bikeInstanceService.reserveBikeInstance(reserveOrderDTO);

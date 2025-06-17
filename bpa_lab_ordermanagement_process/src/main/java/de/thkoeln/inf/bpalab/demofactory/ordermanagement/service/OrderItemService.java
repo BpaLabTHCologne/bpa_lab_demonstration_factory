@@ -1,10 +1,9 @@
 package de.thkoeln.inf.bpalab.demofactory.ordermanagement.service;
 
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.BikeModel;
+import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeModelRepository;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrderItem;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.BikeModelDTO;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.BikeModelRepository;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.BikeModelDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.CustomerOrderItemRepository;
 import org.springframework.stereotype.Service;
 

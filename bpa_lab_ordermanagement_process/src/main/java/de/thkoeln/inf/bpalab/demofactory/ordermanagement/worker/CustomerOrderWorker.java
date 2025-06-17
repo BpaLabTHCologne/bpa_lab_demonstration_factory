@@ -2,13 +2,15 @@ package de.thkoeln.inf.bpalab.demofactory.ordermanagement.worker;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.ProductionOrderDTO;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.ReserveOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.*;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.CustomerOrderRepository;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.BikeInstanceService;
+import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.CustomerOrderService;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.OfferService;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.ProductionOrderService;
+import de.thkoeln.inf.bpalab.demofactory.common.service.ProductionOrderService;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;

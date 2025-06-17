@@ -1,4 +1,6 @@
-package de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto;
+package de.thkoeln.inf.bpalab.demofactory.common.dto;
+
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OrderItemDTO;
 
 public class ProductionOrderDTO {
     public String productionOrderNumber;

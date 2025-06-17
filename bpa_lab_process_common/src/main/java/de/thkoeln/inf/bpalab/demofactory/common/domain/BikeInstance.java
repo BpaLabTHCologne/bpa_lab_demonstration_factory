@@ -1,4 +1,4 @@
-package de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain;
+package de.thkoeln.inf.bpalab.demofactory.common.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

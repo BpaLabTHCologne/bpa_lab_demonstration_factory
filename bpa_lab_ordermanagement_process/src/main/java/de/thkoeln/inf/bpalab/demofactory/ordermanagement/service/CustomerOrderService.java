@@ -1,10 +1,12 @@
 package de.thkoeln.inf.bpalab.demofactory.ordermanagement.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.BikeModelDTO;
+import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeInstanceRepository;
+import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrder;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.domain.CustomerOrderItem;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.*;
-import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.BikeInstanceRepository;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.CustomerOrderItemRepository;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.CustomerOrderRepository;
 import org.springframework.data.domain.Sort;
