@@ -3,9 +3,11 @@ package de.thkoeln.inf.bpalab.demofactory.common.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.Proxy;
 
 
 @Entity
+@Proxy(lazy=false)
 public class BikeModel {
 
     @Id

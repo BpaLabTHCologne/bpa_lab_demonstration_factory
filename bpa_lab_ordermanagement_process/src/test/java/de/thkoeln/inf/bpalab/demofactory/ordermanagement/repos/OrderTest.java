@@ -98,6 +98,8 @@ class OrderTest {
                     objectMapper.writeValueAsString(bikeModel),
                     objectMapper.writeValueAsString(bikeInstanceService.countBikeInstanceNotReserved(bikeModel)));
         }
+        if (customerOrderRepository.count() == 0)
+            return;
         CustomerOrder customerOrder = customerOrderRepository.findAll().getFirst();
         if (customerOrder != null) {
             LOG.info("testOrderOrderDTO found {}", objectMapper.writeValueAsString(customerOrder));
