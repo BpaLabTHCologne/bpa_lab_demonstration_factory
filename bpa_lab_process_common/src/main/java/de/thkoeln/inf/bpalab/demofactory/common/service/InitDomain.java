@@ -1,7 +1,9 @@
 package de.thkoeln.inf.bpalab.demofactory.common.service;
 
+import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeComponent;
 import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeInstance;
 import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeModel;
+import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeComponentRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeInstanceRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,18 @@ public class InitDomain {
     @Autowired
     BikeInstanceRepository bikeInstanceRepository;
 
-    public InitDomain(BikeModelRepository bikeModelRepository, BikeInstanceRepository bikeInstanceRepository) {
+    @Autowired
+    BikeComponentRepository bikeComponentRepository;
+
+    public InitDomain(BikeModelRepository bikeModelRepository
+            ,BikeInstanceRepository bikeInstanceRepository
+            ,BikeComponentRepository bikeComponentRepository) {
         this.bikeModelRepository = bikeModelRepository;
         this.bikeInstanceRepository = bikeInstanceRepository;
+        this.bikeComponentRepository = bikeComponentRepository;
         initBikeModel(bikeModelRepository);
         initBikeInstance(bikeInstanceRepository);
+        initBikeComponent(bikeComponentRepository);
     }
 
     private void initBikeModel(BikeModelRepository bikeModelRepository) {
@@ -56,5 +65,31 @@ public class InitDomain {
         bikeInstance.setBikeModel(bikeModelRepository.getReferenceById("Ziege Mountainbike"));
         bikeInstance.setShipped(false);
         bikeInstanceRepository.save(bikeInstance);
+    }
+
+    private void initBikeComponent(BikeComponentRepository bikeComponentRepository) {
+        if (bikeComponentRepository.count() != 0)
+            return;
+        BikeComponent bikeComponent = new BikeComponent();
+        BikeModel bikeModel = bikeModelRepository.getReferenceById("Schaf Citybike");
+        bikeComponent.setBikeModel(bikeModel);
+        bikeComponent.setColor(bikeModel.getColor());
+        bikeComponent.setQuantity(0);
+        bikeComponent.setTitle("Citybike Component Kit");
+        bikeComponentRepository.save(bikeComponent);
+        bikeComponent = new BikeComponent();
+        bikeModel = bikeModelRepository.getReferenceById("Ziege Mountainbike");
+        bikeComponent.setBikeModel(bikeModel);
+        bikeComponent.setColor(bikeModel.getColor());
+        bikeComponent.setQuantity(3);
+        bikeComponent.setTitle("Mountainbike Component Kit");
+        bikeComponentRepository.save(bikeComponent);
+        bikeComponent = new BikeComponent();
+        bikeModel = bikeModelRepository.getReferenceById("Esel Lastenrad");
+        bikeComponent.setBikeModel(bikeModel);
+        bikeComponent.setColor(bikeModel.getColor());
+        bikeComponent.setQuantity(3);
+        bikeComponent.setTitle("Lastenrad Component Kit");
+        bikeComponentRepository.save(bikeComponent);
     }
 }
