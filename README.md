@@ -2,7 +2,24 @@
 
 The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (companies, students, ...).
 
-This repository contains the source code and configuration files of the implementation of the demonstration scenario: the ordering, manufacturing and shipping of custom-made bicycles. The implementation is based on Camunda 8, a Business Process Management System. This BPMS orchestrates different job workers for different processes. Moreover, the robots for the warehouse operations like storing or retrieving items are implemented in Python.
+This repository contains the source code and configuration files of the implementation of the demonstration scenario: the ordering, production, purchasing, manufacturing and shipping of custom-made bicycles. The implementation is based on Camunda 8, a Business Process Management System. This BPMS orchestrates different job workers for different processes. Moreover, the robots for the warehouse operations like storing or retrieving items are implemented in Python.
+
+## state of affairs
+
+### BPALabBikeFactoryOrderManagement
+- java spring-boot-starter-camunda-sdk mysql gradle
+![](bpa_lab_ordermanagement_process/bpmn/BPALabBikeFactoryOrderManagement.png)
+
+### BPALabBikeFactoryProduction
+- java spring-boot-starter-camunda-sdk mysql gradle
+![](/bpa_lab_productioncontrol_process/bpmn/BPALabBikeFactoryProductionControl.png)
+
+### BPALabBikeFactoryPurchase
+- nodejs mysql @camunda8/sdk
+![](/bpa_lab_purchasing_process/bpmn/bpa_lab_purchase_process.png)
+
+### Containerisation in preparation
+- docker compose, dockerfiles, .env
 
 ## Prerequisites
 
