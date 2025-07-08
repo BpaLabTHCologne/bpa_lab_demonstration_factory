@@ -87,13 +87,15 @@ public class ProductionControlWorker {
 		return variables;
 	}
 
-	@JobWorker(type = "sendFinishedBikeModelProductionOrder")
+	@JobWorker(type = "sendFinishedBikeModelProductionOrder", fetchAllVariables = true)
 	public void sendFinishedBikeModelProductionOrder(final ActivatedJob job) throws JsonProcessingException {
-		String productionOrderCorrelation = job.getVariable("productionOrderCorrelation").toString();
 		Map<String, Object> variables = job.getVariablesAsMap();
-		LOG.info("sendFinishedBikeModelProductionOrder correlationKey {} variables {}"
-				, productionOrderCorrelation
+		LOG.info("sendFinishedBikeModelProductionOrder variables {}"
 				, objectMapper.writeValueAsString(variables));
+//		String productionOrderCorrelation = job.getVariable("productionOrderCorrelation").toString();
+		String productionOrderCorrelation = variables.get("productionOrderCorrelation").toString();
+		LOG.info("sendFinishedBikeModelProductionOrder correlationKey {}"
+				, productionOrderCorrelation);
 		zeebeClient.newPublishMessageCommand()
 				.messageName("MsgProductionFinished")
 				.correlationKey(productionOrderCorrelation)

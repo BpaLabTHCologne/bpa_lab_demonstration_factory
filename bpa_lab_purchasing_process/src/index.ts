@@ -7,6 +7,13 @@ import * as path from 'path'
 import { config } from 'dotenv'
 config()
 
+// @ts-ignore
+import {getPurchaseOrder, getVendorsForBikeComponent} from "./dbConnection.ts";
+import {parseVariablesAndCustomHeadersToJSON} from "@camunda8/sdk/dist/zeebe/lib";
+
+//import './zeebeWorkers';
+
+
 const c8 = new Camunda8()
 const zbc = c8.getZeebeGrpcApiClient()
 const operate = c8.getOperateApiClient()
@@ -14,26 +21,6 @@ const optimize = c8.getOptimizeApiClient() // unused
 const tasklist = c8.getTasklistApiClient()
 
 const getLogger = (prefix: string, color: any) => (msg: string) => console.log(color(`[${prefix}] ${msg}`))
-
-import mysql from 'mysql2';
-
-let con = mysql.createConnection({
-    host: "localhost",
-    port: 3070,
-    user: "root",
-    password: "P4ssword!",
-    database: "bpa_lab_demonstration_factory"
-});
-
-function getPurchaseOrder(purchaseOrderNumber : string) {
-    return new Promise((resolve, reject) => {
-        const query = `SELECT * FROM purchase_order where purchase_order_number = ?`;
-        con.query(query, [purchaseOrderNumber], (err, result) => {
-            if (err) return reject(err);
-            resolve(result ? result[0] : null);
-        })
-    })
-}
 
 class BikeComponentDTO extends LosslessDto {
     title! : string
@@ -57,30 +44,31 @@ zbc.createWorker({
         log(`handling job of type ${job.type}`)
         const purchaseComponentDTO = job.variables;
         console.log(purchaseComponentDTO);
-        console.log(purchaseComponentDTO.purchaseOrderNumber)
-        console.log(purchaseComponentDTO.purchaseBikeComponent.title)
         const purchaseOrder = await getPurchaseOrder(purchaseComponentDTO.purchaseOrderNumber);
         console.log(purchaseOrder);
+        const vendorList = await getVendorsForBikeComponent(purchaseComponentDTO.purchaseBikeComponent.title)
+        console.log(vendorList);
         return job.complete({
             // @ts-ignore
-            serviceTaskOutcome: purchaseComponentDTO
+            serviceTaskOutcome: purchaseComponentDTO, vendorList
         })
     }
 })
 
-console.log(`Creating worker sendFinishedBikeModelProductionOrder`)
+console.log(`Creating worker sendFinishedPurchaseOrder`)
 zbc.createWorker({
     inputVariableDto: PurchaseComponentDTO,
-    taskType: 'sendFinishedBikeModelProductionOrder',
+    taskType: 'sendFinishedPurchaseOrder',
     taskHandler: async job => {
         const log = getLogger('Zeebe Worker', chalk.blueBright)
         log(`handling job of type ${job.type}`)
         const purchaseComponentDTO = job.variables;
+        console.log("purchaseOrderCorrelation: " + purchaseComponentDTO.purchaseOrderCorrelation);
         zbc.publishMessage({
             name: "MsgPurchaseFinished",
-            correlationKey: purchaseComponentDTO.purchaseOrderCorrelation,
+            correlationKey: purchaseComponentDTO.purchaseOrderCorrelation
             // @ts-ignore
-            variables: purchaseComponentDTO
+//            variables: purchaseComponentDTO
             })
         return job.complete()
     }

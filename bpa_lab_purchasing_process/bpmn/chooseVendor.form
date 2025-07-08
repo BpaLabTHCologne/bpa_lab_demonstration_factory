@@ -1,0 +1,115 @@
+{
+  "components": [
+    {
+      "label": "Purchase Order Number",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0dh0h2o",
+        "columns": 3
+      },
+      "id": "Field_0i66gq1",
+      "key": "purchaseOrderNumber",
+      "readonly": true
+    },
+    {
+      "label": "Bike Component",
+      "components": [
+        {
+          "label": "Title",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1pzqm9t",
+            "columns": 9
+          },
+          "id": "Field_016mxd6",
+          "key": "title",
+          "readonly": "on"
+        },
+        {
+          "label": "Amount",
+          "type": "number",
+          "layout": {
+            "row": "Row_1pzqm9t",
+            "columns": 4
+          },
+          "id": "Field_11lnh3q",
+          "key": "amount",
+          "readonly": "on"
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
+      "layout": {
+        "row": "Row_1gscbz1",
+        "columns": 6
+      },
+      "id": "Field_1s0ya40",
+      "path": "purchaseBikeComponent"
+    },
+    {
+      "label": "Vendors",
+      "components": [
+        {
+          "label": "Name",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_17ymwnx",
+            "columns": 5
+          },
+          "id": "Field_1t54hr8",
+          "key": "name"
+        },
+        {
+          "label": "Contact",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_17ymwnx",
+            "columns": 5
+          },
+          "id": "Field_0gj0pny",
+          "key": "contact"
+        },
+        {
+          "label": "Price",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_17ymwnx",
+            "columns": 2
+          },
+          "id": "Field_08n557w",
+          "key": "price"
+        },
+        {
+          "label": "Select",
+          "type": "checkbox",
+          "layout": {
+            "row": "Row_17ymwnx",
+            "columns": 4
+          },
+          "id": "Field_00rukxh",
+          "key": "selected"
+        }
+      ],
+      "showOutline": true,
+      "isRepeating": true,
+      "allowAddRemove": true,
+      "defaultRepetitions": 1,
+      "type": "dynamiclist",
+      "layout": {
+        "row": "Row_0uclw5u",
+        "columns": 16
+      },
+      "id": "Field_18redvs",
+      "path": "vendorList"
+    }
+  ],
+  "type": "default",
+  "id": "chooseVendorForm",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.7.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "schemaVersion": 18
+}
