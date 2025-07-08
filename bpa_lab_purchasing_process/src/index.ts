@@ -46,7 +46,13 @@ zbc.createWorker({
         console.log(purchaseComponentDTO);
         const purchaseOrder = await getPurchaseOrder(purchaseComponentDTO.purchaseOrderNumber);
         console.log(purchaseOrder);
-        const vendorList = await getVendorsForBikeComponent(purchaseComponentDTO.purchaseBikeComponent.title)
+        const vendors = await getVendorsForBikeComponent(purchaseComponentDTO.purchaseBikeComponent.title)
+        // @ts-ignore
+        const vendorList = vendors.map(item => ({
+                    label: item.name + " " + item.contact + " " + item.price,
+                    value: item.name
+                }))
+
         console.log(vendorList);
         return job.complete({
             // @ts-ignore

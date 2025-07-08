@@ -48,59 +48,14 @@
     },
     {
       "label": "Vendors",
-      "components": [
-        {
-          "label": "Name",
-          "type": "textfield",
-          "layout": {
-            "row": "Row_17ymwnx",
-            "columns": 5
-          },
-          "id": "Field_1t54hr8",
-          "key": "name"
-        },
-        {
-          "label": "Contact",
-          "type": "textfield",
-          "layout": {
-            "row": "Row_17ymwnx",
-            "columns": 5
-          },
-          "id": "Field_0gj0pny",
-          "key": "contact"
-        },
-        {
-          "label": "Price",
-          "type": "textfield",
-          "layout": {
-            "row": "Row_17ymwnx",
-            "columns": 2
-          },
-          "id": "Field_08n557w",
-          "key": "price"
-        },
-        {
-          "label": "Select",
-          "type": "checkbox",
-          "layout": {
-            "row": "Row_17ymwnx",
-            "columns": 4
-          },
-          "id": "Field_00rukxh",
-          "key": "selected"
-        }
-      ],
-      "showOutline": true,
-      "isRepeating": true,
-      "allowAddRemove": true,
-      "defaultRepetitions": 1,
-      "type": "dynamiclist",
+      "type": "radio",
       "layout": {
-        "row": "Row_0uclw5u",
-        "columns": 16
+        "row": "Row_0migvhc",
+        "columns": 9
       },
-      "id": "Field_18redvs",
-      "path": "vendorList"
+      "id": "Field_1dl9v0c",
+      "key": "selectedVendor",
+      "valuesKey": "vendorList"
     }
   ],
   "type": "default",
