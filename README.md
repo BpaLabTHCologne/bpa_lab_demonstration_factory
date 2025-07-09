@@ -19,18 +19,25 @@ to start Mysql DBMS and Camunda self-managed
 - java spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
 ![](bpa_lab_ordermanagement_process/bpmn/BPALabBikeFactoryOrderManagement.png)
 #### Run
+in ./bpa_lab_ordermanagement_process
+
     gradle bootRun
 
 ### BPALabBikeFactoryProduction
 - java spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
 ![](/bpa_lab_productioncontrol_process/bpmn/BPALabBikeFactoryProductionControl.png)
 #### Run
+
+in ./bpa_lab_productioncontrol_process
+
     gradle bootRun
 
 ### BPALabBikeFactoryPurchase
-- nodejs mysql @camunda8/sdk
+- nodejs typescript mysql(9) @camunda8/sdk
 ![](/bpa_lab_purchasing_process/bpmn/bpa_lab_purchase_process.png)
 #### Run
+in ./bpa_lab_purchasing_process
+
     npm start
 
 ### Containerisation in preparation
