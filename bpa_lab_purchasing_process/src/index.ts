@@ -8,7 +8,7 @@ import { config } from 'dotenv'
 config()
 
 // @ts-ignore
-import {getPurchaseOrder, getVendorsForBikeComponent} from "./dbConnection.ts";
+import {getPurchaseOrder, getVendorsForBikeComponent, storeBikeComponent} from "./dbConnection.ts";
 import {parseVariablesAndCustomHeadersToJSON} from "@camunda8/sdk/dist/zeebe/lib";
 
 //import './zeebeWorkers';
@@ -61,6 +61,21 @@ zbc.createWorker({
     }
 })
 
+console.log(`Creating worker storeBikeComponents`)
+zbc.createWorker({
+    inputVariableDto: PurchaseComponentDTO,
+    taskType: 'storeBikeComponents',
+    taskHandler: async job => {
+        const log = getLogger('Zeebe Worker', chalk.blueBright)
+        log(`handling job of type ${job.type}`)
+        const purchaseComponentDTO = job.variables;
+        const result = await storeBikeComponent(purchaseComponentDTO.purchaseBikeComponent.title,
+                                    purchaseComponentDTO.purchaseBikeComponent.amount)
+        console.log(result);
+        return job.complete()
+    }
+})
+
 console.log(`Creating worker sendFinishedPurchaseOrder`)
 zbc.createWorker({
     inputVariableDto: PurchaseComponentDTO,
@@ -79,3 +94,4 @@ zbc.createWorker({
         return job.complete()
     }
 })
+

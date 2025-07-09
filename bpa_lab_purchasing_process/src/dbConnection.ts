@@ -30,3 +30,30 @@ export function getVendorsForBikeComponent(bikeComponent : string) {
         })
     })
 }
+
+function getBikeComponentQuantity(bikeComponent : string) {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT quantity
+                       FROM bike_component
+                       where title = ?`;
+        con.query(query, [bikeComponent], (err, result) => {
+            if (err) return reject(err);
+            resolve(result ? result[0].quantity : 0);
+        })
+    })
+}
+
+export function storeBikeComponent(bikeComponent : string, quantity: number) {
+    return new Promise(async (resolve, reject) => {
+        const bikeComponentQuantity = await getBikeComponentQuantity(bikeComponent)
+        // @ts-ignore
+        let updateQuantity: number = bikeComponentQuantity + quantity
+        const queryUpdate = `update bike_component
+                             set quantity = ?
+                             where title = ?`;
+        con.query(queryUpdate, [updateQuantity, bikeComponent], (err, result) => {
+            if (err) return reject(err);
+            resolve(result ? result : null);
+        })
+    })
+}

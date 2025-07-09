@@ -2,8 +2,41 @@
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
   <bpmn:collaboration id="Collaboration_10fxbv2">
     <bpmn:participant id="Participant_064cb9h" name="Order Management" processRef="BPALabBikeFactoryOrderManagement" />
+    <bpmn:textAnnotation id="TextAnnotation_1yj5uwn">
+      <bpmn:text>MsgStartProductionOrder:
+productionOrderCorrelation</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0amhtwv" associationDirection="None" sourceRef="Activity_0bnbuiu" targetRef="TextAnnotation_1yj5uwn" />
+    <bpmn:textAnnotation id="TextAnnotation_1egg82o">
+      <bpmn:text>MsgProductionFinished:
+productionOrderCorrelation</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0qqdmbi" associationDirection="None" sourceRef="TextAnnotation_1egg82o" targetRef="Activity_1mnp0e2" />
   </bpmn:collaboration>
   <bpmn:process id="BPALabBikeFactoryOrderManagement" name="BPALabBikeFactoryOrderManagement" isExecutable="true">
+    <bpmn:sequenceFlow id="Flow_1foyfi4" name="any&#10;Material&#10;Demands generated" sourceRef="inc_gateway_split_production_or_available" targetRef="production_subprocess">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(is empty(produceBikeModelList))</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_12d54xg" name="any Bike Instances available" sourceRef="inc_gateway_split_production_or_available" targetRef="Activity_135jbkl">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(is empty(reserveBikeInstanceList))</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:dataStoreReference id="DataStoreReference_0bwq0q8" name="BikeInstances" />
+    <bpmn:dataStoreReference id="DataStoreReference_1dts68o" name="BikeModels" />
+    <bpmn:endEvent id="Event_009pzl1" name="Bikes delivered">
+      <bpmn:incoming>Flow_1bh5un2</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="StartEvent_1" name="Bikes needed">
+      <bpmn:outgoing>Flow_1x2cfcg</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_1ynyvwb" name="choose Bikes">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+        <zeebe:formDefinition formId="chooseBikesForm" />
+        <zeebe:assignmentDefinition assignee="demo" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1sgbuw1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ca1n5e</bpmn:outgoing>
+    </bpmn:userTask>
     <bpmn:serviceTask id="Activity_15wljsi" name="create Material Demands">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="createMaterialDemands" />
@@ -16,17 +49,39 @@
         <bpmn:targetRef>Property_0ak8ea7</bpmn:targetRef>
       </bpmn:dataInputAssociation>
     </bpmn:serviceTask>
-    <bpmn:userTask id="Activity_12p0gn3" name="show Order">
+    <bpmn:dataStoreReference id="DataStoreReference_13dfi7g" name="CustomerOrder" />
+    <bpmn:sequenceFlow id="Flow_03nu1yz" sourceRef="Activity_12p0gn3" targetRef="inc_gateway_split_production_or_available" />
+    <bpmn:sequenceFlow id="Flow_04gu3tp" sourceRef="Activity_135jbkl" targetRef="inc_gateway_join_production_or_available" />
+    <bpmn:sequenceFlow id="Flow_05uzrc5" sourceRef="Activity_15wljsi" targetRef="Activity_12p0gn3" />
+    <bpmn:sequenceFlow id="Flow_0a60ne1" sourceRef="Activity_1pyqn2z" targetRef="Activity_15wljsi" />
+    <bpmn:sequenceFlow id="Flow_0ca1n5e" sourceRef="Activity_1ynyvwb" targetRef="Activity_1pyqn2z" />
+    <bpmn:sequenceFlow id="Flow_0o89vpv" sourceRef="inc_gateway_join_production_or_available" targetRef="Activity_0mncymk" />
+    <bpmn:sequenceFlow id="Flow_0vdcsis" sourceRef="production_subprocess" targetRef="inc_gateway_join_production_or_available" />
+    <bpmn:sequenceFlow id="Flow_1bh5un2" sourceRef="Activity_0mncymk" targetRef="Event_009pzl1" />
+    <bpmn:sequenceFlow id="Flow_1sgbuw1" sourceRef="Activity_0ug7hx4" targetRef="Activity_1ynyvwb" />
+    <bpmn:sequenceFlow id="Flow_1x2cfcg" sourceRef="StartEvent_1" targetRef="Activity_0ug7hx4" />
+    <bpmn:serviceTask id="Activity_0ug7hx4" name="get Offer">
       <bpmn:extensionElements>
-        <zeebe:userTask />
-        <zeebe:formDefinition formId="showOrderForm" />
-        <zeebe:assignmentDefinition assignee="demo" />
+        <zeebe:taskDefinition type="getOffer" />
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_05uzrc5</bpmn:incoming>
-      <bpmn:outgoing>Flow_03nu1yz</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:dataStoreReference id="DataStoreReference_0bwq0q8" name="BikeInstances" />
-    <bpmn:dataStoreReference id="DataStoreReference_1dts68o" name="BikeModels" />
+      <bpmn:incoming>Flow_1x2cfcg</bpmn:incoming>
+      <bpmn:outgoing>Flow_1sgbuw1</bpmn:outgoing>
+      <bpmn:property id="Property_064jrc9" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_0jbdtxv">
+        <bpmn:sourceRef>DataStoreReference_1dts68o</bpmn:sourceRef>
+        <bpmn:targetRef>Property_064jrc9</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:inclusiveGateway id="inc_gateway_join_production_or_available">
+      <bpmn:incoming>Flow_0vdcsis</bpmn:incoming>
+      <bpmn:incoming>Flow_04gu3tp</bpmn:incoming>
+      <bpmn:outgoing>Flow_0o89vpv</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+    <bpmn:inclusiveGateway id="inc_gateway_split_production_or_available">
+      <bpmn:incoming>Flow_03nu1yz</bpmn:incoming>
+      <bpmn:outgoing>Flow_1foyfi4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_12d54xg</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
     <bpmn:subProcess id="production_subprocess">
       <bpmn:incoming>Flow_1foyfi4</bpmn:incoming>
       <bpmn:outgoing>Flow_0vdcsis</bpmn:outgoing>
@@ -45,6 +100,10 @@
       <bpmn:sequenceFlow id="Flow_074tre5" sourceRef="Activity_0bnbuiu" targetRef="Activity_1mnp0e2" />
       <bpmn:sequenceFlow id="Flow_16377qg" sourceRef="Activity_0ur05vd" targetRef="Activity_0bnbuiu" />
       <bpmn:sequenceFlow id="Flow_1e64mwr" sourceRef="Event_0sbo82x" targetRef="Activity_0ur05vd" />
+      <bpmn:receiveTask id="Activity_1mnp0e2" name="receive finished Production Order" messageRef="Message_22ck100">
+        <bpmn:incoming>Flow_074tre5</bpmn:incoming>
+        <bpmn:outgoing>Flow_05m9i0r</bpmn:outgoing>
+      </bpmn:receiveTask>
       <bpmn:serviceTask id="Activity_0ur05vd" name="save Production Order">
         <bpmn:extensionElements>
           <zeebe:taskDefinition type="saveProductionOrder" />
@@ -59,48 +118,7 @@
         <bpmn:incoming>Flow_16377qg</bpmn:incoming>
         <bpmn:outgoing>Flow_074tre5</bpmn:outgoing>
       </bpmn:sendTask>
-      <bpmn:receiveTask id="Activity_1mnp0e2" name="receive finished Production Order" messageRef="Message_22ck100">
-        <bpmn:incoming>Flow_074tre5</bpmn:incoming>
-        <bpmn:outgoing>Flow_05m9i0r</bpmn:outgoing>
-      </bpmn:receiveTask>
     </bpmn:subProcess>
-    <bpmn:endEvent id="Event_009pzl1" name="Bikes delivered">
-      <bpmn:incoming>Flow_1bh5un2</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:startEvent id="StartEvent_1" name="Bikes needed">
-      <bpmn:outgoing>Flow_1x2cfcg</bpmn:outgoing>
-    </bpmn:startEvent>
-    <bpmn:userTask id="Activity_1ynyvwb" name="choose Bikes">
-      <bpmn:extensionElements>
-        <zeebe:userTask />
-        <zeebe:formDefinition formId="chooseBikesForm" />
-        <zeebe:assignmentDefinition assignee="demo" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1sgbuw1</bpmn:incoming>
-      <bpmn:outgoing>Flow_0ca1n5e</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:inclusiveGateway id="inc_gateway_split_production_or_available">
-      <bpmn:incoming>Flow_03nu1yz</bpmn:incoming>
-      <bpmn:outgoing>Flow_1foyfi4</bpmn:outgoing>
-      <bpmn:outgoing>Flow_12d54xg</bpmn:outgoing>
-    </bpmn:inclusiveGateway>
-    <bpmn:inclusiveGateway id="inc_gateway_join_production_or_available">
-      <bpmn:incoming>Flow_0vdcsis</bpmn:incoming>
-      <bpmn:incoming>Flow_04gu3tp</bpmn:incoming>
-      <bpmn:outgoing>Flow_0o89vpv</bpmn:outgoing>
-    </bpmn:inclusiveGateway>
-    <bpmn:serviceTask id="Activity_0ug7hx4" name="get Offer">
-      <bpmn:extensionElements>
-        <zeebe:taskDefinition type="getOffer" />
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1x2cfcg</bpmn:incoming>
-      <bpmn:outgoing>Flow_1sgbuw1</bpmn:outgoing>
-      <bpmn:property id="Property_064jrc9" name="__targetRef_placeholder" />
-      <bpmn:dataInputAssociation id="DataInputAssociation_0jbdtxv">
-        <bpmn:sourceRef>DataStoreReference_1dts68o</bpmn:sourceRef>
-        <bpmn:targetRef>Property_064jrc9</bpmn:targetRef>
-      </bpmn:dataInputAssociation>
-    </bpmn:serviceTask>
     <bpmn:serviceTask id="Activity_1pyqn2z" name="put Customer Order">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="putOrder" />
@@ -111,27 +129,6 @@
         <bpmn:targetRef>DataStoreReference_13dfi7g</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
-    <bpmn:task id="Activity_0mncymk" name="ship Customer Order">
-      <bpmn:incoming>Flow_0o89vpv</bpmn:incoming>
-      <bpmn:outgoing>Flow_1bh5un2</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:dataStoreReference id="DataStoreReference_13dfi7g" name="CustomerOrder" />
-    <bpmn:sequenceFlow id="Flow_12d54xg" name="any Bike Instances available" sourceRef="inc_gateway_split_production_or_available" targetRef="Activity_135jbkl">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(is empty(reserveBikeInstanceList))</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_04gu3tp" sourceRef="Activity_135jbkl" targetRef="inc_gateway_join_production_or_available" />
-    <bpmn:sequenceFlow id="Flow_0a60ne1" sourceRef="Activity_1pyqn2z" targetRef="Activity_15wljsi" />
-    <bpmn:sequenceFlow id="Flow_05uzrc5" sourceRef="Activity_15wljsi" targetRef="Activity_12p0gn3" />
-    <bpmn:sequenceFlow id="Flow_03nu1yz" sourceRef="Activity_12p0gn3" targetRef="inc_gateway_split_production_or_available" />
-    <bpmn:sequenceFlow id="Flow_1foyfi4" name="any&#10;Material&#10;Demands generated" sourceRef="inc_gateway_split_production_or_available" targetRef="production_subprocess">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(is empty(produceBikeModelList))</bpmn:conditionExpression>
-    </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0vdcsis" sourceRef="production_subprocess" targetRef="inc_gateway_join_production_or_available" />
-    <bpmn:sequenceFlow id="Flow_1bh5un2" sourceRef="Activity_0mncymk" targetRef="Event_009pzl1" />
-    <bpmn:sequenceFlow id="Flow_1x2cfcg" sourceRef="StartEvent_1" targetRef="Activity_0ug7hx4" />
-    <bpmn:sequenceFlow id="Flow_1sgbuw1" sourceRef="Activity_0ug7hx4" targetRef="Activity_1ynyvwb" />
-    <bpmn:sequenceFlow id="Flow_0ca1n5e" sourceRef="Activity_1ynyvwb" targetRef="Activity_1pyqn2z" />
-    <bpmn:sequenceFlow id="Flow_0o89vpv" sourceRef="inc_gateway_join_production_or_available" targetRef="Activity_0mncymk" />
     <bpmn:serviceTask id="Activity_135jbkl" name="reserve Bike Instances">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="reserveBikeInstance" />
@@ -144,6 +141,19 @@
         </bpmn:extensionElements>
       </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:serviceTask>
+    <bpmn:task id="Activity_0mncymk" name="ship Customer Order">
+      <bpmn:incoming>Flow_0o89vpv</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bh5un2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:userTask id="Activity_12p0gn3" name="show Order">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+        <zeebe:formDefinition formId="showOrderForm" />
+        <zeebe:assignmentDefinition assignee="demo" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_05uzrc5</bpmn:incoming>
+      <bpmn:outgoing>Flow_03nu1yz</bpmn:outgoing>
+    </bpmn:userTask>
   </bpmn:process>
   <bpmn:message id="Message_1tk6ndb" name="ReplyProductionBikeModelMessage">
     <bpmn:extensionElements>
@@ -312,6 +322,14 @@
         <di:waypoint x="1645" y="260" />
         <di:waypoint x="1670" y="260" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0amhtwv_di" bpmnElement="Association_0amhtwv">
+        <di:waypoint x="1259" y="300" />
+        <di:waypoint x="1212" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0qqdmbi_di" bpmnElement="Association_0qqdmbi">
+        <di:waypoint x="1462" y="361" />
+        <di:waypoint x="1437" y="300" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="DataInputAssociation_0h92p7h_di" bpmnElement="DataInputAssociation_0h92p7h">
         <di:waypoint x="690" y="335" />
         <di:waypoint x="690" y="300" />
@@ -324,6 +342,14 @@
         <di:waypoint x="549" y="300" />
         <di:waypoint x="549" y="335" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1yj5uwn_di" bpmnElement="TextAnnotation_1yj5uwn">
+        <dc:Bounds x="1150" y="360" width="160" height="39" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_08e2vzb" bpmnElement="TextAnnotation_1egg82o">
+        <dc:Bounds x="1390" y="361" width="160" height="39" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

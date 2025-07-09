@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_14f3xb6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_14f3xb6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
   <bpmn:message id="Message_0i2iu6t" name="MsgStartPurchaseOrder" />
   <bpmn:collaboration id="Collaboration_0lf49u8">
     <bpmn:participant id="Participant_15kbhxh" name="Purchasing" processRef="BPALabBikeFactoryPurchase" />
@@ -7,9 +7,17 @@
       <bpmn:text>MsgPurchaseFinished:
 purchaseOrderCorrelation</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_1c030nc" associationDirection="None" sourceRef="Event_0j28rou" targetRef="TextAnnotation_1s0fbs5" />
+    <bpmn:textAnnotation id="TextAnnotation_1yj5uwn">
+      <bpmn:text>MsgStartPurchaseOrder:
+purchaseOrderCorrelation</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_09vjum1" associationDirection="None" sourceRef="TextAnnotation_1yj5uwn" targetRef="StartEvent_1" />
   </bpmn:collaboration>
   <bpmn:process id="BPALabBikeFactoryPurchase" name="BPALabBikeFactoryPurchase" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Bike Component&#10;Purchase Order received">
+      <bpmn:outgoing>Flow_0yqo0wz</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_02u0kf4" messageRef="Message_0i2iu6t" />
+    </bpmn:startEvent>
     <bpmn:userTask id="Activity_0tp91ve" name="choose Vendor">
       <bpmn:extensionElements>
         <zeebe:userTask />
@@ -18,39 +26,71 @@ purchaseOrderCorrelation</bpmn:text>
       <bpmn:incoming>Flow_0qugen1</bpmn:incoming>
       <bpmn:outgoing>Flow_03qgl0x</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:endEvent id="Event_0j28rou">
+    <bpmn:userTask id="Activity_0521per" name="confirm Supply">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_03qgl0x</bpmn:incoming>
+      <bpmn:outgoing>Flow_12wztvo</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:boundaryEvent id="Event_1lh6x7j" attachedToRef="Activity_0521per">
+      <bpmn:outgoing>Flow_0bj79kz</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0n7r76g">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="Event_0j28rou" name="Finished Bike Component&#10;Order send">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="sendFinishedPurchaseOrder" />
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_03qgl0x</bpmn:incoming>
+      <bpmn:incoming>Flow_0xt0dgj</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0gjzuny" />
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_03qgl0x" sourceRef="Activity_0tp91ve" targetRef="Event_0j28rou" />
+    <bpmn:sequenceFlow id="Flow_01y3834" sourceRef="Gateway_1rowoe8" targetRef="Activity_0z55yc3" />
+    <bpmn:sequenceFlow id="Flow_03qgl0x" sourceRef="Activity_0tp91ve" targetRef="Activity_0521per" />
+    <bpmn:sequenceFlow id="Flow_0bj79kz" sourceRef="Event_1lh6x7j" targetRef="Gateway_1rowoe8" />
     <bpmn:sequenceFlow id="Flow_0qugen1" sourceRef="Activity_1gwbbuy" targetRef="Activity_0tp91ve" />
+    <bpmn:sequenceFlow id="Flow_0xt0dgj" sourceRef="Activity_0z55yc3" targetRef="Event_0j28rou" />
     <bpmn:sequenceFlow id="Flow_0yqo0wz" sourceRef="StartEvent_1" targetRef="Activity_1gwbbuy" />
+    <bpmn:sequenceFlow id="Flow_12wztvo" sourceRef="Activity_0521per" targetRef="Gateway_1rowoe8" />
+    <bpmn:exclusiveGateway id="Gateway_1rowoe8">
+      <bpmn:incoming>Flow_12wztvo</bpmn:incoming>
+      <bpmn:incoming>Flow_0bj79kz</bpmn:incoming>
+      <bpmn:outgoing>Flow_01y3834</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
     <bpmn:serviceTask id="Activity_1gwbbuy" name="get Purchase Order">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="getPurchaseOrder" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0yqo0wz</bpmn:incoming>
       <bpmn:outgoing>Flow_0qugen1</bpmn:outgoing>
+      <bpmn:property id="Property_02osdyl" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_0kbdwso">
+        <bpmn:sourceRef>DataStoreReference_0zrfz0e</bpmn:sourceRef>
+        <bpmn:targetRef>Property_02osdyl</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
     </bpmn:serviceTask>
-    <bpmn:startEvent id="StartEvent_1">
-      <bpmn:outgoing>Flow_0yqo0wz</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_02u0kf4" messageRef="Message_0i2iu6t" />
-    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_0z55yc3" name="store Bike  Components">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="storeBikeComponents" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_01y3834</bpmn:incoming>
+      <bpmn:outgoing>Flow_0xt0dgj</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:dataStoreReference id="DataStoreReference_0zrfz0e" name="Vendors" />
+    <bpmn:association id="Association_1c030nc" associationDirection="None" sourceRef="Event_0j28rou" targetRef="TextAnnotation_1s0fbs5" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0lf49u8">
       <bpmndi:BPMNShape id="Participant_15kbhxh_di" bpmnElement="Participant_15kbhxh" isHorizontal="true">
-        <dc:Bounds x="160" y="130" width="580" height="160" />
+        <dc:Bounds x="160" y="130" width="900" height="220" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0b4s5y5_di" bpmnElement="StartEvent_1">
         <dc:Bounds x="229" y="179" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0md7py9_di" bpmnElement="Event_0j28rou">
-        <dc:Bounds x="622" y="179" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="209" y="222" width="82" height="40" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1wxn0pq_di" bpmnElement="Activity_0tp91ve">
         <dc:Bounds x="460" y="157" width="100" height="80" />
@@ -60,9 +100,37 @@ purchaseOrderCorrelation</bpmn:text>
         <dc:Bounds x="320" y="157" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_0zrfz0e_di" bpmnElement="DataStoreReference_0zrfz0e">
+        <dc:Bounds x="345" y="265" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="350" y="322" width="41" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ej6rus_di" bpmnElement="Activity_0521per">
+        <dc:Bounds x="600" y="157" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1rowoe8_di" bpmnElement="Gateway_1rowoe8" isMarkerVisible="true">
+        <dc:Bounds x="745" y="172" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0md7py9_di" bpmnElement="Event_0j28rou">
+        <dc:Bounds x="992" y="179" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="980" y="222" width="67" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0hdn9h9_di" bpmnElement="Activity_0z55yc3">
+        <dc:Bounds x="840" y="157" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1c030nc_di" bpmnElement="Association_1c030nc">
+        <di:waypoint x="995" y="188" />
+        <di:waypoint x="885" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1yvcazv_di" bpmnElement="Event_1lh6x7j">
+        <dc:Bounds x="612" y="219" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_03qgl0x_di" bpmnElement="Flow_03qgl0x">
         <di:waypoint x="560" y="197" />
-        <di:waypoint x="622" y="197" />
+        <di:waypoint x="600" y="197" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0qugen1_di" bpmnElement="Flow_0qugen1">
         <di:waypoint x="420" y="197" />
@@ -72,12 +140,38 @@ purchaseOrderCorrelation</bpmn:text>
         <di:waypoint x="265" y="197" />
         <di:waypoint x="320" y="197" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1c030nc_di" bpmnElement="Association_1c030nc">
-        <di:waypoint x="630" y="182" />
-        <di:waypoint x="587" y="120" />
+      <bpmndi:BPMNEdge id="Flow_12wztvo_di" bpmnElement="Flow_12wztvo">
+        <di:waypoint x="700" y="197" />
+        <di:waypoint x="745" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01y3834_di" bpmnElement="Flow_01y3834">
+        <di:waypoint x="795" y="197" />
+        <di:waypoint x="840" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bj79kz_di" bpmnElement="Flow_0bj79kz">
+        <di:waypoint x="630" y="255" />
+        <di:waypoint x="630" y="275" />
+        <di:waypoint x="770" y="275" />
+        <di:waypoint x="770" y="222" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xt0dgj_di" bpmnElement="Flow_0xt0dgj">
+        <di:waypoint x="940" y="197" />
+        <di:waypoint x="992" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_09vjum1_di" bpmnElement="Association_09vjum1">
+        <di:waypoint x="249" y="119" />
+        <di:waypoint x="248" y="179" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1yj5uwn_di" bpmnElement="TextAnnotation_1yj5uwn">
+        <dc:Bounds x="170" y="80" width="160" height="39" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0kbdwso_di" bpmnElement="DataInputAssociation_0kbdwso">
+        <di:waypoint x="370" y="265" />
+        <di:waypoint x="370" y="237" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_1s0fbs5_di" bpmnElement="TextAnnotation_1s0fbs5">
-        <dc:Bounds x="520" y="80" width="180" height="40" />
+        <dc:Bounds x="800" y="80" width="180" height="40" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>

@@ -7,6 +7,21 @@
 productionOrderCorrelation</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_1mtvv9f" associationDirection="None" sourceRef="Event_1gtkh71" targetRef="TextAnnotation_0s948zs" />
+    <bpmn:textAnnotation id="TextAnnotation_1yj5uwn">
+      <bpmn:text>MsgStartPurchaseOrder:
+purchaseOrderCorrelation</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1052uw5" associationDirection="None" sourceRef="TextAnnotation_1yj5uwn" targetRef="Activity_0c0hiuq" />
+    <bpmn:textAnnotation id="TextAnnotation_0vjftsj">
+      <bpmn:text>MsgPurchaseFinished:
+purchaseOrderCorrelation</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0db7eom" associationDirection="None" sourceRef="TextAnnotation_0vjftsj" targetRef="Activity_0nw9me9" />
+    <bpmn:textAnnotation id="TextAnnotation_1hnqhdz">
+      <bpmn:text>MsgStartProductionOrder:
+productionOrderCorrelation</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1rnc6gb" associationDirection="None" sourceRef="TextAnnotation_1hnqhdz" targetRef="StartEvent_1" />
   </bpmn:collaboration>
   <bpmn:process id="BPALabBikeFactoryProduction" name="BPALabBikeFactoryProduction" isExecutable="true">
     <bpmn:subProcess id="Activity_0xh5tam">
@@ -101,6 +116,12 @@ productionOrderCorrelation</bpmn:text>
         <dc:Bounds x="190" y="70" width="1450" height="310" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1xz8342_di" bpmnElement="DataStoreReference_1xz8342">
+        <dc:Bounds x="475" y="285" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="458" y="342" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0xh5tam_di" bpmnElement="Activity_0xh5tam" isExpanded="true">
         <dc:Bounds x="600" y="135" width="610" height="130" />
       </bpmndi:BPMNShape>
@@ -136,12 +157,6 @@ productionOrderCorrelation</bpmn:text>
         <di:waypoint x="940" y="195" />
         <di:waypoint x="990" y="195" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="DataStoreReference_1xz8342_di" bpmnElement="DataStoreReference_1xz8342">
-        <dc:Bounds x="375" y="285" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="358" y="342" width="84" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0ec7j52_di" bpmnElement="StartEvent_1">
         <dc:Bounds x="272" y="182" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -202,18 +217,42 @@ productionOrderCorrelation</bpmn:text>
         <di:waypoint x="1315" y="200" />
         <di:waypoint x="1390" y="200" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1052uw5_di" bpmnElement="Association_1052uw5">
+        <di:waypoint x="867" y="300" />
+        <di:waypoint x="888" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0db7eom_di" bpmnElement="Association_0db7eom">
+        <di:waypoint x="1090" y="300" />
+        <di:waypoint x="1059" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1rnc6gb_di" bpmnElement="Association_1rnc6gb">
+        <di:waypoint x="313" y="139" />
+        <di:waypoint x="296" y="183" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_0s948zs_di" bpmnElement="TextAnnotation_0s948zs">
         <dc:Bounds x="1460" y="90" width="160" height="39" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="DataInputAssociation_16xvy4f_di" bpmnElement="DataInputAssociation_16xvy4f">
-        <di:waypoint x="400" y="285" />
-        <di:waypoint x="400" y="240" />
+        <di:waypoint x="477" y="285" />
+        <di:waypoint x="436" y="240" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_1mtvv9f_di" bpmnElement="Association_1mtvv9f">
         <di:waypoint x="1569" y="186" />
         <di:waypoint x="1528" y="129" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1yj5uwn_di" bpmnElement="TextAnnotation_1yj5uwn">
+        <dc:Bounds x="780" y="300" width="160" height="39" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0e3i97e" bpmnElement="TextAnnotation_0vjftsj">
+        <dc:Bounds x="1020" y="300" width="160" height="39" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1161ci8" bpmnElement="TextAnnotation_1hnqhdz">
+        <dc:Bounds x="240" y="100" width="160" height="39" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
