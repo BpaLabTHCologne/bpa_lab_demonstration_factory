@@ -17,6 +17,8 @@ to start Mysql DBMS and Camunda self-managed
 
 ### BPALabBikeFactoryOrderManagement
 - java spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
+- Application creates/updates database with hibernate/jpa on startup
+
 ![](bpa_lab_ordermanagement_process/bpmn/BPALabBikeFactoryOrderManagement.png)
 #### Run
 in ./bpa_lab_ordermanagement_process
@@ -34,6 +36,8 @@ in ./bpa_lab_productioncontrol_process
 
 ### BPALabBikeFactoryPurchase
 - nodejs typescript mysql(9) @camunda8/sdk
+- Vendor table and Vendor-BikeComponent table must be created
+
 ![](/bpa_lab_purchasing_process/bpmn/bpa_lab_purchase_process.png)
 #### Run
 in ./bpa_lab_purchasing_process
