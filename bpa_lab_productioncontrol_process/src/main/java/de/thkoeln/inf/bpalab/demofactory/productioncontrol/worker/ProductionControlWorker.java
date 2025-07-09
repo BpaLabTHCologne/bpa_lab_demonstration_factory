@@ -2,10 +2,13 @@ package de.thkoeln.inf.bpalab.demofactory.productioncontrol.worker;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeInstance;
 import de.thkoeln.inf.bpalab.demofactory.common.dto.*;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeComponentRepository;
+import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeInstanceRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.ProductionOrderRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeComponentService;
+import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
 import de.thkoeln.inf.bpalab.demofactory.common.service.PurchaseOrderService;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
@@ -16,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +36,10 @@ public class ProductionControlWorker {
 	private ZeebeClient zeebeClient;
     @Autowired
     private PurchaseOrderService purchaseOrderService;
+    @Autowired
+    private BikeInstanceService bikeInstanceService;
+    @Autowired
+    private BikeInstanceRepository bikeInstanceRepository;
 
 	@JobWorker(type = "createComponentDemand", fetchVariables={"productionOrderNumber", "orderNumber", "produceBikeModel"})
 	public Map<String, Object> createComponentDemand(JobClient client, ActivatedJob job) {
@@ -43,6 +51,12 @@ public class ProductionControlWorker {
 			variables.put("purchaseCount", amount - quantity);
 		else
 			variables.put("purchaseCount", 0);
+		// generating Input List for multiinstance subprocess
+		ArrayList<String> manufactureBikeInstanceList = new ArrayList<>();
+		for (int i = 0; i < productionOrderDTO.produceBikeModel.amount; i++) {
+			manufactureBikeInstanceList.add(productionOrderDTO.produceBikeModel.title);
+		}
+		variables.put("manufactureBikeInstanceList", manufactureBikeInstanceList);
 		return variables;
 	}
 
@@ -86,6 +100,27 @@ public class ProductionControlWorker {
 				.send().join();
 		return variables;
 	}
+
+
+	@JobWorker(type = "manufactureBikeInstance", fetchVariables={"orderNumber", "produceBikeModel", "purchaseCount"})
+	public Map<String, Object> manufactureBikeInstance(final ActivatedJob job) throws JsonProcessingException {
+		Map<String, Object> variables = job.getVariablesAsMap();
+		LOG.info("manufactureBikeInstance variables {}"
+				, objectMapper.writeValueAsString(variables));
+		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
+		BikeInstance bikeInstance = bikeInstanceService.produceBikeInstance(productionOrderDTO.produceBikeModel.title);
+		variables.put("bikeInstanceSerialNumber", bikeInstance.getSerialNumber());
+		return variables;
+	}
+
+	@JobWorker(type = "reserveProductionBikeInstance", fetchVariables={"bikeInstanceSerialNumber", "orderNumber"})
+	public void reserveProductionBikeInstance(final ActivatedJob job) throws JsonProcessingException {
+		Map<String, Object> variables = job.getVariablesAsMap();
+		String bikeInstanceSerialNumber = variables.get("bikeInstanceSerialNumber").toString();
+		String orderNumber = variables.get("orderNumber").toString();
+		bikeInstanceService.reserveBikeInstance(bikeInstanceSerialNumber, orderNumber);
+	}
+
 
 	@JobWorker(type = "sendFinishedBikeModelProductionOrder", fetchAllVariables = true)
 	public void sendFinishedBikeModelProductionOrder(final ActivatedJob job) throws JsonProcessingException {

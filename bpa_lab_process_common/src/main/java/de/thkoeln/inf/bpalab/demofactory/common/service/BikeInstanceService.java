@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 public class BikeInstanceService {
@@ -33,6 +34,23 @@ public class BikeInstanceService {
         bikeInstance.setCustomerOrder(customerOrderNumber);
         bikeInstance.setBikeModel(bikeModel);
         return bikeInstanceRepository.save(bikeInstance);
+    }
+
+    public BikeInstance produceBikeInstance(String bikeModelTitle) {
+        BikeModel bikeModel = bikeModelRepository.getReferenceById(bikeModelTitle);
+        BikeInstance bikeInstance = new BikeInstance();
+        bikeInstance.setBikeModel(bikeModel);
+        return bikeInstanceRepository.save(bikeInstance);
+    }
+
+    public void reserveBikeInstance(String bikeInstanceSerialNumber, String orderNumber) {
+        UUID bikeInstanceUUID = UUID.fromString(bikeInstanceSerialNumber);
+        BikeInstance bikeInstance = bikeInstanceRepository.getReferenceById(bikeInstanceUUID);
+        if (bikeInstance != null) {
+            bikeInstance.setCustomerOrder(orderNumber);
+            bikeInstanceRepository.save(bikeInstance);
+        } else
+            throw new NoSuchElementException();
     }
 
     public void reserveBikeInstance(ReserveOrderDTO reserveOrderDTO) throws NoSuchElementException {

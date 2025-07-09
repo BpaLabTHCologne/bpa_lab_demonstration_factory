@@ -5,9 +5,10 @@ import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 
-public interface BikeInstanceRepository extends JpaRepository<BikeInstance, Long> {
+public interface BikeInstanceRepository extends JpaRepository<BikeInstance, UUID> {
 
     BikeInstance findFirstByBikeModelAndCustomerOrderNumberIsNull(BikeModel bikeModel);
 
@@ -15,4 +16,5 @@ public interface BikeInstanceRepository extends JpaRepository<BikeInstance, Long
 
     List<BikeInstance> findAllByCustomerOrderNumber(String customerOrderNumber);
 
+    BikeModel findBySerialNumber(String bikeModelSerialNumber);
 }

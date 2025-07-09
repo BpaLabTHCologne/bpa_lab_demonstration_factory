@@ -7,12 +7,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
 
 @Entity
+@Proxy(lazy=false)
 public class BikeInstance {
 
     @Id
