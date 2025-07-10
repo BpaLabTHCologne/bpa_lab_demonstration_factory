@@ -19,29 +19,32 @@
           "type": "textfield",
           "layout": {
             "row": "Row_1pzqm9t",
-            "columns": 9
+            "columns": 7
           },
           "id": "Field_016mxd6",
           "key": "title",
           "readonly": "on"
         },
         {
-          "label": "Amount",
+          "label": "Amount (adjustable)",
           "type": "number",
           "layout": {
             "row": "Row_1pzqm9t",
-            "columns": 4
+            "columns": 5
           },
           "id": "Field_11lnh3q",
           "key": "amount",
-          "readonly": "on"
+          "readonly": "on",
+          "validate": {
+            "min": "=purchaseCount"
+          }
         }
       ],
       "showOutline": true,
       "type": "group",
       "layout": {
         "row": "Row_1gscbz1",
-        "columns": 6
+        "columns": 8
       },
       "id": "Field_1s0ya40",
       "path": "purchaseBikeComponent"

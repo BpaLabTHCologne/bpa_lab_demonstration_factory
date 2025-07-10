@@ -2,9 +2,9 @@ package de.thkoeln.inf.bpalab.demofactory.productioncontrol.worker;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeComponent;
 import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeInstance;
 import de.thkoeln.inf.bpalab.demofactory.common.dto.*;
-import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeComponentRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeInstanceRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.ProductionOrderRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeComponentService;
@@ -70,10 +70,6 @@ public class ProductionControlWorker {
 				, productionOrderDTO.produceBikeModel);
 	}
 
-	private void addComponents(PurchaseOrderDTO purchaseOrderDTO) {
-		bikeComponentService.addBikeComponet(purchaseOrderDTO.purchaseBikeComponent);
-	}
-
 	@JobWorker(type = "sendPurchaseOrder", fetchVariables={"productionOrderNumber", "purchaseOrderNumber", "purchaseBikeComponent"})
 	public Map<String, Object> sendPurchaseOrder(final ActivatedJob job) throws JsonProcessingException {
 		PurchaseOrderDTO purchaseOrderDTO = job.getVariablesAsType(PurchaseOrderDTO.class);
@@ -81,14 +77,6 @@ public class ProductionControlWorker {
 		Map<String, Object> variables = new HashMap<>();
 		variables.put("purchaseOrderCorrelation", purchaseOrderCorrelation);
 		variables.putAll(job.getVariablesAsMap());
-		// fake purchasing
-//		addComponents(purchaseOrderDTO);
-//		zeebeClient.newPublishMessageCommand()
-//				.messageName("MsgPurchaseFinished")
-//				.correlationKey(purchaseOrderCorrelation)
-//				.variables(variables)
-//				.send().join();
-		// end fake
 		LOG.info("sendPurchaseOrder purchaseOrderDTO {} correlationKey: {}"
 				, objectMapper.writeValueAsString(purchaseOrderDTO)
 				, purchaseOrderCorrelation);
@@ -108,6 +96,8 @@ public class ProductionControlWorker {
 		LOG.info("manufactureBikeInstance variables {}"
 				, objectMapper.writeValueAsString(variables));
 		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
+		BikeComponent bikeComponent = bikeComponentService.getBikeComponentsByBikeModelTitle(productionOrderDTO.produceBikeModel.title);
+		bikeComponentService.decreaseBikeComponentQuantity(bikeComponent.getTitle(), 1);
 		BikeInstance bikeInstance = bikeInstanceService.produceBikeInstance(productionOrderDTO.produceBikeModel.title);
 		variables.put("bikeInstanceSerialNumber", bikeInstance.getSerialNumber());
 		return variables;

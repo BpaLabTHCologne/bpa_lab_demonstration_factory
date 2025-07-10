@@ -30,9 +30,9 @@ public class BikeComponentService {
         return bikeComponentRepository.getAllByBikeModel(bikeModel).getFirst();
     }
 
-    public void addBikeComponet(OrderItemDTO purchaseBikeComponent) {
-        BikeComponent bikeComponent = bikeComponentRepository.getReferenceById(purchaseBikeComponent.title);
-        bikeComponent.setQuantity(bikeComponent.getQuantity() + purchaseBikeComponent.amount);
+    public void decreaseBikeComponentQuantity(String title, Integer quantity) {
+        BikeComponent bikeComponent = bikeComponentRepository.getReferenceById(title);
+        bikeComponent.setQuantity(bikeComponent.getQuantity() - quantity);
         bikeComponentRepository.save(bikeComponent);
     }
 }
