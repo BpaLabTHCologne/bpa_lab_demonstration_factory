@@ -11,13 +11,22 @@ This repository contains the source code and configuration files of the implemen
 -> Docker desktop application based on your system preference (Windows/macOS)
 or Docker nativ (Linux)
 
+-> mysql9 
+
+### Database scheme
+
+![](sql/bpa_lab_demostration_factory_db.png)
+
+
+
 #### Run
     docker compose -f docker-compose.yaml
 to start Mysql DBMS and Camunda self-managed
 
 ### BPALabBikeFactoryOrderManagement
-- java spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
-- Application creates/updates database with hibernate/jpa on startup
+- jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
+- Application creates/updates database with hibernate/jpa on startup except
+  Vendor table and Vendor-BikeComponent table
 
 ![](bpa_lab_ordermanagement_process/bpmn/BPALabBikeFactoryOrderManagement.png)
 #### Run
@@ -26,7 +35,7 @@ in ./bpa_lab_ordermanagement_process
     gradle bootRun
 
 ### BPALabBikeFactoryProduction
-- java spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
+- jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
 ![](/bpa_lab_productioncontrol_process/bpmn/BPALabBikeFactoryProductionControl.png)
 #### Run
 
@@ -35,7 +44,7 @@ in ./bpa_lab_productioncontrol_process
     gradle bootRun
 
 ### BPALabBikeFactoryPurchase
-- nodejs typescript mysql(9) @camunda8/sdk
+- nodejs(v23.10.0) typescript mysql(9) @camunda8/sdk
 - Vendor table and Vendor-BikeComponent table must be created
 
 ![](/bpa_lab_purchasing_process/bpmn/bpa_lab_purchase_process.png)
