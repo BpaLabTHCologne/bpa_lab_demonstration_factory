@@ -15,21 +15,21 @@ This repository contains the source code and configuration files of the implemen
 > :information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
 
 1. Clone this repository to a directory of your choice
-2. The next steps depend on the environment you want to use ([Test](#test-environment-no-connection-to-the-physical-components-of-the-model-factory-needed) or [Productive](#productive-environment))
-
+2. Configure ETHERREAL mailer in docker-compose-core.yaml
+3. The next steps depend on the environment you want to use ([Test](#test-environment-no-connection-to-the-physical-components-of-the-model-factory-needed) or [Productive](#productive-environment))
 ---
 
 ### Test environment (No connection to the physical components of the model factory needed!)
 
-3. Go into the **.env** file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'false'
+4. Go into the **.env** file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'false'
 
-4. Run the following command from the directory of the project to pull, create and run all the containers (docker service need to be running):
+5. Run the following command from the directory of the project to pull, create and run all the containers (docker service need to be running):
 
 ```
 docker compose -f docker-compose-core.yaml --profile=TestSetup up -d
 ```
 
-5. Run the following command only to shut down the containers gracefully
+6. Run the following command only to shut down the containers gracefully
 
 ```
 docker compose -f docker-compose-core.yaml --profile=TestSetup down
@@ -39,17 +39,17 @@ docker compose -f docker-compose-core.yaml --profile=TestSetup down
 
 > :information_source: Error-free use of the productive environment is currently only possible with the BPA-Lab computer
 
-3. Go into the **.env** file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'true'
+4. Go into the **.env** file of the project an set the environment variables IS_PROD and FACTORY_PROD to 'true'
 
-4. Before running the productive environment, [further preparations](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/wiki/Use-of-the-productive-environment-of-the-model-factory#preparations) must be made to the physical environment of the model factory
+5. Before running the productive environment, [further preparations](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/wiki/Use-of-the-productive-environment-of-the-model-factory#preparations) must be made to the physical environment of the model factory
 
-5. Run the following command from the directory of the project to pull, create and run all the containers:
+6. Run the following command from the directory of the project to pull, create and run all the containers:
 
 ```
 docker compose -f docker-compose-core.yaml --profile=ProdSetup up -d
 ```
 
-6. Run the following command only to shut down the containers gracefully
+7. Run the following command only to shut down the containers gracefully
 
 ```
 docker compose -f docker-compose-core.yaml --profile=ProdSetup down
