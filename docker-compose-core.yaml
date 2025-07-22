@@ -237,6 +237,10 @@ services:
       MYSQL_DATABASE: db
       MYSQL_HOST_PORT: 3306
       MYSQL_ROOT_PASSWORD: root
+      ETHERREAL_HOST_NAME: smtp.ethereal.email
+      ETHERREAL_HOST_PORT: 587
+      ETHERREAL_USER: courtney.schroeder69@ethereal.email
+      ETHERREAL_PASSWORD: ZaMx6HN5B5aPfGBHnf
 
 # REST middleware server container used to communicate between the front-end and zeebe broker
   bpa_lab_rest_middleware_server:
@@ -272,6 +276,11 @@ services:
       - mysql
     volumes:
       - ./bpa_lab_shipment_process/src:/app/src
+    environment:
+      ETHERREAL_HOST_NAME: smtp.ethereal.email
+      ETHERREAL_HOST_PORT: 587
+      ETHERREAL_USER: courtney.schroeder69@ethereal.email
+      ETHERREAL_PASSWORD: ZaMx6HN5B5aPfGBHnf
 
 # Purchasing process container including job workers
   bpa_lab_purchasing_process:
@@ -296,6 +305,10 @@ services:
       MYSQL_PASSWORD: dev
       MYSQL_DATABASE: db
       MYSQL_HOST_PORT: 3306
+      ETHERREAL_HOST_NAME: smtp.ethereal.email
+      ETHERREAL_HOST_PORT: 587
+      ETHERREAL_USER: courtney.schroeder69@ethereal.email
+      ETHERREAL_PASSWORD: ZaMx6HN5B5aPfGBHnf
 
 # Warehouse operations process container including job workers
   bpa_lab_warehouse_operations_process:

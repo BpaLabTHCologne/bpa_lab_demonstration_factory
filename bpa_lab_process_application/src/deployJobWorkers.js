@@ -30,6 +30,7 @@ async function main() {
   });
 
   try {
+
     // Deploy the order management and production control pool BPMN diagram
     const orderManagement = await zbc.deployResource({
       processFilename: `./bpa_lab_bpm_models/order-management-process.bpmn`,
@@ -84,6 +85,10 @@ async function main() {
 
     // Log the warehouse robot BPMN diagram
     console.log('\nHBW Storage Process BPMN deployed successfully:', JSON.stringify(hbwStorage, null, 2));
+    // check env variables
+    console.log('\nProcess application env:',
+        process.env.ETHERREAL_HOST_NAME, process.env.ETHERREAL_HOST_PORT,
+        process.env.ETHERREAL_USER, process.env.ETHERREAL_PASSWORD);
 
   } catch (error) {
     // Handle any errors that occur during deployment

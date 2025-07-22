@@ -19,11 +19,11 @@ async function handler(job) {
 			sendRejectionEmail.log('sendRejectionEmail variables:', job.variables)
 
 			const transporter = nodemailer.createTransport({
-				host: 'smtp.ethereal.email',
-				port: 587,
+				host: process.env.ETHERREAL_HOSTNAME,
+				port: process.env.ETHERREAL_HOST_PORT,
 				auth: {
-					user: 'delfina97@ethereal.email',
-					pass: '9hQh9xQVAwpZsC1QCK' 
+					user: process.env.ETHERREAL_USER,
+					pass: process.env.ETHERREAL_PASSWORD
 				}
 			});
 

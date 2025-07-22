@@ -20,12 +20,16 @@ async function handler(job) {
 			// worker.log('Task variables', job.variables)
 			sendConfirmationEmail.log('sendConfirmationEmail variables:', job.variables)
 
+			sendConfirmationEmail.log('sendConfirmationEmail nodemailer:',
+				process.env.ETHERREAL_HOST_NAME, process.env.ETHERREAL_HOST_PORT,
+				process.env.ETHERREAL_USER, process.env.ETHERREAL_PASSWORD)
+
 			const transporter = nodemailer.createTransport({
-				host: 'smtp.ethereal.email',
-				port: 587,
+				host: process.env.ETHERREAL_HOST_NAME,
+				port: process.env.ETHERREAL_HOST_PORT,
 				auth: {
-					user: 'delfina97@ethereal.email',
-					pass: '9hQh9xQVAwpZsC1QCK' 
+					user: process.env.ETHERREAL_USER,
+					pass: process.env.ETHERREAL_PASSWORD
 				}
 			});
 
