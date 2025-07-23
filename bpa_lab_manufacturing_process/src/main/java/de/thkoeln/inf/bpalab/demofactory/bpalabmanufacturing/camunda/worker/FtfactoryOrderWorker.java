@@ -1,0 +1,70 @@
+package de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.camunda.worker;
+
+import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.mqtt.publisher.FtfactoryPubOrder;
+import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.mqtt.subscriber.FtfactorySubOrder;
+import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.zeebe.spring.client.annotation.JobWorker;
+import io.camunda.zeebe.spring.common.exception.ZeebeBpmnError;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Component
+public class FtfactoryOrderWorker extends AWorker {
+		
+	@Autowired
+	private FtfactorySubOrder ftfactorySubOrder;
+	
+
+	@Autowired
+	private FtfactoryPubOrder pubOrder;
+
+	@JobWorker(type = "orderWithShippedReplyMessage")
+	public Map<String, Object> orderWithShippedReplyMessage(final ActivatedJob job) {
+		logJobStart(job);
+
+		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
+
+		if (!this.ftfactoryMQTTClient.isConnected()) {
+			throw new ZeebeBpmnError("factoryOrderError", "factory order failed due to an error", null);
+		}
+		if (this.ftfactorySubOrder.isOrdered()) {
+			throw new ZeebeBpmnError("factoryOrderOtherError", "factory busy for another order", null);
+		}
+//		prepare and publish Order to ftfactoryMQTT
+//		FtfactoryPubOrder pubOrder = new FtfactoryPubOrder(job.getVariables());
+		pubOrder.updateOrder(job.getVariables());
+		this.ftfactoryMQTTClient.publish(pubOrder.getTopicPayload());
+
+//		prepare ReplyMessage
+		ftfactorySubOrder.initTypeCorrelationValue(pubOrder.type); //normally "pubOrder.type" instead of correlationValueStr needs be tested if it works with factory connected!!!
+			
+
+		logJobEnd(job);
+
+		return variables;
+	}
+
+	@JobWorker(type = "orderState")
+	public Map<String, Object> orderState(final ActivatedJob job) {
+		logJobStart(job);
+
+		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
+
+		if (this.ftfactorySubOrder != null && this.ftfactorySubOrder.isMessageReceived()) {
+			if (variables.get("orderType") != null && variables.get("orderType").equals(this.ftfactorySubOrder.getType())) {
+				variables.put("f_orderType", this.ftfactorySubOrder.getType());
+				variables.put("f_orderState", this.ftfactorySubOrder.getState());
+			}
+		} else {
+			variables.put("f_orderType", "NONE");
+			variables.put("f_orderState", "NONE");
+		}
+
+		logJobEnd(job);
+		return variables;
+	}
+
+}

@@ -1,0 +1,70 @@
+{
+  "components": [
+    {
+      "label": "Temp",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0fhe8h7",
+        "columns": 2
+      },
+      "id": "Field_0xuz2eb",
+      "key": "f_temperatur",
+      "disabled": true
+    },
+    {
+      "label": "Humid",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0fhe8h7",
+        "columns": 2
+      },
+      "id": "Field_1l6xxin",
+      "key": "f_luftfeuchtigkeit",
+      "disabled": true
+    },
+    {
+      "label": "Werkstück wählen",
+      "values": [
+        {
+          "label": "BLAU",
+          "value": "BLUE"
+        },
+        {
+          "label": "ROT",
+          "value": "RED"
+        },
+        {
+          "label": "WEISS",
+          "value": "WHITE"
+        }
+      ],
+      "type": "select",
+      "layout": {
+        "row": "Row_0p7fr1r",
+        "columns": 4
+      },
+      "id": "Field_1h99yte",
+      "key": "orderType"
+    },
+    {
+      "label": "manufactureOrderCorrelation",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1edn0xw",
+        "columns": 4
+      },
+      "id": "Field_01b0ywc",
+      "key": "manufactureOrderCorrelation",
+      "defaultValue": "PRODUCTIONORDERNUMBER1234"
+    }
+  ],
+  "schemaVersion": 18,
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "type": "default",
+  "id": "BPALabBikeFactoryManufactureOrderForm",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0"
+}

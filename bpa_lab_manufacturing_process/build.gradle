@@ -1,0 +1,35 @@
+plugins {
+    id 'org.springframework.boot' version '3.5.0'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+}
+
+group = 'de.thkoeln.inf.bpalab.demofactory'
+
+java.sourceCompatibility = '21'
+
+bootRun {
+    environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: 'local'
+    environment JAVA_TOOL_OPTIONS: '-Dlogging.level.io.camunda.zeebe.client.impl.ZeebeCallCredentials=ERROR'
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    implementation('ch.qos.logback:logback-classic')
+    implementation("io.camunda:spring-boot-starter-camunda-sdk:8.7.5")
+// https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
+    implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs = ["-parameters"]
+}
