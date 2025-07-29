@@ -51,7 +51,16 @@ in ./bpa_lab_productioncontrol_process
 #### Run
 in ./bpa_lab_purchasing_process
 
-    npm start
+    npm run start
+
+### BPALabBikeFactoryShipment
+- nodejs(v23.10.0) typescript mysql(9) @camunda8/sdk
+
+![](/bpa_lab_shipment_process/bpmn/bpa_lab_shipment_process.png)
+#### Run
+in ./bpa_lab_purchasing_process
+
+    npm run start
 
 ### Containerisation in preparation
 - docker compose, dockerfiles, .env
