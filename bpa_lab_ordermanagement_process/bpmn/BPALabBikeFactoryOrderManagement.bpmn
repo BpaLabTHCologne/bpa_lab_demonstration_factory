@@ -17,6 +17,11 @@ productionOrderCorrelation</bpmn:text>
 Operations ("store")</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_0tirv4e" associationDirection="None" sourceRef="Activity_135jbkl" targetRef="TextAnnotation_0j6k5f8" />
+    <bpmn:textAnnotation id="TextAnnotation_1hnqhdz">
+      <bpmn:text>MsgStartShippingOrder:
+shipmentOrderCorrelation</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1drhjee" associationDirection="None" sourceRef="TextAnnotation_1hnqhdz" targetRef="Activity_0qst065" />
   </bpmn:collaboration>
   <bpmn:process id="BPALabBikeFactoryOrderManagement" name="BPALabBikeFactoryOrderManagement" isExecutable="true">
     <bpmn:sequenceFlow id="Flow_1foyfi4" name="any&#10;Material&#10;Demands generated" sourceRef="inc_gateway_split_production_or_available" targetRef="production_subprocess">
@@ -343,9 +348,9 @@ Operations ("store")</bpmn:text>
         <di:waypoint x="208" y="260" />
         <di:waypoint x="240" y="260" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0tirv4e_di" bpmnElement="Association_0tirv4e">
-        <di:waypoint x="1335" y="111" />
-        <di:waypoint x="1380" y="94" />
+      <bpmndi:BPMNEdge id="Association_1drhjee_di" bpmnElement="Association_1drhjee">
+        <di:waypoint x="1754" y="181" />
+        <di:waypoint x="1743" y="220" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_1yj5uwn_di" bpmnElement="TextAnnotation_1yj5uwn">
         <dc:Bounds x="1150" y="360" width="160" height="39" />
@@ -353,6 +358,10 @@ Operations ("store")</bpmn:text>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_08e2vzb" bpmnElement="TextAnnotation_1egg82o">
         <dc:Bounds x="1390" y="361" width="160" height="39" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0j6k5f8_di" bpmnElement="TextAnnotation_0j6k5f8">
+        <dc:Bounds x="1380" y="60" width="149.98734817813767" height="40.48582995951417" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="DataInputAssociation_0h92p7h_di" bpmnElement="DataInputAssociation_0h92p7h">
@@ -375,8 +384,12 @@ Operations ("store")</bpmn:text>
         <di:waypoint x="1462" y="361" />
         <di:waypoint x="1437" y="300" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="TextAnnotation_0j6k5f8_di" bpmnElement="TextAnnotation_0j6k5f8">
-        <dc:Bounds x="1380" y="60" width="149.98734817813767" height="40.48582995951417" />
+      <bpmndi:BPMNEdge id="Association_0tirv4e_di" bpmnElement="Association_0tirv4e">
+        <di:waypoint x="1335" y="111" />
+        <di:waypoint x="1380" y="94" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_1161ci8" bpmnElement="TextAnnotation_1hnqhdz">
+        <dc:Bounds x="1680" y="140" width="160" height="41" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>

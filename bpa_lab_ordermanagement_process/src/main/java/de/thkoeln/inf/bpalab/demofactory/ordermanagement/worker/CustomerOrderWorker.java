@@ -120,8 +120,10 @@ public class CustomerOrderWorker {
 		String shipmentOrderCorrelation = offerOrderDTO.orderNumber;
 		variables.put("shipmentOrderCorrelation", shipmentOrderCorrelation);
 		variables.put("shippingAddress", offerOrderDTO.orderCustomer.adress);
+		variables.put("orderNumber", offerOrderDTO.orderNumber);
+		LOG.info("sendShipment variables {}", objectMapper.writeValueAsString(variables));
 		zeebeClient.newPublishMessageCommand()
-				.messageName("startShipment")
+				.messageName("MsgStartShippingOrder")
 				.correlationKey(shipmentOrderCorrelation)
 				.variables(variables)
 				.send().join();

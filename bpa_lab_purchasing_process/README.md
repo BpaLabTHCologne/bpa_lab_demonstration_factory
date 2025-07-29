@@ -19,8 +19,11 @@ npm i
 
 ## Operation
 
-A task worker services the first task. These operations use the Zeebe API.
-Another task worker services the message end event. These operations use the Zeebe API.
+The application will deploy a BPMN process model to the cluster, then start an instance. A task worker services the first task. These operations use the Zeebe API.
+
+The next task in the process model is a human task. The Tasklist API is used to claim, then complete the task. This is accomplished by a "human task worker" that polls every three seconds.
+
+Finally, the Operate API is used to retrieve the XML of the process model.
 
 ## Credentials
 
