@@ -26,12 +26,31 @@ class OrderDTO extends LosslessDto {
 
 const c8 = new Camunda8({
     ZEEBE_GRPC_ADDRESS: process.env.ZEEBE_ADDRESS,
-    CAMUNDA_AUTH_STRATEGY: 'NONE'
+    // @ts-ignore
+    CAMUNDA_AUTH_STRATEGY: process.env.CAMUNDA_AUTH_STRATEGY
 })
 const zbc = c8.getZeebeGrpcApiClient(
 )
 
 const getLogger = (prefix: string, color: any) => (msg: string) => console.log(color(`[${prefix}] ${msg}`))
+
+console.log(`Creating worker checkProductInformation`)
+zbc.createWorker({
+//    inputVariableDto: PurchaseComponentDTO,
+    taskType: 'checkProductInformation',
+    taskHandler: async job => {
+        const log = getLogger('Zeebe Worker', chalk.blueBright)
+        log(`handling job of type ${job.type}`)
+        const orderNumber  = job.variables.orderNumber;
+        console.log(job.variables);
+        const productList = await getBikeInstancesForOrderNumber(orderNumber.toString());
+        console.log(productList);
+        return job.complete({
+            // @ts-ignore
+            serviceTaskOutcome: orderNumber, productList
+        })
+    }
+})
 
 console.log(`Creating worker shipBikeInstances`)
 zbc.createWorker({
