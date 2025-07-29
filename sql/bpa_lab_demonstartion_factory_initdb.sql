@@ -1,3 +1,5 @@
+use bpa_lab_demonstration_factory;
+
 create table if not exists bike_model
 (
     title  varchar(255) not null
@@ -80,7 +82,7 @@ create table if not exists vendor
     vendor_contact varchar(255) null
     );
 
-create table if not exists vendor_bikecomponent
+create table if not exists vendor_bike_component
 (
     vendor_name         varchar(255) not null,
     bikecomponent_title varchar(255) not null,

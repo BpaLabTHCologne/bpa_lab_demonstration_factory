@@ -20,8 +20,8 @@ export function getPurchaseOrder(purchaseOrderNumber : string) {
 
 export function getVendorsForBikeComponent(bikeComponent : string) {
     return new Promise((resolve, reject) => {
-        const query = `select v.vendor_name as name, v.vendor_contact as contact, vb.price from bike_component as bc
-                        left join vendor_bikecomponent as vb on bc.title = vb.bikecomponent_title
+        const query = `select v.vendor_name as name, v.vendor_contact as contact, vb.price as price from bike_component as bc
+                        left join vendor_bike_component as vb on bc.title = vb.bikecomponent_title
                         left join vendor as v on vb.vendor_name = v.vendor_name
                         where bc.title = ?;`
         con.query(query, [bikeComponent], (err, result) => {

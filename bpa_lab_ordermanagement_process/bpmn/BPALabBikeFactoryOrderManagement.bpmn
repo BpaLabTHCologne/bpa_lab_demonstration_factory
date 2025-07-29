@@ -12,6 +12,11 @@ productionOrderCorrelation</bpmn:text>
 productionOrderCorrelation</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_0qqdmbi" associationDirection="None" sourceRef="TextAnnotation_1egg82o" targetRef="Activity_1mnp0e2" />
+    <bpmn:textAnnotation id="TextAnnotation_0j6k5f8">
+      <bpmn:text>Warehouse
+Operations ("store")</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0tirv4e" associationDirection="None" sourceRef="Activity_135jbkl" targetRef="TextAnnotation_0j6k5f8" />
   </bpmn:collaboration>
   <bpmn:process id="BPALabBikeFactoryOrderManagement" name="BPALabBikeFactoryOrderManagement" isExecutable="true">
     <bpmn:sequenceFlow id="Flow_1foyfi4" name="any&#10;Material&#10;Demands generated" sourceRef="inc_gateway_split_production_or_available" targetRef="production_subprocess">
@@ -55,7 +60,8 @@ productionOrderCorrelation</bpmn:text>
     <bpmn:sequenceFlow id="Flow_05uzrc5" sourceRef="Activity_15wljsi" targetRef="Activity_12p0gn3" />
     <bpmn:sequenceFlow id="Flow_0a60ne1" sourceRef="Activity_1pyqn2z" targetRef="Activity_15wljsi" />
     <bpmn:sequenceFlow id="Flow_0ca1n5e" sourceRef="Activity_1ynyvwb" targetRef="Activity_1pyqn2z" />
-    <bpmn:sequenceFlow id="Flow_0o89vpv" sourceRef="inc_gateway_join_production_or_available" targetRef="Activity_0mncymk" />
+    <bpmn:sequenceFlow id="Flow_0hrrpoj" sourceRef="Activity_0qst065" targetRef="Activity_0mncymk" />
+    <bpmn:sequenceFlow id="Flow_0o89vpv" sourceRef="inc_gateway_join_production_or_available" targetRef="Activity_0qst065" />
     <bpmn:sequenceFlow id="Flow_0vdcsis" sourceRef="production_subprocess" targetRef="inc_gateway_join_production_or_available" />
     <bpmn:sequenceFlow id="Flow_1bh5un2" sourceRef="Activity_0mncymk" targetRef="EndEventOrderManagement" />
     <bpmn:sequenceFlow id="Flow_1sgbuw1" sourceRef="Activity_0ug7hx4" targetRef="Activity_1ynyvwb" />
@@ -141,8 +147,15 @@ productionOrderCorrelation</bpmn:text>
         </bpmn:extensionElements>
       </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:serviceTask>
-    <bpmn:task id="Activity_0mncymk" name="ship Customer Order">
+    <bpmn:sendTask id="Activity_0qst065" name="send Shipment">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendShipment" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0o89vpv</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hrrpoj</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:task id="Activity_0mncymk" name="ship Customer Order">
+      <bpmn:incoming>Flow_0hrrpoj</bpmn:incoming>
       <bpmn:outgoing>Flow_1bh5un2</bpmn:outgoing>
     </bpmn:task>
     <bpmn:userTask id="Activity_12p0gn3" name="show Order">
@@ -169,7 +182,7 @@ productionOrderCorrelation</bpmn:text>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_10fxbv2">
       <bpmndi:BPMNShape id="Participant_064cb9h_di" bpmnElement="Participant_064cb9h" isHorizontal="true">
-        <dc:Bounds x="120" y="80" width="1770" height="360" />
+        <dc:Bounds x="120" y="50" width="1960" height="390" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_0bwq0q8_di" bpmnElement="DataStoreReference_0bwq0q8">
@@ -185,9 +198,9 @@ productionOrderCorrelation</bpmn:text>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_009pzl1_di" bpmnElement="EndEventOrderManagement">
-        <dc:Bounds x="1812" y="242" width="36" height="36" />
+        <dc:Bounds x="1992" y="242" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1793" y="285" width="75" height="14" />
+          <dc:Bounds x="1973" y="285" width="75" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEventOrderManagement">
@@ -260,8 +273,11 @@ productionOrderCorrelation</bpmn:text>
       <bpmndi:BPMNShape id="Activity_02mbz43_di" bpmnElement="Activity_135jbkl">
         <dc:Bounds x="1235" y="90" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0icogk2_di" bpmnElement="Activity_0qst065">
+        <dc:Bounds x="1690" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0mncymk_di" bpmnElement="Activity_0mncymk">
-        <dc:Bounds x="1670" y="220" width="100" height="80" />
+        <dc:Bounds x="1850" y="220" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0213wa1_di" bpmnElement="Activity_12p0gn3">
@@ -303,17 +319,21 @@ productionOrderCorrelation</bpmn:text>
         <di:waypoint x="470" y="260" />
         <di:waypoint x="500" y="260" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hrrpoj_di" bpmnElement="Flow_0hrrpoj">
+        <di:waypoint x="1790" y="260" />
+        <di:waypoint x="1850" y="260" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0o89vpv_di" bpmnElement="Flow_0o89vpv">
         <di:waypoint x="1645" y="260" />
-        <di:waypoint x="1670" y="260" />
+        <di:waypoint x="1690" y="260" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0vdcsis_di" bpmnElement="Flow_0vdcsis">
         <di:waypoint x="1570" y="260" />
         <di:waypoint x="1595" y="260" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1bh5un2_di" bpmnElement="Flow_1bh5un2">
-        <di:waypoint x="1770" y="260" />
-        <di:waypoint x="1812" y="260" />
+        <di:waypoint x="1950" y="260" />
+        <di:waypoint x="1992" y="260" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1sgbuw1_di" bpmnElement="Flow_1sgbuw1">
         <di:waypoint x="340" y="260" />
@@ -322,6 +342,10 @@ productionOrderCorrelation</bpmn:text>
       <bpmndi:BPMNEdge id="Flow_1x2cfcg_di" bpmnElement="Flow_1x2cfcg">
         <di:waypoint x="208" y="260" />
         <di:waypoint x="240" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0tirv4e_di" bpmnElement="Association_0tirv4e">
+        <di:waypoint x="1335" y="111" />
+        <di:waypoint x="1380" y="94" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_1yj5uwn_di" bpmnElement="TextAnnotation_1yj5uwn">
         <dc:Bounds x="1150" y="360" width="160" height="39" />
@@ -351,6 +375,10 @@ productionOrderCorrelation</bpmn:text>
         <di:waypoint x="1462" y="361" />
         <di:waypoint x="1437" y="300" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_0j6k5f8_di" bpmnElement="TextAnnotation_0j6k5f8">
+        <dc:Bounds x="1380" y="60" width="149.98734817813767" height="40.48582995951417" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

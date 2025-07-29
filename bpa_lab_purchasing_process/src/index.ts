@@ -9,7 +9,6 @@ config()
 
 // @ts-ignore
 import {getPurchaseOrder, getVendorsForBikeComponent, storeBikeComponent} from "./dbConnection.ts";
-import {parseVariablesAndCustomHeadersToJSON} from "@camunda8/sdk/dist/zeebe/lib";
 
 //import './zeebeWorkers';
 
@@ -47,16 +46,18 @@ zbc.createWorker({
         const purchaseOrder = await getPurchaseOrder(purchaseComponentDTO.purchaseOrderNumber);
         console.log(purchaseOrder);
         const vendors = await getVendorsForBikeComponent(purchaseComponentDTO.purchaseBikeComponent.title)
+        console.log(vendors);
         // @ts-ignore
         const vendorList = vendors.map(item => ({
-                    label: item.name + " " + item.contact + " " + item.price,
-                    value: item.name
-                }))
-
+            label: item.contact + " " + item.contact + " " + item.price,
+            value: item.name
+        }))
         console.log(vendorList);
+        const purchaseCount = purchaseComponentDTO.purchaseBikeComponent.amount
+
         return job.complete({
             // @ts-ignore
-            serviceTaskOutcome: purchaseComponentDTO, vendorList
+            serviceTaskOutcome: purchaseComponentDTO, vendorList, purchaseCount
         })
     }
 })
@@ -70,7 +71,7 @@ zbc.createWorker({
         log(`handling job of type ${job.type}`)
         const purchaseComponentDTO = job.variables;
         const result = await storeBikeComponent(purchaseComponentDTO.purchaseBikeComponent.title,
-                                    purchaseComponentDTO.purchaseBikeComponent.amount)
+            purchaseComponentDTO.purchaseBikeComponent.amount)
         console.log(result);
         return job.complete()
     }
@@ -87,11 +88,10 @@ zbc.createWorker({
         console.log("purchaseOrderCorrelation: " + purchaseComponentDTO.purchaseOrderCorrelation);
         zbc.publishMessage({
             name: "MsgPurchaseFinished",
-            correlationKey: purchaseComponentDTO.purchaseOrderCorrelation
+            correlationKey: purchaseComponentDTO.purchaseOrderCorrelation,
             // @ts-ignore
-//            variables: purchaseComponentDTO
+            variables: purchaseComponentDTO
             })
         return job.complete()
     }
 })
-

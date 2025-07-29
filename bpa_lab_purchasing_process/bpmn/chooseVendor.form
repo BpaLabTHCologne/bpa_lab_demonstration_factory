@@ -34,7 +34,7 @@
           },
           "id": "Field_11lnh3q",
           "key": "amount",
-          "readonly": "on",
+          "readonly": false,
           "validate": {
             "min": "=purchaseCount"
           }
@@ -58,7 +58,11 @@
       },
       "id": "Field_1dl9v0c",
       "key": "selectedVendor",
-      "valuesKey": "vendorList"
+      "valuesKey": "vendorList",
+      "readonly": false,
+      "validate": {
+        "required": true
+      }
     }
   ],
   "type": "default",

@@ -1,5 +1,5 @@
 {
-  "name": "c8-sdk-demo",
+  "name": "bpa_lab_purchase_process",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -8,7 +8,7 @@
     "start": "node --loader ts-node/esm src/index.ts"
   },
   "keywords": [],
-  "author": "josh.wulf@camunda.com",
+  "author": "uwep",
   "license": "ISC",
   "type": "module",
   "devDependencies": {

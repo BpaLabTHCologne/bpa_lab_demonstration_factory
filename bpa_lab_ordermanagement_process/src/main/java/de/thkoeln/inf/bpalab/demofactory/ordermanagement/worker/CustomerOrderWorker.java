@@ -112,4 +112,18 @@ public class CustomerOrderWorker {
 				.send().join();
 		return variables;
 	}
+
+	@JobWorker(type = "sendShipment")
+	public void sendShipment(final ActivatedJob job) throws JsonProcessingException {
+		Map<String, Object> variables = job.getVariablesAsMap();
+		OfferOrderDTO offerOrderDTO = job.getVariablesAsType(OfferOrderDTO.class);
+		String shipmentOrderCorrelation = offerOrderDTO.orderNumber;
+		variables.put("shipmentOrderCorrelation", shipmentOrderCorrelation);
+		variables.put("shippingAddress", offerOrderDTO.orderCustomer.adress);
+		zeebeClient.newPublishMessageCommand()
+				.messageName("startShipment")
+				.correlationKey(shipmentOrderCorrelation)
+				.variables(variables)
+				.send().join();
+	}
 }
