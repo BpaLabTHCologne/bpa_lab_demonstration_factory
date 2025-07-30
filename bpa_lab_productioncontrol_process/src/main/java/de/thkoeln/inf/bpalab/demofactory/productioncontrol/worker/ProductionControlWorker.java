@@ -64,8 +64,13 @@ public class ProductionControlWorker {
 	public PurchaseOrderDTO savePurchaseOrder(final ActivatedJob job) {
 		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
 		int purchaseCount = (int) job.getVariable("purchaseCount");
-		productionOrderRepository.getReferenceById(productionOrderDTO.productionOrderNumber);
-		productionOrderDTO.produceBikeModel.amount = purchaseCount;
+        try {
+            productionOrderRepository.getReferenceById(productionOrderDTO.productionOrderNumber);
+        } catch (Exception e) {
+			LOG.info("savePurchaseOrder productionNumber {} not found",
+					productionOrderDTO.productionOrderNumber);
+        }
+        productionOrderDTO.produceBikeModel.amount = purchaseCount;
 		return purchaseOrderService.createPurchaseOrder(productionOrderDTO.productionOrderNumber
 				, productionOrderDTO.produceBikeModel);
 	}

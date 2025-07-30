@@ -13,11 +13,11 @@ import {getPurchaseOrder, getVendorsForBikeComponent, storeBikeComponent} from "
 //import './zeebeWorkers';
 
 
-const c8 = new Camunda8()
+const c8 = new Camunda8({
+    ZEEBE_ADDRESS: process.env.ZEEBE_ADDRESS
+})
+
 const zbc = c8.getZeebeGrpcApiClient()
-const operate = c8.getOperateApiClient()
-const optimize = c8.getOptimizeApiClient() // unused
-const tasklist = c8.getTasklistApiClient()
 
 const getLogger = (prefix: string, color: any) => (msg: string) => console.log(color(`[${prefix}] ${msg}`))
 
