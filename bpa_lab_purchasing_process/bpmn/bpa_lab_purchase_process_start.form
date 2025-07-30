@@ -1,0 +1,63 @@
+{
+  "components": [
+    {
+      "label": "PurchaseOrderNumber",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_18zbahr",
+        "columns": 4
+      },
+      "id": "Field_1dtjvn9",
+      "key": "purchaseOrderNumber",
+      "defaultValue": "00000001",
+      "description": "assigns to Purchasing Order or creates new",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "PurchaseBikeComponent",
+      "components": [
+        {
+          "label": "ComponentTitle",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1ovlj4l",
+            "columns": 8
+          },
+          "id": "Field_0n66xia",
+          "key": "title",
+          "defaultValue": "Citybike Component Kit"
+        },
+        {
+          "label": "ComponentAmount",
+          "type": "number",
+          "layout": {
+            "row": "Row_1ovlj4l",
+            "columns": 3
+          },
+          "id": "Field_1oem8i7",
+          "key": "amount",
+          "defaultValue": 1
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
+      "layout": {
+        "row": "Row_13le4mw",
+        "columns": 10
+      },
+      "id": "Field_11d40xs",
+      "path": "purchaseBikeComponent"
+    }
+  ],
+  "type": "default",
+  "id": "purchaseInputData",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.7.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "schemaVersion": 18
+}

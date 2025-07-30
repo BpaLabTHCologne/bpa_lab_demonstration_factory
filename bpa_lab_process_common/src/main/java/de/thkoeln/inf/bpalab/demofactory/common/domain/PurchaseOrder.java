@@ -19,7 +19,19 @@ public class PurchaseOrder {
     @JoinColumn(name = "bike_component_id", nullable = false)
     private BikeComponent bikeComponent;
 
+    @Column
     private String productionOrderNumber;
+
+    @Column
+    private String vendorName;
+
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
+    }
 
     public String getPurchaseOrderNumber() {
         return purchaseOrderNumber;

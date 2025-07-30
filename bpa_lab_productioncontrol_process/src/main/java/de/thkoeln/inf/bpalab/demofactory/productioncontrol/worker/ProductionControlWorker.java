@@ -9,6 +9,7 @@ import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeInstanceRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.ProductionOrderRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeComponentService;
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
+import de.thkoeln.inf.bpalab.demofactory.common.service.ProductionOrderService;
 import de.thkoeln.inf.bpalab.demofactory.common.service.PurchaseOrderService;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
@@ -30,6 +31,8 @@ public class ProductionControlWorker {
 
     @Autowired
     private ProductionOrderRepository productionOrderRepository;
+	@Autowired
+	private ProductionOrderService productionOrderService;
 	@Autowired
 	private BikeComponentService bikeComponentService;
 	@Autowired
@@ -67,7 +70,9 @@ public class ProductionControlWorker {
         try {
             productionOrderRepository.getReferenceById(productionOrderDTO.productionOrderNumber);
         } catch (Exception e) {
-			LOG.info("savePurchaseOrder productionNumber {} not found",
+			productionOrderDTO.productionOrderNumber = "no Order";
+			productionOrderDTO = productionOrderService.createProductionOrder(productionOrderDTO.productionOrderNumber, productionOrderDTO.produceBikeModel);
+			LOG.info("savePurchaseOrder productionNumber {} created",
 					productionOrderDTO.productionOrderNumber);
         }
         productionOrderDTO.produceBikeModel.amount = purchaseCount;
@@ -123,14 +128,17 @@ public class ProductionControlWorker {
 		LOG.info("sendFinishedBikeModelProductionOrder variables {}"
 				, objectMapper.writeValueAsString(variables));
 //		String productionOrderCorrelation = job.getVariable("productionOrderCorrelation").toString();
-		String productionOrderCorrelation = variables.get("productionOrderCorrelation").toString();
-		LOG.info("sendFinishedBikeModelProductionOrder correlationKey {}"
-				, productionOrderCorrelation);
-		zeebeClient.newPublishMessageCommand()
-				.messageName("MsgProductionFinished")
-				.correlationKey(productionOrderCorrelation)
-				.send().join();
-
+		if (variables.containsKey("productionOrderCorrelation")) {
+			String productionOrderCorrelation = variables.get("productionOrderCorrelation").toString();
+			LOG.info("sendFinishedBikeModelProductionOrder correlationKey {}"
+					, productionOrderCorrelation);
+			zeebeClient.newPublishMessageCommand()
+					.messageName("MsgProductionFinished")
+					.correlationKey(productionOrderCorrelation)
+					.send().join();
+		} else {
+			LOG.info("finished BikeModel Production Order without sending message");
+		}
 	}
 
 }

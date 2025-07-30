@@ -71,6 +71,7 @@ create table if not exists purchase_order
     production_order_number varchar(255) null,
     quantity                int          null,
     bike_component_id       varchar(255) not null,
+    vendor_name             varchar(255) not null,
     constraint FKno7xhx9si64ghwxojtf96kn88
     foreign key (bike_component_id) references bike_component (title)
     );

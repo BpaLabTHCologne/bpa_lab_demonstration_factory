@@ -8,7 +8,7 @@ import { config } from 'dotenv'
 config()
 
 // @ts-ignore
-import {getPurchaseOrder, getVendorsForBikeComponent, storeBikeComponent} from "./dbConnection.ts";
+import {getPurchaseOrder, createPurchaseOrder, getVendorsForBikeComponent, storeBikeComponent, updatePurchaseOrder} from "./dbConnection.ts";
 
 //import './zeebeWorkers';
 
@@ -30,11 +30,13 @@ class PurchaseComponentDTO extends LosslessDto {
     purchaseOrderNumber! : string
     productionOrderNumber! : string
     purchaseOrderCorrelation! : string
+    selectedVendor!: string
     @ChildDto(BikeComponentDTO)
     purchaseBikeComponent! : BikeComponentDTO
 }
 
 console.log(`Creating worker getPurchaseOrder`)
+
 zbc.createWorker({
     inputVariableDto: PurchaseComponentDTO,
     taskType: 'getPurchaseOrder',
@@ -43,7 +45,18 @@ zbc.createWorker({
         log(`handling job of type ${job.type}`)
         const purchaseComponentDTO = job.variables;
         console.log(purchaseComponentDTO);
-        const purchaseOrder = await getPurchaseOrder(purchaseComponentDTO.purchaseOrderNumber);
+        var purchaseOrder = await getPurchaseOrder(purchaseComponentDTO.purchaseOrderNumber);
+        if (!purchaseOrder) {
+            purchaseOrder = await createPurchaseOrder(purchaseComponentDTO.purchaseOrderNumber
+                                                        , purchaseComponentDTO.purchaseBikeComponent.amount
+                                                        , purchaseComponentDTO.purchaseBikeComponent.title);
+        } else {
+            purchaseOrder = await updatePurchaseOrder(purchaseComponentDTO.purchaseOrderNumber
+                                                        , purchaseComponentDTO.purchaseBikeComponent.amount
+                                                        , purchaseComponentDTO.purchaseBikeComponent.title
+                                                        , "");
+        }
+
         console.log(purchaseOrder);
         const vendors = await getVendorsForBikeComponent(purchaseComponentDTO.purchaseBikeComponent.title)
         console.log(vendors);
@@ -73,6 +86,12 @@ zbc.createWorker({
         const result = await storeBikeComponent(purchaseComponentDTO.purchaseBikeComponent.title,
             purchaseComponentDTO.purchaseBikeComponent.amount)
         console.log(result);
+        const selectedVendor = job.variables.selectedVendor;
+        const purchaseOrder = await updatePurchaseOrder(purchaseComponentDTO.purchaseOrderNumber
+            , purchaseComponentDTO.purchaseBikeComponent.amount
+            , purchaseComponentDTO.purchaseBikeComponent.title
+            , selectedVendor);
+        console.log(purchaseOrder);
         return job.complete()
     }
 })
@@ -85,13 +104,17 @@ zbc.createWorker({
         const log = getLogger('Zeebe Worker', chalk.blueBright)
         log(`handling job of type ${job.type}`)
         const purchaseComponentDTO = job.variables;
-        console.log("purchaseOrderCorrelation: " + purchaseComponentDTO.purchaseOrderCorrelation);
-        zbc.publishMessage({
-            name: "MsgPurchaseFinished",
-            correlationKey: purchaseComponentDTO.purchaseOrderCorrelation,
-            // @ts-ignore
-            variables: purchaseComponentDTO
+        if (!purchaseComponentDTO.purchaseOrderCorrelation) {
+            console.log("finished sendFinishedPurchaseOrder without sending message");
+        } else {
+            console.log("purchaseOrderCorrelation: " + purchaseComponentDTO.purchaseOrderCorrelation);
+            zbc.publishMessage({
+                name: "MsgPurchaseFinished",
+                correlationKey: purchaseComponentDTO.purchaseOrderCorrelation,
+                // @ts-ignore
+                variables: purchaseComponentDTO
             })
+        }
         return job.complete()
     }
 })

@@ -18,6 +18,30 @@ export function getPurchaseOrder(purchaseOrderNumber : string) {
     })
 }
 
+export async function createPurchaseOrder(purchaseNumber : string, quantity: number, bikeComponent: string) {
+    return new Promise(async (resolve, reject) => {
+        // @ts-ignore
+        const queryInsert = `insert into purchase_order values (?, "no Order", ?, ?, "")`;
+        con.query(queryInsert, [purchaseNumber, quantity, bikeComponent], (err, result) => {
+            if (err) return reject(err);
+            resolve(result ? result : null);
+        })
+    })
+}
+
+export async function updatePurchaseOrder(purchaseNumber: string, quantity: number, bikeComponent: string, selectedVendor: string) {
+    return new Promise(async (resolve, reject) => {
+        // @ts-ignore
+        const queryUpdate = `update purchase_order                              
+                             set quantity = ?, bike_component_id = ?, production_order_number = "no Order", vendor_name = ?
+                             where  purchase_order_number = ?`;
+        con.query(queryUpdate, [quantity, bikeComponent, selectedVendor, purchaseNumber], (err, result) => {
+            if (err) return reject(err);
+            resolve(result ? result : null);
+        })
+    })
+}
+
 export function getVendorsForBikeComponent(bikeComponent : string) {
     return new Promise((resolve, reject) => {
         const query = `select v.vendor_name as name, v.vendor_contact as contact, vb.price as price from bike_component as bc
