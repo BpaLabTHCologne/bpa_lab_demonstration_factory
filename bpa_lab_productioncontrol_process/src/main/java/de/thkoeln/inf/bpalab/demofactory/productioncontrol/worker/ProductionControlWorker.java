@@ -4,14 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeComponent;
 import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeInstance;
-import de.thkoeln.inf.bpalab.demofactory.common.dto.*;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeInstanceRepository;
 import de.thkoeln.inf.bpalab.demofactory.productioncontrol.dto.ProductionOrderDTO;
+import de.thkoeln.inf.bpalab.demofactory.productioncontrol.dto.PurchaseSendDTO;
 import de.thkoeln.inf.bpalab.demofactory.productioncontrol.repos.ProductionOrderRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeComponentService;
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
 import de.thkoeln.inf.bpalab.demofactory.productioncontrol.service.ProductionOrderService;
-import de.thkoeln.inf.bpalab.demofactory.common.service.PurchaseOrderService;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
@@ -38,8 +37,6 @@ public class ProductionControlWorker {
 	private BikeComponentService bikeComponentService;
 	@Autowired
 	private ZeebeClient zeebeClient;
-    @Autowired
-    private PurchaseOrderService purchaseOrderService;
     @Autowired
     private BikeInstanceService bikeInstanceService;
     @Autowired
@@ -75,25 +72,15 @@ public class ProductionControlWorker {
 		return variables;
 	}
 
-	@JobWorker(type = "savePurchaseOrder", fetchVariables={"productionOrderNumber", "produceBikeModel", "purchaseCount"})
-	public PurchaseOrderDTO savePurchaseOrder(final ActivatedJob job) {
-		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
-		int purchaseCount = (int) job.getVariable("purchaseCount");
-        productionOrderRepository.getReferenceById(productionOrderDTO.productionOrderNumber);
-        productionOrderDTO.produceBikeModel.amount = purchaseCount;
-		return purchaseOrderService.createPurchaseOrder(productionOrderDTO.productionOrderNumber
-				, productionOrderDTO.produceBikeModel);
-	}
-
-	@JobWorker(type = "sendPurchaseOrder", fetchVariables={"productionOrderNumber", "purchaseOrderNumber", "purchaseBikeComponent"})
+	@JobWorker(type = "sendPurchaseOrder", fetchVariables={"productionOrderNumber", "purchaseBikeComponent"})
 	public Map<String, Object> sendPurchaseOrder(final ActivatedJob job) throws JsonProcessingException {
-		PurchaseOrderDTO purchaseOrderDTO = job.getVariablesAsType(PurchaseOrderDTO.class);
-		String purchaseOrderCorrelation = purchaseOrderDTO.purchaseOrderNumber + "-" + purchaseOrderDTO.productionOrderNumber;
+		PurchaseSendDTO purchaseSendDTO = job.getVariablesAsType(PurchaseSendDTO.class);
+		String purchaseOrderCorrelation = purchaseSendDTO.productionOrderNumber;
 		Map<String, Object> variables = new HashMap<>();
 		variables.put("purchaseOrderCorrelation", purchaseOrderCorrelation);
 		variables.putAll(job.getVariablesAsMap());
 		LOG.info("sendPurchaseOrder purchaseOrderDTO {} correlationKey: {}"
-				, objectMapper.writeValueAsString(purchaseOrderDTO)
+				, objectMapper.writeValueAsString(purchaseSendDTO)
 				, purchaseOrderCorrelation);
 		LOG.info("sendPurchaseOrder variables {}", objectMapper.writeValueAsString(variables));
 		zeebeClient.newPublishMessageCommand()
