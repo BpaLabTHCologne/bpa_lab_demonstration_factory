@@ -66,7 +66,7 @@ create table if not exists production_order
 
 create table if not exists purchase_order
 (
-    purchase_order_number   varchar(255) not null
+    id            bigint auto_increment
     primary key,
     production_order_number varchar(255) null,
     quantity                int          null,
