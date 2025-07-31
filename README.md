@@ -21,17 +21,18 @@ or Docker nativ (Linux)
 
 #### Run
     docker compose -f docker-compose.yaml
-to start Mysql DBMS and Camunda self-managed
+to start Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) and Camunda self-managed
 
 ### BPALabBikeFactoryOrderManagement
 - jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
 - Application creates/updates database with hibernate/jpa on startup except
-  Vendor table and Vendor-BikeComponent table
+  PurchaseOrder table, Vendor table and Vendor-BikeComponent table
 
 ![](bpa_lab_ordermanagement_process/bpmn/BPALabBikeFactoryOrderManagement.png)
 #### Run
 in ./bpa_lab_ordermanagement_process
-
+    
+    deploy bpmn/*
     gradle bootRun
 
 ### BPALabBikeFactoryProduction
@@ -41,16 +42,17 @@ in ./bpa_lab_ordermanagement_process
 
 in ./bpa_lab_productioncontrol_process
 
+    deploy bpmn/*
     gradle bootRun
 
 ### BPALabBikeFactoryPurchase
 - nodejs(v23.10.0) typescript mysql(9) @camunda8/sdk
-- Vendor table and Vendor-BikeComponent table must be created
 
 ![](/bpa_lab_purchasing_process/bpmn/bpa_lab_purchase_process.png)
 #### Run
 in ./bpa_lab_purchasing_process
 
+    deploy bpmn/*
     npm run start
 
 ### BPALabBikeFactoryShipment
@@ -60,6 +62,7 @@ in ./bpa_lab_purchasing_process
 #### Run
 in ./bpa_lab_purchasing_process
 
+    deploy bpmn/*
     npm run start
 
 ### Containerisation in preparation
