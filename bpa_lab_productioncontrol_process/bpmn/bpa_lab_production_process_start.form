@@ -1,29 +1,6 @@
 {
   "components": [
     {
-      "label": "ProductionOrderNumber",
-      "type": "textfield",
-      "layout": {
-        "row": "Row_18zbahr",
-        "columns": 4
-      },
-      "id": "Field_1dtjvn9",
-      "key": "productionOrderNumber",
-      "description": "assigns to Production Order or creates new if empty"
-    },
-    {
-      "label": "OrderNumber",
-      "type": "textfield",
-      "layout": {
-        "row": "Row_1skfrqs",
-        "columns": 4
-      },
-      "id": "Field_0882r4p",
-      "key": "orderNumber",
-      "defaultValue": "no Order",
-      "description": "assigns to Customer Order"
-    },
-    {
       "label": "ProduceBikeModel",
       "components": [
         {
@@ -46,7 +23,10 @@
           },
           "id": "Field_1oem8i7",
           "key": "amount",
-          "defaultValue": 1
+          "defaultValue": 1,
+          "validate": {
+            "min": "1"
+          }
         }
       ],
       "showOutline": true,

@@ -46,7 +46,10 @@
           "id": "Field_0yjqaxj",
           "key": "amount",
           "readonly": false,
-          "defaultValue": 0
+          "defaultValue": 0,
+          "validate": {
+            "min": "0"
+          }
         }
       ],
       "showOutline": true,

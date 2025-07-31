@@ -2,16 +2,12 @@ package de.thkoeln.inf.bpalab.demofactory.productioncontrol.repos;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thkoeln.inf.bpalab.demofactory.common.domain.ProductionOrder;
-import de.thkoeln.inf.bpalab.demofactory.common.domain.PurchaseOrder;
 import de.thkoeln.inf.bpalab.demofactory.common.dto.OrderItemDTO;
-import de.thkoeln.inf.bpalab.demofactory.common.dto.ProductionOrderDTO;
+import de.thkoeln.inf.bpalab.demofactory.productioncontrol.dto.ProductionOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.common.dto.PurchaseOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeComponentRepository;
-import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeModelRepository;
-import de.thkoeln.inf.bpalab.demofactory.common.repos.ProductionOrderRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.PurchaseOrderRepository;
-import de.thkoeln.inf.bpalab.demofactory.common.service.ProductionOrderService;
+import de.thkoeln.inf.bpalab.demofactory.productioncontrol.service.ProductionOrderService;
 import de.thkoeln.inf.bpalab.demofactory.common.service.PurchaseOrderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

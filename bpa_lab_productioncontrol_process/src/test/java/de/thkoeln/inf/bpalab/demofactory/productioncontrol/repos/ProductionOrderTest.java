@@ -3,7 +3,7 @@ package de.thkoeln.inf.bpalab.demofactory.productioncontrol.repos;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeModelRepository;
-import de.thkoeln.inf.bpalab.demofactory.common.service.ProductionOrderService;
+import de.thkoeln.inf.bpalab.demofactory.productioncontrol.service.ProductionOrderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

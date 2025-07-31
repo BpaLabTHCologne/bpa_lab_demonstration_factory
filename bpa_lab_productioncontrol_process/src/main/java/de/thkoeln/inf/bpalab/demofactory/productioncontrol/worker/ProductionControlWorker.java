@@ -6,10 +6,11 @@ import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeComponent;
 import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeInstance;
 import de.thkoeln.inf.bpalab.demofactory.common.dto.*;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeInstanceRepository;
-import de.thkoeln.inf.bpalab.demofactory.common.repos.ProductionOrderRepository;
+import de.thkoeln.inf.bpalab.demofactory.productioncontrol.dto.ProductionOrderDTO;
+import de.thkoeln.inf.bpalab.demofactory.productioncontrol.repos.ProductionOrderRepository;
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeComponentService;
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
-import de.thkoeln.inf.bpalab.demofactory.common.service.ProductionOrderService;
+import de.thkoeln.inf.bpalab.demofactory.productioncontrol.service.ProductionOrderService;
 import de.thkoeln.inf.bpalab.demofactory.common.service.PurchaseOrderService;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
@@ -44,6 +45,17 @@ public class ProductionControlWorker {
     @Autowired
     private BikeInstanceRepository bikeInstanceRepository;
 
+	@JobWorker(type = "createProductionOrder", fetchVariables={"orderNumber", "produceBikeModel"})
+	public ProductionOrderDTO createProductionOrder(final ActivatedJob job) throws JsonProcessingException {
+		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
+		if (productionOrderDTO.orderNumber == null)
+			productionOrderDTO.orderNumber = "no Order";
+		LOG.info("saveProductionOrder {} ", objectMapper.writeValueAsString(productionOrderDTO));
+		productionOrderDTO = productionOrderService.createProductionOrder(productionOrderDTO.orderNumber, productionOrderDTO.produceBikeModel);
+		LOG.info("productionOrderSaved {} ", objectMapper.writeValueAsString(productionOrderDTO));
+		return productionOrderDTO;
+	}
+
 	@JobWorker(type = "createComponentDemand", fetchVariables={"productionOrderNumber", "orderNumber", "produceBikeModel"})
 	public Map<String, Object> createComponentDemand(JobClient client, ActivatedJob job) {
 		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
@@ -67,14 +79,7 @@ public class ProductionControlWorker {
 	public PurchaseOrderDTO savePurchaseOrder(final ActivatedJob job) {
 		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
 		int purchaseCount = (int) job.getVariable("purchaseCount");
-        try {
-            productionOrderRepository.getReferenceById(productionOrderDTO.productionOrderNumber);
-        } catch (Exception e) {
-			productionOrderDTO.productionOrderNumber = "no Order";
-			productionOrderDTO = productionOrderService.createProductionOrder(productionOrderDTO.productionOrderNumber, productionOrderDTO.produceBikeModel);
-			LOG.info("savePurchaseOrder productionNumber {} created",
-					productionOrderDTO.productionOrderNumber);
-        }
+        productionOrderRepository.getReferenceById(productionOrderDTO.productionOrderNumber);
         productionOrderDTO.produceBikeModel.amount = purchaseCount;
 		return purchaseOrderService.createPurchaseOrder(productionOrderDTO.productionOrderNumber
 				, productionOrderDTO.produceBikeModel);

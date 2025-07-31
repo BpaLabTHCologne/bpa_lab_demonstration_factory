@@ -1,4 +1,4 @@
-package de.thkoeln.inf.bpalab.demofactory.common.dto;
+package de.thkoeln.inf.bpalab.demofactory.productioncontrol.dto;
 
 import de.thkoeln.inf.bpalab.demofactory.common.dto.OrderItemDTO;
 
