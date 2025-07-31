@@ -1,21 +1,6 @@
 {
   "components": [
     {
-      "label": "PurchaseOrderNumber",
-      "type": "textfield",
-      "layout": {
-        "row": "Row_18zbahr",
-        "columns": 4
-      },
-      "id": "Field_1dtjvn9",
-      "key": "purchaseOrderNumber",
-      "defaultValue": "00000001",
-      "description": "assigns to Purchasing Order or creates new",
-      "validate": {
-        "required": true
-      }
-    },
-    {
       "label": "PurchaseBikeComponent",
       "components": [
         {
@@ -38,7 +23,10 @@
           },
           "id": "Field_1oem8i7",
           "key": "amount",
-          "defaultValue": 1
+          "defaultValue": 1,
+          "validate": {
+            "min": "1"
+          }
         }
       ],
       "showOutline": true,

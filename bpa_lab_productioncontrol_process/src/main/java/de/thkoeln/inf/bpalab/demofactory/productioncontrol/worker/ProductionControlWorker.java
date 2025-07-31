@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeComponent;
 import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeInstance;
+import de.thkoeln.inf.bpalab.demofactory.common.dto.OrderItemDTO;
 import de.thkoeln.inf.bpalab.demofactory.common.repos.BikeInstanceRepository;
 import de.thkoeln.inf.bpalab.demofactory.productioncontrol.dto.ProductionOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.productioncontrol.dto.PurchaseSendDTO;
@@ -69,18 +70,25 @@ public class ProductionControlWorker {
 			manufactureBikeInstanceList.add(productionOrderDTO.produceBikeModel.title);
 		}
 		variables.put("manufactureBikeInstanceList", manufactureBikeInstanceList);
+		BikeComponent bikeComponent = bikeComponentService.getBikeComponentsByBikeModelTitle(productionOrderDTO.produceBikeModel.title);
+		PurchaseSendDTO purchaseSendDTO = new PurchaseSendDTO();
+		purchaseSendDTO.productionOrderNumber = productionOrderDTO.productionOrderNumber;
+		purchaseSendDTO.purchaseBikeComponent = new OrderItemDTO();
+		purchaseSendDTO.purchaseBikeComponent.title = bikeComponent.getTitle();
+		purchaseSendDTO.purchaseBikeComponent.amount = productionOrderDTO.produceBikeModel.amount;
+		variables.put("purchaseBikeComponent", purchaseSendDTO.purchaseBikeComponent);
+
 		return variables;
 	}
 
 	@JobWorker(type = "sendPurchaseOrder", fetchVariables={"productionOrderNumber", "purchaseBikeComponent"})
 	public Map<String, Object> sendPurchaseOrder(final ActivatedJob job) throws JsonProcessingException {
 		PurchaseSendDTO purchaseSendDTO = job.getVariablesAsType(PurchaseSendDTO.class);
+		LOG.info("sendPurchaseOrder {} ", objectMapper.writeValueAsString(purchaseSendDTO));
 		String purchaseOrderCorrelation = purchaseSendDTO.productionOrderNumber;
-		Map<String, Object> variables = new HashMap<>();
+		Map<String, Object> variables = job.getVariablesAsMap();
 		variables.put("purchaseOrderCorrelation", purchaseOrderCorrelation);
-		variables.putAll(job.getVariablesAsMap());
-		LOG.info("sendPurchaseOrder purchaseOrderDTO {} correlationKey: {}"
-				, objectMapper.writeValueAsString(purchaseSendDTO)
+		LOG.info("sendPurchaseOrder correlationKey: {}"
 				, purchaseOrderCorrelation);
 		LOG.info("sendPurchaseOrder variables {}", objectMapper.writeValueAsString(variables));
 		zeebeClient.newPublishMessageCommand()

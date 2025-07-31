@@ -45,19 +45,16 @@ zbc.createWorker({
         log(`handling job of type ${job.type}`)
         const purchaseComponentDTO = job.variables;
         console.log(purchaseComponentDTO);
-        var purchaseOrder = await getPurchaseOrder(purchaseComponentDTO.purchaseOrderNumber);
-        if (!purchaseOrder) {
-            purchaseOrder = await createPurchaseOrder(purchaseComponentDTO.purchaseOrderNumber
+        if (!purchaseComponentDTO.productionOrderNumber) {
+            // @ts-ignore
+            purchaseComponentDTO.productionOrderNumber = "no Order"
+        }
+        const purchaseOrderNumber = await createPurchaseOrder(purchaseComponentDTO.productionOrderNumber
                                                         , purchaseComponentDTO.purchaseBikeComponent.amount
                                                         , purchaseComponentDTO.purchaseBikeComponent.title);
-        } else {
-            purchaseOrder = await updatePurchaseOrder(purchaseComponentDTO.purchaseOrderNumber
-                                                        , purchaseComponentDTO.purchaseBikeComponent.amount
-                                                        , purchaseComponentDTO.purchaseBikeComponent.title
-                                                        , "");
-        }
-
-        console.log(purchaseOrder);
+        // @ts-ignore
+        purchaseComponentDTO.purchaseOrderNumber = purchaseOrderNumber;
+        console.log(purchaseComponentDTO);
         const vendors = await getVendorsForBikeComponent(purchaseComponentDTO.purchaseBikeComponent.title)
         console.log(vendors);
         // @ts-ignore
@@ -69,8 +66,6 @@ zbc.createWorker({
         const purchaseCount = purchaseComponentDTO.purchaseBikeComponent.amount
 
         return job.complete({
-            // @ts-ignore
-            serviceTaskOutcome: purchaseComponentDTO, vendorList, purchaseCount
         })
     }
 })
@@ -83,13 +78,13 @@ zbc.createWorker({
         const log = getLogger('Zeebe Worker', chalk.blueBright)
         log(`handling job of type ${job.type}`)
         const purchaseComponentDTO = job.variables;
+        console.log(purchaseComponentDTO);
         const result = await storeBikeComponent(purchaseComponentDTO.purchaseBikeComponent.title,
             purchaseComponentDTO.purchaseBikeComponent.amount)
         console.log(result);
         const selectedVendor = job.variables.selectedVendor;
         const purchaseOrder = await updatePurchaseOrder(purchaseComponentDTO.purchaseOrderNumber
             , purchaseComponentDTO.purchaseBikeComponent.amount
-            , purchaseComponentDTO.purchaseBikeComponent.title
             , selectedVendor);
         console.log(purchaseOrder);
         return job.complete()

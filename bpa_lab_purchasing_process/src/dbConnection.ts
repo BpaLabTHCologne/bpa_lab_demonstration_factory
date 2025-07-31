@@ -1,4 +1,4 @@
-import mysql from 'mysql2';
+import mysql, {ResultSetHeader} from 'mysql2';
 
 export let con = mysql.createConnection({
     host: "localhost",
@@ -18,24 +18,25 @@ export function getPurchaseOrder(purchaseOrderNumber : string) {
     })
 }
 
-export async function createPurchaseOrder(purchaseNumber : string, quantity: number, bikeComponent: string) {
+export async function createPurchaseOrder(productionOrderNumber : string, quantity: number, bikeComponent: string) {
     return new Promise(async (resolve, reject) => {
         // @ts-ignore
-        const queryInsert = `insert into purchase_order values (?, "no Order", ?, ?, "")`;
-        con.query(queryInsert, [purchaseNumber, quantity, bikeComponent], (err, result) => {
+        const queryInsert = `insert into purchase_order(production_order_number, quantity, bike_component_id) 
+                                values (?, ?, ?)`;
+        con.query(queryInsert, [productionOrderNumber, quantity, bikeComponent], (err, result: ResultSetHeader) => {
             if (err) return reject(err);
-            resolve(result ? result : null);
+            resolve(result ? result.insertId : null);
         })
     })
 }
 
-export async function updatePurchaseOrder(purchaseNumber: string, quantity: number, bikeComponent: string, selectedVendor: string) {
+export async function updatePurchaseOrder(purchaseOrderNumber: string, quantity: number, selectedVendor: string) {
     return new Promise(async (resolve, reject) => {
         // @ts-ignore
         const queryUpdate = `update purchase_order                              
-                             set quantity = ?, bike_component_id = ?, production_order_number = "no Order", vendor_name = ?
-                             where  purchase_order_number = ?`;
-        con.query(queryUpdate, [quantity, bikeComponent, selectedVendor, purchaseNumber], (err, result) => {
+                             set quantity = ?, vendor_name = ?
+                             where id = ?`;
+        con.query(queryUpdate, [quantity, selectedVendor, purchaseOrderNumber], (err, result) => {
             if (err) return reject(err);
             resolve(result ? result : null);
         })
