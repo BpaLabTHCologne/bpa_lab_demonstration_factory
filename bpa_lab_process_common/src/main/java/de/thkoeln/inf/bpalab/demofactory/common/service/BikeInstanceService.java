@@ -22,7 +22,7 @@ public class BikeInstanceService {
     private BikeModelRepository bikeModelRepository;
 
     public int countBikeInstanceNotReserved(BikeModel bikeModel) {
-        return bikeInstanceRepository.countByBikeModelAndCustomerOrderNumber(bikeModel, null);
+        return bikeInstanceRepository.countByBikeModelAndCustomerOrderNumberAndShippedFalse(bikeModel, null);
     }
 
     public List<BikeInstance> getBikeInstancesForCustomerOrder(String orderNumber) {
@@ -33,6 +33,7 @@ public class BikeInstanceService {
         BikeInstance bikeInstance = new BikeInstance();
         bikeInstance.setCustomerOrder(customerOrderNumber);
         bikeInstance.setBikeModel(bikeModel);
+        bikeInstance.setShipped(false);
         return bikeInstanceRepository.save(bikeInstance);
     }
 
@@ -40,6 +41,7 @@ public class BikeInstanceService {
         BikeModel bikeModel = bikeModelRepository.getReferenceById(bikeModelTitle);
         BikeInstance bikeInstance = new BikeInstance();
         bikeInstance.setBikeModel(bikeModel);
+        bikeInstance.setShipped(false);
         return bikeInstanceRepository.save(bikeInstance);
     }
 
@@ -61,7 +63,7 @@ public class BikeInstanceService {
         if (bikeModel != null) {
             for (int i = 0; i < reserveOrderDTO.reserveBikeInstance.amount; i++) {
                 BikeInstance bikeInstance = bikeInstanceRepository
-                        .findFirstByBikeModelAndCustomerOrderNumberIsNull(bikeModel);
+                        .findFirstByBikeModelAndCustomerOrderNumberIsNullAndShippedFalse(bikeModel);
                 if (bikeInstance != null) {
                     bikeInstance.setCustomerOrder(reserveOrderDTO.orderNumber);
                     bikeInstanceRepository.save(bikeInstance);

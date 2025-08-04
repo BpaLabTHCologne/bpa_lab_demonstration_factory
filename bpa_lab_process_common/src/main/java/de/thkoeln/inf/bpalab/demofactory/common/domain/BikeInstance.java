@@ -28,7 +28,7 @@ public class BikeInstance {
 
     private String customerOrderNumber;
 
-    @Column
+    @Column(nullable = false)
     private Boolean shipped;
 
     public String getCustomerOrderNumber() {return customerOrderNumber;}

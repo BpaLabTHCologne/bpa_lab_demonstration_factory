@@ -56,7 +56,8 @@
             "columns": 5
           },
           "id": "Field_0a53j31",
-          "key": "bike_model_id"
+          "key": "bike_model_id",
+          "readonly": "on"
         },
         {
           "label": "Serial Number",
@@ -66,12 +67,13 @@
             "columns": 4
           },
           "id": "Field_1suq7dw",
-          "key": "serial_number"
+          "key": "serial_number",
+          "readonly": true
         }
       ],
       "showOutline": true,
       "isRepeating": true,
-      "allowAddRemove": false,
+      "allowAddRemove": true,
       "defaultRepetitions": 1,
       "type": "dynamiclist",
       "layout": {

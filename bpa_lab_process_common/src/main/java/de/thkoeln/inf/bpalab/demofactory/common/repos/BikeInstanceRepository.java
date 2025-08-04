@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public interface BikeInstanceRepository extends JpaRepository<BikeInstance, UUID> {
 
-    BikeInstance findFirstByBikeModelAndCustomerOrderNumberIsNull(BikeModel bikeModel);
+    BikeInstance findFirstByBikeModelAndCustomerOrderNumberIsNullAndShippedFalse(BikeModel bikeModel);
 
-    int countByBikeModelAndCustomerOrderNumber(BikeModel bikeModel, String customerOrderNumber);
+    int countByBikeModelAndCustomerOrderNumberAndShippedFalse(BikeModel bikeModel, String customerOrderNumber);
 
     List<BikeInstance> findAllByCustomerOrderNumber(String customerOrderNumber);
 

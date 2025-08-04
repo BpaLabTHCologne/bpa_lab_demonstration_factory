@@ -59,7 +59,6 @@
       "id": "Field_1dl9v0c",
       "key": "selectedVendor",
       "valuesKey": "vendorList",
-      "readonly": false,
       "validate": {
         "required": true
       }

@@ -7,8 +7,13 @@ import * as path from 'path'
 import { config } from 'dotenv'
 config()
 
+import {
+    getBikeInstancesForOrderNumber,
+    getBikeInstancesNoOrderNumberAndShippedFalse,
+    shipBikeInstances,
+    shipBikeInstance
 // @ts-ignore
-import {getBikeInstancesForOrderNumber, shipBikeInstances} from "./dbConnection.ts";
+} from "./dbConnection.ts";
 import {parseVariablesAndCustomHeadersToJSON} from "@camunda8/sdk/dist/zeebe/lib";
 
 //import './zeebeWorkers';
@@ -22,7 +27,15 @@ class OrderDTO extends LosslessDto {
     @ChildDto(OrderCustomerDTO)
     orderCustomer! : OrderCustomerDTO
 }
-
+class BikeDTO extends LosslessDto {
+    serial_number! : string
+    bike_model_id? : string
+}
+class ProductListDTO extends LosslessDto {
+    orderNumber! : string
+    @ChildDto(BikeDTO)
+    productList!: Array<BikeDTO>
+}
 
 const c8 = new Camunda8({
     ZEEBE_GRPC_ADDRESS: process.env.ZEEBE_ADDRESS,
@@ -43,7 +56,12 @@ zbc.createWorker({
         log(`handling job of type ${job.type}`)
         const orderNumber  = job.variables.orderNumber;
         console.log(job.variables);
-        const productList = await getBikeInstancesForOrderNumber(orderNumber.toString());
+        const shippmentOrderCorrelation = job.variables.shipmentOrderCorrelation
+        var productList;
+        if (orderNumber)
+            productList = await getBikeInstancesForOrderNumber(orderNumber.toString());
+        else
+            productList = await getBikeInstancesNoOrderNumberAndShippedFalse();
         console.log(productList);
         return job.complete({
             // @ts-ignore
@@ -54,15 +72,22 @@ zbc.createWorker({
 
 console.log(`Creating worker shipBikeInstances`)
 zbc.createWorker({
-//    inputVariableDto: PurchaseComponentDTO,
+    inputVariableDto: ProductListDTO,
     taskType: 'shipBikeInstances',
     taskHandler: async job => {
         const log = getLogger('Zeebe Worker', chalk.blueBright)
         log(`handling job of type ${job.type}`)
         const orderNumber  = job.variables.orderNumber;
         console.log(job.variables);
-        const result = await shipBikeInstances(orderNumber.toString());
-        console.log(result);
+        if (orderNumber)
+            await shipBikeInstances(orderNumber.toString());
+        else
+            {   const productList = job.variables.productList
+                productList.forEach(bike => {
+                    console.log(bike.serial_number);
+                    shipBikeInstance(bike.serial_number)
+                })
+            }
         return job.complete({
             // @ts-ignore
             serviceTaskOutcome: orderNumber
@@ -91,14 +116,14 @@ zbc.createWorker({
     taskHandler: async job => {
         const log = getLogger('Zeebe Worker', chalk.blueBright)
         log(`handling job of type ${job.type}`)
-        const shipmentOrderCorrelation = job.variables.shipmentOrderCorrelation.toString()
-        console.log("shipmentOrderCorrelation: " + shipmentOrderCorrelation);
-        zbc.publishMessage({
-            name: "MsgPurchaseFinished",
-            correlationKey: shipmentOrderCorrelation
-            // @ts-ignore
-//            variables: purchaseComponentDTO
+        if (job.variables.shipmentOrderCorrelation) {
+            const shipmentOrderCorrelation = job.variables.shipmentOrderCorrelation.toString()
+            console.log("shipmentOrderCorrelation: " + shipmentOrderCorrelation);
+            zbc.publishMessage({
+                name: "MsgPurchaseFinished",
+                correlationKey: shipmentOrderCorrelation
             })
+        }
         return job.complete()
     }
 })

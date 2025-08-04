@@ -24,7 +24,7 @@ create table if not exists bike_instance
     serial_number         char(36)     not null
     primary key,
     customer_order_number varchar(255) null,
-    shipped               bit          null,
+    shipped               Bit(1)   not null,
     bike_model_id         varchar(255) not null,
     constraint FK4v35au35wmk25thne2tawciyp
     foreign key (bike_model_id) references bike_model (title)
