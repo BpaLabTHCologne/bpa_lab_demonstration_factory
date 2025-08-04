@@ -45,10 +45,10 @@ zbc.createWorker({
         log(`handling job of type ${job.type}`)
         const purchaseComponentDTO = job.variables;
         console.log(purchaseComponentDTO);
-        if (!purchaseComponentDTO.productionOrderNumber) {
-            // @ts-ignore
-            purchaseComponentDTO.productionOrderNumber = "no Order"
-        }
+        // if (!purchaseComponentDTO.productionOrderNumber) {
+        //     // @ts-ignore
+        //     purchaseComponentDTO.productionOrderNumber = "no Order"
+        // }
         const purchaseOrderNumber = await createPurchaseOrder(purchaseComponentDTO.productionOrderNumber
                                                         , purchaseComponentDTO.purchaseBikeComponent.amount
                                                         , purchaseComponentDTO.purchaseBikeComponent.title);
@@ -66,6 +66,8 @@ zbc.createWorker({
         const purchaseCount = purchaseComponentDTO.purchaseBikeComponent.amount
 
         return job.complete({
+            // @ts-ignore
+            vendorList, purchaseOrderNumber, purchaseComponentDTO
         })
     }
 })

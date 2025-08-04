@@ -47,8 +47,10 @@ public class BikeInstanceService {
         UUID bikeInstanceUUID = UUID.fromString(bikeInstanceSerialNumber);
         BikeInstance bikeInstance = bikeInstanceRepository.getReferenceById(bikeInstanceUUID);
         if (bikeInstance != null) {
-            bikeInstance.setCustomerOrder(orderNumber);
-            bikeInstanceRepository.save(bikeInstance);
+            if (orderNumber != null) {
+                bikeInstance.setCustomerOrder(orderNumber);
+                bikeInstanceRepository.save(bikeInstance);
+            }
         } else
             throw new NoSuchElementException();
     }

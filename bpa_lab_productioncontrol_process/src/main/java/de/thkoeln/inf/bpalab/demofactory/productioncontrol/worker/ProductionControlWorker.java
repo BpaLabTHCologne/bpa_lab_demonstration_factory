@@ -46,8 +46,8 @@ public class ProductionControlWorker {
 	@JobWorker(type = "createProductionOrder", fetchVariables={"orderNumber", "produceBikeModel"})
 	public ProductionOrderDTO createProductionOrder(final ActivatedJob job) throws JsonProcessingException {
 		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
-		if (productionOrderDTO.orderNumber == null)
-			productionOrderDTO.orderNumber = "no Order";
+//		if (productionOrderDTO.orderNumber == null)
+//			productionOrderDTO.orderNumber = "no Order";
 		LOG.info("saveProductionOrder {} ", objectMapper.writeValueAsString(productionOrderDTO));
 		productionOrderDTO = productionOrderService.createProductionOrder(productionOrderDTO.orderNumber, productionOrderDTO.produceBikeModel);
 		LOG.info("productionOrderSaved {} ", objectMapper.writeValueAsString(productionOrderDTO));
@@ -117,7 +117,9 @@ public class ProductionControlWorker {
 	public void reserveProductionBikeInstance(final ActivatedJob job) throws JsonProcessingException {
 		Map<String, Object> variables = job.getVariablesAsMap();
 		String bikeInstanceSerialNumber = variables.get("bikeInstanceSerialNumber").toString();
-		String orderNumber = variables.get("orderNumber").toString();
+		String orderNumber = null;
+		if (variables.get("orderNumber") != null)
+			orderNumber = variables.get("orderNumber").toString();
 		bikeInstanceService.reserveBikeInstance(bikeInstanceSerialNumber, orderNumber);
 	}
 
