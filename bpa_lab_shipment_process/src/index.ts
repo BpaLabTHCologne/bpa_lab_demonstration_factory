@@ -39,8 +39,6 @@ class ProductListDTO extends LosslessDto {
 
 const c8 = new Camunda8({
     ZEEBE_GRPC_ADDRESS: process.env.ZEEBE_ADDRESS,
-    // @ts-ignore
-    CAMUNDA_AUTH_STRATEGY: process.env.CAMUNDA_AUTH_STRATEGY
 })
 const zbc = c8.getZeebeGrpcApiClient(
 )
