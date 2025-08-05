@@ -130,3 +130,25 @@ zbc.createWorker({
     }
 })
 
+async function deployProcessFiles() {
+    var deploy = await zbc.deployResource({
+        processFilename: path.join(process.cwd(), "bpmn/bpa_lab_shipment-process.bpmn")
+    });
+    console.log(
+        `[Zeebe] Deployed process ${deploy.deployments[0].process.bpmnProcessId}`
+    );
+    deploy = await zbc.deployResource({
+        processFilename: path.join(process.cwd(), "bpmn/shipmentInputData.form")
+    });
+    console.log(
+        `[Zeebe] Deployed bpmn/shipmentInputData.form`
+    );
+    deploy = await zbc.deployResource({
+        processFilename: path.join(process.cwd(), "bpmn/checkInformation.form")
+    });
+    console.log(
+        `[Zeebe] Deployed bpmn/checkInformation.form`
+    );
+}
+
+deployProcessFiles();

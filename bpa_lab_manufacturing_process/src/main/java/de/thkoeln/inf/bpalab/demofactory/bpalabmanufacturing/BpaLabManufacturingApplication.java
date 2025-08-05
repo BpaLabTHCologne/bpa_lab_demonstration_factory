@@ -18,8 +18,17 @@ public class BpaLabManufacturingApplication implements CommandLineRunner {
         SpringApplication.run(BpaLabManufacturingApplication.class, args);
     }
 
+    @Autowired
+    private ZeebeClient zeebeClient;
+
     @Override
     public void run(String... args) throws Exception {
         LOG.info("Starting BPA Lab Manufacturing Application");
+        zeebeClient.newDeployResourceCommand()
+                .addResourceFile("./bpmn/BPALabBikeFactoryManufacture.bpmn")
+                .send().join();
+        zeebeClient.newDeployResourceCommand()
+                .addResourceFile("./bpmn/BPALabBikeFactoryManufactureOrder.form")
+                .send().join();
     }
 }

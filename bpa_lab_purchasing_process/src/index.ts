@@ -115,3 +115,26 @@ zbc.createWorker({
         return job.complete()
     }
 })
+
+async function deployProcessFiles() {
+    var deploy = await zbc.deployResource({
+        processFilename: path.join(process.cwd(), "bpmn/bpa_lab_purchase_process.bpmn")
+    });
+    console.log(
+        `[Zeebe] Deployed process ${deploy.deployments[0].process.bpmnProcessId}`
+    );
+    deploy = await zbc.deployResource({
+        processFilename: path.join(process.cwd(), "bpmn/bpa_lab_purchase_process_start.form")
+    });
+    console.log(
+        `[Zeebe] Deployed bpmn/bpa_lab_purchase_process_start.form`
+    );
+    deploy = await zbc.deployResource({
+        processFilename: path.join(process.cwd(), "bpmn/chooseVendor.form")
+    });
+    console.log(
+        `[Zeebe] Deployed bpmn/chooseVendor.form`
+    );
+}
+
+deployProcessFiles();
