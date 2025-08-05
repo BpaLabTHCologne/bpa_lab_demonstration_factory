@@ -24,7 +24,7 @@ or Docker nativ (Linux)
 to start Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) and Camunda self-managed
 
 ### BPALabBikeFactoryOrderManagement
-- jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
+    jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
 - Application creates/updates database with hibernate/jpa on startup except
   PurchaseOrder table, Vendor table and Vendor-BikeComponent table
 
@@ -36,7 +36,12 @@ in ./bpa_lab_ordermanagement_process
     gradle bootRun
 
 ### BPALabBikeFactoryProduction
-- jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
+    jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
+- called per message, creates Production Order and Bike Instances from Bike Model,
+  decreases Bike Component quantity, reserves them for Order Number
+- started with User Task, creates Production Order and Bike Instances from Bike Model,
+  decreases Bike Component quantity and doesn't reserve
+
 ![](/bpa_lab_productioncontrol_process/bpmn/BPALabBikeFactoryProductionControl.png)
 #### Run
 
@@ -46,7 +51,9 @@ in ./bpa_lab_productioncontrol_process
     gradle bootRun
 
 ### BPALabBikeFactoryPurchase
-- nodejs(v23.10.0) typescript mysql(9) @camunda8/sdk
+    nodejs(v23.10.0) typescript mysql(9) @camunda8/sdk
+- called per message, creates Purchase Order and increases Bike Component quantity
+- started with User Task, creates Purchase Order and increases Bike Component quantity
 
 ![](/bpa_lab_purchasing_process/bpmn/bpa_lab_purchase_process.png)
 #### Run
@@ -56,7 +63,10 @@ in ./bpa_lab_purchasing_process
     npm run start
 
 ### BPALabBikeFactoryShipment
-- nodejs(v23.10.0) typescript mysql(9) @camunda8/sdk
+    nodejs(v23.10.0) typescript mysql(9) @camunda8/sdk
+
+- called per message, sets Bike Instances with Order Number to shipped
+- started with User Task, searches Bike Instances with no Order Number and not shipped and sets chosen to shipped
 
 ![](/bpa_lab_shipment_process/bpmn/bpa_lab_shipment_process.png)
 #### Run
@@ -64,7 +74,6 @@ in ./bpa_lab_purchasing_process
 
     deploy bpmn/*
     npm run start
-
 ### Containerisation in preparation
 - docker compose, dockerfiles, .env
 
