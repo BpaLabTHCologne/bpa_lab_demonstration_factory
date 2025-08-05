@@ -120,8 +120,10 @@ zbc.createWorker({
             const shipmentOrderCorrelation = job.variables.shipmentOrderCorrelation.toString()
             console.log("shipmentOrderCorrelation: " + shipmentOrderCorrelation);
             zbc.publishMessage({
-                name: "MsgPurchaseFinished",
+                name: "MsgShippingFinished",
                 correlationKey: shipmentOrderCorrelation
+                // @ts-ignore
+//                variables: shipmentOrderCorrelation
             })
         }
         return job.complete()

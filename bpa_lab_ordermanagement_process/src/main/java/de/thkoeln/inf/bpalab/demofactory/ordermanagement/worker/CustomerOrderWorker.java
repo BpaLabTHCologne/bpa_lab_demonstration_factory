@@ -99,7 +99,7 @@ public class CustomerOrderWorker {
 	}
 
 	@JobWorker(type = "sendShipment")
-	public void sendShipment(final ActivatedJob job) throws JsonProcessingException {
+	public Map<String, Object> sendShipment(final ActivatedJob job) throws JsonProcessingException {
 		Map<String, Object> variables = job.getVariablesAsMap();
 		OfferOrderDTO offerOrderDTO = job.getVariablesAsType(OfferOrderDTO.class);
 		String shipmentOrderCorrelation = offerOrderDTO.orderNumber;
@@ -112,5 +112,6 @@ public class CustomerOrderWorker {
 				.correlationKey(shipmentOrderCorrelation)
 				.variables(variables)
 				.send().join();
+		return variables;
 	}
 }
