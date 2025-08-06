@@ -1,0 +1,36 @@
+{
+  "components": [
+    {
+      "label": "Warehouse address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1n6mpll",
+        "columns": 7
+      },
+      "id": "Field_17hf7nq",
+      "key": "warehouseAddress",
+      "defaultValue": "Steinmüllerallee 1, 51643 Gummersbach",
+      "readonly": true
+    },
+    {
+      "label": "Shipping address",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_1n6mpll",
+        "columns": 7
+      },
+      "id": "Field_0v9tqif",
+      "key": "shippingAddress",
+      "readonly": false
+    }
+  ],
+  "type": "default",
+  "id": "shipmentInputData",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.7.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "schemaVersion": 18
+}
