@@ -128,7 +128,6 @@ public class ProductionControlWorker {
 		variables.put("orderType", bikeComponent.getColor());
 		LOG.info("sendManufactureOrder correlationKey: {} orderType {}"
 				, manufactureOrderCorrelation, bikeComponent.getColor());
-		bikeComponentService.decreaseBikeComponentQuantity(bikeComponent.getTitle(), 1);
 		zeebeClient.newPublishMessageCommand()
 				.messageName("MsgStartManufactureOrder")
 				.correlationKey(manufactureOrderCorrelation)
