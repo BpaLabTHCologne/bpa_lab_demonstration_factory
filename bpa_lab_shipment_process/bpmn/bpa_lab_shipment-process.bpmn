@@ -4,7 +4,7 @@
     <bpmn:participant id="Participant_shipment" name="Shipment" processRef="BPALabBikeFactoryShipment" />
     <bpmn:textAnnotation id="TextAnnotation_0j6k5f8">
       <bpmn:text>Warehouse
-Operations ("retrieve")</bpmn:text>
+Operations ("retrieve") missing</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:textAnnotation id="TextAnnotation_1hnqhdz">
       <bpmn:text>MsgStartShippingOrder:
@@ -561,7 +561,7 @@ shipmentOrderCorrelation</bpmn:text>
         <di:waypoint x="450" y="197" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_1mssqdj_di" bpmnElement="Association_1mssqdj">
-        <di:waypoint x="1279" y="129" />
+        <di:waypoint x="1265" y="145" />
         <di:waypoint x="1254" y="157" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_058jcnq_di" bpmnElement="Association_058jcnq">
@@ -585,7 +585,7 @@ shipmentOrderCorrelation</bpmn:text>
         <di:waypoint x="269" y="183" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_0j6k5f8_di" bpmnElement="TextAnnotation_0j6k5f8">
-        <dc:Bounds x="1220" y="90" width="150" height="39" />
+        <dc:Bounds x="1220" y="90" width="149.98911149825784" height="54.587688734030195" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0s948zs_di" bpmnElement="TextAnnotation_0s948zs">

@@ -1,36 +1,39 @@
-# Run zeebemqttbridge
-to run zeebemqttbridge an *application.properties* file is needed, like
+# Run BpaLabManufacturingApplication
+to run BpaLabManufacturingApplication an *application.yml* file is needed, like
 
-	zeebe.client.cloud.region=<YourClientCredentials>
-	zeebe.client.cloud.clusterId=<YourClientCredentials>
-	zeebe.client.cloud.clientId=<YourClientCredentials>
-	zeebe.client.cloud.clientSecret=<YourClientCredentials>
-	zeebe.client.connection-mode=CLOUD
+    camunda:
+        client:
+            mode: saas
+            auth:
+              client-id: 
+              client-secret: 
+            cloud:
+              cluster-id: 
+              region: 
 	
 or for self managed	
 
-	zeebe.client.broker.gateway-address=<server>:26500
-	zeebe.client.security.plaintext=true
-	zeebe.client.connection-mode=ADDRESS
+	camunda:
+        client:
+            mode: self-managed
+            zeebe:
+                enabled: true
+
 
 mqtt client conifg
 
-	ftfactorymqttclient.broker=ws://<HOST>:<PORT>
-	ftfactorymqttclient.clientId=FTFactoryMQTTClient
+    ftfactorymqttclient:
+        broker: ws://localhost:9001
+        clientId: FTFactoryMQTTClient
 
 topics configuration 
 
-	ftfactorymqttclient.cloudTopicPrefix=bpalab/ftfactory
-	ftfactorymqttclient.cloudPubOrderTopic=bpalab/ftfactory/f/o/order
-	ftfactorymqttclient.cloudBroadcastTopic=bpalab/ftfactory/o/broadcast
-	ftfactorymqttclient.cloudSubOrderTopic=bpalab/ftfactory/f/i/order
-	ftfactorymqttclient.cloudHBWTopic=bpalab/ftfactory/f/i/stock
-	ftfactorymqttclient.cloudBME680Topic=bpalab/ftfactory/i/bme680
-	
-tomcat configuration (FtfactoryRestController)
-
-	server.port=<PORT>
-
+    cloudTopicPrefix: bpalab/ftfactory
+    cloudPubOrderTopic: bpalab/ftfactory/f/o/order
+    cloudBroadcastTopic: bpalab/ftfactory/o/broadcast
+    cloudSubOrderTopic: bpalab/ftfactory/f/i/order
+    cloudHBWTopic: bpalab/ftfactory/f/i/stock
+    cloudBME680Topic: bpalab/ftfactory/i/bme680
 
 # Sample mqtt messages
 

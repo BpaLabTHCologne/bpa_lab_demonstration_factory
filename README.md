@@ -62,6 +62,18 @@ in ./bpa_lab_purchasing_process
 
     npm run start
 
+### BPALabBikeFactoryManufacture
+    jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
+- sends mqtt messages to and receives mqtt messages from Fischertechnik fabric
+- Deploys bpmn/BPALabBikeFactoryManufacture.bpmn, bpmn/BPALabBikeFactoryManufactureOrder.form
+
+![](/bpa_lab_manufacturing_process/bpmn/BPALabBikeFactoryManufacture.png)
+#### Run
+
+in ./bpa_lab_manufacturing_process
+
+    gradle bootRun
+
 ### BPALabBikeFactoryShipment
     nodejs(v23.10.0) typescript mysql(9) @camunda8/sdk
 

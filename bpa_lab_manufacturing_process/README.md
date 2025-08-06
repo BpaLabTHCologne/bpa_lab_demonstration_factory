@@ -1,14 +1,14 @@
-# Ftfactory Zeebe Mqtt Process Application
+# Ftfactory Camunda8 Mqtt Process Application
 
-This project contains a **process application** (ZeebeMqttBridge) 
+This project contains a **process application** (BpaLabManufacturingApplication) 
 
 with **Camunda8 jobworker** connecting
 
  **BPMN service task** (retrieve factory state, retrieve HBWStorage state) or
  
- **BPMN message send tasks** (ensure storage availability, order with shipped reply message)
+ **BPMN message send tasks** (send Manufacture Order)
  
- to a **mqtt broker** (MQTTBrokerCloud)
+ to a **mqtt broker** (FtfactoryMQTTClient)
 
 interchanging messages with **ft txt4.0 Controler** (FtfactoryControl).
 
@@ -18,14 +18,13 @@ interchanging messages with **ft txt4.0 Controler** (FtfactoryControl).
 - start FtfactoryControl(FactoryMain) on **ft txt4.0 Controler**
 	- without connection to Ftfactory use an mqtt client alternative, see [doc/HELP.md](doc/HELP.md "HELP.md")
 
-- start ZeebeMqttBridge, see [doc/HELP.md](doc/HELP.md "HELP.md")
-- start Process [(bpalab_Order)](src/workflow/bpalab_Order.bpmn) in Camunda Cloud 
-- (alternative use localhost:8090/ to use SinglePageApp message start event)
+- start BpaLabManufacturingApplication, see [doc/HELP.md](doc/HELP.md "HELP.md")
+- start Process [(bpalab_Order)](src/workflow/bpalab_Order.bpmn) in Camunda 
 - work with **tasklist / operate** in Camunda Cloud 
 
 ### Constraints
 
-- ZeebeMqttBridge needs access to local LAN *(for mqtt-broker)* **and** Internet *(for zeebeClient)*
+- BpaLabManufacturingApplication needs access to local LAN *(for mqtt-broker)* **and** Camunda*
 - serves only ONE process instance *(Order)* at a time
 - ... You tell me
 

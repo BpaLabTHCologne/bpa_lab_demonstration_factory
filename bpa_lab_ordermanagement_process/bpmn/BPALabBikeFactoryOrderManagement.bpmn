@@ -12,7 +12,7 @@ productionOrderCorrelation</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:textAnnotation id="TextAnnotation_0j6k5f8">
       <bpmn:text>Warehouse
-Operations ("store")</bpmn:text>
+Operations ("store") missing</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:textAnnotation id="TextAnnotation_1hnqhdz">
       <bpmn:text>MsgStartShippingOrder:
@@ -355,7 +355,7 @@ shipmentOrderCorrelation</bpmn:text>
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0j6k5f8_di" bpmnElement="TextAnnotation_0j6k5f8">
-        <dc:Bounds x="1240" y="60" width="150" height="40" />
+        <dc:Bounds x="1240" y="60" width="150" height="53" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1161ci8" bpmnElement="TextAnnotation_1hnqhdz">

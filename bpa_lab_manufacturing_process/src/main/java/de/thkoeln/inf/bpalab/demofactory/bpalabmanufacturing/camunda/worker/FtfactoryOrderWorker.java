@@ -21,8 +21,8 @@ public class FtfactoryOrderWorker extends AWorker {
 	@Autowired
 	private FtfactoryPubOrder pubOrder;
 
-	@JobWorker(type = "orderWithShippedReplyMessage")
-	public Map<String, Object> orderWithShippedReplyMessage(final ActivatedJob job) {
+	@JobWorker(type = "sendMqttOrderToFtFactory")
+	public Map<String, Object> sendMqttOrderToFtFactory(final ActivatedJob job) {
 		logJobStart(job);
 
 		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
