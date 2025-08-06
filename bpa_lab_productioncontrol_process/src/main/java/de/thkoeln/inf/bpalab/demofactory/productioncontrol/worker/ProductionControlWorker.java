@@ -113,6 +113,31 @@ public class ProductionControlWorker {
 		return variables;
 	}
 
+	@JobWorker(type = "sendManufactureOrder", fetchVariables={"productionOrderNumber", "produceBikeModel", "loopCounter"})
+	public Map<String, Object> sendManufactureOrder(final ActivatedJob job) throws JsonProcessingException {
+		Map<String, Object> variables = job.getVariablesAsMap();
+		LOG.info("sendManufactureOrder variables {}"
+				, objectMapper.writeValueAsString(variables));
+
+		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
+		String loopCounter = job.getVariable("loopCounter").toString();
+		String manufactureOrderCorrelation = productionOrderDTO.productionOrderNumber + "-" + loopCounter;
+		variables.put("manufactureOrderCorrelation", manufactureOrderCorrelation);
+
+		BikeComponent bikeComponent = bikeComponentService.getBikeComponentsByBikeModelTitle(productionOrderDTO.produceBikeModel.title);
+		variables.put("orderType", bikeComponent.getColor());
+		LOG.info("sendManufactureOrder correlationKey: {} orderType {}"
+				, manufactureOrderCorrelation, bikeComponent.getColor());
+		bikeComponentService.decreaseBikeComponentQuantity(bikeComponent.getTitle(), 1);
+		zeebeClient.newPublishMessageCommand()
+				.messageName("MsgStartManufactureOrder")
+				.correlationKey(manufactureOrderCorrelation)
+				.variables(variables)
+				.send().join();
+		return variables;
+
+	}
+
 	@JobWorker(type = "reserveProductionBikeInstance", fetchVariables={"bikeInstanceSerialNumber", "orderNumber"})
 	public void reserveProductionBikeInstance(final ActivatedJob job) throws JsonProcessingException {
 		Map<String, Object> variables = job.getVariablesAsMap();

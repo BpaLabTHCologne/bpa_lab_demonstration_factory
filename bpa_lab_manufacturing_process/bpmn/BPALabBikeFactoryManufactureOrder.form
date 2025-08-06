@@ -47,15 +47,15 @@
       "key": "orderType"
     },
     {
-      "label": "manufactureOrderCorrelation",
+      "label": "Production Ordernumber",
       "type": "textfield",
       "layout": {
         "row": "Row_1edn0xw",
         "columns": 4
       },
       "id": "Field_01b0ywc",
-      "key": "manufactureOrderCorrelation",
-      "defaultValue": "PRODUCTIONORDERNUMBER1234"
+      "key": "productionOrderNumber",
+      "readonly": true
     }
   ],
   "schemaVersion": 18,

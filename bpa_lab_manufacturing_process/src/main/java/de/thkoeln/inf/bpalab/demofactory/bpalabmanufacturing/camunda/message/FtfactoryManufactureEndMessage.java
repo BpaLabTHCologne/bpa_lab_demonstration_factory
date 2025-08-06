@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FtfactoryManufactureEndMessage implements IReplyMessage {
 
-	private String messageName = "MsgManufactureOrderFinished";
+	private String messageName = "MsgManufactureFinished";
 	private String correlationValue = null;
 
 	public String getReplyMessageCorrelationValue() {

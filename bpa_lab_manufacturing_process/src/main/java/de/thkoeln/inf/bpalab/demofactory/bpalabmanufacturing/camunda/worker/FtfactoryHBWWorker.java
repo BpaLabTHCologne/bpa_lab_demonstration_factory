@@ -2,6 +2,7 @@ package de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.camunda.worker;
 
 import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.camunda.message.FtfactoryHBWAvailableMessage;
 import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.mqtt.subscriber.FtfactoryHBW;
+import io.camunda.zeebe.client.api.command.ClientException;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.common.exception.ZeebeBpmnError;
@@ -39,7 +40,15 @@ public class FtfactoryHBWWorker extends AWorker {
 		}
 
 		String orderType = job.getVariable("orderType").toString();
-		String manufactureOrderCorrelation = job.getVariable("manufactureOrderCorrelation").toString();
+		String manufactureOrderCorrelation = null;
+		try {
+			if (job.getVariable("manufactureOrderCorrelation") != null)
+				manufactureOrderCorrelation = job.getVariable("manufactureOrderCorrelation").toString();
+			else
+				manufactureOrderCorrelation = "intern";
+		} catch (ClientException e) {
+			manufactureOrderCorrelation = "intern";
+		}
 
 		//prepare ReplyMessage
 		ftfactoryHBWAvailableMessage.setReplyMessageCorrelationValue(orderType);

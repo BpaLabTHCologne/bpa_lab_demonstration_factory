@@ -1,6 +1,7 @@
 package de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.camunda.worker;
 
 import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.camunda.message.FtfactoryManufactureEndMessage;
+import io.camunda.zeebe.client.api.command.ClientException;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.common.exception.ZeebeBpmnError;
@@ -22,17 +23,21 @@ public class FtfactoryManufactureWorker extends AWorker {
 		logJobStart(job);
 		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
 
-		String manufactureOrderCorrelation = job.getVariable("manufactureOrderCorrelation").toString();
+        try {
+            String manufactureOrderCorrelation = job.getVariable("manufactureOrderCorrelation").toString();
 
-		ftfactoryManufactureEndMessage.setReplyMessageCorrelationValue(manufactureOrderCorrelation);
+            ftfactoryManufactureEndMessage.setReplyMessageCorrelationValue(manufactureOrderCorrelation);
 
-		this.ftfactoryZEEBEClient.newPublishMessageCommand()
-				.messageName(ftfactoryManufactureEndMessage.getReplyMessageName())
-				.correlationKey(ftfactoryManufactureEndMessage.getReplyMessageCorrelationValue())
-				.timeToLive(Duration.ofSeconds(60))
-				.send();
+            this.ftfactoryZEEBEClient.newPublishMessageCommand()
+                    .messageName(ftfactoryManufactureEndMessage.getReplyMessageName())
+                    .correlationKey(ftfactoryManufactureEndMessage.getReplyMessageCorrelationValue())
+                    .timeToLive(Duration.ofSeconds(60))
+                    .send();
+			log.info("\npublished zeebemessage {} correlationvalue {}", ftfactoryManufactureEndMessage.getReplyMessageName(), ftfactoryManufactureEndMessage.getReplyMessageCorrelationValue());
+        } catch (ClientException e) {
+			log.info("\nsendFinishedBikeModelManufactureOrder without sending");
+        }
 
-		log.info("\npublished zeebemessage {} correlationvalue {}", ftfactoryManufactureEndMessage.getReplyMessageName(), ftfactoryManufactureEndMessage.getReplyMessageCorrelationValue());
 
 		logJobEnd(job);
 

@@ -23,12 +23,13 @@ public class BpaLabManufacturingApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        LOG.info("Starting BPA Lab Manufacturing Application");
         zeebeClient.newDeployResourceCommand()
                 .addResourceFile("./bpmn/BPALabBikeFactoryManufacture.bpmn")
                 .send().join();
+        LOG.info("deployed bpmn/BPALabBikeFactoryManufacture.bpmn");
         zeebeClient.newDeployResourceCommand()
                 .addResourceFile("./bpmn/BPALabBikeFactoryManufactureOrder.form")
                 .send().join();
+        LOG.info("deployed bpmn/BPALabBikeFactoryManufactureOrder.form");
     }
 }
