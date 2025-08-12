@@ -3,6 +3,9 @@ camunda:
     mode: self-managed
     zeebe:
       enabled: true
+      rest-address: ${ZEEBE_REST_ADRESS:http://localhost:8088}
+      grpc-address: ${ZEEBE_GRPC_ADRESS:http://localhost:26500}
+
 
 spring:
   datasource:

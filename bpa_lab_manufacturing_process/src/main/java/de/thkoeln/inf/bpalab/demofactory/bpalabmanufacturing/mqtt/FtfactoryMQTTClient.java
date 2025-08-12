@@ -25,7 +25,7 @@ public class FtfactoryMQTTClient {
 	private FtfactoryBroadcast ftfactoryBroadcast;
 
 	public FtfactoryMQTTClient(@Value("${ftfactorymqttclient.broker:ws://10.0.0.21}") final String broker,
-							   @Value("${ftfactorymqttclient.clientId:${ftfactorymqttclient.clientId}}") final String clientId) {
+							   @Value("${ftfactorymqttclient.clientId:FTFactoryMQTTClient}") final String clientId) {
 		try {
 			mqttClient = new MqttClient(broker, clientId, persistence);
 			connOpts = new MqttConnectOptions();
