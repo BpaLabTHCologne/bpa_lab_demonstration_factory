@@ -1,4 +1,4 @@
-package de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos;
+package de.thkoeln.inf.bpalab.demofactory.ordermanagement;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +10,7 @@ import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.CustomerOrderCustom
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OfferOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.dto.OrderOrderDTO;
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
+import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.CustomerOrderRepository;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.CustomerOrderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
