@@ -1,4 +1,4 @@
-package de.thkoeln.inf.bpalab.demofactory.productioncontrol.repos;
+package de.thkoeln.inf.bpalab.demofactory.productioncontrol;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
