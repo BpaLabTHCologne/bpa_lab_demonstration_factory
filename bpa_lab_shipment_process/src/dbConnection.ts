@@ -1,8 +1,12 @@
 import mysql from 'mysql2';
 
+import { config } from 'dotenv'
+config()
+
+// @ts-ignore
 export let con = mysql.createConnection({
-    host: "localhost",
-    port: 3070,
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT,
     user: "root",
     password: "P4ssword!",
     database: "bpa_lab_demonstration_factory"

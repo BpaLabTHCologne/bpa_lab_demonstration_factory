@@ -86,8 +86,26 @@ in ./bpa_lab_manufacturing_process
 in ./bpa_lab_shipment_process
 
     npm run start
-### Containerisation in preparation
-- docker compose, dockerfiles, .env
 
+### Containerisation
 
--> More to be added
+    docker compose -f docker-compose.yaml up -d
+
+starts 
+- Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) 
+- Camunda self-managed
+- runs 
+
+    `BPALabBikeFactoryOrderManagement`, 
+
+    `BPALabBikeFactoryProduction`,
+
+    `BPALabBikeFactoryPurchase`,
+    
+    `BPALabBikeFactoryShipment`
+
+as Docker Container
+
+## state of affairs (things not working)
+- bpa_lab_production process stucks waiting for manufacture finished message
+  - bpa_lab_manufacturing needs connection to mqtt broker, waiting for "order shipped"
