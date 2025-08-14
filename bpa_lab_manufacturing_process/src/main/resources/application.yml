@@ -7,24 +7,26 @@ camunda:
       grpc-address: ${ZEEBE_GRPC_ADRESS:http://localhost:26500}
 
 # MQTT Client Configuration
-# first attempt with FtFactory Cloud Broker
-  spring:
-    config:
-      activate:
-        on-profile: factory
-  ftfactorymqttclient:
-    broker: ws://10.0.0.21:8081
-    clientId: FTFactoryMQTTClient
+# FtFactory Cloud Broker
+spring:
+  config:
+    activate:
+      on-profile: factory
+ftfactorymqttclient:
+  broker: ws://10.0.0.21:8081
+  clientId: FTFactoryMQTTClient
+  # MQTT Topics Configuration
+  cloudTopicPrefix: bpalab/ftfactory
+  cloudPubOrderTopic: bpalab/ftfactory/f/o/order
+  cloudBroadcastTopic: bpalab/ftfactory/o/broadcast
+  cloudSubOrderTopic: bpalab/ftfactory/f/i/order
+  cloudHBWTopic: bpalab/ftfactory/f/i/stock
+  cloudBME680Topic: bpalab/ftfactory/i/bme680
+# important dashes
+---
+# important
 
-    # MQTT Topics Configuration
-    cloudTopicPrefix: bpalab/ftfactory
-    cloudPubOrderTopic: bpalab/ftfactory/f/o/order
-    cloudBroadcastTopic: bpalab/ftfactory/o/broadcast
-    cloudSubOrderTopic: bpalab/ftfactory/f/i/order
-    cloudHBWTopic: bpalab/ftfactory/f/i/stock
-    cloudBME680Topic: bpalab/ftfactory/i/bme680
-
-
+# local Broker not on 8081 because of camunda operate !
 spring:
   config:
     activate:
