@@ -1,6 +1,7 @@
 package de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.camunda.worker;
 
 import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.camunda.message.FtfactoryManufactureEndMessage;
+import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.mqtt.subscriber.FtfactorySubOrder;
 import io.camunda.zeebe.client.api.command.ClientException;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
@@ -14,6 +15,9 @@ import java.util.Map;
 
 @Component
 public class FtfactoryManufactureWorker extends AWorker {
+
+	@Autowired
+	private FtfactorySubOrder ftfactorySubOrder;
 
 	@Autowired
 	FtfactoryManufactureEndMessage ftfactoryManufactureEndMessage;
@@ -37,6 +41,8 @@ public class FtfactoryManufactureWorker extends AWorker {
         } catch (ClientException e) {
 			log.info("\nsendFinishedBikeModelManufactureOrder without sending");
         }
+
+		ftfactorySubOrder.clearFtfactoryOrder();
 
 
 		logJobEnd(job);

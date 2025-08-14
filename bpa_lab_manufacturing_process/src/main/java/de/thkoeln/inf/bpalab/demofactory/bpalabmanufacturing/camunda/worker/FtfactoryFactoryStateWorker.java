@@ -20,13 +20,15 @@ public class FtfactoryFactoryStateWorker extends AWorker {
 	public Map<String, Object> retrieveFactoryState(final ActivatedJob job) {
 		logJobStart(job);
 	
-		String factoryProdEnv = System.getenv("FACTORY_PROD");
-		boolean isFactoryProd = factoryProdEnv != null && factoryProdEnv.equalsIgnoreCase("true");
-	
 		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
 	
 		if (!this.ftfactoryMQTTClient.isConnected()) {
-			throw new ZeebeBpmnError("factoryStateError", "Retrieve of factory state failed due to an error",null);
+			float temperatur = 24.6f;
+			float luftfeuchtigkeit = 0.45f;
+			variables.put("f_temperatur", temperatur);
+			variables.put("f_luftfeuchtigkeit", luftfeuchtigkeit);
+			log.info("\nFaked factoryState>>> [temp: {}, hum: {}]", temperatur, luftfeuchtigkeit);
+			return variables;
 		}
 
 		if (ftfactoryBME680.isMessageReceived()) {

@@ -44,11 +44,14 @@ public class FtfactoryMQTTClient {
 
 	@PostConstruct
 	public void postConstruct() {
-		publish(ftfactoryBroadcast.getTopicPayload());
+		if (mqttClient.isConnected()) {}
+			publish(ftfactoryBroadcast.getTopicPayload());
 	}
 	
 	public boolean isConnected() {
-		return this.mqttClient.isConnected();
+		if (mqttClient != null)
+			return this.mqttClient.isConnected();
+		return false;
 	}
 
     public void publish(TopicPayload topicPayload) { //throws MqttException {

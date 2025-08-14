@@ -27,20 +27,26 @@ public class FtfactoryOrderWorker extends AWorker {
 
 		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
 
-		if (!this.ftfactoryMQTTClient.isConnected()) {
-			throw new ZeebeBpmnError("factoryOrderError", "factory order failed due to an error", null);
-		}
 		if (this.ftfactorySubOrder.isOrdered()) {
 			throw new ZeebeBpmnError("factoryOrderOtherError", "factory busy for another order", null);
 		}
-//		prepare and publish Order to ftfactoryMQTT
-//		FtfactoryPubOrder pubOrder = new FtfactoryPubOrder(job.getVariables());
-		pubOrder.updateOrder(job.getVariables());
-		this.ftfactoryMQTTClient.publish(pubOrder.getTopicPayload());
 
+		pubOrder.updateOrder(job.getVariables());
 //		prepare ReplyMessage
 		ftfactorySubOrder.initTypeCorrelationValue(pubOrder.type); //normally "pubOrder.type" instead of correlationValueStr needs be tested if it works with factory connected!!!
-			
+
+		if (this.ftfactoryMQTTClient.isConnected()) {
+	//		prepare and publish Order to ftfactoryMQTT
+	//		FtfactoryPubOrder pubOrder = new FtfactoryPubOrder(job.getVariables());
+			this.ftfactoryMQTTClient.publish(pubOrder.getTopicPayload());
+		} else {
+			ftfactorySubOrder.setType(pubOrder.type);
+			ftfactorySubOrder.setState("SHIPPED");
+			ftfactorySubOrder.setTs(pubOrder.ts);
+			ftfactorySubOrder.sendOrderShippedMessage();
+			ftfactorySubOrder.clearFtfactoryOrder();
+			log.info("\nFaked sendMQTTOrder>>> [ordertype: {}]", pubOrder.type);
+		}
 
 		logJobEnd(job);
 

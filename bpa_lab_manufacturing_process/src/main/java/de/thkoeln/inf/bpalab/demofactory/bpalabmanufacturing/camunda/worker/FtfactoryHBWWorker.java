@@ -23,8 +23,12 @@ public class FtfactoryHBWWorker extends AWorker {
 
 	@JobWorker(type = "sendFtfactoryStorageMessage")
 	public void sendFtfactoryStorageMessage(final ActivatedJob job) {
-		String orderType = job.getVariable("orderType").toString();
-		if (this.ftfactoryHBW.isMessageReceived() && this.ftfactoryHBW.isAvailable(orderType)) {
+		if (this.ftfactoryMQTTClient.isConnected()) {
+			String orderType = job.getVariable("orderType").toString();
+			if (this.ftfactoryHBW.isMessageReceived() && this.ftfactoryHBW.isAvailable(orderType)) {
+				this.sendFtfactoryStorageMessage();
+			}
+		} else {
 			this.sendFtfactoryStorageMessage();
 		}
 	}
@@ -36,7 +40,8 @@ public class FtfactoryHBWWorker extends AWorker {
 		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
 
 		if (!this.ftfactoryMQTTClient.isConnected()) {
-			throw new ZeebeBpmnError("factoryStateError", "Retrieve of factory state failed due to an error", null);
+			variables.put("available", true);
+			log.info("\nFaked HBWStorageState>>> [available: {}]", true);
 		}
 
 		String orderType = job.getVariable("orderType").toString();
@@ -61,8 +66,6 @@ public class FtfactoryHBWWorker extends AWorker {
 				variables.put("available", true);
 			else
 				variables.put("available", false);
-		}  else {
-			variables.put("available", false);
 		}
 
 		logJobEnd(job);
