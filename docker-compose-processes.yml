@@ -194,6 +194,20 @@ services:
     networks:
       - camunda-platform
 
+  bpalabmanufacturing:
+    image: bpa_lab_demonstration_factory/manufacturing
+    environment:
+      JAVA_TOOL_OPTIONS: -Dlogging.level.io.camunda.zeebe.client.impl.ZeebeCallCredentials=ERROR
+      ZEEBE_GRPC_ADRESS: http://zeebe:26500
+      ZEEBE_REST_ADRESS: http://zeebe:8080
+    build:
+      dockerfile: bpa_lab_manufacturing.dockerfile
+      no_cache: true
+    depends_on:
+      - zeebe
+    networks:
+      - camunda-platform
+
   bpalabshipment:
     image: bpa_lab_demonstration_factory/shipment
     environment:

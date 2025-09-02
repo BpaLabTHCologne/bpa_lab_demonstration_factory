@@ -65,6 +65,7 @@ in ./bpa_lab_purchasing_process
 ### BPALabBikeFactoryManufacture
     jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
 - sends mqtt messages to and receives mqtt messages from Fischertechnik fabric
+- fakes manufacturing if no connection to mqtt broker available
 - Deploys bpmn/BPALabBikeFactoryManufacture.bpmn, bpmn/BPALabBikeFactoryManufactureOrder.form
 
 ![](/bpa_lab_manufacturing_process/bpmn/BPALabBikeFactoryManufacture.png)
@@ -101,11 +102,12 @@ starts
     `BPALabBikeFactoryProduction`,
 
     `BPALabBikeFactoryPurchase`,
-    
+
+    `BPALabBikeFactoryManufacture`,
+
     `BPALabBikeFactoryShipment`
 
 as Docker Container
 
 ## state of affairs (things not working)
-- bpa_lab_production process stucks waiting for manufacture finished message
-  - bpa_lab_manufacturing needs connection to mqtt broker, waiting for "order shipped"
+- ???

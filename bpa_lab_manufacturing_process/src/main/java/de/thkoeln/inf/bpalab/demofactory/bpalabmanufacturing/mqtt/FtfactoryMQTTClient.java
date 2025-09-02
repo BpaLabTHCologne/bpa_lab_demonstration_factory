@@ -44,7 +44,7 @@ public class FtfactoryMQTTClient {
 
 	@PostConstruct
 	public void postConstruct() {
-		if (mqttClient.isConnected()) {}
+		if (mqttClient.isConnected())
 			publish(ftfactoryBroadcast.getTopicPayload());
 	}
 	

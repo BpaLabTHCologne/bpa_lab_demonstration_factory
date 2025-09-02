@@ -27,21 +27,25 @@ public class FtfactoryManufactureWorker extends AWorker {
 		logJobStart(job);
 		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
 
-        try {
-            String manufactureOrderCorrelation = job.getVariable("manufactureOrderCorrelation").toString();
+		if (variables.containsKey("manufactureOrderCorrelation")) {
+			try {
+				String manufactureOrderCorrelation = job.getVariable("manufactureOrderCorrelation").toString();
 
-            ftfactoryManufactureEndMessage.setReplyMessageCorrelationValue(manufactureOrderCorrelation);
+				ftfactoryManufactureEndMessage.setReplyMessageCorrelationValue(manufactureOrderCorrelation);
 
-            this.ftfactoryZEEBEClient.newPublishMessageCommand()
-                    .messageName(ftfactoryManufactureEndMessage.getReplyMessageName())
-                    .correlationKey(ftfactoryManufactureEndMessage.getReplyMessageCorrelationValue())
-                    .timeToLive(Duration.ofSeconds(60))
-                    .send();
-			log.info("\npublished zeebemessage {} correlationvalue {}", ftfactoryManufactureEndMessage.getReplyMessageName(), ftfactoryManufactureEndMessage.getReplyMessageCorrelationValue());
-        } catch (ClientException e) {
-			log.info("\nsendFinishedBikeModelManufactureOrder without sending");
-        }
+				this.ftfactoryZEEBEClient.newPublishMessageCommand()
+						.messageName(ftfactoryManufactureEndMessage.getReplyMessageName())
+						.correlationKey(ftfactoryManufactureEndMessage.getReplyMessageCorrelationValue())
+						.timeToLive(Duration.ofSeconds(60))
+						.send();
+				log.info("\npublished zeebemessage {} correlationvalue {}", ftfactoryManufactureEndMessage.getReplyMessageName(), ftfactoryManufactureEndMessage.getReplyMessageCorrelationValue());
+			} catch (ClientException e) {
+				log.info("\nsendFinishedBikeModelManufactureOrder without sending");
+			}
+		} else {
+			log.info("finished BikeModel Manufacturing without sending message");
 
+		}
 		ftfactorySubOrder.clearFtfactoryOrder();
 
 

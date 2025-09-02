@@ -19,13 +19,15 @@ interchanging messages with **ft txt4.0 Controler** (FtfactoryControl).
 	- without connection to Ftfactory use an mqtt client alternative, see [doc/HELP.md](doc/HELP.md "HELP.md")
 
 - start BpaLabManufacturingApplication, see [doc/HELP.md](doc/HELP.md "HELP.md")
+    - without connection to mqtt broker application fakes manufacturing 
+
 - start Process [(BPALabBikeFactoryManufacture)](bpmn/BPALabBikeFactoryManufacture.bpmn) in Camunda 
 - work with **tasklist / operate** in Camunda Apps
 
 ### Constraints
 
-- BpaLabManufacturingApplication needs access to local LAN *(for mqtt-broker)* **and** *Camunda self-managed*
-  - **OR** BpaLabManufacturingApplication needs access to local LAN *(for mqtt-broker)* **and** Internet *Camunda cloud*
+- BpaLabManufacturingApplication needs access to local LAN *Camunda self-managed*
+  - **OR** BpaLabManufacturingApplication needs access to Internet for *Camunda cloud*
 - serves only ONE process instance *(Order)* at a time
 - ... You tell me
 

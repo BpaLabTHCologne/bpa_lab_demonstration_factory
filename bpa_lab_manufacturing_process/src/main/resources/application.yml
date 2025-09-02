@@ -8,12 +8,12 @@ camunda:
 
 # MQTT Client Configuration
 # FtFactory Cloud Broker
-spring:
-  config:
-    activate:
-      on-profile: factory
+#spring:
+#  config:
+#    activate:
+#      on-profile: factory
 ftfactorymqttclient:
-  broker: ws://10.0.0.21:8081
+  broker: ${MQTTBROKER_ADRESS:ws://10.0.0.21:8081}
   clientId: FTFactoryMQTTClient
   # MQTT Topics Configuration
   cloudTopicPrefix: bpalab/ftfactory
@@ -27,20 +27,20 @@ ftfactorymqttclient:
 # important
 
 # local Broker not on 8081 because of camunda operate !
-spring:
-  config:
-    activate:
-      on-profile: local
-ftfactorymqttclient:
+#spring:
+#  config:
+#    activate:
+#      on-profile: local
+#ftfactorymqttclient:
   #broker: ws://host.docker.internal:9001
-  broker: ws://localhost:9001
-  clientId: FTFactoryMQTTClient
+#  broker: ws://localhost:9001
+#  clientId: FTFactoryMQTTClient
 
   # MQTT Topics Configuration
-  cloudTopicPrefix: bpalab/ftfactory
-  cloudPubOrderTopic: bpalab/ftfactory/f/o/order
-  cloudBroadcastTopic: bpalab/ftfactory/o/broadcast
-  cloudSubOrderTopic: bpalab/ftfactory/f/i/order
-  cloudHBWTopic: bpalab/ftfactory/f/i/stock
-  cloudBME680Topic: bpalab/ftfactory/i/bme680
+#  cloudTopicPrefix: bpalab/ftfactory
+#  cloudPubOrderTopic: bpalab/ftfactory/f/o/order
+#  cloudBroadcastTopic: bpalab/ftfactory/o/broadcast
+#  cloudSubOrderTopic: bpalab/ftfactory/f/i/order
+#  cloudHBWTopic: bpalab/ftfactory/f/i/stock
+#  cloudBME680Topic: bpalab/ftfactory/i/bme680
 

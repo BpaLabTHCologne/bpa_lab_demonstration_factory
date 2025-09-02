@@ -9,7 +9,7 @@ group = 'de.thkoeln.inf.bpalab.demofactory'
 java.sourceCompatibility = '21'
 
 bootRun {
-    environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: 'factory'
+//    environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: 'factory'
     environment JAVA_TOOL_OPTIONS: '-Dlogging.level.io.camunda.zeebe.client.impl.ZeebeCallCredentials=ERROR'
 }
 
