@@ -90,7 +90,7 @@ in ./bpa_lab_shipment_process
 
 ### Containerisation
 
-    docker compose -f docker-compose-processes.yaml up -d
+    docker compose -f docker-compose-processes.yml up -d
 
 starts 
 - Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) 
