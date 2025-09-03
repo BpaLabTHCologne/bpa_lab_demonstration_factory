@@ -13,7 +13,7 @@ import {
     shipBikeInstances,
     shipBikeInstance
 // @ts-ignore
-} from "./dbConnection.ts";
+} from "./shipemntDB.ts";
 import {parseVariablesAndCustomHeadersToJSON} from "@camunda8/sdk/dist/zeebe/lib";
 
 //import './zeebeWorkers';

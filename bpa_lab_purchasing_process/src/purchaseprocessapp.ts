@@ -8,7 +8,7 @@ import { config } from 'dotenv'
 config()
 
 // @ts-ignore
-import {getPurchaseOrder, createPurchaseOrder, getVendorsForBikeComponent, storeBikeComponent, updatePurchaseOrder} from "./dbConnection.ts";
+import {getPurchaseOrder, createPurchaseOrder, getVendorsForBikeComponent, storeBikeComponent, updatePurchaseOrder} from "./purchaseDB.ts";
 
 //import './zeebeWorkers';
 
