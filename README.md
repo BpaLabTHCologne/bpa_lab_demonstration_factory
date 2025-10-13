@@ -46,6 +46,11 @@ The data schema of the mysql database is:
 
 ![](sql/bpa_lab_demostration_factory_db.png)
 
+### Docker overview
+The following diagrams shows all containers of the solution (update required as single page application, middlerware and phpMyAdmin are currently not included in this release) 
+
+![docker_overview](https://github.com/BpaLabTHCologne/bpa_lab_demonstration_factory/blob/main/docs/docker-overview.png?raw=true)
+
 ### Deploying BPMN diagrams via Camunda Desktop Modeler
 
 In addition to the local environment setup with docker compose, you can download the [Camunda Desktop Modeler](https://camunda.com/download/modeler/) to locally model BPMN diagrams for execution and directly deploy them to your local environment.
