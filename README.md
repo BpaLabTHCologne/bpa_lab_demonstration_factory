@@ -4,20 +4,49 @@ The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and m
 
 This repository contains the source code and configuration files of the implementation of the demonstration scenario: the ordering, production, purchasing, manufacturing and shipping of custom-made bicycles. The implementation is based on Camunda 8, a Business Process Management System. This BPMS orchestrates different job workers for different processes. Moreover, the robots for the warehouse operations like storing or retrieving items are implemented in Python.
 
-## state of affairs
-
 ## Prerequisites
 
 -> Docker desktop application based on your system preference (Windows/macOS)
-or Docker nativ (Linux)
+or Docker nativ (Linux) 
 
--> mysql9 
+## Using docker compose to deploy entire solution 
+
+:information_source: Docker 20.10.16+ (To be confirmed) is required.
+
+:information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
+
+1. Clone this repository to a directory of your choice
+2. Rund docker service
+3. Run the following command from the directory of the project to pull, create and run all the containers:
+  
+   "docker compose -f docker-compose-processes.yml up -d"
+
+  This starts 
+- Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) 
+- Camunda self-managed
+- and process applications 
+
+    `BPALabBikeFactoryOrderManagement`, 
+
+    `BPALabBikeFactoryProduction`,
+
+    `BPALabBikeFactoryPurchase`,
+
+    `BPALabBikeFactoryManufacture`,
+
+    `BPALabBikeFactoryShipment`
+
+as Docker Container
+
+5. Run the following command only to shut down the containers gracefully: 
+   "docker compose -f docker-compose-processes.yml down" to 
 
 ### Database scheme
 
 ![](sql/bpa_lab_demostration_factory_db.png)
 
 
+## Using docker compose to deploy and run components (to be reworked)
 
 #### Run
     docker compose -f docker-compose.yaml up -d
@@ -87,27 +116,3 @@ in ./bpa_lab_manufacturing_process
 in ./bpa_lab_shipment_process
 
     npm run start
-
-### Containerisation
-
-    docker compose -f docker-compose-processes.yml up -d
-
-starts 
-- Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) 
-- Camunda self-managed
-- runs 
-
-    `BPALabBikeFactoryOrderManagement`, 
-
-    `BPALabBikeFactoryProduction`,
-
-    `BPALabBikeFactoryPurchase`,
-
-    `BPALabBikeFactoryManufacture`,
-
-    `BPALabBikeFactoryShipment`
-
-as Docker Container
-
-## state of affairs (things not working)
-- ???
