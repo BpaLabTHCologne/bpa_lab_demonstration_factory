@@ -46,9 +46,14 @@ The data schema of the mysql database is:
 
 ![](sql/bpa_lab_demostration_factory_db.png)
 
+### Deploying BPMN diagrams via Camunda Desktop Modeler
 
-## Using docker compose to deploy and run components (to be reworked)
-As an alternative, components of the solution can be delpoyed and run separately.
+In addition to the local environment setup with docker compose, you can download the [Camunda Desktop Modeler](https://camunda.com/download/modeler/) to locally model BPMN diagrams for execution and directly deploy them to your local environment.
+
+> :information_source: This project deployes all the process diagrams automatically including order management, production control, purchasing, shipment, warehouse operations and manufacturing.
+
+## Using docker compose to deploy and run components
+As an alternative to deplyoing the complete solutions single components can be delpoyed and run separately.
 
 #### Run
     docker compose -f docker-compose.yaml up -d
