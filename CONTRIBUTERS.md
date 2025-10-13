@@ -1,8 +1,4 @@
-### The current maintainer of this repository is
-
-Domenic Gonzalez <matthias.zapp@th-koeln.de>
-
-### The contact person for the overall BPA Lab initiative at TH Cologne is
+### The contact perspn for the overall BPA Lab initiative at TH Cologne is:
 
 Matthias Zapp <matthias.zapp@th-koeln.de>
 
@@ -10,9 +6,12 @@ Matthias Zapp <matthias.zapp@th-koeln.de>
 
 The BPA Lab project is developed at TH Cologne using an iterative approach, which combines actual development work with teaching. Therefore, this project incorporates the results of manifold student projects in our bachelor and master programme.
 
-Among others, main contributors are:
-* Uwe Poborski <uwe.poborski@th-koeln.de> contributing with the core manufacturing component including the integration with the Fischertechnik I40 factory; IT infrastructure and concept development.
-* Domenic Gonzalez <domenic.gonzalez@smail.th-koeln.de> contributing with overall integration, and quality improvement; rework of warehouse process; data architecture for process analytics   
+The new release (multiple items) has been developed based on the previous version by:
+* Uwe Poborski <uwe.poborski@th-koeln.de> 
+
+To the previous version (until 2024) different persons have contributed.
+ * Uwe Poborski <uwe.poborski@th-koeln.de> with the core manufacturing component including the integration with the Fischertechnik I40 factory; IT infrastructure and concept development.
+* Domenic Gonzalez <domenic.gonzalez@smail.th-koeln.de> contributing with overall integration, and quality improvement; rework of warehouse process; implementing a data architecture for process analytics   
 * Rahib Nazir Butt <rahib_nazir.butt@smail.th-koeln.de> contributing with order management and production planning process implementation; development and integration of the order entry app and supporting the integration of different components
 * Berrak Kuecuk <berrak.kuecuek@smail.th-koeln.de> contributing with order management and production planning process implementation
 * Shirina Loeber <shirina.loeber@smail.th-koeln.de> contributing with purchasing process implementation
