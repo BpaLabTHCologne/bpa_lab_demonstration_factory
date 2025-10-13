@@ -11,20 +11,20 @@ or Docker nativ (Linux)
 
 ## Using docker compose to deploy entire solution 
 
-:information_source: Docker 20.10.16+ (To be confirmed) is required.
+:information_source: Docker 20.10.16+ is required.
 
 :information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
 
 1. Clone this repository to a directory of your choice
-2. Rund docker service
+2. Run docker service
 3. Run the following command from the directory of the project to pull, create and run all the containers:
   
    "docker compose -f docker-compose-processes.yml up -d"
 
   This starts 
-- Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) 
-- Camunda self-managed
-- and process applications 
+- Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) creating an tables and data (if not existing yet) 
+- Camunda self-managed (several components like tasklist, operate, zeebe, ...)
+- and several process applications 
 
     `BPALabBikeFactoryOrderManagement`, 
 
@@ -42,15 +42,17 @@ as Docker Container
    "docker compose -f docker-compose-processes.yml down" to 
 
 ### Database scheme
+The data schema of the mysql database is:
 
 ![](sql/bpa_lab_demostration_factory_db.png)
 
 
 ## Using docker compose to deploy and run components (to be reworked)
+As an alternative, components of the solution can be delpoyed and run separately.
 
 #### Run
     docker compose -f docker-compose.yaml up -d
-to start Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) and Camunda self-managed
+to start Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) and Camunda self-managed without process applications
 
 ### BPALabBikeFactoryOrderManagement
     jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
