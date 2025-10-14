@@ -9,3 +9,5 @@ e2e_tests
 data/mysql-db
 bpa_lab_process_application/.env
 docker-compose-core.yaml
+.vscode/settings.json
+BPA Lab MySQL.session.sql
