@@ -16,13 +16,13 @@ or Docker nativ (Linux)
 :information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
 
 1. Clone this repository to a directory of your choice
-2. Run docker service
-3. Run the following command from the directory of the project to pull, create and run all the containers:
+2. Run docker service (e.g Docker Desktop)
+3. Run the following command from the directory of the project to pull, create and run all the containers (and images if not existing yet):
   
    "docker compose -f docker-compose-processes.yml up -d"
 
   This starts 
-- Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) creating an tables and data (if not existing yet) 
+- Container with Mysql DBMS running [./sql/initdb.sql](./sql/initdb.sql) to create tables and data (if not existing yet) 
 - Camunda self-managed (several components like tasklist, operate, zeebe, ...)
 - and several process applications 
 
@@ -38,7 +38,13 @@ or Docker nativ (Linux)
 
 as Docker Container
 
-5. Run the following command only to shut down the containers gracefully: 
+4. (open issue) Check container status. In case not all containers are started sucessfully, please restart these containers.
+
+5. (only for initial setup) To use the data architecture / dashboards: please follow the guideline "Necessary configurations for the use of the data architecture during initial installation or reinstallation" in the Wiki    
+
+6. Run solution (refer to "User Guide for End to End Process Execution" in Wiki)
+   
+7. Run the following command only to shut down the containers gracefully: 
    "docker compose -f docker-compose-processes.yml down" to 
 
 ### Database scheme
@@ -47,8 +53,8 @@ The data schema of the mysql database is:
 ![](sql/bpa_lab_demostration_factory_db.png)
 
 
-## Using docker compose to deploy and run components (to be reworked)
-As an alternative, components of the solution can be delpoyed and run separately.
+## Run process application seperately from Camunda/MySQL containers
+As an alternative, Camunda and MySQL can be deployed on docker while process applications may be executed separatly.
 
 #### Run
     docker compose -f docker-compose.yaml up -d
