@@ -56,7 +56,9 @@ to start Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) and Camunda self-m
 
 ### BPALabBikeFactoryOrderManagement
     jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
-- Application creates/updates database with hibernate/jpa on startup except
+- shows available ***bike models***, creates ***Customer Order (Order Number)***
+- triggers **Production** and **Shipment**
+- application creates/updates database with hibernate/jpa on startup except
   PurchaseOrder table, Vendor table and Vendor-BikeComponent table
 - Deploys bpmn/BPALabBikeFactoryOrderManagement.bpmn, bpmn/ChooseBikesForm.form, bpmn/ShowOrderForm.form
 
@@ -68,10 +70,11 @@ in ./bpa_lab_ordermanagement_process
 
 ### BPALabBikeFactoryProduction
     jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
-- called per message, creates Production Order and Bike Instances from Bike Model,
-  decreases Bike Component quantity, reserves them for Order Number
-- started with User Task, creates Production Order and Bike Instances from Bike Model,
-  decreases Bike Component quantity and doesn't reserve
+- called per message, creates ***Production Order*** and ***Bike Instances*** from ***Bike Model***,
+  decreases ***Bike Component*** quantity, reserves them for ***Order Number***
+- started with User Task, creates ***Production Order*** and ***Bike Instances*** from ***Bike Model***,
+  decreases ***Bike Component*** quantity, no reservation
+- triggers **Purchase** and **Manufacturr**
 - Deploys bpmn/BPALabBikeFactoryProductionControl.bpmn, bpmn/bpa_lab_production_process_start.form
 
 ![](/bpa_lab_productioncontrol_process/bpmn/BPALabBikeFactoryProductionControl.png)
@@ -83,8 +86,8 @@ in ./bpa_lab_productioncontrol_process
 
 ### BPALabBikeFactoryPurchase
     nodejs(v23.10.0) typescript mysql(9) @camunda8/sdk
-- called per message, creates Purchase Order and increases Bike Component quantity
-- started with User Task, creates Purchase Order and increases Bike Component quantity
+- called per message, creates ***Purchase Order*** and increases ***Bike Component*** quantity
+- started with User Task, creates ***Purchase Order*** and increases ***Bike Component*** quantity
 - Deploys bpmn/bpa_lab_purchase_process.bpmn, bpmn/bpa_lab_purchase_process_start.form, bpmn/chooseVendor.form
 
 ![](/bpa_lab_purchasing_process/bpmn/bpa_lab_purchase_process.png)
@@ -95,8 +98,8 @@ in ./bpa_lab_purchasing_process
 
 ### BPALabBikeFactoryManufacture
     jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle
-- sends mqtt messages to and receives mqtt messages from Fischertechnik fabric
-- fakes manufacturing if no connection to mqtt broker available
+- sends mqtt messages(***order***) to and receives mqtt messages(environment, order status, stock) from Fischertechnik factory
+- fakes **manufacturing** if no connection to mqtt broker available
 - Deploys bpmn/BPALabBikeFactoryManufacture.bpmn, bpmn/BPALabBikeFactoryManufactureOrder.form
 
 ![](/bpa_lab_manufacturing_process/bpmn/BPALabBikeFactoryManufacture.png)
@@ -109,8 +112,8 @@ in ./bpa_lab_manufacturing_process
 ### BPALabBikeFactoryShipment
     nodejs(v23.10.0) typescript mysql(9) @camunda8/sdk
 
-- called per message, sets Bike Instances with Order Number to shipped
-- started with User Task, searches Bike Instances with no Order Number and not shipped and sets chosen to shipped
+- called per message, sets ***Bike Instances*** with ***Order Number*** to shipped
+- started with User Task, searches ***Bike Instances*** **without** ***Order Number*** and not shipped, sets chosen to shipped
 - Deploys bpmn/bpa_lab_shipment-process.bpmn, bpmn/shipmentInputData.form, bpmn/checkInformation.form
 
 ![](/bpa_lab_shipment_process/bpmn/bpa_lab_shipment_process.png)
