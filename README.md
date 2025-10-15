@@ -80,7 +80,7 @@ in ./bpa_lab_ordermanagement_process
   decreases ***Bike Component*** quantity, reserves them for ***Order Number***
 - started with User Task, creates ***Production Order*** and ***Bike Instances*** from ***Bike Model***,
   decreases ***Bike Component*** quantity, no reservation
-- triggers **Purchase** and **Manufacturr**
+- triggers **Purchase** and **Manufacture**
 - Deploys bpmn/BPALabBikeFactoryProductionControl.bpmn, bpmn/bpa_lab_production_process_start.form
 
 ![](/bpa_lab_productioncontrol_process/bpmn/BPALabBikeFactoryProductionControl.png)
