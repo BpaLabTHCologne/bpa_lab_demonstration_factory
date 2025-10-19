@@ -47,13 +47,46 @@ as Docker Container
 7. Run the following command only to shut down the containers gracefully: 
    "docker compose -f docker-compose-processes.yml down" to 
 
+### Recommended tools for developers
+
+1. Database Extension
+Install extension of your software development environment to access the data tables in the MYSQL database.  
+
+Create connection
+
+  `Server Address: localhost`
+
+  `Port: 3070`
+
+  `Database: bpa_lab_demonstration_factory`
+
+  `Username: root`
+
+  `Password: •••••••••`
+
+
+3. MQTT Client Tool
+[only when working with the physical BPA Lab Factory] Install a MQTT Client Toolbox like https://mqttx.app/ to be able to test the connection to the MQTT broker, receive messages or simulate messages.
+
+a) Create connection and connect:
+
+  'Name: [e.g. BPALabBroker]' 
+  
+  'Host: mqtt://10.0.0.21'
+  
+  'Port: 1883'
+  
+  'Client ID: [a unique ID]'
+
+b) Create subscription with topic "#" (all messages) 
+
 ### Database scheme
 The data schema of the mysql database is:
 
 ![](sql/bpa_lab_demostration_factory_db.png)
 
 
-## Run process application seperately from Camunda/MySQL containers
+## Run process applications separately from the Camunda/MySQL containers
 As an alternative, Camunda and MySQL can be deployed on docker while process applications may be executed separatly.
 
 #### Run
