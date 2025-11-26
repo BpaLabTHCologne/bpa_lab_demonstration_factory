@@ -47,7 +47,6 @@ public class FtWarehouseStorageWorker extends AWorker {
         this.ftWarehouseMQTTClient = ftWarehouseMQTTClient;
         this.ftfactoryZEEBEClient = zeebeClient;
     }
-
 // Worker for BPALabWarehouseFetch
     @JobWorker(type = "checkBikeAvailable")
     public void checkBikeAvailable(final JobClient client, final ActivatedJob job) {

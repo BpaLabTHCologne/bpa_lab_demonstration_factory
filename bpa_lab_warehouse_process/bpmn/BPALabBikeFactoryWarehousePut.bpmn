@@ -91,7 +91,7 @@ warehousePutCorrelation</bpmn:text>
     </bpmn:endEvent>
   </bpmn:process>
   <bpmn:message id="Message_3lr8s78" name="MsgStartProductionOrder" />
-  <bpmn:message id="Message_1sp91cv" name="MsgStartWarehouseFetch" />
+  <bpmn:message id="Message_1sp91cv" name="MsgStartWarehousePut" />
   <bpmn:message id="Message_0hhe7am" name="MsgWarehousePutted">
     <bpmn:extensionElements>
       <zeebe:subscription correlationKey="=putCorrelation" />
@@ -191,16 +191,16 @@ warehousePutCorrelation</bpmn:text>
         <di:waypoint x="910" y="160" />
         <di:waypoint x="942" y="160" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1sys528_di" bpmnElement="Association_1sys528">
-        <di:waypoint x="1048" y="260" />
-        <di:waypoint x="977" y="276" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_1161ci8" bpmnElement="TextAnnotation_1hnqhdz">
         <dc:Bounds x="240" y="100" width="180" height="41" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_123ax4a" bpmnElement="TextAnnotation_0uxcmgd">
         <dc:Bounds x="1010" y="110" width="180" height="41" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_02uos3v" bpmnElement="TextAnnotation_11mawyk">
+        <dc:Bounds x="1010" y="220" width="210" height="40" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_0xqle38_di" bpmnElement="Association_0xqle38">
@@ -211,10 +211,10 @@ warehousePutCorrelation</bpmn:text>
         <di:waypoint x="1010" y="150" />
         <di:waypoint x="977" y="156" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="BPMNShape_02uos3v" bpmnElement="TextAnnotation_11mawyk">
-        <dc:Bounds x="1010" y="220" width="210" height="40" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1sys528_di" bpmnElement="Association_1sys528">
+        <di:waypoint x="1048" y="260" />
+        <di:waypoint x="977" y="276" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

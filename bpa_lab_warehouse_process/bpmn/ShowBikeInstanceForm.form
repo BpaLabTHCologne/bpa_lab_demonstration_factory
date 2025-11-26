@@ -1,0 +1,45 @@
+{
+  "components": [
+    {
+      "label": "Fetched Bike Instance",
+      "components": [
+        {
+          "label": "Color",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1yrnang",
+            "columns": 5
+          },
+          "id": "Field_0ubc2ja",
+          "key": "color"
+        },
+        {
+          "label": "Serial Number",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1yrnang",
+            "columns": null
+          },
+          "id": "Field_16cozb3",
+          "key": "id"
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
+      "layout": {
+        "row": "Row_1junzts",
+        "columns": 9
+      },
+      "id": "Field_03grf44"
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "schemaVersion": 18,
+  "id": "ShowBikeInstance",
+  "type": "default"
+}

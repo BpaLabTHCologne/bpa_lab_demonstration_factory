@@ -1,0 +1,23 @@
+{
+  "components": [
+    {
+      "label": "Storage Place",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_0nahx9u",
+        "columns": 3
+      },
+      "id": "Field_0wjx2f0",
+      "key": "place"
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "schemaVersion": 18,
+  "id": "ShowStoragePlace",
+  "type": "default"
+}
