@@ -1,0 +1,59 @@
+{
+  "components": [
+    {
+      "label": "Warehouse Put",
+      "components": [
+        {
+          "label": "Color",
+          "values": [
+            {
+              "label": "WHITE",
+              "value": "WHITE"
+            },
+            {
+              "label": "BLUE",
+              "value": "BLUE"
+            },
+            {
+              "label": "RED",
+              "value": "RED"
+            }
+          ],
+          "type": "select",
+          "layout": {
+            "row": "Row_061ru03",
+            "columns": 7
+          },
+          "id": "Field_0ecrbvn",
+          "key": "color"
+        },
+        {
+          "label": "Serial Number",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_061ru03",
+            "columns": null
+          },
+          "id": "Field_19t7mqy",
+          "key": "id"
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
+      "layout": {
+        "row": "Row_1k12hlm",
+        "columns": 7
+      },
+      "id": "Field_03grf44"
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "schemaVersion": 18,
+  "id": "StartWarehousePut",
+  "type": "default"
+}

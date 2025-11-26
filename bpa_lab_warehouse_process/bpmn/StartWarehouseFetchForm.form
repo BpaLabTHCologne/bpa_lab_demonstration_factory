@@ -1,0 +1,83 @@
+{
+  "components": [
+    {
+      "label": "Warehouse Fetch",
+      "components": [
+        {
+          "label": "Either",
+          "components": [
+            {
+              "label": "Color",
+              "values": [
+                {
+                  "label": "WHITE",
+                  "value": "WHITE"
+                },
+                {
+                  "label": "BLUE",
+                  "value": "BLUE"
+                },
+                {
+                  "label": "RED",
+                  "value": "RED"
+                }
+              ],
+              "type": "select",
+              "layout": {
+                "row": "Row_1pur7m4",
+                "columns": 7
+              },
+              "id": "Field_0ecrbvn",
+              "key": "color"
+            }
+          ],
+          "showOutline": true,
+          "type": "group",
+          "layout": {
+            "row": "Row_061ru03",
+            "columns": null
+          },
+          "id": "Field_0k1iwzq"
+        },
+        {
+          "label": "Or",
+          "components": [
+            {
+              "label": "Serial Number",
+              "type": "textfield",
+              "layout": {
+                "row": "Row_0vt1e3x",
+                "columns": null
+              },
+              "id": "Field_19t7mqy",
+              "key": "id"
+            }
+          ],
+          "showOutline": true,
+          "type": "group",
+          "layout": {
+            "row": "Row_05funzy",
+            "columns": null
+          },
+          "id": "Field_1wynnvb"
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
+      "layout": {
+        "row": "Row_1k12hlm",
+        "columns": 6
+      },
+      "id": "Field_03grf44"
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "schemaVersion": 18,
+  "id": "StartWarehouseFetch",
+  "type": "default"
+}
