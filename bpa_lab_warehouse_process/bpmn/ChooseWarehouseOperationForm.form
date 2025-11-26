@@ -1,0 +1,137 @@
+{
+  "components": [
+    {
+      "label": "Warehouse Operation",
+      "components": [
+        {
+          "label": "Inventory",
+          "components": [
+            {
+              "label": "Color",
+              "type": "textfield",
+              "layout": {
+                "row": "Row_16ld4et",
+                "columns": 5
+              },
+              "id": "Field_0ubc2ja",
+              "key": "color"
+            },
+            {
+              "label": "Serial Number",
+              "type": "textfield",
+              "layout": {
+                "row": "Row_16ld4et",
+                "columns": null
+              },
+              "id": "Field_16cozb3",
+              "key": "id"
+            }
+          ],
+          "showOutline": true,
+          "isRepeating": true,
+          "allowAddRemove": false,
+          "defaultRepetitions": 1,
+          "type": "dynamiclist",
+          "layout": {
+            "row": "Row_1yrnang",
+            "columns": null
+          },
+          "id": "Field_1r7uaxl",
+          "path": "inventory"
+        },
+        {
+          "label": "Color",
+          "values": [
+            {
+              "label": "WHITE",
+              "value": "WHITE"
+            },
+            {
+              "label": "BLUE",
+              "value": "BLUE"
+            },
+            {
+              "label": "RED",
+              "value": "RED"
+            }
+          ],
+          "type": "select",
+          "layout": {
+            "row": "Row_061ru03",
+            "columns": 7
+          },
+          "id": "Field_0ecrbvn",
+          "key": "color"
+        },
+        {
+          "label": "Operation",
+          "values": [
+            {
+              "label": "Fetch",
+              "value": "fetch"
+            },
+            {
+              "label": "Put",
+              "value": "put"
+            }
+          ],
+          "type": "radio",
+          "layout": {
+            "row": "Row_061ru03",
+            "columns": 8
+          },
+          "id": "Field_0bj8ziv",
+          "key": "task"
+        },
+        {
+          "label": "Serial Number",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_15ht1l8",
+            "columns": null
+          },
+          "id": "Field_19t7mqy",
+          "key": "id"
+        },
+        {
+          "computeOn": "presubmit",
+          "type": "expression",
+          "layout": {
+            "row": "Row_0ymwnnt",
+            "columns": null
+          },
+          "id": "Field_1f1phbm",
+          "key": "warehousePutCorrelation",
+          "expression": "=now()"
+        },
+        {
+          "computeOn": "presubmit",
+          "type": "expression",
+          "layout": {
+            "row": "Row_0p4duns",
+            "columns": null
+          },
+          "id": "Field_1a7bclq",
+          "key": "warehouseFetchCorrelation",
+          "expression": "=now()"
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
+      "layout": {
+        "row": "Row_1junzts",
+        "columns": 9
+      },
+      "id": "Field_03grf44"
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.34.0"
+  },
+  "schemaVersion": 18,
+  "id": "StartWarehouseOperation",
+  "type": "default"
+}

@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -119,9 +121,19 @@ public class FtWarehouseStorage implements IMqttMessageListener {
         return false;
     }
 
-    public String toJSON() throws JsonProcessingException {
+    public List<BikeInstance> jsonBikeIstanceList() throws JsonProcessingException {
+        List<BikeInstance> bikeInstances = new ArrayList<>();
+        if (bikeInstance != null && !bikeInstance.isEmpty()) {
+            for (Map.Entry<String, BikeInstance> entry : bikeInstance.entrySet()) {
+                LOG.info("Checking place " + entry.getKey());
+                if (entry.getValue() != null) {
+                    LOG.info("bikeInstance " + entry.getValue());
+                    bikeInstances.add(entry.getValue());
+                }
+            }
+        }
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(this);
+        return bikeInstances;
     }
 
     @JsonIgnore
