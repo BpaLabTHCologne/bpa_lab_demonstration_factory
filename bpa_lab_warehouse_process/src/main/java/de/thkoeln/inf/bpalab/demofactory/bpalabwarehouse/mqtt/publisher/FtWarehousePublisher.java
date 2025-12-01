@@ -65,7 +65,6 @@ public class FtWarehousePublisher {
     }
 
     public void publishPutCommand(String id, String color) {
-        if (ftWarehouseStorage.isEmptyPlace()) {
             BikeInstance bikeInstance = new BikeInstance();
             bikeInstance.setId(id);
             bikeInstance.setColor(color);
@@ -73,10 +72,6 @@ public class FtWarehousePublisher {
             putTopicPayload = new TopicPayload(warehouseTopics.getPutTopic(), JSONString);
             log.info("publishPutCommand topic: {}, bikeInstance {}", getPutTopicPayload().getTopic(), JSONString);
             ftWarehouseMQTTClient.publish(putTopicPayload);
-        } else {
-            log.info("publishPutCommand: No place left !!!");
-
-        }
     }
 
     public void publishFetchCommand(String color) {

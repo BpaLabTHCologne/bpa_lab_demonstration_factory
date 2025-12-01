@@ -21,7 +21,9 @@ ftwarehousemqttclient:
   # MQTT Topics Configuration
   fetchTopic: bpalab/ftwarehouse/fetch
   getTopic: bpalab/ftwarehouse/get
+  noBikeTopic: bpalab/ftwarehouse/nobike
   putTopic: bpalab/ftwarehouse/put
+  noPlaceTopic: bpalab/ftwarehouse/noplace
   storageTopic: bpalab/ftwarehouse/storage
   infoTopic: bpalab/ftwarehouse/info
   fetchedBikeTopic: bpalab/ftwarehouse/fetchedBike
