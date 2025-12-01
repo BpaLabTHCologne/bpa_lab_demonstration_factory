@@ -41,8 +41,10 @@ public class FtWarehouseFetchedBike implements IMqttMessageListener {
     @PostConstruct
     public void postConstruct() {
 //		prepare Subscriber
-        log.info("PostConstruct {}", getSubscriptionTopic());
-        ftWarehouseMQTTClient.subscribe(getSubscriptionTopic(), this);
+        log.info("PostConstruct {}", warehouseTopics.getFetchedBikeTopic());
+        ftWarehouseMQTTClient.subscribe(warehouseTopics.getFetchedBikeTopic(), this);
+        log.info("PostConstruct {}", warehouseTopics.getNoBikeTopic());
+        ftWarehouseMQTTClient.subscribe(warehouseTopics.getNoBikeTopic(), this);
     }
 
     @JsonProperty("BikeInstance")
@@ -65,21 +67,22 @@ public class FtWarehouseFetchedBike implements IMqttMessageListener {
         return mapper.writeValueAsString(this);
     }
 
-    @JsonIgnore
-    public String getSubscriptionTopic() {
-        return warehouseTopics.getFetchedBikeTopic();
-    }
-
     @Override
     public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-        BikeInstance bikeInstance = BikeInstance.fromJSON(new String(mqttMessage.getPayload(), StandardCharsets.UTF_8));
-        if (bikeInstance != null) {
-            LOG.info("messageArrived bikeInstance : " + bikeInstance.asJSON());
-            try {
-                messenger.sendGetBike(bikeInstance, fetchCorrelation);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+        if (topic.equals(warehouseTopics.getFetchedBikeTopic())) {
+            BikeInstance bikeInstance = BikeInstance.fromJSON(new String(mqttMessage.getPayload(), StandardCharsets.UTF_8));
+            if (bikeInstance != null) {
+                LOG.info("messageArrived bikeInstance : " + bikeInstance.asJSON());
+                try {
+                    messenger.sendGetBike(bikeInstance, fetchCorrelation);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
             }
+        }
+        if (topic.equals(warehouseTopics.getNoBikeTopic())) {
+            LOG.info("messageArrived no Bike");
+            messenger.sendNoBike(fetchCorrelation);
         }
     }
 }

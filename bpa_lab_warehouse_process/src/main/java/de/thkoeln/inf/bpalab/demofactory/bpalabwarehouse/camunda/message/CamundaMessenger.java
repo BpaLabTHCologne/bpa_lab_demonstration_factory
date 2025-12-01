@@ -6,6 +6,7 @@ import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.subscriber.ftwareh
 import io.camunda.zeebe.client.ZeebeClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -22,29 +23,12 @@ public class CamundaMessenger {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     private final ZeebeClient zeebeClient;
-    private BikeInstance bikeInstance;
-
-    private static final String MSG_FETCHED_BIKE = "MsgWarehouseFetched";
-    private static final String MSG_PUTTED_BIKE = "MsgWarehousePutted";
 
     public CamundaMessenger(ZeebeClient cClient) {
         this.zeebeClient = cClient;
     }
 
-    public void sendFetchedBike(BikeInstance bikeInstance, String correlation) throws JsonProcessingException {
-        String stockItemJSON = objectMapper.writeValueAsString(bikeInstance);
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("bikeInstance", bikeInstance);
-        variables.put("id", bikeInstance.getId());
-        LOG.info("sendFetchedBike :: {} correlationKey{}",
-                stockItemJSON, correlation);
-        zeebeClient.newPublishMessageCommand()
-                 .messageName(MSG_FETCHED_BIKE)
-                 .correlationKey(correlation)
-                 .variables(variables)
-                 .send().join();
-    }
-
+    private static final String MQTT_FETCHED_BIKE = "MqttWarehouseFetched";
     public void sendGetBike(BikeInstance bikeInstance, String correlation) throws JsonProcessingException {
         String stockItemJSON = objectMapper.writeValueAsString(bikeInstance);
         Map<String, Object> variables = new HashMap<>();
@@ -53,25 +37,45 @@ public class CamundaMessenger {
         LOG.info("sendGetBike :: {} correlationKey{}",
                 stockItemJSON, correlation);
         zeebeClient.newPublishMessageCommand()
-                .messageName(MSG_FETCHED_BIKE)
+                .messageName(MQTT_FETCHED_BIKE)
                 .correlationKey(correlation)
                 .variables(variables)
                 .send().join();
     }
 
+    private static final String MQTT_NO_BIKE = "MqttWarehouseNoBike";
+    public void sendNoBike(String correlation) {
+        Map<String, Object> variables = new HashMap<>();
+        LOG.info("sendNoPlace :: correlationKey{}", correlation);
+        zeebeClient.newPublishMessageCommand()
+                .messageName(MQTT_NO_BIKE)
+                .correlationKey(correlation)
+                .variables(variables)
+                .send().join();
+    }
+
+    private static final String MQTT_PUTTED_BIKE = "MqttWarehousePutted";
     public void sendStoredPlace(String place, String correlation) throws JsonProcessingException {
         Map<String, Object> variables = new HashMap<>();
         variables.put("place", place);
         LOG.info("sendStoredPlace :: {} correlationKey{}",
                 place, correlation);
         zeebeClient.newPublishMessageCommand()
-                .messageName(MSG_PUTTED_BIKE)
+                .messageName(MQTT_PUTTED_BIKE)
                 .correlationKey(correlation)
                 .variables(variables)
                 .send().join();
     }
 
-    public void sendWarehouseFinished(BikeInstance bikeInstance) throws JsonProcessingException {
-
+    private static final String MQTT_NO_PLACE = "MqttWarehouseNoPlace";
+    public void sendNoPlace(String correlation) {
+        Map<String, Object> variables = new HashMap<>();
+        LOG.info("sendNoPlace :: correlationKey{}", correlation);
+        zeebeClient.newPublishMessageCommand()
+                .messageName(MQTT_NO_PLACE)
+                .correlationKey(correlation)
+                .variables(variables)
+                .send().join();
     }
+
 }

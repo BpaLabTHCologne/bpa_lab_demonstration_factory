@@ -48,45 +48,14 @@ public class FtWarehouseStorageWorker extends AWorker {
         this.ftfactoryZEEBEClient = zeebeClient;
     }
 // Worker for BPALabWarehouseFetch
-    @JobWorker(type = "checkBikeAvailable")
-    public void checkBikeAvailable(final JobClient client, final ActivatedJob job) {
-        Map<String, Object> vars = job.getVariablesAsMap();
-        LOG.info("checkBikeAvailable in:: {}", vars);
-        if (vars.containsKey("warehouseFetchCorrelation")) {
-            warehouseFetchCorrelation = vars.get("warehouseFetchCorrelation").toString();
-        }
-        try {
-            if (ftWarehouseStorage != null) {
-                vars.put("ftWarehouseStorage", ftWarehouseStorage);
-                if (vars.containsKey("id")
-                        && vars.get("id") != null
-                        && ftWarehouseStorage.hasId(vars.get("id").toString()))
-                    vars.put("available", true);
-                else
-                    if (vars.containsKey("color")
-                            && vars.get("color") != null
-                            && ftWarehouseStorage.hasColor(vars.get("color").toString()))
-                        vars.put("available", true);
-                    else
-                        vars.put("available", false);
-            } else {
-                vars.put("available", false);
-            }
-            LOG.info("checkBikeAvailable out:: {}", vars);
-            client.newCompleteCommand(job.getKey()).variables(vars).send().join();
-        } catch (Exception e) {
-            LOG.error("Error in checkBikeAvailable", e);
-            failJob(client, job, e.getMessage());
-        }
-    }
 
     @JobWorker(type = "fetchBikeInstance")
     public void fetchBikeInstance(final JobClient client, final ActivatedJob job) {
         Map<String, Object> vars = job.getVariablesAsMap();
         String fetchCorrelation = null;
+        if (vars.containsKey("warehouseFetchCorrelation") && vars.get("warehouseFetchCorrelation") != null)
+            fetchCorrelation = warehouseFetchCorrelation = vars.get("warehouseFetchCorrelation").toString();
         String idOrColor = String.valueOf(vars.get("id"));
-        if (vars.containsKey("warehouseFetchCorrelation"))
-            fetchCorrelation = warehouseFetchCorrelation;
         if (idOrColor != null && !idOrColor.equals("")) {
             if (fetchCorrelation == null)
                 fetchCorrelation = idOrColor;
@@ -148,31 +117,6 @@ public class FtWarehouseStorageWorker extends AWorker {
 
 // Worker for BPALabWarehousePut
 
-    @JobWorker(type = "checkPlaceAvailable")
-    public void checkPlaceAvailable(final JobClient client, final ActivatedJob job) {
-        Map<String, Object> vars = job.getVariablesAsMap();
-        LOG.info("checkPlaceAvailable in:: {}", vars);
-        if (vars.containsKey("warehousePutCorrelation")) {
-            warehousePutCorrelation = vars.get("warehousePutCorrelation").toString();
-        }
-        try {
-            if (ftWarehouseStorage != null) {
-                vars.put("ftWarehouseStorage", ftWarehouseStorage);
-                if (ftWarehouseStorage.isEmptyPlace())
-                    vars.put("available", true);
-                else
-                    vars.put("available", false);
-            } else {
-                vars.put("available", false);
-            }
-            LOG.info("checkPlaceAvailable out:: {}", vars);
-            client.newCompleteCommand(job.getKey()).variables(vars).send().join();
-        } catch (Exception e) {
-            LOG.error("Error in checkPlaceAvailable", e);
-            failJob(client, job, e.getMessage());
-        }
-    }
-
     @JobWorker(type = "putBikeInstance")
     public void putBikeInstance(final JobClient client, final ActivatedJob job) {
         Map<String, Object> vars = job.getVariablesAsMap();
@@ -181,8 +125,8 @@ public class FtWarehouseStorageWorker extends AWorker {
             String id = String.valueOf(vars.get("id"));
             String color = String.valueOf(vars.get("color"));
             String putCorrelation;
-            if (vars.containsKey("warehousePutCorrelation"))
-                putCorrelation = warehousePutCorrelation;
+            if (vars.containsKey("warehousePutCorrelation") && vars.get("warehousePutCorrelation") != null)
+                putCorrelation = warehousePutCorrelation = vars.get("warehousePutCorrelation").toString();
             else
                 putCorrelation = String.valueOf(vars.get("id"));
             vars.put("putCorrelation", putCorrelation);
@@ -220,7 +164,7 @@ public class FtWarehouseStorageWorker extends AWorker {
         LOG.info("sendFinishedWarehouseNoPut :: {}", objectMapper.writeValueAsString(variables));
         if (variables.containsKey("warehousePutCorrelation")) {
             warehousePutCorrelation = variables.get("warehousePutCorrelation").toString();
-            LOG.info("sendFinishedWarehouseNoPut correlationKey {}"
+            LOG.info("sendFinishedWarehouseNoPut correlationKey {} "
                     , warehousePutCorrelation);
             ftfactoryZEEBEClient.newPublishMessageCommand()
                     .messageName(MSG_WAREHOUSE_PUT_NOPLACE_FINISHED)

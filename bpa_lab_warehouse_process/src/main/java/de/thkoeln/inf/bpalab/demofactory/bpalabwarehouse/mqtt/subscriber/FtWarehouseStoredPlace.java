@@ -34,8 +34,10 @@ public class FtWarehouseStoredPlace implements IMqttMessageListener {
     @PostConstruct
     public void postConstruct() {
 //		prepare Subscriber
-        log.info("PostConstruct {}", getSubscriptionTopic());
-        ftWarehouseMQTTClient.subscribe(getSubscriptionTopic(), this);
+        log.info("PostConstruct {}", warehouseTopics.getStoredPlaceTopic());
+        ftWarehouseMQTTClient.subscribe(warehouseTopics.getStoredPlaceTopic(), this);
+        log.info("PostConstruct {}", warehouseTopics.getNoPlaceTopic());
+        ftWarehouseMQTTClient.subscribe(warehouseTopics.getNoPlaceTopic(), this);
     }
 
     @JsonProperty("place")
@@ -61,22 +63,23 @@ public class FtWarehouseStoredPlace implements IMqttMessageListener {
         return mapper.writeValueAsString(this);
     }
 
-    @JsonIgnore
-    public String getSubscriptionTopic() {
-        return warehouseTopics.getStoredPlaceTopic();
-    }
-
     @Override
     public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-        String storedPlace = new String(mqttMessage.getPayload(), StandardCharsets.UTF_8);
-        place = storedPlace;
-        if (place != null) {
-            LOG.info("messageArrived storedPlace : " + storedPlace);
-            try {
-                messenger.sendStoredPlace(place, storeCorrelation);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+        if (topic.equals(warehouseTopics.getStoredPlaceTopic())) {
+            String storedPlace = new String(mqttMessage.getPayload(), StandardCharsets.UTF_8);
+            place = storedPlace;
+            if (place != null) {
+                LOG.info("messageArrived storedPlace : " + storedPlace);
+                try {
+                    messenger.sendStoredPlace(place, storeCorrelation);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
             }
+        }
+        if (topic.equals(warehouseTopics.getNoPlaceTopic())) {
+            LOG.info("messageArrived no Place");
+            messenger.sendNoPlace(storeCorrelation);
         }
     }
 }
