@@ -1,13 +1,14 @@
-camunda:
-  client:
-    mode: self-managed
 # camunda8.8 full
 #    auth:
 #      client-id: orchestration
 #      client-secret: secret
-    enabled: true
-    rest-address: ${ZEEBE_REST_ADRESS:http://localhost:8088}
-    grpc-address: ${ZEEBE_GRPC_ADRESS:http://localhost:26500}
+camunda:
+  client:
+    mode: self-managed
+    zeebe:
+      enabled: true
+      rest-address: ${ZEEBE_REST_ADRESS:http://localhost:8088}
+      grpc-address: ${ZEEBE_GRPC_ADRESS:http://localhost:26500}
 
 # MQTT Client Configuration
 # FtFactory Cloud Broker
@@ -16,7 +17,7 @@ camunda:
 #    activate:
 #      on-profile: factory
 ftwarehousemqttclient:
-  broker: ${MQTTBROKER_ADRESS:ws://localhost:9001}
+  broker: ${MQTTBROKER_ADRESS:ws://10.0.0.21:9001}
   clientId: FTWarehouseMQTTClient
   # MQTT Topics Configuration
   fetchTopic: bpalab/ftwarehouse/fetch
