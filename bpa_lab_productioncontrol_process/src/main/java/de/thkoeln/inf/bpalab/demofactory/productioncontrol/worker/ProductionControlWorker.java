@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.camunda.zeebe.client.impl.util.VersionUtil.LOG;
+
 @Component
 public class ProductionControlWorker {
 	private final static Logger LOG = LoggerFactory.getLogger(ProductionControlWorker.class);
@@ -43,7 +45,9 @@ public class ProductionControlWorker {
     @Autowired
     private BikeInstanceRepository bikeInstanceRepository;
 
-	@JobWorker(type = "createProductionOrder", fetchVariables={"orderNumber", "produceBikeModel"})
+    private final String MSG_WAREHOUSE_START_PUT = "MsgStartWarehousePut";
+
+    @JobWorker(type = "createProductionOrder", fetchVariables={"orderNumber", "produceBikeModel"})
 	public ProductionOrderDTO createProductionOrder(final ActivatedJob job) throws JsonProcessingException {
 		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
 //		if (productionOrderDTO.orderNumber == null)
@@ -147,8 +151,30 @@ public class ProductionControlWorker {
 		bikeInstanceService.reserveBikeInstance(bikeInstanceSerialNumber, orderNumber);
 	}
 
+// Worker for starting WarehousePut
 
-	@JobWorker(type = "sendFinishedBikeModelProductionOrder", fetchAllVariables = true)
+    @JobWorker(type = "startWarehousePut")
+    public void startWarehousePut(final JobClient client, final ActivatedJob job) {
+        Map<String, Object> vars = job.getVariablesAsMap();
+        Map<String, Object> varsOut = new HashMap<>();
+
+        String manufactureOrderCorrelation = (String) vars.get("manufactureOrderCorrelation");
+        vars.put("warehousePutCorrelation", manufactureOrderCorrelation);
+        varsOut.put("warehousePutCorrelation", manufactureOrderCorrelation);
+        String id = vars.get("bikeInstanceSerialNumber").toString();
+        varsOut.put("id", id);
+        String color = vars.get("orderType").toString();
+        varsOut.put("color", color);
+        LOG.info("startWarehousePut {}", varsOut);
+        zeebeClient.newPublishMessageCommand()
+                .messageName(MSG_WAREHOUSE_START_PUT)
+                .correlationKey(manufactureOrderCorrelation)
+                .variables(varsOut)
+                .send().join();
+    }
+
+
+    @JobWorker(type = "sendFinishedBikeModelProductionOrder", fetchAllVariables = true)
 	public void sendFinishedBikeModelProductionOrder(final ActivatedJob job) throws JsonProcessingException {
 		Map<String, Object> variables = job.getVariablesAsMap();
 		LOG.info("sendFinishedBikeModelProductionOrder variables {}"

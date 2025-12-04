@@ -53,8 +53,8 @@ public class FtWarehouseStorageSuperWorker extends AWorker {
 
 // Worker for starting WarehouseFetch
 
-    @JobWorker(type = "startWarehouseFetch")
-    public void startWarehouseFetch(final JobClient client, final ActivatedJob job) {
+    @JobWorker(type = "startWarehouseSuperFetch")
+    public void startWarehouseSuperFetch(final JobClient client, final ActivatedJob job) {
         Map<String, Object> vars = job.getVariablesAsMap();
         warehouseFetchCorrelation = (String) vars.get("warehouseFetchCorrelation");
         LOG.info("startWarehouseFetch vars {}", vars);
@@ -67,8 +67,8 @@ public class FtWarehouseStorageSuperWorker extends AWorker {
 
 // Worker for starting WarehousePut
 
-    @JobWorker(type = "startWarehousePut")
-    public void startWarehousePut(final JobClient client, final ActivatedJob job) {
+    @JobWorker(type = "startWarehouseSuperPut")
+    public void startWarehouseSuperPut(final JobClient client, final ActivatedJob job) {
         Map<String, Object> vars = job.getVariablesAsMap();
         warehousePutCorrelation = (String) vars.get("warehousePutCorrelation");
         LOG.info("startWarehousePut {}", vars);

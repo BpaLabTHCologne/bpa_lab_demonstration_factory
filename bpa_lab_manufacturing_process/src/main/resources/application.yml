@@ -13,7 +13,7 @@ camunda:
 #    activate:
 #      on-profile: factory
 ftfactorymqttclient:
-  broker: ${MQTTBROKER_ADRESS:ws://10.0.0.21:8081}
+  broker: ${MQTTBROKER_ADRESS:ws://10.0.0.21:9001}
   clientId: FTFactoryMQTTClient
   # MQTT Topics Configuration
   cloudTopicPrefix: bpalab/ftfactory
