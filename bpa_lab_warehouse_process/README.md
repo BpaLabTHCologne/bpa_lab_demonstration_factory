@@ -10,7 +10,7 @@ and Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) *(not used here)*
 
 ### BPALabBikeFactoryWarehouse
     jdk21 spring-boot-starter-camunda-sdk(c8) gradle
-- sends mqtt messages(***put/get***) to and receives mqtt messages(stock,fetched,putted) from TXT_Warehouse
+- sends mqtt messages(***put/get***) to and receives mqtt messages(info,fetched,putted) from TXT_Warehouse
 - Deploys bpmn/BPALabBikeFactoryWarehouseFetch.bpmn, ./bpmn/BPALabBikeFactoryWarehouseFetchForm.form
 
 ![](bpmn/BPALabBikeFactoryWarehouseFetch.png)
