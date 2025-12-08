@@ -31,6 +31,10 @@ ExecutionListener:
 manufactureBikeInstance</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_1cdknol" associationDirection="None" sourceRef="TextAnnotation_08ns6n1" targetRef="Activity_1tqlc9i" />
+    <bpmn:textAnnotation id="TextAnnotation_10jkvxw">
+      <bpmn:text>execution end listener: manufactureBikeInstance</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0r3tm81" associationDirection="None" sourceRef="Activity_1tqlc9i" targetRef="TextAnnotation_10jkvxw" />
   </bpmn:collaboration>
   <bpmn:process id="BPALabBikeFactoryProduction" name="BPALabBikeFactoryProduction" isExecutable="true">
     <bpmn:sequenceFlow id="Flow_0hu7woo" name="Bike&#10;Component Demand&#10;generated" sourceRef="ex_gateway_split_purchase_or_available" targetRef="purchase_subprocess">
@@ -288,46 +292,6 @@ manufactureBikeInstance</bpmn:text>
       <bpmndi:BPMNShape id="Gateway_14sf153_di" bpmnElement="ex_gateway_split_purchase_or_available" isMarkerVisible="true">
         <dc:Bounds x="735" y="175" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataStoreReference_0bwq0q8_di" bpmnElement="DataStoreReference_0bwq0q8">
-        <dc:Bounds x="1895" y="495" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1885" y="552" width="69" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0fpztv4" bpmnElement="DataStoreReference_11jizsp">
-        <dc:Bounds x="1595" y="505" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1578" y="562" width="84" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataStoreReference_1xz8342_di" bpmnElement="DataStoreReference_1xz8342">
-        <dc:Bounds x="725" y="495" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="708" y="552" width="84" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataStoreReference_08ym362_di" bpmnElement="DataStoreReference_08ym362">
-        <dc:Bounds x="495" y="495" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="480" y="552" width="81" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1xunm6p_di" bpmnElement="Activity_12gs6pt">
-        <dc:Bounds x="350" y="480" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1lcjpt2_di" bpmnElement="Event_1lcjpt2">
-        <dc:Bounds x="272" y="502" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="249" y="545" width="84" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1gtkh71_di" bpmnElement="MsgEndEventProductionOrder">
-        <dc:Bounds x="2493" y="182" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2472" y="225" width="84" height="53" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0xh5tam_di" bpmnElement="purchase_subprocess" isExpanded="true">
         <dc:Bounds x="850" y="120" width="460" height="235" />
         <bpmndi:BPMNLabel />
@@ -373,6 +337,9 @@ manufactureBikeInstance</bpmn:text>
         <dc:Bounds x="1800" y="160" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0htaqmf_di" bpmnElement="Event_0htaqmf">
+        <dc:Bounds x="2372" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0rtm4z5_di" bpmnElement="Activity_07ky69q">
         <dc:Bounds x="1540" y="160" width="100" height="80" />
         <bpmndi:BPMNLabel />
@@ -386,9 +353,6 @@ manufactureBikeInstance</bpmn:text>
           <dc:Bounds x="1941" y="143" width="77" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0htaqmf_di" bpmnElement="Event_0htaqmf">
-        <dc:Bounds x="2372" y="182" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0cbxtbn_di" bpmnElement="Activity_1rvybj4">
         <dc:Bounds x="1920" y="260" width="100" height="80" />
         <bpmndi:BPMNLabel />
@@ -396,16 +360,16 @@ manufactureBikeInstance</bpmn:text>
       <bpmndi:BPMNShape id="Gateway_127z69c_di" bpmnElement="Gateway_1vc7ii5">
         <dc:Bounds x="2045" y="275" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0c849px_di" bpmnElement="Event_0c849px">
-        <dc:Bounds x="2122" y="362" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="2104" y="405" width="73" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_19h18qd_di" bpmnElement="Event_19h18qd">
         <dc:Bounds x="2122" y="282" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2104" y="325" width="73" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0c849px_di" bpmnElement="Event_0c849px">
+        <dc:Bounds x="2122" y="362" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2104" y="405" width="73" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_01pvc3q_di" bpmnElement="Event_01pvc3q">
@@ -491,10 +455,46 @@ manufactureBikeInstance</bpmn:text>
         <di:waypoint x="2315" y="200" />
         <di:waypoint x="2372" y="200" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1mtvv9f_di" bpmnElement="Association_1mtvv9f">
-        <di:waypoint x="2512" y="182" />
-        <di:waypoint x="2512" y="129" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_0bwq0q8_di" bpmnElement="DataStoreReference_0bwq0q8">
+        <dc:Bounds x="1895" y="495" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1885" y="552" width="69" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0fpztv4" bpmnElement="DataStoreReference_11jizsp">
+        <dc:Bounds x="1595" y="505" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1578" y="562" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1xz8342_di" bpmnElement="DataStoreReference_1xz8342">
+        <dc:Bounds x="725" y="495" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="708" y="552" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_08ym362_di" bpmnElement="DataStoreReference_08ym362">
+        <dc:Bounds x="495" y="495" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="480" y="552" width="81" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1xunm6p_di" bpmnElement="Activity_12gs6pt">
+        <dc:Bounds x="350" y="480" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1lcjpt2_di" bpmnElement="Event_1lcjpt2">
+        <dc:Bounds x="272" y="502" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="249" y="545" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1gtkh71_di" bpmnElement="MsgEndEventProductionOrder">
+        <dc:Bounds x="2493" y="182" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2472" y="225" width="84" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0hu7woo_di" bpmnElement="Flow_0hu7woo">
         <di:waypoint x="785" y="200" />
         <di:waypoint x="850" y="200" />
@@ -547,24 +547,36 @@ manufactureBikeInstance</bpmn:text>
         <di:waypoint x="550" y="200" />
         <di:waypoint x="600" y="200" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1cdknol_di" bpmnElement="Association_1cdknol">
-        <di:waypoint x="1779" y="491" />
-        <di:waypoint x="1713" y="240" />
+      <bpmndi:BPMNEdge id="Association_1mtvv9f_di" bpmnElement="Association_1mtvv9f">
+        <di:waypoint x="2512" y="182" />
+        <di:waypoint x="2512" y="129" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1t90vpt_di" bpmnElement="Association_1t90vpt">
-        <di:waypoint x="1440" y="505" />
-        <di:waypoint x="1571" y="240" />
+      <bpmndi:BPMNEdge id="Association_0r3tm81_di" bpmnElement="Association_0r3tm81">
+        <di:waypoint x="1707" y="160" />
+        <di:waypoint x="1703" y="150" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0db7eom_di" bpmnElement="Association_0db7eom">
-        <di:waypoint x="1196" y="505" />
-        <di:waypoint x="1147" y="235" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1052uw5_di" bpmnElement="Association_1052uw5">
-        <di:waypoint x="992" y="505" />
-        <di:waypoint x="1000" y="235" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_0s948zs_di" bpmnElement="TextAnnotation_0s948zs">
+        <dc:Bounds x="2460" y="90" width="160" height="39" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1yj5uwn_di" bpmnElement="TextAnnotation_1yj5uwn">
+        <dc:Bounds x="910" y="505" width="160" height="39" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0e3i97e" bpmnElement="TextAnnotation_0vjftsj">
+        <dc:Bounds x="1120" y="505" width="160" height="39" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1161ci8" bpmnElement="TextAnnotation_1hnqhdz">
         <dc:Bounds x="240" y="100" width="160" height="39" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0l0ule6" bpmnElement="TextAnnotation_1c1l9mi">
+        <dc:Bounds x="1340" y="505" width="180" height="40" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_01um4de" bpmnElement="TextAnnotation_08ns6n1">
+        <dc:Bounds x="1690" y="491" width="180" height="68" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="DataInputAssociation_16xvy4f_di" bpmnElement="DataInputAssociation_16xvy4f">
@@ -591,24 +603,24 @@ manufactureBikeInstance</bpmn:text>
         <di:waypoint x="313" y="139" />
         <di:waypoint x="296" y="183" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="BPMNShape_01um4de" bpmnElement="TextAnnotation_08ns6n1">
-        <dc:Bounds x="1690" y="491" width="180" height="68" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0l0ule6" bpmnElement="TextAnnotation_1c1l9mi">
-        <dc:Bounds x="1340" y="505" width="180" height="40" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_0e3i97e" bpmnElement="TextAnnotation_0vjftsj">
-        <dc:Bounds x="1120" y="505" width="160" height="39" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_1yj5uwn_di" bpmnElement="TextAnnotation_1yj5uwn">
-        <dc:Bounds x="910" y="505" width="160" height="39" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="TextAnnotation_0s948zs_di" bpmnElement="TextAnnotation_0s948zs">
-        <dc:Bounds x="2460" y="90" width="160" height="39" />
+      <bpmndi:BPMNEdge id="Association_0db7eom_di" bpmnElement="Association_0db7eom">
+        <di:waypoint x="1196" y="505" />
+        <di:waypoint x="1147" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1052uw5_di" bpmnElement="Association_1052uw5">
+        <di:waypoint x="992" y="505" />
+        <di:waypoint x="1000" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1t90vpt_di" bpmnElement="Association_1t90vpt">
+        <di:waypoint x="1440" y="505" />
+        <di:waypoint x="1571" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1cdknol_di" bpmnElement="Association_1cdknol">
+        <di:waypoint x="1779" y="491" />
+        <di:waypoint x="1713" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_10jkvxw_di" bpmnElement="TextAnnotation_10jkvxw">
+        <dc:Bounds x="1645" y="110" width="150" height="40" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
