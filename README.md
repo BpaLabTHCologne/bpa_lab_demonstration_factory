@@ -160,3 +160,21 @@ in ./bpa_lab_manufacturing_process
 in ./bpa_lab_shipment_process
 
     npm run start
+
+
+### BPALabBikeFactoryWarehouse
+    jdk21 spring-boot-starter-camunda-sdk(c8) gradle
+- sends mqtt messages(***put/get***) to and receives mqtt messages(info,fetched,putted) from TXT_Warehouse
+- Deploys bpmn/BPALabBikeFactoryWarehouseFetch.bpmn, ./bpmn/BPALabBikeFactoryWarehouseFetchForm.form
+
+![](/bpa_lab_warehouse_process/bpmn/BPALabBikeFactoryWarehouseFetch.png)
+
+- Deploys bpmn/BPALabBikeFactoryWarehousePut.bpmn, ./bpmn/BPALabBikeFactoryWarehousePutForm.form
+
+![](/bpa_lab_warehouse_process/bpmn/BPALabBikeFactoryWarehousePut.png)
+
+#### Run
+
+in ./bpa_lab_warehouse_process
+
+    gradle bootRun
