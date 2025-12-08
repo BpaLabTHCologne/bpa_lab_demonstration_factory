@@ -54,7 +54,7 @@ zbc.createWorker({
         log(`handling job of type ${job.type}`)
         const orderNumber  = job.variables.orderNumber;
         console.log(job.variables);
-        const shippmentOrderCorrelation = job.variables.shipmentOrderCorrelation
+        const shipmentOrderCorrelation = job.variables.shipmentOrderCorrelation
         var productList;
         if (orderNumber)
             productList = await getBikeInstancesForOrderNumber(orderNumber.toString());
@@ -63,7 +63,7 @@ zbc.createWorker({
         console.log(productList);
         return job.complete({
             // @ts-ignore
-            serviceTaskOutcome: orderNumber, productList
+            serviceTaskOutcome: orderNumber, productList, shipmentOrderCorrelation
         })
     }
 })
@@ -77,6 +77,7 @@ zbc.createWorker({
         log(`handling job of type ${job.type}`)
         const orderNumber  = job.variables.orderNumber;
         console.log(job.variables);
+        var fetchList = new Array();
         if (orderNumber)
             await shipBikeInstances(orderNumber.toString());
         else
@@ -84,11 +85,12 @@ zbc.createWorker({
                 productList.forEach(bike => {
                     console.log(bike.serial_number);
                     shipBikeInstance(bike.serial_number)
+                    fetchList.push(bike.serial_number)
                 })
             }
         return job.complete({
             // @ts-ignore
-            serviceTaskOutcome: orderNumber
+            serviceTaskOutcome: orderNumber, fetchList
         })
     }
 })
@@ -105,6 +107,30 @@ zbc.createWorker({
         const orderDTO = job.variables
         console.log(orderDTO.orderCustomer);
         return job.complete()
+    }
+})
+
+console.log(`Creating worker startWarehouseFetch`)
+zbc.createWorker({
+    taskType: 'startWarehouseFetch',
+    taskHandler: async job => {
+        const log = getLogger('Zeebe Worker', chalk.blueBright)
+        log(`handling job of type ${job.type}`)
+        console.log(job.variables);
+        const id = job.variables.serial_number
+        console.log("id: " + id);
+        const warehouseFetchCorrelation = id
+        console.log("warehouseFetchCorrelation: " + warehouseFetchCorrelation);
+        zbc.publishMessage({
+            name: "MsgStartWarehouseFetch",
+            // @ts-ignore
+            correlationKey: warehouseFetchCorrelation,
+           // @ts-ignore
+            variables: { warehouseFetchCorrelation, id }
+         })
+        return job.complete({
+            warehouseFetchCorrelation: warehouseFetchCorrelation
+        })
     }
 })
 
