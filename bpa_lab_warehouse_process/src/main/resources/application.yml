@@ -17,7 +17,7 @@ camunda:
 #    activate:
 #      on-profile: factory
 ftwarehousemqttclient:
-  broker: ${MQTTBROKER_ADRESS:ws://localhost:9001}
+  broker: ${MQTTBROKER_ADRESS:ws://10.0.0.21:9001}
   clientId: FTWarehouseMQTTClient
   # MQTT Topics Configuration
   fetchTopic: bpalab/ftwarehouse/fetch
