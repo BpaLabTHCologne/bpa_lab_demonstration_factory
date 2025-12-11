@@ -1,13 +1,14 @@
 # BPA Lab Bicycle Manufacturing Factory
 
-The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (companies, students, ...).
+The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (enterprises, students, ...).
 
-This repository contains the source code and configuration files of the implementation of the demonstration scenario: the ordering, production, purchasing, manufacturing and shipping of custom-made bicycles. The implementation is based on Camunda 8, a Business Process Management System. This BPMS orchestrates different job workers for different processes. Moreover, the robots for the warehouse operations like storing or retrieving items are implemented in Python.
+A general indtroduction is available here: https://github.com/BpaLabTHCologne/bpa_lab_docs
+
+This repository contains the source code and configuration files of the implementation of the end to end demonstration scenario: the ordering, production, purchasing, manufacturing and shipping of custom-made bicycles. The implementation is based on Camunda 8, a Business Process Management System. This BPMS orchestrates different process-specific job workers. Moreover, control programs in Python are steering physical Fischertechnik robots for manufacturing and warehouse operations.
 
 ## Prerequisites
 
--> Docker desktop application based on your system preference (Windows/macOS)
-or Docker nativ (Linux) 
+Install docker, e.g. docker desktop application based on your system preference (Windows/macOS) or Docker nativ (Linux) is required 
 
 ## Using docker compose to deploy entire solution 
 
@@ -16,15 +17,15 @@ or Docker nativ (Linux)
 :information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
 
 1. Clone this repository to a directory of your choice
-2. Run docker service (e.g Docker Desktop)
+2. Run docker service (e.g Docker Desktop application)
 3. Run the following command from the directory of the project to pull, create and run all the containers (and images if not existing yet):
   
    "docker compose -f docker-compose-processes.yml up -d"
 
-  This starts 
+  This starts: 
 - Container with Mysql DBMS running [./sql/initdb.sql](./sql/initdb.sql) to create tables and data (if not existing yet) 
-- Camunda self-managed (several components like tasklist, operate, zeebe, ...)
-- and several process applications 
+- Camunda self-managed (with components like tasklist, operate, zeebe, ...)
+- multiple process applications 
 
     `BPALabBikeFactoryOrderManagement`, 
 
@@ -36,21 +37,21 @@ or Docker nativ (Linux)
 
     `BPALabBikeFactoryShipment`
 
-as Docker Container
+in docker container.
 
 4. (open issue) Check container status. In case not all containers are started sucessfully, please restart these containers.
 
 5. (only for initial setup) To use the data architecture / dashboards: please follow the guideline "Necessary configurations for the use of the data architecture during initial installation or reinstallation" in the Wiki    
 
-6. Run solution (refer to "User Guide for End to End Process Execution" in Wiki)
+6. Run solution (refer to "User Guide for End to End Process Execution" in wiki)
    
 7. Run the following command only to shut down the containers gracefully: 
    "docker compose -f docker-compose-processes.yml down" to 
 
 ### Recommended tools for developers
 
-1. Database Extension
-Install extension of your software development environment to access the data tables in the MYSQL database.  
+1. Database client
+Install extension of your software development environment (or any other client) to access the data tables in the MYSQL database. This contains e.g. product information, stock, etc.   
 
 Create connection
 
@@ -65,8 +66,8 @@ Create connection
   `Password: •••••••••`
 
 
-3. MQTT Client Tool
-[only when working with the physical BPA Lab Factory] Install a MQTT Client Toolbox like https://mqttx.app/ to be able to test the connection to the MQTT broker, receive messages or simulate messages.
+3. MQTT client
+[only when working with the physical BPA Lab Factory] Install a MQTT Client toolbox like https://mqttx.app/ to be able to test the connection to the MQTT broker (running on the rasberry pi), receive messages or simulate messages.
 
 a) Create connection and connect:
 
@@ -78,16 +79,16 @@ a) Create connection and connect:
   
   'Client ID: [a unique ID]'
 
-b) Create subscription with topic "#" (all messages) 
+b) Create subscription with topic "#" (all messages) or more specific subscriptions
 
 ### Database scheme
-The data schema of the mysql database is:
+The data schema of the mysql database is shown here:
 
 ![](sql/bpa_lab_demostration_factory_db.png)
 
 
 ## Run process applications separately from the Camunda/MySQL containers
-As an alternative, Camunda and MySQL can be deployed on docker while process applications may be executed separatly.
+In general, the deployment via docker (described below) is fastest deployment method, but implies certain hardware requirement (preferrable 16 GB RAM). To run the solution in other environments, only Camunda and MySQL can be deployed on docker, while single process applications may be run separatly as described below.
 
 #### Run
     docker compose -f docker-compose.yaml up -d
