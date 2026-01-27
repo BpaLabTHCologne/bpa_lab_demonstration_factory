@@ -1,167 +1,231 @@
 {
   "components": [
     {
-      "label": "Customer",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Form Header</title>\n    <style>\n      .form-header{\n        display:flex;\n        align-items:center;\n        justify-content:space-between;\n        gap:16px;\n        padding:16px 18px;\n        margin: 0px;\n        background:#f4f4f4;\n        border:1px solid #8d8d8d;\n        border-radius:8px;\n      }\n      .form-header-taskname{\n        margin:0;\n        font-size:26px;\n        font-weight:800;\n        letter-spacing:.2px;\n        line-height:1.1;\n      }\n      .form-header-right{\n        display:flex;\n        align-items:center;\n        gap:30px;\n        flex-shrink:0;\n      }\n      .form-header-role{\n        font-size:13px;\n        font-weight:500;\n        padding:6px 10px;\n        border-radius:9px;\n        background:#0000000f;\n        white-space:nowrap;\n      }\n      .form-header-logo{\n        height:40px;\n        width:auto;\n        display:block;\n      }\n    </style>\n  </head>\n  <body>\n    <div class=\"form-header\"aria-label=\"Check Requirements Header\">\n        <div class=\"form-header-left\">\n        <h1 class=\"form-header-taskname\">Check Requirements</h1>\n    \n        </div>\n    \n        <div class=\"form-header-right\">\n          <span class=\"form-header-role\" aria-label=\"Job role\">\n          <strong>Job role:</strong> Requirements Planning\n          </span>\n          <img\n          class=\"form-header-logo\"\n          src=\"https://www.th-koeln.de/img/logo.svg\"\n          alt=\"TH Köln logo\"\n          loading=\"lazy\"\n          />\n        </div>\n    </div>\n  </body>\n</html>",
+      "type": "html",
+      "layout": {
+        "row": "Row_0nxureg",
+        "columns": null
+      },
+      "id": "Field_1sdwsy5"
+    },
+    {
+      "label": "Customer Order",
       "components": [
         {
-          "label": "Name",
-          "type": "textfield",
+          "label": "Customer",
+          "components": [
+            {
+              "label": "Name",
+              "type": "textfield",
+              "layout": {
+                "row": "Row_1g81o5z",
+                "columns": 8
+              },
+              "id": "Field_15b4duk",
+              "key": "name",
+              "readonly": true
+            },
+            {
+              "label": "Email",
+              "type": "textfield",
+              "layout": {
+                "row": "Row_1g81o5z",
+                "columns": 8
+              },
+              "id": "Field_04tmiuh",
+              "key": "email",
+              "readonly": "on"
+            },
+            {
+              "label": "Adress",
+              "type": "textfield",
+              "layout": {
+                "row": "Row_1049son",
+                "columns": 16
+              },
+              "id": "Field_1xe8qkw",
+              "key": "adress",
+              "readonly": true
+            }
+          ],
+          "showOutline": false,
+          "type": "group",
           "layout": {
-            "row": "Row_1g81o5z",
-            "columns": 6
+            "row": "Row_0klgofz",
+            "columns": 11
           },
-          "id": "Field_15b4duk",
-          "key": "name",
-          "readonly": true
+          "id": "Field_1ew2xu8",
+          "path": "orderCustomer"
         },
         {
-          "label": "Email",
-          "type": "textfield",
+          "label": "Order Details",
+          "components": [
+            {
+              "label": "Order Number",
+              "type": "textfield",
+              "layout": {
+                "row": "Row_16jgh5q",
+                "columns": 16
+              },
+              "id": "Field_0dxiw3c",
+              "key": "orderNumber",
+              "readonly": "on"
+            },
+            {
+              "subtype": "date",
+              "dateLabel": "Order Date",
+              "type": "datetime",
+              "layout": {
+                "row": "Row_0mzogae",
+                "columns": 15
+              },
+              "id": "Field_01j0tcb",
+              "key": "orderDate",
+              "disallowPassedDates": true,
+              "readonly": true
+            }
+          ],
+          "showOutline": false,
+          "type": "group",
           "layout": {
-            "row": "Row_1g81o5z",
-            "columns": 6
+            "row": "Row_0klgofz",
+            "columns": null
           },
-          "id": "Field_04tmiuh",
-          "key": "email",
-          "readonly": "on"
+          "id": "Field_1b82afh"
         },
         {
-          "label": "Adress",
-          "type": "textfield",
+          "type": "separator",
           "layout": {
-            "row": "Row_1049son",
-            "columns": 12
+            "row": "Row_0lgsxit",
+            "columns": null
           },
-          "id": "Field_1xe8qkw",
-          "key": "adress",
-          "readonly": true
+          "id": "Field_1uf6zpw"
+        },
+        {
+          "label": "Bikes in Stock to Reserve",
+          "components": [
+            {
+              "label": "Title",
+              "type": "textfield",
+              "layout": {
+                "row": "Row_1ir90z1",
+                "columns": 13
+              },
+              "id": "Field_17sgzym",
+              "key": "title",
+              "readonly": "on"
+            },
+            {
+              "label": "Quantity",
+              "type": "textfield",
+              "layout": {
+                "row": "Row_1ir90z1",
+                "columns": 3
+              },
+              "id": "Field_07rxh3w",
+              "key": "amount",
+              "readonly": true
+            }
+          ],
+          "showOutline": true,
+          "isRepeating": true,
+          "allowAddRemove": false,
+          "defaultRepetitions": 1,
+          "type": "dynamiclist",
+          "layout": {
+            "row": "Row_1vgf9uf",
+            "columns": 16
+          },
+          "id": "Field_1yrz78n",
+          "path": "reserveBikeInstanceList"
+        },
+        {
+          "label": "Bikes to Produce",
+          "components": [
+            {
+              "label": "Title",
+              "type": "textfield",
+              "layout": {
+                "row": "Row_15l0dsk",
+                "columns": 13
+              },
+              "id": "Field_0hdtdf7",
+              "key": "title",
+              "readonly": "on"
+            },
+            {
+              "label": "Quantity",
+              "type": "textfield",
+              "layout": {
+                "row": "Row_15l0dsk",
+                "columns": 3
+              },
+              "id": "Field_0aqqx06",
+              "key": "amount",
+              "readonly": true
+            }
+          ],
+          "showOutline": true,
+          "isRepeating": true,
+          "allowAddRemove": false,
+          "defaultRepetitions": 1,
+          "type": "dynamiclist",
+          "layout": {
+            "row": "Row_0755d9h",
+            "columns": null
+          },
+          "id": "Field_1kald2a",
+          "path": "produceBikeModelList"
         }
       ],
       "showOutline": true,
       "type": "group",
       "layout": {
-        "row": "Row_1tkxr3d",
+        "row": "Row_0ezjwm3",
         "columns": null
       },
-      "id": "Field_1ew2xu8",
-      "path": "orderCustomer"
+      "id": "Field_18j0ent"
     },
     {
-      "label": "Order Number",
-      "type": "textfield",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>ErrorMsg</title>\n    <style>\n        .ErrorMsg {\n            background-color: #fff;\n            border: 1px solid #e0e0e0;\n            border-radius: 0px;\n            padding: 20px;\n          \n        }\n\n        .ErrorMsg.good{\n            border-left: 10px solid green;\n        }\n        .ErrorMsg.medium{\n            border-left: 10px solid orange;\n        }\n        .ErrorMsg.bad{\n            border-left: 10px solid red;\n        }\n\n        \n        .ErrorMsg-header {\n            font-size: 18px;\n            font-weight: bold;\n            color: #2f2f2f;\n            margin-bottom: 10px;\n        }\n\n        .ErrorMsg-message {\n            font-size: 16px;\n            color: #2f2f2f;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"ErrorMsg {{warningColor}}\">\n        <div class=\"ErrorMsg-header\">{{if (warningColor = \"good\") then  \"Low Requirement\" else if (warningColor = \"medium\") then \"Medium Requirement!\" else \"High Requirement!\"}}</div>\n        <div class=\"ErrorMsg-message\">\n        {{errorMessage}}\n        </div>\n    </div>\n\n    \n\n</body>\n</html>\n",
+      "type": "html",
       "layout": {
-        "row": "Row_0w6b62t",
-        "columns": 4
-      },
-      "id": "Field_0dxiw3c",
-      "key": "orderNumber",
-      "readonly": "on"
-    },
-    {
-      "subtype": "date",
-      "dateLabel": "Order Date",
-      "type": "datetime",
-      "layout": {
-        "row": "Row_0w6b62t",
-        "columns": 4
-      },
-      "id": "Field_01j0tcb",
-      "key": "orderDate",
-      "disallowPassedDates": true,
-      "readonly": true
-    },
-    {
-      "type": "separator",
-      "layout": {
-        "row": "Row_1ssyg5k",
+        "row": "Row_1eeuyhx",
         "columns": null
       },
-      "id": "Field_1uf6zpw"
+      "id": "Field_0rcx6e6"
     },
     {
-      "label": "Bikes To Reserve",
-      "components": [
-        {
-          "label": "Title",
-          "type": "textfield",
-          "layout": {
-            "row": "Row_1ir90z1",
-            "columns": 12
-          },
-          "id": "Field_17sgzym",
-          "key": "title",
-          "readonly": "on"
-        },
-        {
-          "label": "Quantity",
-          "type": "textfield",
-          "layout": {
-            "row": "Row_1ir90z1",
-            "columns": 3
-          },
-          "id": "Field_07rxh3w",
-          "key": "amount",
-          "readonly": true
-        }
-      ],
-      "showOutline": true,
-      "isRepeating": true,
-      "allowAddRemove": false,
-      "defaultRepetitions": 1,
-      "type": "dynamiclist",
+      "computeOn": "change",
+      "type": "expression",
       "layout": {
-        "row": "Row_06mgm3w",
+        "row": "Row_0zhkxll",
         "columns": 8
       },
-      "id": "Field_1yrz78n",
-      "path": "reserveBikeInstanceList"
+      "id": "Field_1f87dfi",
+      "key": "warningColor",
+      "expression": "=if count(produceBikeModelList) < 1 then \"good\" else if count(reserveBikeInstanceList) < 1 then \"bad\"  else \"medium\""
     },
     {
-      "label": "Bikes to Produce",
-      "components": [
-        {
-          "label": "Title",
-          "type": "textfield",
-          "layout": {
-            "row": "Row_15l0dsk",
-            "columns": 9
-          },
-          "id": "Field_0hdtdf7",
-          "key": "title",
-          "readonly": "on"
-        },
-        {
-          "label": "Quantity",
-          "type": "textfield",
-          "layout": {
-            "row": "Row_15l0dsk",
-            "columns": 4
-          },
-          "id": "Field_0aqqx06",
-          "key": "amount",
-          "readonly": true
-        }
-      ],
-      "showOutline": true,
-      "isRepeating": true,
-      "allowAddRemove": false,
-      "defaultRepetitions": 1,
-      "type": "dynamiclist",
+      "computeOn": "change",
+      "type": "expression",
       "layout": {
-        "row": "Row_06mgm3w",
+        "row": "Row_0zhkxll",
         "columns": null
       },
-      "id": "Field_1kald2a",
-      "path": "produceBikeModelList"
+      "id": "Field_1ju8umi",
+      "key": "errorMessage",
+      "expression": "=if count(produceBikeModelList) < 1 then \"All ordered Bikes are in Stock an can be reserved for Customer\" else if count(reserveBikeInstanceList) < 1 then \"All ordered Bikes need to be produced for Customer\"  else \"Some Bikes are in Stock and some need to be produced for Customer\""
     }
   ],
   "executionPlatform": "Camunda Cloud",
   "executionPlatformVersion": "8.7.0",
   "exporter": {
     "name": "Camunda Modeler",
-    "version": "5.34.0"
+    "version": "5.41.0"
   },
-  "schemaVersion": 18,
+  "schemaVersion": 19,
   "id": "showOrderForm",
   "type": "default"
 }

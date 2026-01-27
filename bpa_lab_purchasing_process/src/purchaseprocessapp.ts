@@ -59,7 +59,7 @@ zbc.createWorker({
         console.log(vendors);
         // @ts-ignore
         const vendorList = vendors.map(item => ({
-            label: item.contact + " " + item.contact + " " + item.price,
+            label: item.name + " " + item.contact + " " + item.price,
             value: item.name
         }))
         console.log(vendorList);
@@ -134,6 +134,12 @@ async function deployProcessFiles() {
     });
     console.log(
         `[Zeebe] Deployed bpmn/chooseVendor.form`
+    );
+    deploy = await zbc.deployResource({
+        processFilename: path.join(process.cwd(), "bpmn/confirmSupplyForm.form")
+    });
+    console.log(
+        `[Zeebe] Deployed bpmn/confirmSupplyForm.form`
     );
 }
 

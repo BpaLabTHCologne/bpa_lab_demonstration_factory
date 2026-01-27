@@ -168,10 +168,10 @@ async function deployProcessFiles() {
         `[Zeebe] Deployed bpmn/shipmentInputData.form`
     );
     deploy = await zbc.deployResource({
-        processFilename: path.join(process.cwd(), "bpmn/checkInformation.form")
+        processFilename: path.join(process.cwd(), "bpmn/checkShippingInformation.form")
     });
     console.log(
-        `[Zeebe] Deployed bpmn/checkInformation.form`
+        `[Zeebe] Deployed bpmn/checkShippingInformation.form`
     );
 }
 
