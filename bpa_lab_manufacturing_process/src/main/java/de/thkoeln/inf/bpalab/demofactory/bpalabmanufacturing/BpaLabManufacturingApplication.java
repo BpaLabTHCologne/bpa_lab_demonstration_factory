@@ -31,5 +31,17 @@ public class BpaLabManufacturingApplication implements CommandLineRunner {
                 .addResourceFile("./bpmn/BPALabBikeFactoryManufactureOrder.form")
                 .send().join();
         LOG.info("deployed bpmn/BPALabBikeFactoryManufactureOrder.form");
+        zeebeClient.newDeployResourceCommand()
+                .addResourceFile("./bpmn/promptToStoreForm.form")
+                .send().join();
+        LOG.info("deployed bpmn/promptToStoreForm.form");
+        zeebeClient.newDeployResourceCommand()
+                .addResourceFile("./bpmn/showFactoryFailureForm.form")
+                .send().join();
+        LOG.info("deployed bpmn/showFactoryFailureForm.form");
+        zeebeClient.newDeployResourceCommand()
+                .addResourceFile("./bpmn/showManufacturingOrderForm.form")
+                .send().join();
+        LOG.info("deployed bpmn/showManufacturingOrderForm.form");
     }
 }

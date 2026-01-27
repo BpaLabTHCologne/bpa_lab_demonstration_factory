@@ -1,49 +1,115 @@
 {
   "components": [
     {
-      "label": "Warehouse address",
-      "type": "textfield",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Form Header</title>\n    <style>\n      .form-header{\n        display:flex;\n        align-items:center;\n        justify-content:space-between;\n        gap:16px;\n        padding:16px 18px;\n        margin: 0px;\n        background:#f4f4f4;\n        border:1px solid #8d8d8d;\n        border-radius:8px;\n      }\n      .form-header-taskname{\n        margin:0;\n        font-size:26px;\n        font-weight:800;\n        letter-spacing:.2px;\n        line-height:1.1;\n      }\n      .form-header-right{\n        display:flex;\n        align-items:center;\n        gap:30px;\n        flex-shrink:0;\n      }\n      .form-header-role{\n        font-size:13px;\n        font-weight:500;\n        padding:6px 10px;\n        border-radius:9px;\n        background:#0000000f;\n        white-space:nowrap;\n      }\n      .form-header-logo{\n        height:40px;\n        width:auto;\n        display:block;\n      }\n    </style>\n  </head>\n  <body>\n    <div class=\"form-header\"aria-label=\"Warehouse Request\">\n        <div class=\"form-header-left\">\n        <h1 class=\"form-header-taskname\">Warehouse Request</h1>\n    \n        </div>\n    \n        <div class=\"form-header-right\">\n          <span class=\"form-header-role\" aria-label=\"Job role\">\n          <strong>Job role:</strong> Warehouse Worker\n          </span>\n          <img\n          class=\"form-header-logo\"\n          src=\"https://www.th-koeln.de/img/logo.svg\"\n          alt=\"TH Köln logo\"\n          loading=\"lazy\"\n          />\n        </div>\n    </div>\n  </body>\n</html>",
+      "type": "html",
       "layout": {
-        "row": "Row_1n6mpll",
-        "columns": 7
+        "row": "Row_1jrevvx",
+        "columns": null
       },
-      "id": "Field_17hf7nq",
-      "key": "warehouseAddress",
-      "defaultValue": "Steinmüllerallee 1, 51643 Gummersbach",
-      "readonly": true
+      "id": "Field_1nw87hx"
     },
     {
-      "label": "Shipping address",
-      "type": "textfield",
-      "layout": {
-        "row": "Row_1n6mpll",
-        "columns": 7
-      },
-      "id": "Field_0v9tqif",
-      "key": "shippingAddress",
-      "readonly": true
-    },
-    {
-      "label": "Calculated distance (KM)",
-      "type": "textfield",
+      "label": "",
+      "components": [
+        {
+          "label": "Warehouse address",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1efxku0",
+            "columns": 16
+          },
+          "id": "Field_17hf7nq",
+          "key": "warehouseAddress",
+          "defaultValue": "Steinmüllerallee 1, 51643 Gummersbach",
+          "readonly": true
+        },
+        {
+          "label": "Calculated distance (KM)",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_0nuokmw",
+            "columns": 16
+          },
+          "id": "Field_0cum2qr",
+          "key": "distance",
+          "readonly": true
+        },
+        {
+          "label": "Duration (Minutes)",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_0ffwvui",
+            "columns": 16
+          },
+          "id": "Field_1tzngtc",
+          "key": "duration",
+          "readonly": true
+        }
+      ],
+      "showOutline": false,
+      "type": "group",
       "layout": {
         "row": "Row_0eu3x85",
-        "columns": 7
+        "columns": 8
       },
-      "id": "Field_0cum2qr",
-      "key": "distance",
-      "readonly": true
+      "id": "Field_0mkmpii"
     },
     {
-      "label": "Duration (Minutes)",
-      "type": "textfield",
+      "label": "",
+      "components": [
+        {
+          "label": "Shipping address",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_0zog5kq",
+            "columns": 16
+          },
+          "id": "Field_0v9tqif",
+          "key": "shippingAddress",
+          "readonly": true
+        },
+        {
+          "label": "",
+          "security": {
+            "allowScripts": true,
+            "allowSameOrigin": false,
+            "fullscreen": false,
+            "geolocation": false,
+            "microphone": false,
+            "camera": false,
+            "allowForms": false,
+            "allowModals": false,
+            "allowPopups": false,
+            "allowTopNavigation": false,
+            "allowStorageAccessByUserActivation": false
+          },
+          "type": "iframe",
+          "layout": {
+            "row": "Row_0s6spbv",
+            "columns": 16
+          },
+          "id": "Field_1j0gb6y",
+          "url": "=\"https://www.openstreetmap.org/export/embed.html?bbox=\"+string(longitudeSA-0.001)+\"%2C\"+string(latitudeSA-0.001)+\"%2C\"+string(longitudeSA+0.001)+\"%2C\"+string(latitudeSA+0.001)+\"&amp;layer=mapnik&amp;marker=\"+string(latitudeSA)+\"%2C\"+string(longitudeSA)",
+          "height": 140
+        }
+      ],
+      "showOutline": true,
+      "type": "group",
       "layout": {
         "row": "Row_0eu3x85",
-        "columns": 7
+        "columns": null
       },
-      "id": "Field_1tzngtc",
-      "key": "duration",
-      "readonly": true
+      "id": "Field_0rv1vtf"
+    },
+    {
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>ErrorMsg</title>\n    <style>\n        .ErrorMsg {\n            background-color: #fff;\n            border: 1px solid #e0e0e0;\n            border-radius: 0px;\n            padding: 20px;\n            border-left: 10px solid blue;\n          \n        }\n\n        \n        .ErrorMsg-header {\n            font-size: 18px;\n            font-weight: bold;\n            color: #2f2f2f;\n            margin-bottom: 10px;\n        }\n\n        .ErrorMsg-message {\n            font-size: 16px;\n            color: #2f2f2f;\n            padding: 10px;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"ErrorMsg\">\n        <div class=\"ErrorMsg-header\"> Proceed to Warehouse Robot</div>\n        <div class=\"ErrorMsg-message\">\n        Check the product list and finish this form. Then you can fetch the order from the pick-up point and load it in the transporter planned for this route.\n        </div>\n    </div>\n\n    \n\n</body>\n</html>\n",
+      "type": "html",
+      "layout": {
+        "row": "Row_0dgbice",
+        "columns": null
+      },
+      "id": "Field_1ex76no"
     },
     {
       "label": "Product list",
@@ -53,7 +119,7 @@
           "type": "textfield",
           "layout": {
             "row": "Row_0z33ajx",
-            "columns": 5
+            "columns": 8
           },
           "id": "Field_0a53j31",
           "key": "bike_model_id",
@@ -64,7 +130,7 @@
           "type": "textfield",
           "layout": {
             "row": "Row_0z33ajx",
-            "columns": 4
+            "columns": 8
           },
           "id": "Field_1suq7dw",
           "key": "serial_number",
@@ -78,7 +144,7 @@
       "type": "dynamiclist",
       "layout": {
         "row": "Row_12we7s4",
-        "columns": 14
+        "columns": 16
       },
       "id": "Field_19coxn7",
       "path": "productList"
@@ -90,7 +156,7 @@
   "executionPlatformVersion": "8.7.0",
   "exporter": {
     "name": "Camunda Modeler",
-    "version": "5.34.0"
+    "version": "5.41.0"
   },
-  "schemaVersion": 18
+  "schemaVersion": 19
 }
