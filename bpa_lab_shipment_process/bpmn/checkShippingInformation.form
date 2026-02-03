@@ -1,0 +1,99 @@
+{
+  "components": [
+    {
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Form Header</title>\n    <style>\n      .form-header{\n        display:flex;\n        align-items:center;\n        justify-content:space-between;\n        gap:16px;\n        padding:16px 18px;\n        margin: 0px;\n        background:#f4f4f4;\n        border:1px solid #8d8d8d;\n        border-radius:8px;\n      }\n      .form-header-taskname{\n        margin:0;\n        font-size:26px;\n        font-weight:800;\n        letter-spacing:.2px;\n        line-height:1.1;\n      }\n      .form-header-right{\n        display:flex;\n        align-items:center;\n        gap:30px;\n        flex-shrink:0;\n      }\n      .form-header-role{\n        font-size:13px;\n        font-weight:500;\n        padding:6px 10px;\n        border-radius:9px;\n        background:#0000000f;\n        white-space:nowrap;\n      }\n      .form-header-logo{\n        height:40px;\n        width:auto;\n        display:block;\n      }\n    </style>\n  </head>\n  <body>\n    <div class=\"form-header\"aria-label=\"Route Planning\">\n        <div class=\"form-header-left\">\n        <h1 class=\"form-header-taskname\">Route Planning</h1>\n    \n        </div>\n    \n        <div class=\"form-header-right\">\n          <span class=\"form-header-role\" aria-label=\"Job role\">\n          <strong>Job role:</strong> Dispatcher\n          </span>\n          <img\n          class=\"form-header-logo\"\n          src=\"https://www.th-koeln.de/img/logo.svg\"\n          alt=\"TH Köln logo\"\n          loading=\"lazy\"\n          />\n        </div>\n    </div>\n  </body>\n</html>",
+      "type": "html",
+      "layout": {
+        "row": "Row_1q11jrw",
+        "columns": null
+      },
+      "id": "Field_1g3edu9"
+    },
+    {
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>ErrorMsg</title>\n    <style>\n        .ErrorMsg {\n            background-color: #fff;\n            border: 1px solid #e0e0e0;\n            border-radius: 0px;\n            height: 180px;\n            padding: 20px;\n            border-left: 10px solid blue;\n          \n        }\n\n        \n        .ErrorMsg-header {\n            font-size: 18px;\n            font-weight: bold;\n            color: #2f2f2f;\n            margin-bottom: 10px;\n        }\n\n        .ErrorMsg-message {\n            font-size: 16px;\n            color: #2f2f2f;\n            padding: 10px;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"ErrorMsg\">\n        <div class=\"ErrorMsg-header\"> Select a distribution Warehouse</div>\n        <div class=\"ErrorMsg-message\">\n        Use the Shipping address an the map below to choose the best distribution warehouse for optimal route planning.\n        </div>\n    </div>\n\n    \n\n</body>\n</html>\n",
+      "type": "html",
+      "layout": {
+        "row": "Row_1uulhd0",
+        "columns": null
+      },
+      "id": "Field_0yomp8u"
+    },
+    {
+      "label": "",
+      "components": [
+        {
+          "label": "Shipping address",
+          "type": "textfield",
+          "layout": {
+            "row": "Row_1k4yav2",
+            "columns": null
+          },
+          "id": "Field_0v9tqif",
+          "key": "shippingAddress",
+          "readonly": true
+        },
+        {
+          "label": "Select Warehouse",
+          "values": [
+            {
+              "label": "TH Köln - Campus Gummersbach",
+              "value": "Steinmüllerallee 1, 51643 Gummersbach"
+            },
+            {
+              "label": "TH Köln - Campus Deutz",
+              "value": "Betzdorfer Str. 2, 50679 Köln"
+            },
+            {
+              "label": "TH Köln - Campus Leverkusen",
+              "value": "Campuspl. 1, 51379 Leverkusen"
+            }
+          ],
+          "type": "select",
+          "layout": {
+            "row": "Row_12hbkmt",
+            "columns": null
+          },
+          "id": "Field_1178lyr",
+          "key": "warehouseAddress",
+          "defaultValue": "Steinmüllerallee 1, 51643 Gummersbach",
+          "searchable": false,
+          "properties": {},
+          "validate": {
+            "required": true
+          }
+        }
+      ],
+      "showOutline": false,
+      "type": "group",
+      "layout": {
+        "row": "Row_1uulhd0",
+        "columns": 8
+      },
+      "id": "Field_007oxhj"
+    },
+    {
+      "label": "",
+      "security": {
+        "allowScripts": true,
+        "geolocation": false
+      },
+      "type": "iframe",
+      "layout": {
+        "row": "Row_1ojlfvi",
+        "columns": null
+      },
+      "id": "Field_1saknsz",
+      "url": "=if warehouseAddress = \"Betzdorfer Str. 2, 50679 Köln\" then \"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d67658.47108566242!2d6.985165968743518!3d50.93531504791718!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47bf25d6d4b25ded%3A0x93da676cc785abce!2sTechnische%20Hochschule%20K%C3%B6ln%20-%20Campus%20Deutz!5e0!3m2!1sde!2sde!4v1767934486058!5m2!1sde!2sde\" else if warehouseAddress = \"Campuspl. 1, 51379 Leverkusen\" then \"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d67458.77702470505!2d6.9559937429106!3d51.072439811745745!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47bf2ee2224a3b55%3A0x76656741f7616211!2sTH%20K%C3%B6ln%20%E2%80%93%20Campus%20Leverkusen!5e0!3m2!1sde!2sde!4v1767934571391!5m2!1sde!2sde\" else \"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d80295.74207397515!2d7.574957702931273!3d51.0301520876416!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47beb5ea248f0487%3A0x3548908b4671b4ac!2sTH%20K%C3%B6ln%20%E2%80%93%20Campus%20Gummersbach!5e0!3m2!1sde!2sde!4v1767934316232!5m2!1sde!2sde\"",
+      "height": 500
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.7.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.41.0"
+  },
+  "schemaVersion": 19,
+  "type": "default",
+  "id": "Form_ShippingInformation"
+}
