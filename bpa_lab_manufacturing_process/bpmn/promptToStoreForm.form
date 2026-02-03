@@ -1,0 +1,67 @@
+{
+  "components": [
+    {
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Form Header</title>\n    <style>\n      .form-header{\n        display:flex;\n        align-items:center;\n        justify-content:space-between;\n        gap:16px;\n        padding:16px 18px;\n        margin: 0px;\n        background:#f4f4f4;\n        border:1px solid #8d8d8d;\n        border-radius:8px;\n      }\n      .form-header-taskname{\n        margin:0;\n        font-size:26px;\n        font-weight:800;\n        letter-spacing:.2px;\n        line-height:1.1;\n      }\n      .form-header-right{\n        display:flex;\n        align-items:center;\n        gap:30px;\n        flex-shrink:0;\n      }\n      .form-header-role{\n        font-size:13px;\n        font-weight:500;\n        padding:6px 10px;\n        border-radius:9px;\n        background:#0000000f;\n        white-space:nowrap;\n      }\n      .form-header-logo{\n        height:40px;\n        width:auto;\n        display:block;\n      }\n    </style>\n  </head>\n  <body>\n    <div class=\"form-header\"aria-label=\"Missing Workpiece\">\n        <div class=\"form-header-left\">\n        <h1 class=\"form-header-taskname\">Missing Workpiece</h1>\n    \n        </div>\n    \n        <div class=\"form-header-right\">\n          <span class=\"form-header-role\" aria-label=\"Job role\">\n          <strong>Job role:</strong> Manufacturing Worker\n          </span>\n          <img\n          class=\"form-header-logo\"\n          src=\"https://www.th-koeln.de/img/logo.svg\"\n          alt=\"TH Köln logo\"\n          loading=\"lazy\"\n          />\n        </div>\n    </div>\n  </body>\n</html>",
+      "type": "html",
+      "layout": {
+        "row": "Row_0nv6k8e",
+        "columns": null
+      },
+      "id": "Field_1lxca36"
+    },
+    {
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>ErrorMsg</title>\n    <style>\n        .ErrorMsg {\n            background-color: #fff;\n            border: 1px solid #e0e0e0;\n            border-radius: 0px;\n            padding: 20px;\n            \n        }\n\n        .ErrorMsg.good{\n            border-left: 10px solid green;\n        }\n        .ErrorMsg.medium{\n            border-left: 10px solid orange;\n        }\n        .ErrorMsg.bad{\n            border-left: 10px solid red;\n        }\n\n        \n        .ErrorMsg-header {\n            font-size: 18px;\n            font-weight: bold;\n            color: #2f2f2f;\n            margin-bottom: 10px;\n        }\n\n        .ErrorMsg-message {\n            font-size: 16px;\n            color: #2f2f2f;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"ErrorMsg bad\">\n        <div class=\"ErrorMsg-header\">Place the Correct Workpiece in the input area</div>\n        <div class=\"ErrorMsg-message\">\n        The Factory is missing the correct workpiece. Please place the workpiece with the following color in the input area.\n\n        </div>\n    </div>\n\n    \n\n</body>\n</html>\n",
+      "type": "html",
+      "layout": {
+        "row": "Row_08edslg",
+        "columns": null
+      },
+      "id": "Field_059jyhz"
+    },
+    {
+      "height": 60,
+      "type": "spacer",
+      "layout": {
+        "row": "Row_0tlc2kn",
+        "columns": null
+      },
+      "id": "Field_1el4q6e"
+    },
+    {
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>ErrorMsg</title>\n    <style>\n        .ErrorMsg {\n            background-color: #fff;\n            border: 2px solid black;\n            height: 180px;\n            border-radius: 0px;\n            padding: 20px;\n            \n        }\n\n        .ErrorMsg.WHITE{\n            background-color: white;\n        }\n        .ErrorMsg.BLUE{\n            background-color: blue;\n            border: 0px;\n        }\n        .ErrorMsg.RED{\n            background-color: red;\n            border: 0px;\n         }\n\n        \n        .ErrorMsg-header {\n            font-size: 18px;\n            font-weight: bold;\n            color: #2f2f2f;\n            margin-bottom: 10px;\n        }\n\n        .ErrorMsg-message {\n            font-size: 16px;\n            color: #2f2f2f;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"ErrorMsg {{orderType}} \">\n  \n    </div>\n\n    \n\n</body>\n</html>\n",
+      "type": "html",
+      "layout": {
+        "row": "Row_1eupwy6",
+        "columns": 3
+      },
+      "id": "Field_0c6ot55"
+    },
+    {
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>ErrorMsg</title>\n    <style>\n        .ErrorMsg {\n            background-color: #fff;\n            border: 0px solid #e0e0e0;\n            border-radius: 0px;\n            padding: 20px;\n            \n        }\n\n        .ErrorMsg.good{\n            border-left: 10px solid green;\n        }\n        .ErrorMsg.medium{\n            border-left: 10px solid orange;\n        }\n        .ErrorMsg.bad{\n            border-left: 10px solid red;\n        }\n\n        \n        .ErrorMsg-header {\n            font-size: 18px;\n            font-weight: bold;\n            color: #2f2f2f;\n            margin-bottom: 10px;\n        }\n\n        .ErrorMsg-message {\n            font-size: 16px;\n            color: #2f2f2f;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"ErrorMsg\">\n</br></br></br>\n        <div class=\"ErrorMsg-header\">-----------------------------------------------------------------------------></div>\n        <div class=\"ErrorMsg-message\">\n        \n\n        </div>\n    </div>\n\n    \n\n</body>\n</html>\n",
+      "type": "html",
+      "layout": {
+        "row": "Row_1eupwy6",
+        "columns": 10
+      },
+      "id": "Field_1p30pmg"
+    },
+    {
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>ErrorMsg</title>\n    <style>\n        .ErrorMsg {\n            background-color: #fff;\n            border: 1px solid #e0e0e0;\n            border-radius: 0px;\n            height: 180px;\n            padding: 20px;\n            padding-left: 40px;\n            \n        }\n\n        .ErrorMsg.good{\n            border-left: 10px solid green;\n        }\n        .ErrorMsg.medium{\n            border-left: 10px solid orange;\n        }\n        .ErrorMsg.bad{\n            border-left: 10px solid red;\n        }\n\n        \n        .ErrorMsg-header {\n            font-size: 18px;\n            font-weight: bold;\n            color: #2f2f2f;\n            margin-bottom: 10px;\n        }\n\n        .ErrorMsg-message {\n            font-size: 16px;\n            color: #2f2f2f;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"ErrorMsg\">\n</br></br></br>\n        <div class=\"ErrorMsg-header\">   Input Area</div>\n        <div class=\"ErrorMsg-message\">\n        \n        </div>\n    </div>\n\n    \n\n</body>\n</html>\n",
+      "type": "html",
+      "layout": {
+        "row": "Row_1eupwy6",
+        "columns": 3
+      },
+      "id": "Field_0ha0wo7"
+    }
+  ],
+  "type": "default",
+  "id": "promptToStoreForm",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.8.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.41.0"
+  },
+  "schemaVersion": 19
+}
