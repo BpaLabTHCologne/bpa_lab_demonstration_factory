@@ -173,6 +173,12 @@ async function deployProcessFiles() {
     console.log(
         `[Zeebe] Deployed bpmn/checkShippingInformation.form`
     );
+    deploy = await zbc.deployResource({
+        processFilename: path.join(process.cwd(), "bpmn/checkInformation.form")
+    });
+    console.log(
+        `[Zeebe] Deployed bpmn/checkInformation.form`
+    );
 }
 
 deployProcessFiles();
