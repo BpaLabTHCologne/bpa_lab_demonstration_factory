@@ -10,7 +10,7 @@ This repository contains the source code and configuration files of the implemen
 
 Install docker, e.g. docker desktop application based on your system preference (Windows/macOS) or Docker nativ (Linux) is required 
 
-## Using docker compose to deploy entire solution 
+## Using docker compose to deploy and start entire solution 
 
 :information_source: Docker 20.10.16+ is required.
 
@@ -39,11 +39,13 @@ Install docker, e.g. docker desktop application based on your system preference 
 
 in docker container.
 
-4. (open issue) Check container status. In case not all containers are started sucessfully, please restart these containers.
+Remark: In case you need to deloy a new release of the BPA Lab solution, it may be required to remove images (at least of process application) before executing docker compose -up e.g. via Docker Desktop application. 
+
+4. (open issue) Check container status (e.g. in Docker Desktop Application). In case not all containers are started sucessfully, please restart these containers after some time. Remark: In case you have limited RAM/CPU, the start of components/container (e.g. Camunda task list) may require few minutes. 
 
 5. (only for initial setup) To use the data architecture / dashboards: please follow the guideline "Necessary configurations for the use of the data architecture during initial installation or reinstallation" in the Wiki    
 
-6. Run solution (refer to "User Guide for End to End Process Execution" in wiki)
+6. Run solution (refer to "User Guide for End to End Process Execution" in wiki). The application can be accesses via URL, which are visible in Docker Desktop.
    
 7. Run the following command only to shut down the containers gracefully: 
    "docker compose -f docker-compose-processes.yml down" to 
