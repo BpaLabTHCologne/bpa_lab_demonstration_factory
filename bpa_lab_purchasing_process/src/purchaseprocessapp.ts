@@ -49,11 +49,11 @@ zbc.createWorker({
         //     // @ts-ignore
         //     purchaseComponentDTO.productionOrderNumber = "no Order"
         // }
-        const purchaseOrderNumber = await createPurchaseOrder(purchaseComponentDTO.productionOrderNumber
-                                                        , purchaseComponentDTO.purchaseBikeComponent.amount
-                                                        , purchaseComponentDTO.purchaseBikeComponent.title);
         // @ts-ignore
-        purchaseComponentDTO.purchaseOrderNumber = purchaseOrderNumber;
+        purchaseComponentDTO.purchaseOrderNumber = await createPurchaseOrder(purchaseComponentDTO.productionOrderNumber
+            , purchaseComponentDTO.purchaseBikeComponent.amount
+            , purchaseComponentDTO.purchaseBikeComponent.title);
+
         console.log(purchaseComponentDTO);
         const vendors = await getVendorsForBikeComponent(purchaseComponentDTO.purchaseBikeComponent.title)
         console.log(vendors);
@@ -63,11 +63,10 @@ zbc.createWorker({
             value: item.name
         }))
         console.log(vendorList);
-        const purchaseCount = purchaseComponentDTO.purchaseBikeComponent.amount
 
         return job.complete({
             // @ts-ignore
-            vendorList, purchaseOrderNumber, purchaseComponentDTO
+            vendorList, purchaseComponentDTO
         })
     }
 })

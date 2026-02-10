@@ -20,7 +20,7 @@
             "columns": 6
           },
           "id": "Field_016mxd6",
-          "key": "title",
+          "key": "purchaseBikeComponent.title",
           "readonly": "on"
         },
         {
@@ -31,7 +31,7 @@
             "columns": 3
           },
           "id": "Field_11lnh3q",
-          "key": "amount",
+          "key": "purchaseBikeComponent.amount",
           "readonly": false,
           "validate": {
             "min": "=purchaseCount",
@@ -67,7 +67,7 @@
         "columns": 15
       },
       "id": "Field_1s0ya40",
-      "path": "purchaseBikeComponent"
+      "path": "purchaseComponentDTO"
     },
     {
       "label": "Vendor list for bikecomponent",
@@ -99,7 +99,7 @@
   "executionPlatformVersion": "8.7.0",
   "exporter": {
     "name": "Camunda Modeler",
-    "version": "5.41.0"
+    "version": "5.42.0"
   },
   "schemaVersion": 19
 }
