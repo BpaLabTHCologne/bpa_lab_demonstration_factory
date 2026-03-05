@@ -2,7 +2,7 @@
 
 The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (enterprises, students, ...).
 
-A general indtroduction is available here: https://github.com/BpaLabTHCologne/bpa_lab_docs
+A general introduction is available here: https://github.com/BpaLabTHCologne/bpa_lab_docs
 
 This repository contains the source code and configuration files of the implementation of the end to end demonstration scenario: the ordering, production, purchasing, manufacturing and shipping of custom-made bicycles. The implementation is based on Camunda 8, a Business Process Management System. This BPMS orchestrates different process-specific job workers. Moreover, control programs in Python are steering physical Fischertechnik robots for manufacturing and warehouse operations.
 
@@ -43,7 +43,7 @@ in docker container.
 
 5. (only for initial setup) To use the data architecture / dashboards: please follow the guideline "Necessary configurations for the use of the data architecture during initial installation or reinstallation" in the Wiki    
 
-6. Run solution (refer to "User Guide for End to End Process Execution" in wiki)
+6. Run solution (refer to "User Guide for End to End Process Execution" and - in case you would like to use the physical components of the BPA Lab "Use-of-the-productive-environment-of-the-model-factory" in wiki)
    
 7. Run the following command only to shut down the containers gracefully: 
    "docker compose -f docker-compose-processes.yml down" to 
