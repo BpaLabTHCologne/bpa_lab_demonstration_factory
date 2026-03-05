@@ -84,7 +84,7 @@
       }
     },
     {
-      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>ErrorMsg</title>\n    <style>\n        .ErrorMsg {\n            background-color: #fff;\n            border: 1px solid #e0e0e0;\n            border-radius: 0px;\n            padding: 20px;\n            border-left: 10px solid blue;\n          \n        }\n\n        \n        .ErrorMsg-header {\n            font-size: 18px;\n            font-weight: bold;\n            color: #2f2f2f;\n            margin-bottom: 10px;\n        }\n\n        .ErrorMsg-message {\n            font-size: 16px;\n            color: #2f2f2f;\n            padding: 10px;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"ErrorMsg\">\n        <div class=\"ErrorMsg-header\"> Choose a Vendor</div>\n        <div class=\"ErrorMsg-message\">\n        If possible, contact the vendors and try to negotiate a better price. If necessary, adjust the amount.\n        </div>\n    </div>\n\n    \n\n</body>\n</html>\n",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>ErrorMsg</title>\n    <style>\n        .ErrorMsg {\n            background-color: #fff;\n            border: 1px solid #e0e0e0;\n            border-radius: 0px;\n            padding: 20px;\n            border-left: 10px solid blue;\n          \n        }\n\n        \n        .ErrorMsg-header {\n            font-size: 18px;\n            font-weight: bold;\n            color: #2f2f2f;\n            margin-bottom: 10px;\n        }\n\n        .ErrorMsg-message {\n            font-size: 16px;\n            color: #2f2f2f;\n            padding: 10px;\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"ErrorMsg\">\n        <div class=\"ErrorMsg-header\"> Choose a Vendor</div>\n        <div class=\"ErrorMsg-message\">\n        Choose a vendor for the required component. The quantity to be ordered can be adjusted.\n        </div>\n    </div>\n\n    \n\n</body>\n</html>\n",
       "type": "html",
       "layout": {
         "row": "Row_16n4xlq",
@@ -99,7 +99,7 @@
   "executionPlatformVersion": "8.7.0",
   "exporter": {
     "name": "Camunda Modeler",
-    "version": "5.42.0"
+    "version": "5.44.0"
   },
   "schemaVersion": 19
 }

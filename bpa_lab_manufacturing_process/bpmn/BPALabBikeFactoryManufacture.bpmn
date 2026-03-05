@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0" camunda:diagramRelationId="2c11d487-e3e7-42f5-9b3a-5894a3fc8659">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.44.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0" camunda:diagramRelationId="2c11d487-e3e7-42f5-9b3a-5894a3fc8659">
   <bpmn:error id="Error_0k2s7oz" name="factoryOrderError" errorCode="factoryOrderError" />
   <bpmn:error id="Error_0ikutpd" name="Error_1v8heu8" />
   <bpmn:message id="Message_1e0kbt9" name="=replyMessage">
@@ -128,6 +128,7 @@ manufactureOrderCorrelation</bpmn:text>
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="showFactoryFailureForm" />
+        <zeebe:assignmentDefinition assignee="demo" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_101jtft</bpmn:incoming>
       <bpmn:outgoing>Flow_0sose0c</bpmn:outgoing>
@@ -136,6 +137,7 @@ manufactureOrderCorrelation</bpmn:text>
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="showManufacturingOrderForm" />
+        <zeebe:assignmentDefinition assignee="demo" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0svmvz9</bpmn:incoming>
       <bpmn:outgoing>Flow_1grfc27</bpmn:outgoing>
@@ -147,6 +149,7 @@ manufactureOrderCorrelation</bpmn:text>
       <bpmn:extensionElements>
         <zeebe:formDefinition formId="BPALabBikeFactoryManufactureOrderForm" />
         <zeebe:userTask />
+        <zeebe:assignmentDefinition assignee="demo" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1md0nk2</bpmn:incoming>
       <bpmn:outgoing>Flow_1o4vwt9</bpmn:outgoing>

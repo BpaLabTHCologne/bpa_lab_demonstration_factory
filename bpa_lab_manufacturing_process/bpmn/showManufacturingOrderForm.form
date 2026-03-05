@@ -22,7 +22,7 @@
       "label": "Quality Control Checklist",
       "components": [
         {
-          "label": "Check the frame and the welds for cracks, dents or tears",
+          "label": "Are the frame and the welds free of cracks, dents and tears?",
           "type": "checkbox",
           "layout": {
             "row": "Row_1pa1b0e",
@@ -35,7 +35,7 @@
           }
         },
         {
-          "label": "Check that the wheels are running smoothly.",
+          "label": "Are the wheels running smoothly?",
           "type": "checkbox",
           "layout": {
             "row": "Row_0dnk6mm",
@@ -48,7 +48,7 @@
           }
         },
         {
-          "label": "Is the paint quality consistent throughout and free of defects?",
+          "label": "Is the paint quality consistent throughout?",
           "type": "checkbox",
           "layout": {
             "row": "Row_0f022og",
@@ -61,33 +61,7 @@
           }
         },
         {
-          "label": "Check the circuit for smooth operation and clean switching",
-          "type": "checkbox",
-          "layout": {
-            "row": "Row_1bduh2c",
-            "columns": null
-          },
-          "id": "Field_07ro0q5",
-          "key": "checklist4",
-          "validate": {
-            "required": true
-          }
-        },
-        {
-          "label": "Are the breacks working correctl",
-          "type": "checkbox",
-          "layout": {
-            "row": "Row_183vo0r",
-            "columns": null
-          },
-          "id": "Field_1kv0mvg",
-          "key": "checklist5",
-          "validate": {
-            "required": true
-          }
-        },
-        {
-          "label": "Is the suspension working correct and free of leaks",
+          "label": "Is the brake working smoothly?",
           "type": "checkbox",
           "layout": {
             "row": "Row_1dw1il7",
@@ -95,19 +69,6 @@
           },
           "id": "Field_0oaormj",
           "key": "checklist6",
-          "validate": {
-            "required": true
-          }
-        },
-        {
-          "label": "Are all the attachments present?",
-          "type": "checkbox",
-          "layout": {
-            "row": "Row_13kexko",
-            "columns": null
-          },
-          "id": "Field_06lt4ck",
-          "key": "checklist7",
           "validate": {
             "required": true
           }
@@ -128,7 +89,7 @@
   "executionPlatformVersion": "8.8.0",
   "exporter": {
     "name": "Camunda Modeler",
-    "version": "5.41.0"
+    "version": "5.44.0"
   },
   "schemaVersion": 19
 }

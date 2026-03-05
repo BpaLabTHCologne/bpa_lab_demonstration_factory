@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_08qpqnf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0" camunda:diagramRelationId="67af45b5-cc6c-4546-9323-90b495908be3">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_08qpqnf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.44.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0" camunda:diagramRelationId="67af45b5-cc6c-4546-9323-90b495908be3">
   <bpmn:collaboration id="ship">
     <bpmn:participant id="Participant_shipment" name="Shipment" processRef="BPALabBikeFactoryShipment" />
     <bpmn:textAnnotation id="TextAnnotation_0j6k5f8">
@@ -287,6 +287,7 @@ shipmentOrderCorrelation</bpmn:text>
       <bpmn:extensionElements>
         <zeebe:formDefinition formId="output_ShippingInformation" />
         <zeebe:userTask />
+        <zeebe:assignmentDefinition assignee="demo" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_018nvw6</bpmn:incoming>
       <bpmn:outgoing>Flow_0we3fgn</bpmn:outgoing>
@@ -355,6 +356,7 @@ shipmentOrderCorrelation</bpmn:text>
       <bpmn:extensionElements>
         <zeebe:formDefinition formId="Form_ShippingInformation" />
         <zeebe:userTask />
+        <zeebe:assignmentDefinition assignee="demo" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0s158rx</bpmn:incoming>
       <bpmn:outgoing>Flow_06eyxrr</bpmn:outgoing>
@@ -370,6 +372,7 @@ shipmentOrderCorrelation</bpmn:text>
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="shipmentInputData" />
+        <zeebe:assignmentDefinition assignee="demo" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_14wxjbj</bpmn:incoming>
       <bpmn:outgoing>Flow_1yr2g4b</bpmn:outgoing>
@@ -478,9 +481,9 @@ shipmentOrderCorrelation</bpmn:text>
       <bpmndi:BPMNShape id="Activity_1uy9b3n_di" bpmnElement="Activity_0lgry03">
         <dc:Bounds x="340" y="330" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_1pmdgh3_di" bpmnElement="Flow_1pmdgh3">
-        <di:waypoint x="278" y="257" />
-        <di:waypoint x="365" y="257" />
+      <bpmndi:BPMNEdge id="Flow_17583rq_di" bpmnElement="Flow_17583rq">
+        <di:waypoint x="710" y="257" />
+        <di:waypoint x="750" y="257" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0g8wzw1_di" bpmnElement="Flow_0g8wzw1">
         <di:waypoint x="850" y="257" />
@@ -490,6 +493,18 @@ shipmentOrderCorrelation</bpmn:text>
         <di:waypoint x="990" y="257" />
         <di:waypoint x="1040" y="257" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0we3fgn_di" bpmnElement="Flow_0we3fgn">
+        <di:waypoint x="1280" y="257" />
+        <di:waypoint x="1320" y="257" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16azuuv_di" bpmnElement="Flow_16azuuv">
+        <di:waypoint x="1420" y="257" />
+        <di:waypoint x="1460" y="257" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_018nvw6_di" bpmnElement="Flow_018nvw6">
+        <di:waypoint x="1140" y="257" />
+        <di:waypoint x="1180" y="257" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_15meqys_di" bpmnElement="Flow_15meqys">
         <di:waypoint x="1560" y="257" />
         <di:waypoint x="1620" y="257" />
@@ -498,21 +513,13 @@ shipmentOrderCorrelation</bpmn:text>
         <di:waypoint x="1720" y="257" />
         <di:waypoint x="1782" y="257" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_16azuuv_di" bpmnElement="Flow_16azuuv">
-        <di:waypoint x="1420" y="257" />
-        <di:waypoint x="1460" y="257" />
+      <bpmndi:BPMNEdge id="Flow_06eyxrr_di" bpmnElement="Flow_06eyxrr">
+        <di:waypoint x="570" y="257" />
+        <di:waypoint x="610" y="257" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0we3fgn_di" bpmnElement="Flow_0we3fgn">
-        <di:waypoint x="1280" y="257" />
-        <di:waypoint x="1320" y="257" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_018nvw6_di" bpmnElement="Flow_018nvw6">
-        <di:waypoint x="1140" y="257" />
-        <di:waypoint x="1180" y="257" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_14wxjbj_di" bpmnElement="Flow_14wxjbj">
-        <di:waypoint x="278" y="370" />
-        <di:waypoint x="340" y="370" />
+      <bpmndi:BPMNEdge id="Flow_1pmdgh3_di" bpmnElement="Flow_1pmdgh3">
+        <di:waypoint x="278" y="257" />
+        <di:waypoint x="365" y="257" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1yr2g4b_di" bpmnElement="Flow_1yr2g4b">
         <di:waypoint x="390" y="330" />
@@ -522,20 +529,16 @@ shipmentOrderCorrelation</bpmn:text>
         <di:waypoint x="415" y="257" />
         <di:waypoint x="470" y="257" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_17583rq_di" bpmnElement="Flow_17583rq">
-        <di:waypoint x="710" y="257" />
-        <di:waypoint x="750" y="257" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_06eyxrr_di" bpmnElement="Flow_06eyxrr">
-        <di:waypoint x="570" y="257" />
-        <di:waypoint x="610" y="257" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0xmdx3k_di" bpmnElement="Association_0xmdx3k">
-        <di:waypoint x="276" y="171" />
-        <di:waypoint x="263" y="239" />
+      <bpmndi:BPMNEdge id="Flow_14wxjbj_di" bpmnElement="Flow_14wxjbj">
+        <di:waypoint x="278" y="370" />
+        <di:waypoint x="340" y="370" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_0j6k5f8_di" bpmnElement="TextAnnotation_0j6k5f8">
         <dc:Bounds x="1370" y="150" width="150" height="55" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1161ci8" bpmnElement="TextAnnotation_1hnqhdz">
+        <dc:Bounds x="200" y="130" width="160" height="41" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0s948zs_di" bpmnElement="TextAnnotation_0s948zs">
@@ -558,10 +561,10 @@ shipmentOrderCorrelation</bpmn:text>
         <di:waypoint x="1800" y="201" />
         <di:waypoint x="1800" y="239" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="BPMNShape_1161ci8" bpmnElement="TextAnnotation_1hnqhdz">
-        <dc:Bounds x="200" y="130" width="160" height="41" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0xmdx3k_di" bpmnElement="Association_0xmdx3k">
+        <di:waypoint x="276" y="171" />
+        <di:waypoint x="263" y="239" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.44.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
   <bpmn:collaboration id="Collaboration_06kvtoe" name="BPALabBikeFactoryProduction">
     <bpmn:participant id="Participant_1oq36ot" name="Production Control" processRef="BPALabBikeFactoryProduction" />
     <bpmn:textAnnotation id="TextAnnotation_0s948zs">
@@ -234,6 +234,7 @@ manufactureBikeInstance</bpmn:text>
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="productionInputData" />
+        <zeebe:assignmentDefinition assignee="demo" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0iilhpn</bpmn:incoming>
       <bpmn:outgoing>Flow_0b7h1yd</bpmn:outgoing>
@@ -551,10 +552,6 @@ manufactureBikeInstance</bpmn:text>
         <di:waypoint x="2512" y="182" />
         <di:waypoint x="2512" y="129" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0r3tm81_di" bpmnElement="Association_0r3tm81">
-        <di:waypoint x="1707" y="160" />
-        <di:waypoint x="1703" y="150" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_0s948zs_di" bpmnElement="TextAnnotation_0s948zs">
         <dc:Bounds x="2460" y="90" width="160" height="39" />
         <bpmndi:BPMNLabel />
@@ -577,6 +574,10 @@ manufactureBikeInstance</bpmn:text>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_01um4de" bpmnElement="TextAnnotation_08ns6n1">
         <dc:Bounds x="1690" y="491" width="180" height="68" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_10jkvxw_di" bpmnElement="TextAnnotation_10jkvxw">
+        <dc:Bounds x="1645" y="110" width="150" height="40" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="DataInputAssociation_16xvy4f_di" bpmnElement="DataInputAssociation_16xvy4f">
@@ -619,10 +620,10 @@ manufactureBikeInstance</bpmn:text>
         <di:waypoint x="1779" y="491" />
         <di:waypoint x="1713" y="240" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="TextAnnotation_10jkvxw_di" bpmnElement="TextAnnotation_10jkvxw">
-        <dc:Bounds x="1645" y="110" width="150" height="40" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0r3tm81_di" bpmnElement="Association_0r3tm81">
+        <di:waypoint x="1707" y="160" />
+        <di:waypoint x="1703" y="150" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

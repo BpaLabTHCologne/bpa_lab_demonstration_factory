@@ -33,7 +33,7 @@
       "label": "Goods receipt Checklist",
       "components": [
         {
-          "label": "Does the delivery note match the Purchase Order",
+          "label": "Does the delivery note matches the purchase order?",
           "type": "checkbox",
           "layout": {
             "row": "Row_1pa1b0e",
@@ -46,7 +46,7 @@
           }
         },
         {
-          "label": "Are all requierd Documents present",
+          "label": "Are all required documents available?",
           "type": "checkbox",
           "layout": {
             "row": "Row_0dnk6mm",
@@ -59,7 +59,7 @@
           }
         },
         {
-          "label": "Is the packiging intact or are there visible Damages",
+          "label": "Are there no visible damages of the packaging material?",
           "type": "checkbox",
           "layout": {
             "row": "Row_0f022og",
@@ -72,46 +72,7 @@
           }
         },
         {
-          "label": "Does the quantity match the papers ",
-          "type": "checkbox",
-          "layout": {
-            "row": "Row_1bduh2c",
-            "columns": null
-          },
-          "id": "Field_07ro0q5",
-          "key": "checklist4",
-          "validate": {
-            "required": true
-          }
-        },
-        {
-          "label": "Do the Products match the papers",
-          "type": "checkbox",
-          "layout": {
-            "row": "Row_183vo0r",
-            "columns": null
-          },
-          "id": "Field_1kv0mvg",
-          "key": "checklist5",
-          "validate": {
-            "required": true
-          }
-        },
-        {
-          "label": "Document everything",
-          "type": "checkbox",
-          "layout": {
-            "row": "Row_1dw1il7",
-            "columns": null
-          },
-          "id": "Field_0oaormj",
-          "key": "checklist6",
-          "validate": {
-            "required": true
-          }
-        },
-        {
-          "label": "Place the goods in stock",
+          "label": "Are the goodes placed in stock?",
           "type": "checkbox",
           "layout": {
             "row": "Row_13kexko",
@@ -139,7 +100,7 @@
   "executionPlatformVersion": "8.8.0",
   "exporter": {
     "name": "Camunda Modeler",
-    "version": "5.42.0"
+    "version": "5.44.0"
   },
   "schemaVersion": 19
 }
