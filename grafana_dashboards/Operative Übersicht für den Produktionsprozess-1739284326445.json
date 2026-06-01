@@ -1,0 +1,570 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 4,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "uid": "de5zt5g5uujgga"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "IN_PROCESS": {
+                  "color": "green",
+                  "index": 2,
+                  "text": "Auftrag wird produziert"
+                },
+                "ORDERED": {
+                  "color": "super-light-green",
+                  "index": 1,
+                  "text": "Produktionsauftrag eingegangen"
+                },
+                "SHIPPED": {
+                  "color": "dark-green",
+                  "index": 3,
+                  "text": "Auftrag ist fertiggestellt"
+                },
+                "WAITING_FOR_ORDER": {
+                  "color": "#fafafa6e",
+                  "index": 0,
+                  "text": "Warte auf Produktionsauftrag"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^current_order_status$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "format": 0,
+          "rawSQL": "SELECT\n    sensor.state AS current_order_status\nFROM\n    elasticsearch.default.\"ft-factory-sensor-data\" AS sensor\nWHERE\n    sensor.mqtt.topic = 'bpalab/ftfactory/f/i/order'\n    AND sensor.\"@timestamp\" BETWEEN $__timeFrom() AND $__timeTo()\n    AND sensor.\"@timestamp\" = (\n        SELECT MAX(\"@timestamp\")\n        FROM elasticsearch.default.\"ft-factory-sensor-data\"\n        WHERE mqtt.topic = 'bpalab/ftfactory/f/i/order'\n    )\nLIMIT 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Aktueller Produktionsstatus",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "max": 0,
+          "min": 500,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 51
+              },
+              {
+                "color": "yellow",
+                "value": 101
+              },
+              {
+                "color": "dark-orange",
+                "value": 151
+              },
+              {
+                "color": "dark-red",
+                "value": 201
+              },
+              {
+                "color": "#7c0251",
+                "value": 251
+              },
+              {
+                "color": "#4a1d00",
+                "value": 351
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 5,
+        "x": 8,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "trino-datasource",
+            "uid": "ce6e9f12it6gwd"
+          },
+          "format": 0,
+          "rawSQL": "SELECT \r\n  sensor.iaq AS current_iaq\r\nFROM\r\n  elasticsearch.default.\"ft-factory-sensor-data\" AS sensor\r\nWHERE\r\n  sensor.mqtt.topic = 'bpalab/ftfactory/i/bme680'\r\n  AND sensor.\"@timestamp\" BETWEEN $__timeFrom() AND $__timeTo()\r\nORDER BY \r\n  sensor.\"@timestamp\" DESC\r\nLIMIT 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Aktuelle Raumluftqualität (IAQ)",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 2,
+            "pointSize": 4,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "max": 80,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "temperature"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Temperatur"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 13,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "timezone": [
+          ""
+        ],
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "format": 0,
+          "rawSQL": "SELECT \n  sensor.\"@timestamp\" AS time,\n  sensor.t AS temperature\nFROM\n  elasticsearch.default.\"ft-factory-sensor-data\" AS sensor\nWHERE\n  sensor.mqtt.topic = 'bpalab/ftfactory/i/bme680'\n  AND sensor.\"@timestamp\" BETWEEN $__timeFrom() AND $__timeTo()\nORDER BY\n  sensor.\"@timestamp\" ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "Temperatur",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": 300000,
+            "lineWidth": 0,
+            "spanNulls": true
+          },
+          "fieldMinMax": false,
+          "mappings": [
+            {
+              "options": {
+                "false": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "Nicht Aktiv"
+                },
+                "true": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "Aktiv"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vgr_status"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Vakuum-Sauggreifer"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "hbw_status"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Hochregallager"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mpo_status"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Multi-Fertigungsstation"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sld_status"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Sortierstrecke"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 13,
+        "x": 0,
+        "y": 9
+      },
+      "id": 4,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "format": 0,
+          "rawSQL": "SELECT\r\n    sensor.\"@timestamp\" AS status_timestamp,\r\n    MAX(CASE WHEN sensor.mqtt.topic = 'bpalab/ftfactory/f/i/state/vgr' THEN CAST(sensor.active AS BOOLEAN) END) AS vgr_status,\r\n    MAX(CASE WHEN sensor.mqtt.topic = 'bpalab/ftfactory/f/i/state/hbw' THEN CAST(sensor.active AS BOOLEAN) END) AS hbw_status,\r\n    MAX(CASE WHEN sensor.mqtt.topic = 'bpalab/ftfactory/f/i/state/mpo' THEN CAST(sensor.active AS BOOLEAN) END) AS mpo_status,\r\n    MAX(CASE WHEN sensor.mqtt.topic = 'bpalab/ftfactory/f/i/state/sld' THEN CAST(sensor.active AS BOOLEAN) END) AS sld_status\r\nFROM\r\n    elasticsearch.default.\"ft-factory-sensor-data\" AS sensor\r\nWHERE\r\n    sensor.mqtt.topic LIKE 'bpalab/ftfactory/f/i/state/%'\r\n    AND sensor.active IS NOT NULL\r\n    AND sensor.\"@timestamp\" BETWEEN $__timeFrom() AND $__timeTo()\r\nGROUP BY\r\n    sensor.\"@timestamp\"\r\nORDER BY\r\n    status_timestamp ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "Aktueller Status jeder Station ",
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "humidity"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "humidity"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Luftfeuchtigkeit"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "brightness"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Helligkeit"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 13,
+        "y": 9
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "format": 0,
+          "rawSQL": "SELECT \n  sensor.\"@timestamp\" AS time,\n  sensor.h AS humidity\nFROM\n  elasticsearch.default.\"ft-factory-sensor-data\" AS sensor\nWHERE\n  sensor.\"@timestamp\" BETWEEN $__timeFrom() AND $__timeTo()\nORDER BY\n  sensor.\"@timestamp\" ASC",
+          "refId": "A"
+        }
+      ],
+      "title": "Luftfeuchtigkeit",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "10s",
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-3m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Operative Übersicht für den Produktionsprozess",
+  "uid": "fe6eaxmzn1kaoc",
+  "version": 34,
+  "weekStart": ""
+}
