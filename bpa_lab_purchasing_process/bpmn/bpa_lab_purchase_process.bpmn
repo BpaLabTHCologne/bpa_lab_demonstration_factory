@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_14f3xb6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.44.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_14f3xb6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.46.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
   <bpmn:message id="Message_0i2iu6t" name="MsgStartPurchaseOrder" />
   <bpmn:collaboration id="Collaboration_0lf49u8">
     <bpmn:participant id="Participant_15kbhxh" name="Purchasing" processRef="BPALabBikeFactoryPurchase" />
@@ -19,14 +19,14 @@ purchaseOrderCorrelation</bpmn:text>
       <bpmn:outgoing>Flow_0yqo0wz</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_02u0kf4" messageRef="Message_0i2iu6t" />
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0yqo0wz" sourceRef="MsgStartEventPurchaseOrder" targetRef="Gateway_1x6zmiy" />
-    <bpmn:sequenceFlow id="Flow_0qugen1" sourceRef="Activity_1gwbbuy" targetRef="adjustPurchaseOrder" />
-    <bpmn:sequenceFlow id="Flow_03qgl0x" sourceRef="adjustPurchaseOrder" targetRef="confirmSupply" />
-    <bpmn:sequenceFlow id="Flow_12wztvo" sourceRef="confirmSupply" targetRef="Gateway_1rowoe8" />
-    <bpmn:sequenceFlow id="Flow_0xt0dgj" sourceRef="Activity_0z55yc3" targetRef="MsgEndEventPurchaseOrder" />
-    <bpmn:sequenceFlow id="Flow_0bj79kz" sourceRef="Event_1lh6x7j" targetRef="Gateway_1rowoe8" />
-    <bpmn:sequenceFlow id="Flow_01y3834" sourceRef="Gateway_1rowoe8" targetRef="Activity_0z55yc3" />
-    <bpmn:userTask id="adjustPurchaseOrder" name="adjust Purchase Order">
+    <bpmn:sequenceFlow id="Flow_0yqo0wz" sourceRef="MsgStartEventPurchaseOrder" targetRef="XJoinStartevents" />
+    <bpmn:sequenceFlow id="Flow_0qugen1" sourceRef="ServGetPurchaseOrder" targetRef="HumAdjustPurchaseOrder" />
+    <bpmn:sequenceFlow id="Flow_03qgl0x" sourceRef="HumAdjustPurchaseOrder" targetRef="HumConfirmSupply" />
+    <bpmn:sequenceFlow id="Flow_12wztvo" sourceRef="HumConfirmSupply" targetRef="XJoinBoundConfirmSupply" />
+    <bpmn:sequenceFlow id="Flow_0xt0dgj" sourceRef="ServStoreBikeComponents" targetRef="MsgEndEventPurchaseOrder" />
+    <bpmn:sequenceFlow id="Flow_0bj79kz" sourceRef="BoundTimerEventConfirmSupply" targetRef="XJoinBoundConfirmSupply" />
+    <bpmn:sequenceFlow id="Flow_01y3834" sourceRef="XJoinBoundConfirmSupply" targetRef="ServStoreBikeComponents" />
+    <bpmn:userTask id="HumAdjustPurchaseOrder" name="adjust Purchase Order">
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="chooseVendorForm" />
@@ -35,7 +35,7 @@ purchaseOrderCorrelation</bpmn:text>
       <bpmn:incoming>Flow_0qugen1</bpmn:incoming>
       <bpmn:outgoing>Flow_03qgl0x</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="confirmSupply" name="confirm Supply">
+    <bpmn:userTask id="HumConfirmSupply" name="confirm Supply">
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="confirmSupplyForm" />
@@ -51,12 +51,12 @@ purchaseOrderCorrelation</bpmn:text>
       <bpmn:incoming>Flow_0xt0dgj</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0gjzuny" />
     </bpmn:endEvent>
-    <bpmn:exclusiveGateway id="Gateway_1rowoe8">
+    <bpmn:exclusiveGateway id="XJoinBoundConfirmSupply">
       <bpmn:incoming>Flow_12wztvo</bpmn:incoming>
       <bpmn:incoming>Flow_0bj79kz</bpmn:incoming>
       <bpmn:outgoing>Flow_01y3834</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_1gwbbuy" name="get Purchase Order">
+    <bpmn:serviceTask id="ServGetPurchaseOrder" name="get Purchase Order">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="getPurchaseOrder" />
       </bpmn:extensionElements>
@@ -71,7 +71,7 @@ purchaseOrderCorrelation</bpmn:text>
         <bpmn:targetRef>DataStoreReference_0rcjnlb</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_0z55yc3" name="store Bike  Components">
+    <bpmn:serviceTask id="ServStoreBikeComponents" name="store Bike  Components">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="storeBikeComponents" />
       </bpmn:extensionElements>
@@ -81,24 +81,24 @@ purchaseOrderCorrelation</bpmn:text>
         <bpmn:targetRef>DataStoreReference_1gp5p0g</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
-    <bpmn:boundaryEvent id="Event_1lh6x7j" attachedToRef="confirmSupply">
+    <bpmn:boundaryEvent id="BoundTimerEventConfirmSupply" attachedToRef="HumConfirmSupply">
       <bpmn:outgoing>Flow_0bj79kz</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0n7r76g">
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_19iaq8k" sourceRef="Gateway_1x6zmiy" targetRef="Activity_1gwbbuy" />
-    <bpmn:exclusiveGateway id="Gateway_1x6zmiy">
+    <bpmn:sequenceFlow id="Flow_19iaq8k" sourceRef="XJoinStartevents" targetRef="ServGetPurchaseOrder" />
+    <bpmn:exclusiveGateway id="XJoinStartevents">
       <bpmn:incoming>Flow_0yqo0wz</bpmn:incoming>
       <bpmn:incoming>Flow_0jeo617</bpmn:incoming>
       <bpmn:outgoing>Flow_19iaq8k</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:startEvent id="Event_1ksa721" name="Start Bike Component&#10;Purchase Order">
+    <bpmn:startEvent id="StartEventPurchaseOrder" name="Start Bike Component&#10;Purchase Order">
       <bpmn:extensionElements />
       <bpmn:outgoing>Flow_0qrdu0w</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0qrdu0w" sourceRef="Event_1ksa721" targetRef="Activity_12gs6pt" />
-    <bpmn:userTask id="Activity_12gs6pt" name="put Message Data">
+    <bpmn:sequenceFlow id="Flow_0qrdu0w" sourceRef="StartEventPurchaseOrder" targetRef="HumPutMessageData" />
+    <bpmn:userTask id="HumPutMessageData" name="put Message Data">
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="purchaseInputData" />
@@ -107,7 +107,7 @@ purchaseOrderCorrelation</bpmn:text>
       <bpmn:incoming>Flow_0qrdu0w</bpmn:incoming>
       <bpmn:outgoing>Flow_0jeo617</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_0jeo617" sourceRef="Activity_12gs6pt" targetRef="Gateway_1x6zmiy" />
+    <bpmn:sequenceFlow id="Flow_0jeo617" sourceRef="HumPutMessageData" targetRef="XJoinStartevents" />
     <bpmn:dataStoreReference id="DataStoreReference_0zrfz0e" name="Vendor" />
     <bpmn:dataStoreReference id="DataStoreReference_0rcjnlb" name="Purchase Order" />
     <bpmn:dataStoreReference id="DataStoreReference_1gp5p0g" name="Bike Component" />
@@ -124,11 +124,11 @@ purchaseOrderCorrelation</bpmn:text>
           <dc:Bounds x="209" y="202" width="82" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1wxn0pq_di" bpmnElement="adjustPurchaseOrder">
+      <bpmndi:BPMNShape id="Activity_1wxn0pq_di" bpmnElement="HumAdjustPurchaseOrder">
         <dc:Bounds x="620" y="137" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0ej6rus_di" bpmnElement="confirmSupply">
+      <bpmndi:BPMNShape id="Activity_0ej6rus_di" bpmnElement="HumConfirmSupply">
         <dc:Bounds x="760" y="137" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0md7py9_di" bpmnElement="MsgEndEventPurchaseOrder">
@@ -137,26 +137,26 @@ purchaseOrderCorrelation</bpmn:text>
           <dc:Bounds x="1140" y="202" width="67" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1rowoe8_di" bpmnElement="Gateway_1rowoe8" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_1rowoe8_di" bpmnElement="XJoinBoundConfirmSupply" isMarkerVisible="true">
         <dc:Bounds x="905" y="152" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1rvlo9s_di" bpmnElement="Activity_1gwbbuy">
+      <bpmndi:BPMNShape id="Activity_1rvlo9s_di" bpmnElement="ServGetPurchaseOrder">
         <dc:Bounds x="480" y="137" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0hdn9h9_di" bpmnElement="Activity_0z55yc3">
+      <bpmndi:BPMNShape id="Activity_0hdn9h9_di" bpmnElement="ServStoreBikeComponents">
         <dc:Bounds x="1000" y="137" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1x6zmiy_di" bpmnElement="Gateway_1x6zmiy" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_1x6zmiy_di" bpmnElement="XJoinStartevents" isMarkerVisible="true">
         <dc:Bounds x="365" y="152" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1ksa721_di" bpmnElement="Event_1ksa721">
+      <bpmndi:BPMNShape id="Event_1ksa721_di" bpmnElement="StartEventPurchaseOrder">
         <dc:Bounds x="229" y="282" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="209" y="325" width="78" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1xunm6p_di" bpmnElement="Activity_12gs6pt">
+      <bpmndi:BPMNShape id="Activity_1xunm6p_di" bpmnElement="HumPutMessageData">
         <dc:Bounds x="340" y="260" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
@@ -178,7 +178,7 @@ purchaseOrderCorrelation</bpmn:text>
           <dc:Bounds x="1009" y="332" width="82" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1yvcazv_di" bpmnElement="Event_1lh6x7j">
+      <bpmndi:BPMNShape id="Event_1yvcazv_di" bpmnElement="BoundTimerEventConfirmSupply">
         <dc:Bounds x="772" y="199" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0yqo0wz_di" bpmnElement="Flow_0yqo0wz">

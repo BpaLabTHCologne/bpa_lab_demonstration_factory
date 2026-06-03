@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0m9i7yw" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0m9i7yw" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.46.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
   <bpmn:collaboration id="Collaboration_1xeoj8z">
     <bpmn:participant id="Participant_1y0grjx" name="Warehouse" processRef="BPALabBikeFactoryWarehousePut" />
     <bpmn:textAnnotation id="TextAnnotation_1hnqhdz">
       <bpmn:text>MsgStartWarehousePut:
 warehousePutCorrelation</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_0xqle38" associationDirection="None" sourceRef="TextAnnotation_1hnqhdz" targetRef="MsgStartEventProductionOrder" />
+    <bpmn:association id="Association_0xqle38" associationDirection="None" sourceRef="TextAnnotation_1hnqhdz" targetRef="MsgStartEventWarehousePut" />
     <bpmn:textAnnotation id="TextAnnotation_0uxcmgd">
       <bpmn:text>MsgWarehousePutFinished:
 warehousePutCorrelation</bpmn:text>
@@ -15,18 +15,18 @@ warehousePutCorrelation</bpmn:text>
       <bpmn:text>MsgWarehousePutNoPlaceFinished:
 warehousePutCorrelation</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_0bmtmgu" associationDirection="None" sourceRef="TextAnnotation_0uxcmgd" targetRef="Event_1s2t7rk" />
-    <bpmn:association id="Association_1sys528" associationDirection="None" sourceRef="TextAnnotation_11mawyk" targetRef="Event_14alqks" />
+    <bpmn:association id="Association_0bmtmgu" associationDirection="None" sourceRef="TextAnnotation_0uxcmgd" targetRef="MsgEndBikeinstanceSend" />
+    <bpmn:association id="Association_1sys528" associationDirection="None" sourceRef="TextAnnotation_11mawyk" targetRef="MsgEndNoplace" />
   </bpmn:collaboration>
   <bpmn:process id="BPALabBikeFactoryWarehousePut" name="BPALabBikeFactoryWarehousePut" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1" name="Start Warehouse">
+    <bpmn:startEvent id="HumPutMessageData" name="Start Warehouse">
       <bpmn:outgoing>Flow_1uvrddy</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:startEvent id="MsgStartEventProductionOrder" name="BikeInstance Put received">
+    <bpmn:startEvent id="MsgStartEventWarehousePut" name="BikeInstance Put received">
       <bpmn:outgoing>Flow_1j78m2i</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0jvoq6s" messageRef="Message_1sp91cv" />
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1uvrddy" sourceRef="StartEvent_1" targetRef="Activity_1teos3p" />
+    <bpmn:sequenceFlow id="Flow_1uvrddy" sourceRef="HumPutMessageData" targetRef="Activity_1teos3p" />
     <bpmn:userTask id="Activity_1teos3p" name="put Message Data">
       <bpmn:extensionElements>
         <zeebe:userTask />
@@ -35,55 +35,55 @@ warehousePutCorrelation</bpmn:text>
       <bpmn:incoming>Flow_1uvrddy</bpmn:incoming>
       <bpmn:outgoing>Flow_0hdtm3q</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_0hdtm3q" sourceRef="Activity_1teos3p" targetRef="Gateway_14vj2s8" />
-    <bpmn:exclusiveGateway id="Gateway_14vj2s8">
+    <bpmn:sequenceFlow id="Flow_0hdtm3q" sourceRef="Activity_1teos3p" targetRef="XJoinStartEvents" />
+    <bpmn:exclusiveGateway id="XJoinStartEvents">
       <bpmn:incoming>Flow_0hdtm3q</bpmn:incoming>
       <bpmn:incoming>Flow_1j78m2i</bpmn:incoming>
       <bpmn:outgoing>Flow_15s753a</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1j78m2i" sourceRef="MsgStartEventProductionOrder" targetRef="Gateway_14vj2s8" />
-    <bpmn:sequenceFlow id="Flow_08w9hoo" sourceRef="Activity_1vx22oh" targetRef="Gateway_08typ5l" />
-    <bpmn:serviceTask id="Activity_1vx22oh" name="put BikeInstance">
+    <bpmn:sequenceFlow id="Flow_1j78m2i" sourceRef="MsgStartEventWarehousePut" targetRef="XJoinStartEvents" />
+    <bpmn:sequenceFlow id="Flow_08w9hoo" sourceRef="ServPutBikeInstance" targetRef="EvBasedPutNoplace" />
+    <bpmn:serviceTask id="ServPutBikeInstance" name="put BikeInstance">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="putBikeInstance" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_15s753a</bpmn:incoming>
       <bpmn:outgoing>Flow_08w9hoo</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_15s753a" sourceRef="Gateway_14vj2s8" targetRef="Activity_1vx22oh" />
-    <bpmn:eventBasedGateway id="Gateway_08typ5l">
+    <bpmn:sequenceFlow id="Flow_15s753a" sourceRef="XJoinStartEvents" targetRef="ServPutBikeInstance" />
+    <bpmn:eventBasedGateway id="EvBasedPutNoplace">
       <bpmn:incoming>Flow_08w9hoo</bpmn:incoming>
       <bpmn:outgoing>Flow_00ld11n</bpmn:outgoing>
       <bpmn:outgoing>Flow_0znw48q</bpmn:outgoing>
     </bpmn:eventBasedGateway>
-    <bpmn:sequenceFlow id="Flow_00ld11n" sourceRef="Gateway_08typ5l" targetRef="Event_0eilmbh" />
-    <bpmn:intermediateCatchEvent id="Event_0eilmbh" name="MsgWarehousePutted(MQTT)">
+    <bpmn:sequenceFlow id="Flow_00ld11n" sourceRef="EvBasedPutNoplace" targetRef="MsgRecEventPutted" />
+    <bpmn:intermediateCatchEvent id="MsgRecEventPutted" name="MsgWarehousePutted(MQTT)">
       <bpmn:incoming>Flow_00ld11n</bpmn:incoming>
       <bpmn:outgoing>Flow_1i1t3ho</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1mfjbd0" messageRef="Message_0hhe7am" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="Flow_1i1t3ho" sourceRef="Event_0eilmbh" targetRef="Event_1s2t7rk" />
-    <bpmn:endEvent id="Event_1s2t7rk" name="Putted BikeInstance send">
+    <bpmn:sequenceFlow id="Flow_1i1t3ho" sourceRef="MsgRecEventPutted" targetRef="MsgEndBikeinstanceSend" />
+    <bpmn:endEvent id="MsgEndBikeinstanceSend" name="Putted BikeInstance send">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="sendFinishedWarehousePut" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1i1t3ho</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1gm2022" />
     </bpmn:endEvent>
-    <bpmn:endEvent id="Event_14alqks" name="BikeInstance not putted">
+    <bpmn:endEvent id="MsgEndNoplace" name="BikeInstance not putted">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="sendFinishedWarehouseNoPut" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1khanx0</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1malchw" />
     </bpmn:endEvent>
-    <bpmn:intermediateCatchEvent id="Event_1t8fp2l" name="MsgWarehousePutNoPlaceFinished(MQTT)&#10;">
+    <bpmn:intermediateCatchEvent id="MsgRecEventNoplace" name="MsgWarehousePutNoPlaceFinished(MQTT)&#10;">
       <bpmn:incoming>Flow_0znw48q</bpmn:incoming>
       <bpmn:outgoing>Flow_1khanx0</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1da8l03" messageRef="Message_16sddkr" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="Flow_0znw48q" sourceRef="Gateway_08typ5l" targetRef="Event_1t8fp2l" />
-    <bpmn:sequenceFlow id="Flow_1khanx0" sourceRef="Event_1t8fp2l" targetRef="Event_14alqks" />
+    <bpmn:sequenceFlow id="Flow_0znw48q" sourceRef="EvBasedPutNoplace" targetRef="MsgRecEventNoplace" />
+    <bpmn:sequenceFlow id="Flow_1khanx0" sourceRef="MsgRecEventNoplace" targetRef="MsgEndNoplace" />
   </bpmn:process>
   <bpmn:message id="Message_3lr8s78" name="MsgStartProductionOrder" />
   <bpmn:message id="Message_1sp91cv" name="MsgStartWarehousePut" />
@@ -108,13 +108,13 @@ warehousePutCorrelation</bpmn:text>
         <dc:Bounds x="132" y="90" width="1098" height="250" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="HumPutMessageData">
         <dc:Bounds x="192" y="262" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="169" y="305" width="83" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ec7j52_di" bpmnElement="MsgStartEventProductionOrder">
+      <bpmndi:BPMNShape id="Event_0ec7j52_di" bpmnElement="MsgStartEventWarehousePut">
         <dc:Bounds x="192" y="142" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="170" y="185" width="83" height="27" />
@@ -123,35 +123,35 @@ warehousePutCorrelation</bpmn:text>
       <bpmndi:BPMNShape id="Activity_1j730gf_di" bpmnElement="Activity_1teos3p">
         <dc:Bounds x="280" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_14vj2s8_di" bpmnElement="Gateway_14vj2s8" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_14vj2s8_di" bpmnElement="XJoinStartEvents" isMarkerVisible="true">
         <dc:Bounds x="305" y="135" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1fqsax8_di" bpmnElement="Activity_1vx22oh">
+      <bpmndi:BPMNShape id="Activity_1fqsax8_di" bpmnElement="ServPutBikeInstance">
         <dc:Bounds x="420" y="120" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_17k4vee_di" bpmnElement="Gateway_08typ5l">
+      <bpmndi:BPMNShape id="Gateway_17k4vee_di" bpmnElement="EvBasedPutNoplace">
         <dc:Bounds x="565" y="135" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0eilmbh_di" bpmnElement="Event_0eilmbh">
+      <bpmndi:BPMNShape id="Event_0eilmbh_di" bpmnElement="MsgRecEventPutted">
         <dc:Bounds x="692" y="142" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="668" y="185" width="84" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_05xgw6v_di" bpmnElement="Event_1s2t7rk">
+      <bpmndi:BPMNShape id="Event_05xgw6v_di" bpmnElement="MsgEndBikeinstanceSend">
         <dc:Bounds x="812" y="142" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="785" y="185" width="90" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1hgg16s_di" bpmnElement="Event_14alqks">
+      <bpmndi:BPMNShape id="Event_1hgg16s_di" bpmnElement="MsgEndNoplace">
         <dc:Bounds x="812" y="252" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="789" y="295" width="82" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1t8fp2l_di" bpmnElement="Event_1t8fp2l">
+      <bpmndi:BPMNShape id="Event_1t8fp2l_di" bpmnElement="MsgRecEventNoplace">
         <dc:Bounds x="692" y="252" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="669" y="295" width="84" height="53" />
@@ -194,22 +194,10 @@ warehousePutCorrelation</bpmn:text>
         <di:waypoint x="728" y="270" />
         <di:waypoint x="812" y="270" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_0bmtmgu_di" bpmnElement="Association_0bmtmgu">
-        <di:waypoint x="900" y="148" />
-        <di:waypoint x="847" y="156" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1sys528_di" bpmnElement="Association_1sys528">
-        <di:waypoint x="930" y="250" />
-        <di:waypoint x="847" y="267" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_1161ci8" bpmnElement="TextAnnotation_1hnqhdz">
         <dc:Bounds x="240" y="100" width="180" height="41" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_0xqle38_di" bpmnElement="Association_0xqle38">
-        <di:waypoint x="267" y="141" />
-        <di:waypoint x="227" y="154" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_123ax4a" bpmnElement="TextAnnotation_0uxcmgd">
         <dc:Bounds x="900" y="110" width="180" height="41" />
         <bpmndi:BPMNLabel />
@@ -218,6 +206,18 @@ warehousePutCorrelation</bpmn:text>
         <dc:Bounds x="900" y="210" width="210" height="40" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0xqle38_di" bpmnElement="Association_0xqle38">
+        <di:waypoint x="267" y="141" />
+        <di:waypoint x="227" y="154" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0bmtmgu_di" bpmnElement="Association_0bmtmgu">
+        <di:waypoint x="900" y="148" />
+        <di:waypoint x="847" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1sys528_di" bpmnElement="Association_1sys528">
+        <di:waypoint x="930" y="250" />
+        <di:waypoint x="847" y="267" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.44.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0" camunda:diagramRelationId="2c11d487-e3e7-42f5-9b3a-5894a3fc8659">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.46.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0" camunda:diagramRelationId="2c11d487-e3e7-42f5-9b3a-5894a3fc8659">
   <bpmn:error id="Error_0k2s7oz" name="factoryOrderError" errorCode="factoryOrderError" />
   <bpmn:error id="Error_0ikutpd" name="Error_1v8heu8" />
   <bpmn:message id="Message_1e0kbt9" name="=replyMessage">
@@ -23,7 +23,7 @@ manufactureOrderCorrelation</bpmn:text>
       <bpmn:text>OrderShippedMessage:
 type</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_1s7v8r7" associationDirection="None" sourceRef="TextAnnotation_0vjftsj" targetRef="Activity_0zti8kv" />
+    <bpmn:association id="Association_1s7v8r7" associationDirection="None" sourceRef="TextAnnotation_0vjftsj" targetRef="MsgRecMqttOrderShipped" />
     <bpmn:textAnnotation id="TextAnnotation_16tnvpv">
       <bpmn:text>MsgManufactureOrderFinished:
 manufactureOrderCorrelation</bpmn:text>
@@ -31,13 +31,13 @@ manufactureOrderCorrelation</bpmn:text>
     <bpmn:association id="Association_17szbuv" associationDirection="None" sourceRef="TextAnnotation_16tnvpv" targetRef="MsgEndEventManufactureOrder" />
   </bpmn:collaboration>
   <bpmn:process id="BPALabBikeFactoryManufacture" name="BPALabBikeFactoryManufacture" isExecutable="true">
-    <bpmn:boundaryEvent id="Event_0mltw8f" name="5min" attachedToRef="Activity_0zti8kv">
+    <bpmn:boundaryEvent id="TimerBound5minReceiveMqttOrderShipped" name="5min" attachedToRef="MsgRecMqttOrderShipped">
       <bpmn:outgoing>Flow_1bhxluw</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_1rvl89y">
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT2M</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_1pp6s8h" name="BikeComponent not available&#10;" sourceRef="ex_gateway_split_available" targetRef="promptToStore">
+    <bpmn:sequenceFlow id="Flow_1pp6s8h" name="BikeComponent not available&#10;" sourceRef="XSplitComponentAvailable" targetRef="HumPromptToStore">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not (available)</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:startEvent id="MsgStartEventManufactureOrder" name="BikeModel Manufacture Order&#10;received">
@@ -46,39 +46,39 @@ manufactureOrderCorrelation</bpmn:text>
     </bpmn:startEvent>
     <bpmn:dataObject id="DataObject_0cq8g8j" />
     <bpmn:dataObject id="DataObject_1t6h1al" />
-    <bpmn:boundaryEvent id="Event_13wecep" attachedToRef="Activity_0ld40t8">
+    <bpmn:boundaryEvent id="ErrBoundFactoryFail" attachedToRef="MsgSendMqttOrder">
       <bpmn:outgoing>Flow_101jtft</bpmn:outgoing>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_0kqxmbx" errorRef="Error_0k2s7oz" />
     </bpmn:boundaryEvent>
     <bpmn:endEvent id="Event_14bs0zz">
       <bpmn:incoming>Flow_0sose0c</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:exclusiveGateway id="ex_gateway_split_available" default="Flow_01r0rx3">
+    <bpmn:exclusiveGateway id="XSplitComponentAvailable" default="Flow_01r0rx3">
       <bpmn:incoming>Flow_13qmu6q</bpmn:incoming>
       <bpmn:outgoing>Flow_01r0rx3</bpmn:outgoing>
       <bpmn:outgoing>Flow_1pp6s8h</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_006jisw" sourceRef="StartEvent_1" targetRef="Gateway_1jaxd4y" />
-    <bpmn:sequenceFlow id="Flow_01r0rx3" sourceRef="ex_gateway_split_available" targetRef="Activity_0ld40t8" />
-    <bpmn:sequenceFlow id="Flow_0sose0c" sourceRef="showFactoryFailure" targetRef="Event_14bs0zz" />
-    <bpmn:sequenceFlow id="Flow_0svmvz9" sourceRef="Gateway_0s0mn86" targetRef="showManufacturingOrder" />
-    <bpmn:sequenceFlow id="Flow_0u5ewje" sourceRef="Gateway_058h0k2" targetRef="Activity_0ot3nva" />
-    <bpmn:sequenceFlow id="Flow_0wiiuaq" sourceRef="Activity_0zti8kv" targetRef="Gateway_0s0mn86" />
-    <bpmn:sequenceFlow id="Flow_101jtft" sourceRef="Event_13wecep" targetRef="showFactoryFailure" />
-    <bpmn:sequenceFlow id="Flow_13qmu6q" sourceRef="Activity_0ot3nva" targetRef="ex_gateway_split_available" />
-    <bpmn:sequenceFlow id="Flow_13sygi4" sourceRef="promptToStore" targetRef="Gateway_058h0k2" />
-    <bpmn:sequenceFlow id="Flow_1bhxluw" sourceRef="Event_0mltw8f" targetRef="Gateway_0s0mn86" />
-    <bpmn:sequenceFlow id="Flow_1eigst2" sourceRef="Activity_0ld40t8" targetRef="Activity_0zti8kv" />
-    <bpmn:sequenceFlow id="Flow_1grfc27" sourceRef="showManufacturingOrder" targetRef="MsgEndEventManufactureOrder" />
-    <bpmn:sequenceFlow id="Flow_1md0nk2" sourceRef="Activity_0ypn65h" targetRef="Activity_03yrrd4" />
+    <bpmn:sequenceFlow id="Flow_006jisw" sourceRef="StartEventManufactureOrder" targetRef="XJoinStartevents" />
+    <bpmn:sequenceFlow id="Flow_01r0rx3" sourceRef="XSplitComponentAvailable" targetRef="MsgSendMqttOrder" />
+    <bpmn:sequenceFlow id="Flow_0sose0c" sourceRef="HumShowFactoryFailure" targetRef="Event_14bs0zz" />
+    <bpmn:sequenceFlow id="Flow_0svmvz9" sourceRef="XJoinMqttOrder" targetRef="HumShowManufacturingOrder" />
+    <bpmn:sequenceFlow id="Flow_0u5ewje" sourceRef="XJoinCompontAvailable" targetRef="ServRetrieveHBWStorage" />
+    <bpmn:sequenceFlow id="Flow_0wiiuaq" sourceRef="MsgRecMqttOrderShipped" targetRef="XJoinMqttOrder" />
+    <bpmn:sequenceFlow id="Flow_101jtft" sourceRef="ErrBoundFactoryFail" targetRef="HumShowFactoryFailure" />
+    <bpmn:sequenceFlow id="Flow_13qmu6q" sourceRef="ServRetrieveHBWStorage" targetRef="XSplitComponentAvailable" />
+    <bpmn:sequenceFlow id="Flow_13sygi4" sourceRef="HumPromptToStore" targetRef="XJoinCompontAvailable" />
+    <bpmn:sequenceFlow id="Flow_1bhxluw" sourceRef="TimerBound5minReceiveMqttOrderShipped" targetRef="XJoinMqttOrder" />
+    <bpmn:sequenceFlow id="Flow_1eigst2" sourceRef="MsgSendMqttOrder" targetRef="MsgRecMqttOrderShipped" />
+    <bpmn:sequenceFlow id="Flow_1grfc27" sourceRef="HumShowManufacturingOrder" targetRef="MsgEndEventManufactureOrder" />
+    <bpmn:sequenceFlow id="Flow_1md0nk2" sourceRef="Activity_0ypn65h" targetRef="HumPlaceOrder" />
     <bpmn:dataObjectReference id="DataObjectReference_0nz838a" name="FtfactoryHBW" dataObjectRef="DataObject_1t6h1al" />
     <bpmn:dataObjectReference id="DataObjectReference_00j7oqp" name="FtfactoryOrder" dataObjectRef="DataObject_0cq8g8j" />
-    <bpmn:exclusiveGateway id="Gateway_058h0k2">
+    <bpmn:exclusiveGateway id="XJoinCompontAvailable">
       <bpmn:incoming>Flow_13sygi4</bpmn:incoming>
       <bpmn:incoming>Flow_1o4vwt9</bpmn:incoming>
       <bpmn:outgoing>Flow_0u5ewje</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:exclusiveGateway id="Gateway_0s0mn86">
+    <bpmn:exclusiveGateway id="XJoinMqttOrder">
       <bpmn:incoming>Flow_0wiiuaq</bpmn:incoming>
       <bpmn:incoming>Flow_1bhxluw</bpmn:incoming>
       <bpmn:outgoing>Flow_0svmvz9</bpmn:outgoing>
@@ -90,7 +90,7 @@ manufactureOrderCorrelation</bpmn:text>
       <bpmn:incoming>Flow_1grfc27</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0y07lt6" />
     </bpmn:endEvent>
-    <bpmn:sendTask id="Activity_0ld40t8" name="send Mqtt Order to FtFactory">
+    <bpmn:sendTask id="MsgSendMqttOrder" name="send Mqtt Order to FtFactory">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="sendMqttOrderToFtFactory" />
       </bpmn:extensionElements>
@@ -100,7 +100,7 @@ manufactureOrderCorrelation</bpmn:text>
         <bpmn:targetRef>DataObjectReference_00j7oqp</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:sendTask>
-    <bpmn:userTask id="promptToStore" name="prompt To store">
+    <bpmn:userTask id="HumPromptToStore" name="prompt To store">
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="promptToStoreForm" />
@@ -108,11 +108,11 @@ manufactureOrderCorrelation</bpmn:text>
       <bpmn:incoming>Flow_1pp6s8h</bpmn:incoming>
       <bpmn:outgoing>Flow_13sygi4</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:receiveTask id="Activity_0zti8kv" name="Receive Mqtt Order shipped" messageRef="Message_2k10jfi">
+    <bpmn:receiveTask id="MsgRecMqttOrderShipped" name="Receive Mqtt Order shipped" messageRef="Message_2k10jfi">
       <bpmn:incoming>Flow_1eigst2</bpmn:incoming>
       <bpmn:outgoing>Flow_0wiiuaq</bpmn:outgoing>
     </bpmn:receiveTask>
-    <bpmn:serviceTask id="Activity_0ot3nva" name="retrieve&#10;HBWStorage&#10;State">
+    <bpmn:serviceTask id="ServRetrieveHBWStorage" name="retrieve&#10;HBWStorage&#10;State">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="retrieveHBWStorageState" />
       </bpmn:extensionElements>
@@ -124,7 +124,7 @@ manufactureOrderCorrelation</bpmn:text>
         <bpmn:targetRef>Property_14vnrz9</bpmn:targetRef>
       </bpmn:dataInputAssociation>
     </bpmn:serviceTask>
-    <bpmn:userTask id="showFactoryFailure" name="showFactoryFailure">
+    <bpmn:userTask id="HumShowFactoryFailure" name="showFactoryFailure">
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="showFactoryFailureForm" />
@@ -133,7 +133,7 @@ manufactureOrderCorrelation</bpmn:text>
       <bpmn:incoming>Flow_101jtft</bpmn:incoming>
       <bpmn:outgoing>Flow_0sose0c</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="showManufacturingOrder" name="showOrder">
+    <bpmn:userTask id="HumShowManufacturingOrder" name="showOrder">
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="showManufacturingOrderForm" />
@@ -142,10 +142,10 @@ manufactureOrderCorrelation</bpmn:text>
       <bpmn:incoming>Flow_0svmvz9</bpmn:incoming>
       <bpmn:outgoing>Flow_1grfc27</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:startEvent id="StartEvent_1">
+    <bpmn:startEvent id="StartEventManufactureOrder">
       <bpmn:outgoing>Flow_006jisw</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="Activity_03yrrd4" name="place order">
+    <bpmn:userTask id="HumPlaceOrder" name="place order">
       <bpmn:extensionElements>
         <zeebe:formDefinition formId="BPALabBikeFactoryManufactureOrderForm" />
         <zeebe:userTask />
@@ -154,7 +154,7 @@ manufactureOrderCorrelation</bpmn:text>
       <bpmn:incoming>Flow_1md0nk2</bpmn:incoming>
       <bpmn:outgoing>Flow_1o4vwt9</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_1o4vwt9" sourceRef="Activity_03yrrd4" targetRef="Gateway_058h0k2" />
+    <bpmn:sequenceFlow id="Flow_1o4vwt9" sourceRef="HumPlaceOrder" targetRef="XJoinCompontAvailable" />
     <bpmn:serviceTask id="Activity_0ypn65h" name="retrieveFactoryState">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="retrieveFactoryState" />
@@ -169,13 +169,13 @@ manufactureOrderCorrelation</bpmn:text>
     </bpmn:serviceTask>
     <bpmn:dataObjectReference id="DataObjectReference_1g10rb0" name="FtfactoryBME680" dataObjectRef="DataObject_1ligum0" />
     <bpmn:dataObject id="DataObject_1ligum0" />
-    <bpmn:sequenceFlow id="Flow_1c8feiq" sourceRef="MsgStartEventManufactureOrder" targetRef="Gateway_1jaxd4y" />
-    <bpmn:exclusiveGateway id="Gateway_1jaxd4y">
+    <bpmn:sequenceFlow id="Flow_1c8feiq" sourceRef="MsgStartEventManufactureOrder" targetRef="XJoinStartevents" />
+    <bpmn:exclusiveGateway id="XJoinStartevents">
       <bpmn:incoming>Flow_1c8feiq</bpmn:incoming>
       <bpmn:incoming>Flow_006jisw</bpmn:incoming>
       <bpmn:outgoing>Flow_1nci2zu</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1nci2zu" sourceRef="Gateway_1jaxd4y" targetRef="Activity_0ypn65h" />
+    <bpmn:sequenceFlow id="Flow_1nci2zu" sourceRef="XJoinStartevents" targetRef="Activity_0ypn65h" />
   </bpmn:process>
   <bpmn:message id="Message_0fk7sva" name="HBWStartMessage" />
   <bpmn:message id="Message_2k10jfi" name="OrderShippedMessage">
@@ -204,7 +204,7 @@ manufactureOrderCorrelation</bpmn:text>
       <bpmndi:BPMNShape id="Event_14bs0zz_di" bpmnElement="Event_14bs0zz">
         <dc:Bounds x="1052" y="102" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0r45lya_di" bpmnElement="ex_gateway_split_available" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_0r45lya_di" bpmnElement="XSplitComponentAvailable" isMarkerVisible="true">
         <dc:Bounds x="815" y="255" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataObjectReference_0nz838a_di" bpmnElement="DataObjectReference_0nz838a">
@@ -219,41 +219,41 @@ manufactureOrderCorrelation</bpmn:text>
           <dc:Bounds x="934" y="452" width="72" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_058h0k2_di" bpmnElement="Gateway_058h0k2" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_058h0k2_di" bpmnElement="XJoinCompontAvailable" isMarkerVisible="true">
         <dc:Bounds x="605" y="255" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0s0mn86_di" bpmnElement="Gateway_0s0mn86" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_0s0mn86_di" bpmnElement="XJoinMqttOrder" isMarkerVisible="true">
         <dc:Bounds x="1225" y="145" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0ngog7r_di" bpmnElement="MsgEndEventManufactureOrder">
         <dc:Bounds x="1472" y="152" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0nd6xle_di" bpmnElement="Activity_0ld40t8">
+      <bpmndi:BPMNShape id="Activity_0nd6xle_di" bpmnElement="MsgSendMqttOrder">
         <dc:Bounds x="910" y="240" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0oyj6mc_di" bpmnElement="promptToStore">
+      <bpmndi:BPMNShape id="Activity_0oyj6mc_di" bpmnElement="HumPromptToStore">
         <dc:Bounds x="680" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1cpd9mo_di" bpmnElement="Activity_0zti8kv">
+      <bpmndi:BPMNShape id="Activity_1cpd9mo_di" bpmnElement="MsgRecMqttOrderShipped">
         <dc:Bounds x="1090" y="240" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0in5syu_di" bpmnElement="Activity_0ot3nva">
+      <bpmndi:BPMNShape id="Activity_0in5syu_di" bpmnElement="ServRetrieveHBWStorage">
         <dc:Bounds x="680" y="240" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_11bda5o" bpmnElement="showFactoryFailure">
+      <bpmndi:BPMNShape id="BPMNShape_11bda5o" bpmnElement="HumShowFactoryFailure">
         <dc:Bounds x="920" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_059472j_di" bpmnElement="showManufacturingOrder">
+      <bpmndi:BPMNShape id="Activity_059472j_di" bpmnElement="HumShowManufacturingOrder">
         <dc:Bounds x="1320" y="130" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEventManufactureOrder">
         <dc:Bounds x="202" y="262" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_06u684r_di" bpmnElement="Activity_03yrrd4">
+      <bpmndi:BPMNShape id="Activity_06u684r_di" bpmnElement="HumPlaceOrder">
         <dc:Bounds x="480" y="240" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
@@ -267,13 +267,13 @@ manufactureOrderCorrelation</bpmn:text>
           <dc:Bounds x="348" y="432" width="85" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1jaxd4y_di" bpmnElement="Gateway_1jaxd4y" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_1jaxd4y_di" bpmnElement="XJoinStartevents" isMarkerVisible="true">
         <dc:Bounds x="265" y="255" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_07w6ilu_di" bpmnElement="Event_13wecep">
+      <bpmndi:BPMNShape id="Event_07w6ilu_di" bpmnElement="ErrBoundFactoryFail">
         <dc:Bounds x="952" y="222" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_13zf6vi_di" bpmnElement="Event_0mltw8f">
+      <bpmndi:BPMNShape id="Event_13zf6vi_di" bpmnElement="TimerBound5minReceiveMqttOrderShipped">
         <dc:Bounds x="1132" y="222" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1118" y="203" width="24" height="14" />

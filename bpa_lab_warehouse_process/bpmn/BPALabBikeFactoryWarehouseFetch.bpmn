@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0m9i7yw" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0m9i7yw" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.46.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
   <bpmn:collaboration id="Collaboration_1xeoj8z">
     <bpmn:participant id="Participant_1y0grjx" name="Warehouse" processRef="BPALabBikeFactoryWarehouseFetch" />
     <bpmn:textAnnotation id="TextAnnotation_1hnqhdz">
       <bpmn:text>MsgStartWarehouseFetch:
 warehouseFetchCorrelation</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_0xqle38" associationDirection="None" sourceRef="TextAnnotation_1hnqhdz" targetRef="MsgStartEventProductionOrder" />
+    <bpmn:association id="Association_0xqle38" associationDirection="None" sourceRef="TextAnnotation_1hnqhdz" targetRef="MsgStartEventWarehouseFetch" />
     <bpmn:textAnnotation id="TextAnnotation_0uxcmgd">
       <bpmn:text>MsgWarehouseFetchFinished:
 warehouseFetchCorrelation</bpmn:text>
@@ -15,18 +15,18 @@ warehouseFetchCorrelation</bpmn:text>
       <bpmn:text>MsgWarehouseFetchNoBikeFinished:
 warehouseFetchCorrelation</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_1sys528" associationDirection="None" sourceRef="TextAnnotation_11mawyk" targetRef="Event_14alqks" />
+    <bpmn:association id="Association_1sys528" associationDirection="None" sourceRef="TextAnnotation_11mawyk" targetRef="MsgEndBikeinstanceNotfetched" />
   </bpmn:collaboration>
   <bpmn:process id="BPALabBikeFactoryWarehouseFetch" name="BPALabBikeFactoryWarehouseFetch" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1" name="Start Warehouse">
+    <bpmn:startEvent id="StartEventWarehouseFetch" name="Start Warehouse">
       <bpmn:outgoing>Flow_1uvrddy</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:startEvent id="MsgStartEventProductionOrder" name="BikeInstance Fetch received">
+    <bpmn:startEvent id="MsgStartEventWarehouseFetch" name="BikeInstance Fetch received">
       <bpmn:outgoing>Flow_1j78m2i</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0jvoq6s" messageRef="Message_1sp91cv" />
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_1uvrddy" sourceRef="StartEvent_1" targetRef="Activity_1teos3p" />
-    <bpmn:userTask id="Activity_1teos3p" name="put Message Data">
+    <bpmn:sequenceFlow id="Flow_1uvrddy" sourceRef="StartEventWarehouseFetch" targetRef="HumPutMessageData" />
+    <bpmn:userTask id="HumPutMessageData" name="put Message Data">
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="StartWarehouseFetch" />
@@ -34,56 +34,56 @@ warehouseFetchCorrelation</bpmn:text>
       <bpmn:incoming>Flow_1uvrddy</bpmn:incoming>
       <bpmn:outgoing>Flow_0hdtm3q</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_0hdtm3q" sourceRef="Activity_1teos3p" targetRef="Gateway_14vj2s8" />
-    <bpmn:exclusiveGateway id="Gateway_14vj2s8">
+    <bpmn:sequenceFlow id="Flow_0hdtm3q" sourceRef="HumPutMessageData" targetRef="XJoinStartEvents" />
+    <bpmn:exclusiveGateway id="XJoinStartEvents">
       <bpmn:incoming>Flow_0hdtm3q</bpmn:incoming>
       <bpmn:incoming>Flow_1j78m2i</bpmn:incoming>
       <bpmn:outgoing>Flow_1hz0jir</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1j78m2i" sourceRef="MsgStartEventProductionOrder" targetRef="Gateway_14vj2s8" />
-    <bpmn:sequenceFlow id="Flow_08w9hoo" sourceRef="Activity_1vx22oh" targetRef="Gateway_0actbs9" />
-    <bpmn:serviceTask id="Activity_1vx22oh" name="fetch BikeInstance">
+    <bpmn:sequenceFlow id="Flow_1j78m2i" sourceRef="MsgStartEventWarehouseFetch" targetRef="XJoinStartEvents" />
+    <bpmn:sequenceFlow id="Flow_08w9hoo" sourceRef="ServFetchBikeinstance" targetRef="EvBasedFetchedNobike" />
+    <bpmn:serviceTask id="ServFetchBikeinstance" name="fetch BikeInstance">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="fetchBikeInstance" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1hz0jir</bpmn:incoming>
       <bpmn:outgoing>Flow_08w9hoo</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_1hz0jir" sourceRef="Gateway_14vj2s8" targetRef="Activity_1vx22oh" />
-    <bpmn:eventBasedGateway id="Gateway_0actbs9">
+    <bpmn:sequenceFlow id="Flow_1hz0jir" sourceRef="XJoinStartEvents" targetRef="ServFetchBikeinstance" />
+    <bpmn:eventBasedGateway id="EvBasedFetchedNobike">
       <bpmn:incoming>Flow_08w9hoo</bpmn:incoming>
       <bpmn:outgoing>Flow_12j00ei</bpmn:outgoing>
       <bpmn:outgoing>Flow_02xjhg0</bpmn:outgoing>
     </bpmn:eventBasedGateway>
-    <bpmn:sequenceFlow id="Flow_12j00ei" sourceRef="Gateway_0actbs9" targetRef="Event_0hq5faq" />
-    <bpmn:intermediateCatchEvent id="Event_0hq5faq" name="MsgWarehouseFetched(MQTT)&#10;">
+    <bpmn:sequenceFlow id="Flow_12j00ei" sourceRef="EvBasedFetchedNobike" targetRef="MsgRecEventBikefetched" />
+    <bpmn:intermediateCatchEvent id="MsgRecEventBikefetched" name="MsgWarehouseFetched(MQTT)&#10;">
       <bpmn:incoming>Flow_12j00ei</bpmn:incoming>
       <bpmn:outgoing>Flow_1whnaa2</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1ufmcmu" messageRef="Message_0hhe7am" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:endEvent id="Event_1s2t7rk" name="Fetched BikeInstance send">
+    <bpmn:endEvent id="MsgEndBikeinstanceSend" name="Fetched BikeInstance send">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="sendFinishedWarehouseFetch" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1whnaa2</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1gm2022" />
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1whnaa2" sourceRef="Event_0hq5faq" targetRef="Event_1s2t7rk" />
-    <bpmn:endEvent id="Event_14alqks" name="BikeInstance not fetched">
+    <bpmn:sequenceFlow id="Flow_1whnaa2" sourceRef="MsgRecEventBikefetched" targetRef="MsgEndBikeinstanceSend" />
+    <bpmn:endEvent id="MsgEndBikeinstanceNotfetched" name="BikeInstance not fetched">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="sendFinishedWarehouseNoFetch" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_173jse1</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1malchw" />
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_02xjhg0" sourceRef="Gateway_0actbs9" targetRef="Event_0a4bel9" />
-    <bpmn:sequenceFlow id="Flow_173jse1" sourceRef="Event_0a4bel9" targetRef="Event_14alqks" />
-    <bpmn:intermediateCatchEvent id="Event_0a4bel9" name="MsgWarehouseNoBike(MQTT)&#10;">
+    <bpmn:sequenceFlow id="Flow_02xjhg0" sourceRef="EvBasedFetchedNobike" targetRef="MsgRecEventNobike" />
+    <bpmn:sequenceFlow id="Flow_173jse1" sourceRef="MsgRecEventNobike" targetRef="MsgEndBikeinstanceNotfetched" />
+    <bpmn:intermediateCatchEvent id="MsgRecEventNobike" name="MsgWarehouseNoBike(MQTT)&#10;">
       <bpmn:incoming>Flow_02xjhg0</bpmn:incoming>
       <bpmn:outgoing>Flow_173jse1</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1fkpxgq" messageRef="Message_3tn2eq2" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:association id="Association_0bmtmgu" associationDirection="None" sourceRef="TextAnnotation_0uxcmgd" targetRef="Event_1s2t7rk" />
+    <bpmn:association id="Association_0bmtmgu" associationDirection="None" sourceRef="TextAnnotation_0uxcmgd" targetRef="MsgEndBikeinstanceSend" />
   </bpmn:process>
   <bpmn:message id="Message_3lr8s78" name="MsgStartProductionOrder" />
   <bpmn:message id="Message_1sp91cv" name="MsgStartWarehouseFetch" />
@@ -103,58 +103,54 @@ warehouseFetchCorrelation</bpmn:text>
         <dc:Bounds x="132" y="90" width="1098" height="250" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEventWarehouseFetch">
         <dc:Bounds x="192" y="262" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="169" y="305" width="83" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0ec7j52_di" bpmnElement="MsgStartEventProductionOrder">
+      <bpmndi:BPMNShape id="Event_0ec7j52_di" bpmnElement="MsgStartEventWarehouseFetch">
         <dc:Bounds x="192" y="142" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="175" y="185" width="73" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1j730gf_di" bpmnElement="Activity_1teos3p">
+      <bpmndi:BPMNShape id="Activity_1j730gf_di" bpmnElement="HumPutMessageData">
         <dc:Bounds x="280" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_14vj2s8_di" bpmnElement="Gateway_14vj2s8" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_14vj2s8_di" bpmnElement="XJoinStartEvents" isMarkerVisible="true">
         <dc:Bounds x="305" y="135" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1fqsax8_di" bpmnElement="Activity_1vx22oh">
+      <bpmndi:BPMNShape id="Activity_1fqsax8_di" bpmnElement="ServFetchBikeinstance">
         <dc:Bounds x="430" y="120" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0oxhcpq_di" bpmnElement="Gateway_0actbs9">
+      <bpmndi:BPMNShape id="Gateway_0oxhcpq_di" bpmnElement="EvBasedFetchedNobike">
         <dc:Bounds x="575" y="135" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0hq5faq_di" bpmnElement="Event_0hq5faq">
+      <bpmndi:BPMNShape id="Event_0hq5faq_di" bpmnElement="MsgRecEventBikefetched">
         <dc:Bounds x="682" y="142" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="655" y="185" width="90" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_05xgw6v_di" bpmnElement="Event_1s2t7rk">
+      <bpmndi:BPMNShape id="Event_05xgw6v_di" bpmnElement="MsgEndBikeinstanceSend">
         <dc:Bounds x="852" y="142" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="825" y="185" width="90" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1hgg16s_di" bpmnElement="Event_14alqks">
+      <bpmndi:BPMNShape id="Event_1hgg16s_di" bpmnElement="MsgEndBikeinstanceNotfetched">
         <dc:Bounds x="852" y="242" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="829" y="285" width="82" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0a4bel9_di" bpmnElement="Event_0a4bel9">
+      <bpmndi:BPMNShape id="Event_0a4bel9_di" bpmnElement="MsgRecEventNobike">
         <dc:Bounds x="682" y="242" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="658" y="285" width="85" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_0bmtmgu_di" bpmnElement="Association_0bmtmgu">
-        <di:waypoint x="1010" y="144" />
-        <di:waypoint x="888" y="157" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1uvrddy_di" bpmnElement="Flow_1uvrddy">
         <di:waypoint x="228" y="280" />
         <di:waypoint x="280" y="280" />
@@ -192,9 +188,9 @@ warehouseFetchCorrelation</bpmn:text>
         <di:waypoint x="718" y="260" />
         <di:waypoint x="852" y="260" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1sys528_di" bpmnElement="Association_1sys528">
-        <di:waypoint x="940" y="241" />
-        <di:waypoint x="887" y="255" />
+      <bpmndi:BPMNEdge id="Association_0bmtmgu_di" bpmnElement="Association_0bmtmgu">
+        <di:waypoint x="1010" y="144" />
+        <di:waypoint x="888" y="157" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_1161ci8" bpmnElement="TextAnnotation_1hnqhdz">
         <dc:Bounds x="240" y="100" width="180" height="40" />
@@ -204,14 +200,18 @@ warehouseFetchCorrelation</bpmn:text>
         <dc:Bounds x="1010" y="110" width="180" height="41" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_0xqle38_di" bpmnElement="Association_0xqle38">
-        <di:waypoint x="270" y="140" />
-        <di:waypoint x="227" y="154" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="BPMNShape_02uos3v" bpmnElement="TextAnnotation_11mawyk">
         <dc:Bounds x="940" y="187" width="180" height="55" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0xqle38_di" bpmnElement="Association_0xqle38">
+        <di:waypoint x="270" y="140" />
+        <di:waypoint x="227" y="154" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1sys528_di" bpmnElement="Association_1sys528">
+        <di:waypoint x="940" y="241" />
+        <di:waypoint x="887" y="255" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

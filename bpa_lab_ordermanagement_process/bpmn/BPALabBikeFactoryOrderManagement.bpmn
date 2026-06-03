@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.46.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
   <bpmn:collaboration id="Collaboration_10fxbv2">
     <bpmn:participant id="Participant_064cb9h" name="Order Management" processRef="BPALabBikeFactoryOrderManagement" />
     <bpmn:textAnnotation id="TextAnnotation_1yj5uwn">
@@ -18,21 +18,21 @@ Operations ("store") missing</bpmn:text>
       <bpmn:text>MsgStartShippingOrder:
 shipmentOrderCorrelation</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_0qqdmbi" associationDirection="None" sourceRef="TextAnnotation_1egg82o" targetRef="Activity_1mnp0e2" />
-    <bpmn:association id="Association_0tirv4e" associationDirection="None" sourceRef="Activity_135jbkl" targetRef="TextAnnotation_0j6k5f8" />
-    <bpmn:association id="Association_1drhjee" associationDirection="None" sourceRef="TextAnnotation_1hnqhdz" targetRef="Activity_0qst065" />
-    <bpmn:association id="Association_0amhtwv" associationDirection="None" sourceRef="Activity_0bnbuiu" targetRef="TextAnnotation_1yj5uwn" />
+    <bpmn:association id="Association_0qqdmbi" associationDirection="None" sourceRef="TextAnnotation_1egg82o" targetRef="MsgReceivefinishedProductionOrder" />
+    <bpmn:association id="Association_0tirv4e" associationDirection="None" sourceRef="ServReserveBikeInstances" targetRef="TextAnnotation_0j6k5f8" />
+    <bpmn:association id="Association_1drhjee" associationDirection="None" sourceRef="TextAnnotation_1hnqhdz" targetRef="MsgSendShipment" />
+    <bpmn:association id="Association_0amhtwv" associationDirection="None" sourceRef="MsgSendProductionOrder" targetRef="TextAnnotation_1yj5uwn" />
     <bpmn:textAnnotation id="TextAnnotation_0s948zs">
       <bpmn:text>MsgShippingFinished:
 shipmentOrderCorrelation</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_1qczn1v" associationDirection="None" sourceRef="TextAnnotation_0s948zs" targetRef="Activity_0mncymk" />
+    <bpmn:association id="Association_1qczn1v" associationDirection="None" sourceRef="TextAnnotation_0s948zs" targetRef="MsgReceiveFinishedShipment" />
   </bpmn:collaboration>
   <bpmn:process id="BPALabBikeFactoryOrderManagement" name="BPALabBikeFactoryOrderManagement" isExecutable="true">
-    <bpmn:sequenceFlow id="Flow_1foyfi4" name="any&#10;Material&#10;Demands generated" sourceRef="inc_gateway_split_production_or_available" targetRef="production_subprocess">
+    <bpmn:sequenceFlow id="Flow_1foyfi4" name="any&#10;Material&#10;Demands generated" sourceRef="IncSplitProductionOrAvailable" targetRef="production_subprocess">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(is empty(produceBikeModelList))</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_12d54xg" name="any Bike Instances available" sourceRef="inc_gateway_split_production_or_available" targetRef="Activity_135jbkl">
+    <bpmn:sequenceFlow id="Flow_12d54xg" name="any Bike Instances available" sourceRef="IncSplitProductionOrAvailable" targetRef="ServReserveBikeInstances">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(is empty(reserveBikeInstanceList))</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:dataStoreReference id="DataStoreReference_0bwq0q8" name="BikeInstances" />
@@ -40,7 +40,7 @@ shipmentOrderCorrelation</bpmn:text>
     <bpmn:startEvent id="StartEventOrderManagement" name="Bikes needed">
       <bpmn:outgoing>Flow_1x2cfcg</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="Activity_1ynyvwb" name="choose Bikes">
+    <bpmn:userTask id="HumChooseBikes" name="choose Bikes">
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="chooseBikesForm" />
@@ -49,7 +49,7 @@ shipmentOrderCorrelation</bpmn:text>
       <bpmn:incoming>Flow_1sgbuw1</bpmn:incoming>
       <bpmn:outgoing>Flow_0ca1n5e</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="Activity_15wljsi" name="create Material Demands">
+    <bpmn:serviceTask id="ServCreateMaterialDemands" name="create Material Demands">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="createMaterialDemands" />
       </bpmn:extensionElements>
@@ -62,18 +62,18 @@ shipmentOrderCorrelation</bpmn:text>
       </bpmn:dataInputAssociation>
     </bpmn:serviceTask>
     <bpmn:dataStoreReference id="DataStoreReference_13dfi7g" name="CustomerOrder" />
-    <bpmn:sequenceFlow id="Flow_03nu1yz" sourceRef="Activity_12p0gn3" targetRef="inc_gateway_split_production_or_available" />
-    <bpmn:sequenceFlow id="Flow_04gu3tp" sourceRef="Activity_135jbkl" targetRef="inc_gateway_join_production_or_available" />
-    <bpmn:sequenceFlow id="Flow_05uzrc5" sourceRef="Activity_15wljsi" targetRef="Activity_12p0gn3" />
-    <bpmn:sequenceFlow id="Flow_0a60ne1" sourceRef="Activity_1pyqn2z" targetRef="Activity_15wljsi" />
-    <bpmn:sequenceFlow id="Flow_0ca1n5e" sourceRef="Activity_1ynyvwb" targetRef="Activity_1pyqn2z" />
-    <bpmn:sequenceFlow id="Flow_0hrrpoj" sourceRef="Activity_0qst065" targetRef="Activity_0mncymk" />
-    <bpmn:sequenceFlow id="Flow_0o89vpv" sourceRef="inc_gateway_join_production_or_available" targetRef="Activity_0qst065" />
-    <bpmn:sequenceFlow id="Flow_0vdcsis" sourceRef="production_subprocess" targetRef="inc_gateway_join_production_or_available" />
-    <bpmn:sequenceFlow id="Flow_1bh5un2" sourceRef="Activity_0mncymk" targetRef="EndEventOrderManagement" />
-    <bpmn:sequenceFlow id="Flow_1sgbuw1" sourceRef="Activity_0ug7hx4" targetRef="Activity_1ynyvwb" />
-    <bpmn:sequenceFlow id="Flow_1x2cfcg" sourceRef="StartEventOrderManagement" targetRef="Activity_0ug7hx4" />
-    <bpmn:serviceTask id="Activity_0ug7hx4" name="get Offer">
+    <bpmn:sequenceFlow id="Flow_03nu1yz" sourceRef="HumShowOrder" targetRef="IncSplitProductionOrAvailable" />
+    <bpmn:sequenceFlow id="Flow_04gu3tp" sourceRef="ServReserveBikeInstances" targetRef="IncJoinProductionOrAvailable" />
+    <bpmn:sequenceFlow id="Flow_05uzrc5" sourceRef="ServCreateMaterialDemands" targetRef="HumShowOrder" />
+    <bpmn:sequenceFlow id="Flow_0a60ne1" sourceRef="ServPutCustomerOrder" targetRef="ServCreateMaterialDemands" />
+    <bpmn:sequenceFlow id="Flow_0ca1n5e" sourceRef="HumChooseBikes" targetRef="ServPutCustomerOrder" />
+    <bpmn:sequenceFlow id="Flow_0hrrpoj" sourceRef="MsgSendShipment" targetRef="MsgReceiveFinishedShipment" />
+    <bpmn:sequenceFlow id="Flow_0o89vpv" sourceRef="IncJoinProductionOrAvailable" targetRef="MsgSendShipment" />
+    <bpmn:sequenceFlow id="Flow_0vdcsis" sourceRef="production_subprocess" targetRef="IncJoinProductionOrAvailable" />
+    <bpmn:sequenceFlow id="Flow_1bh5un2" sourceRef="MsgReceiveFinishedShipment" targetRef="EndEventOrderManagement" />
+    <bpmn:sequenceFlow id="Flow_1sgbuw1" sourceRef="ServGetOffer" targetRef="HumChooseBikes" />
+    <bpmn:sequenceFlow id="Flow_1x2cfcg" sourceRef="StartEventOrderManagement" targetRef="ServGetOffer" />
+    <bpmn:serviceTask id="ServGetOffer" name="get Offer">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="getOffer" />
       </bpmn:extensionElements>
@@ -85,7 +85,7 @@ shipmentOrderCorrelation</bpmn:text>
         <bpmn:targetRef>Property_064jrc9</bpmn:targetRef>
       </bpmn:dataInputAssociation>
     </bpmn:serviceTask>
-    <bpmn:inclusiveGateway id="inc_gateway_split_production_or_available">
+    <bpmn:inclusiveGateway id="IncSplitProductionOrAvailable">
       <bpmn:incoming>Flow_03nu1yz</bpmn:incoming>
       <bpmn:outgoing>Flow_1foyfi4</bpmn:outgoing>
       <bpmn:outgoing>Flow_12d54xg</bpmn:outgoing>
@@ -98,20 +98,20 @@ shipmentOrderCorrelation</bpmn:text>
           <zeebe:loopCharacteristics inputCollection="=produceBikeModelList" inputElement="produceBikeModel" />
         </bpmn:extensionElements>
       </bpmn:multiInstanceLoopCharacteristics>
-      <bpmn:startEvent id="Event_0sbo82x">
+      <bpmn:startEvent id="SubStartEventProduction">
         <bpmn:outgoing>Flow_1e64mwr</bpmn:outgoing>
       </bpmn:startEvent>
-      <bpmn:endEvent id="Event_1dy9o6j">
+      <bpmn:endEvent id="SubEnEventProduction">
         <bpmn:incoming>Flow_05m9i0r</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:sequenceFlow id="Flow_05m9i0r" sourceRef="Activity_1mnp0e2" targetRef="Event_1dy9o6j" />
-      <bpmn:sequenceFlow id="Flow_074tre5" sourceRef="Activity_0bnbuiu" targetRef="Activity_1mnp0e2" />
-      <bpmn:sequenceFlow id="Flow_1e64mwr" sourceRef="Event_0sbo82x" targetRef="Activity_0bnbuiu" />
-      <bpmn:receiveTask id="Activity_1mnp0e2" name="receive finished Production Order" messageRef="Message_22ck100">
+      <bpmn:sequenceFlow id="Flow_05m9i0r" sourceRef="MsgReceivefinishedProductionOrder" targetRef="SubEnEventProduction" />
+      <bpmn:sequenceFlow id="Flow_074tre5" sourceRef="MsgSendProductionOrder" targetRef="MsgReceivefinishedProductionOrder" />
+      <bpmn:sequenceFlow id="Flow_1e64mwr" sourceRef="SubStartEventProduction" targetRef="MsgSendProductionOrder" />
+      <bpmn:receiveTask id="MsgReceivefinishedProductionOrder" name="receive finished Production Order" messageRef="Message_22ck100">
         <bpmn:incoming>Flow_074tre5</bpmn:incoming>
         <bpmn:outgoing>Flow_05m9i0r</bpmn:outgoing>
       </bpmn:receiveTask>
-      <bpmn:sendTask id="Activity_0bnbuiu" name="send Production Order">
+      <bpmn:sendTask id="MsgSendProductionOrder" name="send Production Order">
         <bpmn:extensionElements>
           <zeebe:taskDefinition type="sendProductionOrder" />
         </bpmn:extensionElements>
@@ -119,7 +119,7 @@ shipmentOrderCorrelation</bpmn:text>
         <bpmn:outgoing>Flow_074tre5</bpmn:outgoing>
       </bpmn:sendTask>
     </bpmn:subProcess>
-    <bpmn:serviceTask id="Activity_1pyqn2z" name="put Customer Order">
+    <bpmn:serviceTask id="ServPutCustomerOrder" name="put Customer Order">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="putOrder" />
       </bpmn:extensionElements>
@@ -129,7 +129,7 @@ shipmentOrderCorrelation</bpmn:text>
         <bpmn:targetRef>DataStoreReference_13dfi7g</bpmn:targetRef>
       </bpmn:dataOutputAssociation>
     </bpmn:serviceTask>
-    <bpmn:userTask id="Activity_12p0gn3" name="show Order">
+    <bpmn:userTask id="HumShowOrder" name="show Order">
       <bpmn:extensionElements>
         <zeebe:userTask />
         <zeebe:formDefinition formId="showOrderForm" />
@@ -141,12 +141,12 @@ shipmentOrderCorrelation</bpmn:text>
     <bpmn:endEvent id="EndEventOrderManagement" name="Bikes delivered">
       <bpmn:incoming>Flow_1bh5un2</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:inclusiveGateway id="inc_gateway_join_production_or_available">
+    <bpmn:inclusiveGateway id="IncJoinProductionOrAvailable">
       <bpmn:incoming>Flow_0vdcsis</bpmn:incoming>
       <bpmn:incoming>Flow_04gu3tp</bpmn:incoming>
       <bpmn:outgoing>Flow_0o89vpv</bpmn:outgoing>
     </bpmn:inclusiveGateway>
-    <bpmn:serviceTask id="Activity_135jbkl" name="reserve Bike Instances">
+    <bpmn:serviceTask id="ServReserveBikeInstances" name="reserve Bike Instances">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="reserveBikeInstance" />
       </bpmn:extensionElements>
@@ -158,14 +158,14 @@ shipmentOrderCorrelation</bpmn:text>
         </bpmn:extensionElements>
       </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:serviceTask>
-    <bpmn:sendTask id="Activity_0qst065" name="send Shipment">
+    <bpmn:sendTask id="MsgSendShipment" name="send Shipment">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="sendShipment" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0o89vpv</bpmn:incoming>
       <bpmn:outgoing>Flow_0hrrpoj</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:receiveTask id="Activity_0mncymk" name="ship Customer Order" messageRef="Message_2hhujl9">
+    <bpmn:receiveTask id="MsgReceiveFinishedShipment" name="receive finished Shipment" messageRef="Message_2hhujl9">
       <bpmn:incoming>Flow_0hrrpoj</bpmn:incoming>
       <bpmn:outgoing>Flow_1bh5un2</bpmn:outgoing>
     </bpmn:receiveTask>
@@ -210,10 +210,10 @@ shipmentOrderCorrelation</bpmn:text>
           <dc:Bounds x="157" y="285" width="67" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0wbwqne_di" bpmnElement="Activity_1ynyvwb">
+      <bpmndi:BPMNShape id="Activity_0wbwqne_di" bpmnElement="HumChooseBikes">
         <dc:Bounds x="370" y="220" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0geyc0u_di" bpmnElement="Activity_15wljsi">
+      <bpmndi:BPMNShape id="Activity_0geyc0u_di" bpmnElement="ServCreateMaterialDemands">
         <dc:Bounds x="640" y="220" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="DataStoreReference_13dfi7g_di" bpmnElement="DataStoreReference_13dfi7g">
@@ -222,30 +222,27 @@ shipmentOrderCorrelation</bpmn:text>
           <dc:Bounds x="505" y="392" width="76" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0lvie2l_di" bpmnElement="Activity_0ug7hx4">
+      <bpmndi:BPMNShape id="Activity_0lvie2l_di" bpmnElement="ServGetOffer">
         <dc:Bounds x="240" y="220" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_03ee3je_di" bpmnElement="inc_gateway_split_production_or_available">
+      <bpmndi:BPMNShape id="Gateway_03ee3je_di" bpmnElement="IncSplitProductionOrAvailable">
         <dc:Bounds x="905" y="235" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0j59a7v_di" bpmnElement="Activity_0mncymk">
-        <dc:Bounds x="1690" y="220" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_05cy17s_di" bpmnElement="production_subprocess" isExpanded="true">
         <dc:Bounds x="1000" y="190" width="430" height="150" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0sbo82x_di" bpmnElement="Event_0sbo82x">
+      <bpmndi:BPMNShape id="Event_0sbo82x_di" bpmnElement="SubStartEventProduction">
         <dc:Bounds x="1022" y="242" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1dy9o6j_di" bpmnElement="Event_1dy9o6j">
+      <bpmndi:BPMNShape id="Event_1dy9o6j_di" bpmnElement="SubEnEventProduction">
         <dc:Bounds x="1372" y="242" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_052nxcb_di" bpmnElement="Activity_1mnp0e2">
+      <bpmndi:BPMNShape id="Activity_052nxcb_di" bpmnElement="MsgReceivefinishedProductionOrder">
         <dc:Bounds x="1230" y="220" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0vmzk41_di" bpmnElement="Activity_0bnbuiu">
+      <bpmndi:BPMNShape id="Activity_0vmzk41_di" bpmnElement="MsgSendProductionOrder">
         <dc:Bounds x="1100" y="220" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_05m9i0r_di" bpmnElement="Flow_05m9i0r">
@@ -260,11 +257,11 @@ shipmentOrderCorrelation</bpmn:text>
         <di:waypoint x="1058" y="260" />
         <di:waypoint x="1100" y="260" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Activity_13y1skw_di" bpmnElement="Activity_1pyqn2z">
+      <bpmndi:BPMNShape id="Activity_13y1skw_di" bpmnElement="ServPutCustomerOrder">
         <dc:Bounds x="500" y="220" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0213wa1_di" bpmnElement="Activity_12p0gn3">
+      <bpmndi:BPMNShape id="Activity_0213wa1_di" bpmnElement="HumShowOrder">
         <dc:Bounds x="770" y="220" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_009pzl1_di" bpmnElement="EndEventOrderManagement">
@@ -273,14 +270,18 @@ shipmentOrderCorrelation</bpmn:text>
           <dc:Bounds x="1833" y="285" width="75" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0sx6ylo_di" bpmnElement="inc_gateway_join_production_or_available">
+      <bpmndi:BPMNShape id="Gateway_0sx6ylo_di" bpmnElement="IncJoinProductionOrAvailable">
         <dc:Bounds x="1455" y="235" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_02mbz43_di" bpmnElement="Activity_135jbkl">
+      <bpmndi:BPMNShape id="Activity_02mbz43_di" bpmnElement="ServReserveBikeInstances">
         <dc:Bounds x="1095" y="90" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0icogk2_di" bpmnElement="Activity_0qst065">
+      <bpmndi:BPMNShape id="Activity_0icogk2_di" bpmnElement="MsgSendShipment">
         <dc:Bounds x="1550" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j59a7v_di" bpmnElement="MsgReceiveFinishedShipment">
+        <dc:Bounds x="1690" y="220" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1foyfi4_di" bpmnElement="Flow_1foyfi4">
         <di:waypoint x="955" y="260" />
@@ -342,10 +343,6 @@ shipmentOrderCorrelation</bpmn:text>
         <di:waypoint x="208" y="260" />
         <di:waypoint x="240" y="260" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Association_1qczn1v_di" bpmnElement="Association_1qczn1v">
-        <di:waypoint x="1796" y="182" />
-        <di:waypoint x="1769" y="220" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_1yj5uwn_di" bpmnElement="TextAnnotation_1yj5uwn">
         <dc:Bounds x="1060" y="360" width="160" height="39" />
         <bpmndi:BPMNLabel />
@@ -360,6 +357,10 @@ shipmentOrderCorrelation</bpmn:text>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1161ci8" bpmnElement="TextAnnotation_1hnqhdz">
         <dc:Bounds x="1540" y="140" width="160" height="41" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0s948zs_di" bpmnElement="TextAnnotation_0s948zs">
+        <dc:Bounds x="1730" y="141" width="160" height="41" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="DataInputAssociation_0h92p7h_di" bpmnElement="DataInputAssociation_0h92p7h">
@@ -390,10 +391,10 @@ shipmentOrderCorrelation</bpmn:text>
         <di:waypoint x="1135" y="300" />
         <di:waypoint x="1113" y="360" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="TextAnnotation_0s948zs_di" bpmnElement="TextAnnotation_0s948zs">
-        <dc:Bounds x="1730" y="141" width="160" height="41" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1qczn1v_di" bpmnElement="Association_1qczn1v">
+        <di:waypoint x="1796" y="182" />
+        <di:waypoint x="1769" y="220" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
