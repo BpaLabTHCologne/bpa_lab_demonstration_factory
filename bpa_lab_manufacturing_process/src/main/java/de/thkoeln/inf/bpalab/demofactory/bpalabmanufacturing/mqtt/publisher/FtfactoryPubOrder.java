@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class FtfactoryPubOrder implements IPublisher {
 	private static Logger log = LoggerFactory.getLogger(FtfactoryPubOrder.class);
@@ -23,6 +25,8 @@ public class FtfactoryPubOrder implements IPublisher {
 	public String ts;
 	@JsonProperty("type")
 	public String type;
+    @JsonProperty("processOrderReference")
+    public String processOrderReference;
 
 	@JsonIgnore
 	private TopicPayload publishOrderTopicPayload = null;
@@ -43,6 +47,14 @@ public class FtfactoryPubOrder implements IPublisher {
 			ObjectMapper om = new ObjectMapper();			
 	    	JsonNode rootNode = om.readTree(variables);
 	        this.type = rootNode.path("orderType").asText();
+            if (!rootNode.path("manufactureOrderCorrelation").asText().equals("")) {
+                this.processOrderReference = rootNode.path("manufactureOrderCorrelation").asText();
+            } else {
+                if (!rootNode.path("processOrderReference").asText().equals(""))
+                    this.processOrderReference = rootNode.path("processOrderReference").asText();
+                else
+                    this.processOrderReference = UUID.randomUUID().toString();
+            }
 			// time must be greater than TXT-time + 60
 			this.ts = UTCTime.getUTCTimeNowPlus1Day(); // adds 1 day to be before TXTController time
 

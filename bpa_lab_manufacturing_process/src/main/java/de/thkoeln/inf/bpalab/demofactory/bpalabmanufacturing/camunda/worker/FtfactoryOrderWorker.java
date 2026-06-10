@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Component
 public class FtfactoryOrderWorker extends AWorker {
@@ -32,7 +33,9 @@ public class FtfactoryOrderWorker extends AWorker {
 		}
 
 		pubOrder.updateOrder(job.getVariables());
-//		prepare ReplyMessage
+        variables.put("processOrderReference", pubOrder.processOrderReference);
+
+        //		prepare ReplyMessage
 		ftfactorySubOrder.initTypeCorrelationValue(pubOrder.type); //normally "pubOrder.type" instead of correlationValueStr needs be tested if it works with factory connected!!!
 
 		if (this.ftfactoryMQTTClient.isConnected()) {

@@ -114,6 +114,7 @@ public class FtfactorySubOrder implements ISubscriber {
 		this.ts = other.ts;
 		this.state = other.state;
 		this.type = other.type;
+        this.processOrderReference = other.processOrderReference;
 	}
 	
 	public void clearFtfactoryOrder() {
@@ -122,6 +123,7 @@ public class FtfactorySubOrder implements ISubscriber {
 		this.ts = null;
 		this.state = null;
 		this.type = null;
+        this.processOrderReference = null;
 		orderShippedMessage.setReplyMessageCorrelationValue(null);
 	}
 	
@@ -130,6 +132,7 @@ public class FtfactorySubOrder implements ISubscriber {
 			HashMap<String, Object> sendVariables = new HashMap<>();
 			sendVariables.put("state", getState());
 			sendVariables.put("ts", getTs());
+            sendVariables.put("processOrderReference", getProcessOrderReference());
 
 			ftfactoryZEEBEClient.newPublishMessageCommand()
 									.messageName(orderShippedMessage.getReplyMessageName())
@@ -147,6 +150,8 @@ public class FtfactorySubOrder implements ISubscriber {
 	private String state;
 	@JsonProperty("type")
 	private String type;
+    @JsonProperty("processOrderReference")
+    public String processOrderReference;
 
 	@JsonProperty("ts")
 	public String getTs() {
@@ -177,5 +182,16 @@ public class FtfactorySubOrder implements ISubscriber {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+    @JsonProperty("processOrderReference")
+    public String getProcessOrderReference() {
+        return processOrderReference;
+    }
+
+    @JsonProperty("processOrderReference")
+    public void setProcessOrderReference(String processOrderReference) {
+        this.processOrderReference = processOrderReference;
+    };
+
 
 }
