@@ -41,7 +41,7 @@ Sample BROADCAST publish:
 
 > Topic
 
-		baplab/ftfactory/o/broadcast
+		bpalab/ftfactory/o/broadcast
 
 > Payload (JSON)
 
@@ -52,7 +52,7 @@ Sample ORDER publish:
 
 > Topic
 
-		baplab/ftfactory/f/o/order
+		bpalab/ftfactory/f/o/order
 
 > Payload (JSON)
 
@@ -62,7 +62,7 @@ Sample HBW subscription:
 
 > Topic:
 
-		baplab/ftfactory/f/i/stock
+		bpalab/ftfactory/f/i/stock
 	
 > PayLoad(JSON):	
 	
@@ -82,7 +82,7 @@ Sample BME680 subscription:
 
 > Topic
 
-		baplab/ftfactory/i/bme680
+		bpalab/ftfactory/i/bme680
 
 > PayLoad(JSON):
 
@@ -92,7 +92,7 @@ Sample ORDER subscription:
 
 > Topic
 
-		baplab/ftfactory/f/i/order
+		bpalab/ftfactory/f/i/order
 
 > Payload (JSON)
 
