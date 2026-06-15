@@ -2,7 +2,7 @@
 
 The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (enterprises, students, ...).
 
-A general introduction is available here: https://github.com/BpaLabTHCologne/bpa_lab_docs
+A general introduction is available here: [https://github.com/BpaLabTHCologne/bpa_lab_docs](https://bpalabthcologne.github.io/bpa_lab_book/)
 
 This repository contains the source code and configuration files of the implementation of the end to end demonstration scenario: the ordering, production, purchasing, manufacturing and shipping of custom-made bicycles. The implementation is based on Camunda 8, a Business Process Management System. This BPMS orchestrates different process-specific job workers. Moreover, control programs in Python are steering physical Fischertechnik robots for manufacturing and warehouse operations.
 
