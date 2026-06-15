@@ -6,6 +6,12 @@ services:
       - MYSQL_ROOT_PASSWORD=P4ssword!
     ports:
       - 3070:3306
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -h 127.0.0.1 -uroot -pP4ssword! -e 'SELECT 1' || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     volumes:
       - ./sql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
     networks:
@@ -157,8 +163,11 @@ services:
       dockerfile: bpa_lab_ordermanagement.dockerfile
       no_cache: true
     depends_on:
-      - mysql
-      - zeebe
+      mysql:
+        condition: service_healthy
+      zeebe:
+        condition: service_healthy
+
     networks:
       - camunda-platform
 
@@ -173,8 +182,10 @@ services:
       dockerfile: bpa_lab_productioncontrol.dockerfile
       no_cache: true
     depends_on:
-      - mysql
-      - zeebe
+      mysql:
+        condition: service_healthy
+      zeebe:
+        condition: service_healthy
     networks:
       - camunda-platform
 
@@ -189,8 +200,10 @@ services:
       dockerfile: bpa_lab_purchasing.dockerfile
       no_cache: true
     depends_on:
-      - mysql
-      - zeebe
+      mysql:
+        condition: service_healthy
+      zeebe:
+        condition: service_healthy
     networks:
       - camunda-platform
 
@@ -204,7 +217,8 @@ services:
       dockerfile: bpa_lab_manufacturing.dockerfile
       no_cache: true
     depends_on:
-      - zeebe
+      zeebe:
+        condition: service_healthy
     networks:
       - camunda-platform
 
@@ -219,7 +233,8 @@ services:
       dockerfile: bpa_lab_warehouse.dockerfile
       no_cache: true
     depends_on:
-      - zeebe
+      zeebe:
+        condition: service_healthy
     networks:
       - camunda-platform
 
@@ -234,8 +249,10 @@ services:
       dockerfile: bpa_lab_shipment.dockerfile
       no_cache: true
     depends_on:
-      - mysql
-      - zeebe
+      mysql:
+        condition: service_healthy
+      zeebe:
+        condition: service_healthy
     networks:
       - camunda-platform
 

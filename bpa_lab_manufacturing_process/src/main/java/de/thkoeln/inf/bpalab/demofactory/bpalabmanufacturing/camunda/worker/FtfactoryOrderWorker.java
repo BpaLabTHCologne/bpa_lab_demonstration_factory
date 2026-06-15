@@ -37,6 +37,7 @@ public class FtfactoryOrderWorker extends AWorker {
 
         //		prepare ReplyMessage
 		ftfactorySubOrder.initTypeCorrelationValue(pubOrder.type); //normally "pubOrder.type" instead of correlationValueStr needs be tested if it works with factory connected!!!
+        ftfactorySubOrder.setProcessOrderReference(pubOrder.processOrderReference);
 
 		if (this.ftfactoryMQTTClient.isConnected()) {
 	//		prepare and publish Order to ftfactoryMQTT
@@ -48,7 +49,8 @@ public class FtfactoryOrderWorker extends AWorker {
 			ftfactorySubOrder.setTs(pubOrder.ts);
 			ftfactorySubOrder.sendOrderShippedMessage();
 			ftfactorySubOrder.clearFtfactoryOrder();
-			log.info("\nFaked sendMQTTOrder>>> [ordertype: {}]", pubOrder.type);
+			log.info("\nFaked sendMQTTOrder>>> [ordertype: {}, processOrderReference: {}]",
+                    pubOrder.type, pubOrder.processOrderReference);
 		}
 
 		logJobEnd(job);

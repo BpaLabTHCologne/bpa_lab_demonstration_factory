@@ -139,7 +139,10 @@ public class FtfactorySubOrder implements ISubscriber {
 									.correlationKey(orderShippedMessage.getReplyMessageCorrelationValue())
 									.variables(sendVariables)
 									.send();
-			log.info("\npublished zeebemessage {} correlationvalue {}", orderShippedMessage.getReplyMessageName(), orderShippedMessage.getReplyMessageCorrelationValue());
+			log.info("\npublished zeebemessage {} correlationvalue {} processOrderReference {}",
+                    orderShippedMessage.getReplyMessageName(),
+                    orderShippedMessage.getReplyMessageCorrelationValue(),
+                    getProcessOrderReference());
 		}
 	}
 	
