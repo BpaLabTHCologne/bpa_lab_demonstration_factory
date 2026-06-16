@@ -256,17 +256,17 @@ services:
     networks:
       - camunda-platform
 
-#  kibana:
-#    image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
-#    container_name: kibana
-#    ports:
-#      - "5601:5601"
-#    environment:
-#      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-#    depends_on:
-#      - elasticsearch
-#    networks:
-#      - camunda-platform
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - camunda-platform
 
   grafana:
     image: grafana/grafana:latest
@@ -278,8 +278,7 @@ services:
       - ./grafana_dashboards:/var/lib/grafana/dashboards
       - ./provision:/etc/grafana/provisioning
     depends_on:
-      elasticsearch:
-        condition: service_healthy
+      - trino
     networks:
       - camunda-platform
 
@@ -305,8 +304,9 @@ services:
     volumes:
       - ./trino-config:/etc/trino/catalog
     depends_on:
-      elasticsearch:
-        condition: service_healthy
+      - elasticsearch
+        #condition: service_healthy
+      - mysql
     networks:
       - camunda-platform
 
