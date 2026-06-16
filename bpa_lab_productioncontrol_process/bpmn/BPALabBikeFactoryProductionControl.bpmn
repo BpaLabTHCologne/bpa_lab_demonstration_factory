@@ -128,7 +128,7 @@ manufactureBikeInstance</bpmn:text>
         <bpmn:outgoing>Flow_0z81t05</bpmn:outgoing>
       </bpmn:startEvent>
       <bpmn:sequenceFlow id="Flow_0z81t05" sourceRef="SubStartEventManufacture" targetRef="MsgSendManufactureOrder" />
-      <bpmn:serviceTask id="Activity_135jbkl" name="reserve Bike Instances">
+      <bpmn:serviceTask id="ServReserveBikeInstances" name="reserve Bike Instances">
         <bpmn:extensionElements>
           <zeebe:taskDefinition type="reserveProductionBikeInstance" />
         </bpmn:extensionElements>
@@ -142,7 +142,7 @@ manufactureBikeInstance</bpmn:text>
       <bpmn:endEvent id="SubEndEventManufacture">
         <bpmn:incoming>Flow_0cfjowz</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:sequenceFlow id="Flow_18pei1r" sourceRef="Activity_135jbkl" targetRef="XSplitOrderNumber" />
+      <bpmn:sequenceFlow id="Flow_18pei1r" sourceRef="ServReserveBikeInstances" targetRef="XSplitOrderNumber" />
       <bpmn:sendTask id="MsgSendManufactureOrder" name="send Manufacture Order">
         <bpmn:extensionElements>
           <zeebe:taskDefinition type="sendManufactureOrder" />
@@ -150,7 +150,7 @@ manufactureBikeInstance</bpmn:text>
         <bpmn:incoming>Flow_0z81t05</bpmn:incoming>
         <bpmn:outgoing>Flow_04ogqb1</bpmn:outgoing>
       </bpmn:sendTask>
-      <bpmn:sequenceFlow id="Flow_1rz0tzk" sourceRef="MsgReceiveManufacturedOrde" targetRef="Activity_135jbkl" />
+      <bpmn:sequenceFlow id="Flow_1rz0tzk" sourceRef="MsgReceiveManufacturedOrde" targetRef="ServReserveBikeInstances" />
       <bpmn:receiveTask id="MsgReceiveManufacturedOrde" name="receive manufactured Maunfacture Order" messageRef="Message_0bs4l2u">
         <bpmn:extensionElements>
           <zeebe:executionListeners>
@@ -334,7 +334,7 @@ manufactureBikeInstance</bpmn:text>
       <bpmndi:BPMNShape id="Event_0163h4f_di" bpmnElement="SubStartEventManufacture">
         <dc:Bounds x="1452" y="182" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_02mbz43_di" bpmnElement="Activity_135jbkl">
+      <bpmndi:BPMNShape id="Activity_02mbz43_di" bpmnElement="ServReserveBikeInstances">
         <dc:Bounds x="1800" y="160" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
