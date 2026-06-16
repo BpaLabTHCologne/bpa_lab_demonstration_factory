@@ -256,17 +256,17 @@ services:
     networks:
       - camunda-platform
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
-    container_name: kibana
-    ports:
-      - "5601:5601"
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
-    networks:
-      - camunda-platform
+#  kibana:
+#    image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
+#    container_name: kibana
+#    ports:
+#      - "5601:5601"
+#    environment:
+#      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+#    depends_on:
+#      - elasticsearch
+#    networks:
+#      - camunda-platform
 
   grafana:
     image: grafana/grafana:latest
@@ -278,46 +278,51 @@ services:
       - ./grafana_dashboards:/var/lib/grafana/dashboards
       - ./provision:/etc/grafana/provisioning
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     networks:
       - camunda-platform
 
   # Filebeat to ingest data from MQTT-Broker to ElasticSearch 
   # ONLY POSSIBLE  IF THERE IS A CONNECTION TO THE MQTT_BROKER (RASPBERRY PI) AND FT_FACTORY OF THE BPA-LAB!
-  filebeat:
-    build:
-      context: ./filebeat
-      dockerfile: Dockerfile.filebeat
-    environment:
-      - ELASTICSEARCH_HOST=http://elasticsearch:9200
-    networks:
-      - camunda-platform
-    depends_on:
-      - elasticsearch
+  #filebeat:
+  #  build:
+  #    context: ./filebeat
+  #    dockerfile: Dockerfile.filebeat
+  #  environment:
+  #    - ELASTICSEARCH_HOST=http://elasticsearch:9200
+  #  networks:
+  #    - camunda-platform
+  #  depends_on:
+  #    - elasticsearch
 
   trino:
-    image: trinodb/trino:435
+#    image: trinodb/trino:435
+    image: trinodb/trino
     container_name: trino
     ports:
       - "8089:8080"
     volumes:
       - ./trino-config:/etc/trino/catalog
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
     networks:
       - camunda-platform
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    ports:
-      - "8086:80"
-    environment:
-      - PMA_HOST=mysql
-      - PMA_PORT=3306
-      - MYSQL_ROOT_PASSWORD=P4ssword!
-    depends_on:
-      - mysql
-    networks:
-      - camunda-platform
+#  phpmyadmin:
+#    image: phpmyadmin/phpmyadmin
+#    container_name: phpmyadmin
+#    ports:
+#      - "8086:80"
+#    environment:
+#      - PMA_HOST=mysql
+#      - PMA_PORT=3306
+#      - MYSQL_ROOT_PASSWORD=P4ssword!
+#    depends_on:
+#      - mysql
+#    networks:
+#      - camunda-platform
 
 volumes:
   zeebe:
