@@ -56,7 +56,7 @@ Sample ORDER publish:
 
 > Payload (JSON)
 
-		{"ts":"2023-06-05T15:20:41.613", "type":"BLUE"}
+		{"ts":"2026-06-18T08:56:50.022Z","type":"RED","processOrderReference":"00000099-99"}
 
 Sample HBW subscription:
 
@@ -96,4 +96,4 @@ Sample ORDER subscription:
 
 > Payload (JSON)
 
-		{"ts":"2023-06-05T15:20:41.613", "state":"SHIPPED", "type":"BLUE"}
+		{"ts":"2023-06-05T15:20:41.613", "state":"SHIPPED","type":"RED","processOrderReference":"00000099-99"}

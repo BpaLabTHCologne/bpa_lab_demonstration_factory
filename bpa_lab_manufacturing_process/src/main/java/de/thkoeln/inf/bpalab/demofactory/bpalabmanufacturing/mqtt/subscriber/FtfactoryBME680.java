@@ -31,8 +31,11 @@ public class FtfactoryBME680 implements ISubscriber {
 	@PostConstruct
 	public void postConstruct() {
 //		prepare Subscriber
-		log.info("PostConstruct {}", getSubscriptionTopic());
-		ftfactoryMQTTClient.subscribe(getSubscriptionTopic(), this);
+        if (ftfactoryMQTTClient.isConnected()) {
+            log.info("PostConstruct {}", getSubscriptionTopic());
+            ftfactoryMQTTClient.subscribe(getSubscriptionTopic(), this);
+        } else
+            log.info("PostConstruct NoConnection {}", getSubscriptionTopic());
 	}
 	
 	@Override

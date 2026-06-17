@@ -66,9 +66,10 @@ public class FtfactoryHBWWorker extends AWorker {
 				variables.put("available", true);
 			else
 				variables.put("available", false);
-		}
+		} else
+            variables.put("available", true);
 
-		logJobEnd(job);
+        logJobEnd(job);
 		return variables;
 	}
 
