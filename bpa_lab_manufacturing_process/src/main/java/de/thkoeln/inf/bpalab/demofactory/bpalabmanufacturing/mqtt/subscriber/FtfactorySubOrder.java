@@ -65,10 +65,11 @@ public class FtfactorySubOrder implements ISubscriber {
 		return orderShippedMessage.getReplyMessageName();
 	}
 
-	public void initTypeCorrelationValue(String type) {
+	public void initTypeCorrelationValue(String type, String processOrderReference) {
 		orderShippedMessage.setReplyMessageCorrelationValue(type);
 		this.ordered = true;
 		this.type = type;
+        this.processOrderReference = processOrderReference;
 	}
 
 	@Override

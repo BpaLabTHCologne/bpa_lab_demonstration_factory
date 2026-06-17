@@ -35,8 +35,7 @@ public class FtfactoryOrderWorker extends AWorker {
         variables.put("processOrderReference", pubOrder.processOrderReference);
 
         //		prepare ReplyMessage
-		ftfactorySubOrder.initTypeCorrelationValue(pubOrder.type); //normally "pubOrder.type" instead of correlationValueStr needs be tested if it works with factory connected!!!
-        ftfactorySubOrder.setProcessOrderReference(pubOrder.processOrderReference);
+		ftfactorySubOrder.initTypeCorrelationValue(pubOrder.type, pubOrder.processOrderReference); //normally "pubOrder.type" instead of correlationValueStr needs be tested if it works with factory connected!!!
 
 		if (this.ftfactoryMQTTClient.isConnected()) {
 	//		prepare and publish Order to ftfactoryMQTT
