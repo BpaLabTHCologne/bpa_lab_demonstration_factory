@@ -60,8 +60,11 @@ public class FtWarehousePublisher {
         ObjectMapper om = new ObjectMapper();
         String idString = "{\"id\" : \"" + id + "\"}";
         getTopicPayload = new TopicPayload(warehouseTopics.getGetTopic(), idString);
-        log.info("publishGetCommand topic: {}, idString {}", getGetTopicPayload().getTopic(), idString);
-        ftWarehouseMQTTClient.publish(getTopicPayload);
+        if (ftWarehouseMQTTClient.isConnected()) {
+            log.info("publishGetCommand topic: {}, idString {}", getGetTopicPayload().getTopic(), idString);
+            ftWarehouseMQTTClient.publish(getTopicPayload);
+        } else
+            log.info("FAKED publishGetCommand topic: {}, idString {}", getGetTopicPayload().getTopic(), idString);
     }
 
     public void publishPutCommand(String id, String color) {
@@ -70,16 +73,23 @@ public class FtWarehousePublisher {
             bikeInstance.setColor(color);
             String JSONString = bikeInstance.asJSON();
             putTopicPayload = new TopicPayload(warehouseTopics.getPutTopic(), JSONString);
-            log.info("publishPutCommand topic: {}, bikeInstance {}", getPutTopicPayload().getTopic(), JSONString);
-            ftWarehouseMQTTClient.publish(putTopicPayload);
+            if (ftWarehouseMQTTClient.isConnected()) {
+                log.info("publishPutCommand topic: {}, bikeInstance {}", getPutTopicPayload().getTopic(), JSONString);
+                ftWarehouseMQTTClient.publish(putTopicPayload);
+            } else {
+                log.info("FAKED publishPutCommand topic: {}, bikeInstance {}", getPutTopicPayload().getTopic(), JSONString);
+            }
     }
 
     public void publishFetchCommand(String color) {
         ObjectMapper om = new ObjectMapper();
         String colorString = "{\"color\" : \"" + color + "\"}";
         getTopicPayload = new TopicPayload(warehouseTopics.getFetchTopic(), colorString);
-        log.info("publishGetCommand topic: {}, idString {}", getGetTopicPayload().getTopic(), colorString);
-        ftWarehouseMQTTClient.publish(getTopicPayload);
+        if (ftWarehouseMQTTClient.isConnected()) {
+            log.info("publishGetCommand topic: {}, idString {}", getGetTopicPayload().getTopic(), colorString);
+            ftWarehouseMQTTClient.publish(getTopicPayload);
+        } else
+            log.info("FAKED publishGetCommand topic: {}, idString {}", getGetTopicPayload().getTopic(), colorString);
     }
 }
 	

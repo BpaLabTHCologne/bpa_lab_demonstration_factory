@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Component
@@ -52,8 +54,10 @@ public class FtfactoryPubOrder implements IPublisher {
             } else {
                 if (!rootNode.path("processOrderReference").asText().equals(""))
                     this.processOrderReference = rootNode.path("processOrderReference").asText();
-                else
-                    this.processOrderReference = UUID.randomUUID().toString();
+                else {
+                    DateTimeFormatter dtf5 = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
+                    this.processOrderReference = "ProcessOrderReference " + dtf5.format(LocalDateTime.now());
+                }
             }
 			// time must be greater than TXT-time + 60
 			this.ts = UTCTime.getUTCTimeNowPlus1Day(); // adds 1 day to be before TXTController time

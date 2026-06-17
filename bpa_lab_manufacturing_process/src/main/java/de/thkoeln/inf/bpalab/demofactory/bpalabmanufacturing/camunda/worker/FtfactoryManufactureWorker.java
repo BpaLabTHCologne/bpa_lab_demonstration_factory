@@ -37,6 +37,7 @@ public class FtfactoryManufactureWorker extends AWorker {
 						.messageName(ftfactoryManufactureEndMessage.getReplyMessageName())
 						.correlationKey(ftfactoryManufactureEndMessage.getReplyMessageCorrelationValue())
 						.timeToLive(Duration.ofSeconds(60))
+                        .variables(variables)
 						.send();
 				log.info("\npublished zeebemessage {} correlationvalue {}", ftfactoryManufactureEndMessage.getReplyMessageName(), ftfactoryManufactureEndMessage.getReplyMessageCorrelationValue());
 			} catch (ClientException e) {
