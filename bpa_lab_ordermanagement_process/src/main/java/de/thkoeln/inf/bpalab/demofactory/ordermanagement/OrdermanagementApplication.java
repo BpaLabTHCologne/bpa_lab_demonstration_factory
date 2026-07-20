@@ -1,6 +1,6 @@
 package de.thkoeln.inf.bpalab.demofactory.ordermanagement;
 
-import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.client.CamundaClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +18,19 @@ public class OrdermanagementApplication implements CommandLineRunner {
         SpringApplication.run(OrdermanagementApplication.class, args);
     }
     @Autowired
-    private ZeebeClient zeebeClient;
+    private CamundaClient camundaClient;
 
     @Override
     public void run(String... args) throws Exception {
-        zeebeClient.newDeployResourceCommand()
+        camundaClient.newDeployResourceCommand()
                 .addResourceFile("bpmn/BPALabBikeFactoryOrderManagement.bpmn")
                 .send().join();
         LOG.info("Deployed bpmn/BPALabBikeFactoryOrderManagement.bpmn");
-        zeebeClient.newDeployResourceCommand()
+        camundaClient.newDeployResourceCommand()
                 .addResourceFile("bpmn/ChooseBikesForm.form")
                 .send().join();
         LOG.info("Deployed bpmn/ChooseBikesForm.form");
-        zeebeClient.newDeployResourceCommand()
+        camundaClient.newDeployResourceCommand()
                 .addResourceFile("bpmn/ShowOrderForm.form")
                 .send().join();
         LOG.info("Deployed bpmn/ShowOrderForm.form");

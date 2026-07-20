@@ -9,9 +9,9 @@ import de.thkoeln.inf.bpalab.demofactory.ordermanagement.repos.CustomerOrderRepo
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.CustomerOrderService;
 import de.thkoeln.inf.bpalab.demofactory.ordermanagement.service.OfferService;
-import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.client.CamundaClient;
+import io.camunda.client.annotation.JobWorker;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
-import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class CustomerOrderWorker {
 	@Autowired
 	private BikeInstanceService bikeInstanceService;
 	@Autowired
-	private ZeebeClient zeebeClient;
+	private CamundaClient camundaClient;
     @Autowired
     private CustomerOrderRepository customerOrderRepository;
 
@@ -65,12 +65,12 @@ public class CustomerOrderWorker {
 		OfferOrderDTO offerOrderDTO = job.getVariablesAsType(OfferOrderDTO.class);
 		LOG.info("createMaterialDemands offer {} ", objectMapper.writeValueAsString(offerOrderDTO));
 
-		CustomerOrder customerOrder = customerOrderRepository.getReferenceById(offerOrderDTO.orderNumber);
-		LOG.info("createMaterialDemands customerOrder {}", objectMapper.writeValueAsString(customerOrder));
-		OrderOrderDTO orderOrderDTO = customerOrderService.getOrderOrderDTO(customerOrder);
+//		CustomerOrder customerOrder = customerOrderRepository.getReferenceById(offerOrderDTO.orderNumber);
+//		LOG.info("createMaterialDemands customerOrder {}", objectMapper.writeValueAsString(customerOrder));
+		OrderOrderDTO orderOrderDTO = customerOrderService.getOrderOrderDTO(offerOrderDTO.orderNumber);
 		LOG.info("createMaterialDemand order {}",
 				objectMapper.writeValueAsString(orderOrderDTO));
-		return customerOrderService.getOrderOrderDTO(customerOrder);
+		return customerOrderService.getOrderOrderDTO(offerOrderDTO.orderNumber);
 	}
 
 	@JobWorker(type = "reserveBikeInstance", fetchVariables={"orderNumber", "reserveBikeInstance"})
@@ -90,7 +90,7 @@ public class CustomerOrderWorker {
 		variables.put("productionOrderCorrelation", productionOrderCorrelation);
 		variables.remove("loopCounter");
 		LOG.info("sendProductionOrder variables {}", objectMapper.writeValueAsString(variables));
-		zeebeClient.newPublishMessageCommand()
+        camundaClient.newPublishMessageCommand()
 				.messageName("MsgStartProductionOrder")
 				.correlationKey(productionOrderCorrelation)
 				.variables(variables)
@@ -107,7 +107,7 @@ public class CustomerOrderWorker {
 		variables.put("shippingAddress", offerOrderDTO.orderCustomer.adress);
 		variables.put("orderNumber", offerOrderDTO.orderNumber);
 		LOG.info("sendShipment variables {}", objectMapper.writeValueAsString(variables));
-		zeebeClient.newPublishMessageCommand()
+        camundaClient.newPublishMessageCommand()
 				.messageName("MsgStartShippingOrder")
 				.correlationKey(shipmentOrderCorrelation)
 				.variables(variables)

@@ -1,14 +1,12 @@
 package de.thkoeln.inf.bpalab.demofactory.common.domain;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
 
 @Entity
-@Proxy(lazy=false)
 public class BikeComponent {
 
     @Id

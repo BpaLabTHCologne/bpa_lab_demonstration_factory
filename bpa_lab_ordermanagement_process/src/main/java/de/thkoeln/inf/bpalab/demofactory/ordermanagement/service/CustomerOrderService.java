@@ -79,7 +79,8 @@ public class CustomerOrderService {
         return offerOrderDTO;
     }
 
-    public OrderOrderDTO getOrderOrderDTO(final CustomerOrder customerOrder) throws JsonProcessingException {
+    public OrderOrderDTO getOrderOrderDTO(final String customerOrderNumber) throws JsonProcessingException {
+        CustomerOrder customerOrder = customerOrderRepository.findById(customerOrderNumber).get();
         OrderOrderDTO orderOrderDTO = new OrderOrderDTO(customerOrder);
         ArrayList<OrderItemDTO> reserveList = orderOrderDTO.reserveBikeInstanceList = new ArrayList<>();
         ArrayList<OrderItemDTO> produceList = orderOrderDTO.produceBikeModelList = new ArrayList<>();

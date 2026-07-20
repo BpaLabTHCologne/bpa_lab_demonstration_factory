@@ -10,11 +10,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import org.hibernate.annotations.Proxy;
 
 
 @Entity
-@Proxy(lazy = false)
 public class CustomerOrderItem {
 
     @Id

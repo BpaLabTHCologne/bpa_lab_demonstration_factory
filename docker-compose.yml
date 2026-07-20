@@ -9,146 +9,92 @@ services:
     volumes:
       - ./sql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
     networks:
-      - camunda-platform
+      - camunda
 
-  zeebe: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#zeebe
-    image: camunda/zeebe:${CAMUNDA_ZEEBE_VERSION}
-    container_name: zeebe
+# This is a lightweight configuration with Orchestration (Zeebe + Operate + Tasklist), Connectors, and Elasticsearch
+# See docker-compose-full.yaml for a configuration that also includes Optimize, Identity, Keycloak, Web Modeler, and Console.
+  camunda-data-init:
+    image: camunda/camunda:${CAMUNDA_VERSION}
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-c", "chown -R 1001:1001 /usr/local/camunda/camunda-data && chmod 775 /usr/local/camunda/camunda-data"]
+    volumes:
+      - camunda-data:/usr/local/camunda/camunda-data
+    restart: "no"
+
+  orchestration: # Consolidated Zeebe + Operate + Tasklist - https://docs.camunda.io/docs/self-managed/setup/deploy/other/docker/#zeebe
+    image: camunda/camunda:${CAMUNDA_VERSION}
+    container_name: orchestration
     ports:
       - "26500:26500"
       - "9600:9600"
-      - "8088:8080"
-    environment: # https://docs.camunda.io/docs/self-managed/zeebe-deployment/configuration/environment-variables/
-      - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_CLASSNAME=io.camunda.zeebe.exporter.ElasticsearchExporter
-      - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_ARGS_URL=http://elasticsearch:9200
-      # default is 1000, see here: https://github.com/camunda/zeebe/blob/main/exporters/elasticsearch-exporter/src/main/java/io/camunda/zeebe/exporter/ElasticsearchExporterConfiguration.java#L259
-      - ZEEBE_BROKER_EXPORTERS_ELASTICSEARCH_ARGS_BULK_SIZE=1
-      # allow running with low disk space
-      - ZEEBE_BROKER_DATA_DISKUSAGECOMMANDWATERMARK=0.998
-      - ZEEBE_BROKER_DATA_DISKUSAGEREPLICATIONWATERMARK=0.999
-      - CAMUNDA_DATABASE_URL=http://elasticsearch:9200
-      - "JAVA_TOOL_OPTIONS=-Xms512m -Xmx512m"
-    restart: unless-stopped
+      - "8080:8080"
+    environment:
+      - JAVA_TOOL_OPTIONS="-XX:+PrintFlagsFinal"
+    mem_limit: 1g
+    restart: always
     healthcheck:
-      test: [ "CMD-SHELL", "timeout 10s bash -c ':> /dev/tcp/127.0.0.1/9600' || exit 1" ]
-      interval: 30s
-      timeout: 5s
-      retries: 5
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/9600 && echo -e \"GET /actuator/health/status HTTP/1.1\r\nHost: localhost\r\n\r\n\" >&3 && head -n 1 <&3'"]
+      interval: 1s
+      retries: 30
       start_period: 30s
     volumes:
-      - zeebe:/usr/local/zeebe/data
+      - camunda:/usr/local/camunda/data
+      - camunda-data:/usr/local/camunda/camunda-data
+      - ./driver-lib:/driver-lib:ro
+    configs:
+      - source: orchestration-config
+        target: /usr/local/camunda/config/application.yaml
     networks:
-      - camunda-platform
+      - camunda
     depends_on:
-      - elasticsearch
+      camunda-data-init:
+        condition: service_completed_successfully
 
-  operate: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#operate
-    image: camunda/operate:${CAMUNDA_OPERATE_VERSION}
-    container_name: operate
-    ports:
-      - "8081:8080"
-    environment: # https://docs.camunda.io/docs/self-managed/operate-deployment/configuration/
-      - CAMUNDA_OPERATE_ZEEBE_GATEWAYADDRESS=zeebe:26500
-      - CAMUNDA_OPERATE_ELASTICSEARCH_URL=http://elasticsearch:9200
-      - CAMUNDA_OPERATE_ZEEBEELASTICSEARCH_URL=http://elasticsearch:9200
-      - CAMUNDA_OPERATE_CSRFPREVENTIONENABLED=false
-      - CAMUNDA_DATABASE_URL=http://elasticsearch:9200
-      - management.endpoints.web.exposure.include=health
-      - management.endpoint.health.probes.enabled=true
-    healthcheck:
-      test: [ "CMD-SHELL", "wget -O - -q 'http://localhost:9600/actuator/health/readiness'" ]
-      interval: 30s
-      timeout: 1s
-      retries: 5
-      start_period: 30s
-    networks:
-      - camunda-platform
-    depends_on:
-      - zeebe
-      - elasticsearch
-
-  tasklist: # https://docs.camunda.io/docs/self-managed/platform-deployment/docker/#tasklist
-    image: camunda/tasklist:${CAMUNDA_TASKLIST_VERSION}
-    container_name: tasklist
-    ports:
-      - "8082:8080"
-    environment: # https://docs.camunda.io/docs/self-managed/tasklist-deployment/configuration/
-      - CAMUNDA_TASKLIST_ZEEBE_GATEWAYADDRESS=zeebe:26500
-      - CAMUNDA_TASKLIST_ZEEBE_RESTADDRESS=http://zeebe:8080
-      - CAMUNDA_TASKLIST_ELASTICSEARCH_URL=http://elasticsearch:9200
-      - CAMUNDA_TASKLIST_ZEEBEELASTICSEARCH_URL=http://elasticsearch:9200
-      - CAMUNDA_TASKLIST_CSRFPREVENTIONENABLED=false
-      - CAMUNDA_DATABASE_URL=http://elasticsearch:9200
-      - management.endpoints.web.exposure.include=health
-      - management.endpoint.health.probes.enabled=true
-    healthcheck:
-      test: [ "CMD-SHELL", "wget -O - -q 'http://localhost:9600/actuator/health/readiness'" ]
-      interval: 30s
-      timeout: 1s
-      retries: 5
-      start_period: 30s
-    networks:
-      - camunda-platform
-    depends_on:
-      - zeebe
-      - elasticsearch
-
-  connectors: # https://docs.camunda.io/docs/components/integration-framework/connectors/out-of-the-box-connectors/available-connectors-overview/
+  # Camunda Connectors - executes outbound and inbound connector logic
+  # Docs: https://docs.camunda.io/docs/self-managed/connectors-deployment/connectors-configuration/
+  connectors:
     image: camunda/connectors-bundle:${CAMUNDA_CONNECTORS_VERSION}
     container_name: connectors
     ports:
-      - "8085:8080"
+      - "8086:8080"
     environment:
-      - CAMUNDA_CLIENT_MODE=self-managed
-      - CAMUNDA_CLIENT_ZEEBE_GRPCADDRESS=http://zeebe:26500
-      - OPERATE_CLIENT_BASEURL=http://operate:8080
-      - OPERATE_CLIENT_PROFILE=simple
-      - management.endpoints.web.exposure.include=health
+      - management.endpoints.web.exposure.include=health,configprops
       - management.endpoint.health.probes.enabled=true
+    env_file: connector-secrets.txt
+    mem_limit: 512m
+    restart: unless-stopped
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health/readiness" ]
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8080/actuator/health/readiness"]
       interval: 30s
       timeout: 1s
       retries: 5
       start_period: 30s
-    env_file: connector-secrets.txt
+    configs:
+      - source: connectors-config
+        target: application.yaml
     networks:
-      - camunda-platform
+      - camunda
     depends_on:
-      - zeebe
-      - operate
-
-  elasticsearch: # https://hub.docker.com/_/elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
-    container_name: elasticsearch
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      - bootstrap.memory_lock=true
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      # allow running with low disk space
-      - cluster.routing.allocation.disk.threshold_enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    restart: unless-stopped
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:9200/_cat/health | grep -q green" ]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-    volumes:
-      - elastic:/usr/share/elasticsearch/data
-    networks:
-      - camunda-platform
+      orchestration:
+        # Wait for orchestration service to be healthy, otherwise we get a lot of noisy logs from connection errors
+        condition: service_healthy
 
 volumes:
-  zeebe:
-  elastic:
+  camunda:
+  camunda-data:
 
 networks:
-  camunda-platform:
+  camunda:
+    name: camunda
+
+configs:
+  connectors-config:
+    content: |
+      camunda:
+        client:
+          mode: self-managed
+          grpc-address: http://orchestration:26500
+          rest-address: http://orchestration:8080
+
+  orchestration-config:
+    file: ./configuration/${ORCHESTRATION_CONFIG_FILE:-application-h2.yaml}
