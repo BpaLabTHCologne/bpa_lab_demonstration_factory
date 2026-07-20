@@ -110,14 +110,48 @@ services:
     environment:
       JDBC_DATABASE_URL: jdbc:mysql://mysql:3306/bpa_lab_demonstration_factory
       JAVA_TOOL_OPTIONS: -Dlogging.level.io.camunda.zeebe.client.impl.ZeebeCallCredentials=ERROR
-      ZEEBE_GRPC_ADRESS: http://zeebe:26500
-      ZEEBE_REST_ADRESS: http://zeebe:8080
+      ZEEBE_GRPC_ADRESS: http://orchestration:26500
+      ZEEBE_REST_ADRESS: http://orchestration:8080
     build:
       dockerfile: bpa_lab_productioncontrol.dockerfile
       no_cache: true
     depends_on:
       mysql:
         condition: service_healthy
+      orchestration:
+        # Wait for orchestration service to be healthy, otherwise we get a lot of noisy logs from connection errors
+        condition: service_healthy
+    networks:
+      - camunda
+
+  bpalabmanufacturing:
+    image: bpa_lab_demonstration_factory/manufacturing
+    environment:
+      JAVA_TOOL_OPTIONS: -Dlogging.level.io.camunda.zeebe.client.impl.ZeebeCallCredentials=ERROR
+      ZEEBE_GRPC_ADRESS: http://orchestration:26500
+      ZEEBE_REST_ADRESS: http://orchestration:8080
+    #      MQTTBROKER_ADRESS: ws://host.docker.internal:9001
+    build:
+      dockerfile: bpa_lab_manufacturing.dockerfile
+      no_cache: true
+    depends_on:
+      orchestration:
+        # Wait for orchestration service to be healthy, otherwise we get a lot of noisy logs from connection errors
+        condition: service_healthy
+    networks:
+      - camunda
+
+  bpalabwarehouse:
+    image: bpa_lab_demonstration_factory/warehouse
+    environment:
+      JAVA_TOOL_OPTIONS: -Dlogging.level.io.camunda.zeebe.client.impl.ZeebeCallCredentials=ERROR
+      ZEEBE_GRPC_ADRESS: http://orchestration:26500
+      ZEEBE_REST_ADRESS: http://orchestration:8080
+    #      MQTTBROKER_ADRESS: ws://host.docker.internal:9001
+    build:
+      dockerfile: bpa_lab_warehouse.dockerfile
+      no_cache: true
+    depends_on:
       orchestration:
         # Wait for orchestration service to be healthy, otherwise we get a lot of noisy logs from connection errors
         condition: service_healthy
@@ -143,40 +177,6 @@ services:
     networks:
       - camunda
 
-  bpalabmanufacturing:
-    image: bpa_lab_demonstration_factory/manufacturing
-    environment:
-      JAVA_TOOL_OPTIONS: -Dlogging.level.io.camunda.zeebe.client.impl.ZeebeCallCredentials=ERROR
-      ZEEBE_GRPC_ADRESS: http://zeebe:26500
-      ZEEBE_REST_ADRESS: http://zeebe:8080
-#      MQTTBROKER_ADRESS: ws://host.docker.internal:9001
-    build:
-      dockerfile: bpa_lab_manufacturing.dockerfile
-      no_cache: true
-    depends_on:
-      orchestration:
-        # Wait for orchestration service to be healthy, otherwise we get a lot of noisy logs from connection errors
-        condition: service_healthy
-    networks:
-      - camunda
-
-  bpalabwarehouse:
-    image: bpa_lab_demonstration_factory/warehouse
-    environment:
-      JAVA_TOOL_OPTIONS: -Dlogging.level.io.camunda.zeebe.client.impl.ZeebeCallCredentials=ERROR
-      ZEEBE_GRPC_ADRESS: http://zeebe:26500
-      ZEEBE_REST_ADRESS: http://zeebe:8080
-#      MQTTBROKER_ADRESS: ws://host.docker.internal:9001
-    build:
-      dockerfile: bpa_lab_warehouse.dockerfile
-      no_cache: true
-    depends_on:
-      orchestration:
-        # Wait for orchestration service to be healthy, otherwise we get a lot of noisy logs from connection errors
-        condition: service_healthy
-    networks:
-      - camunda
-
   bpalabshipment:
     image: bpa_lab_demonstration_factory/shipment
     environment:
@@ -195,7 +195,6 @@ services:
         condition: service_healthy
     networks:
       - camunda
-
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
