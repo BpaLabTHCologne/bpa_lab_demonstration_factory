@@ -12,10 +12,10 @@ import de.thkoeln.inf.bpalab.demofactory.productioncontrol.repos.ProductionOrder
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeComponentService;
 import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
 import de.thkoeln.inf.bpalab.demofactory.productioncontrol.service.ProductionOrderService;
-import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.client.CamundaClient;
+import io.camunda.client.annotation.JobWorker;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
-import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import static io.camunda.zeebe.client.impl.util.VersionUtil.LOG;
 
 @Component
 public class ProductionControlWorker {
@@ -39,7 +37,7 @@ public class ProductionControlWorker {
 	@Autowired
 	private BikeComponentService bikeComponentService;
 	@Autowired
-	private ZeebeClient zeebeClient;
+	private CamundaClient camundaClient;
     @Autowired
     private BikeInstanceService bikeInstanceService;
     @Autowired
@@ -95,7 +93,7 @@ public class ProductionControlWorker {
 		LOG.info("sendPurchaseOrder correlationKey: {}"
 				, purchaseOrderCorrelation);
 		LOG.info("sendPurchaseOrder variables {}", objectMapper.writeValueAsString(variables));
-		zeebeClient.newPublishMessageCommand()
+		camundaClient.newPublishMessageCommand()
 				.messageName("MsgStartPurchaseOrder")
 				.correlationKey(purchaseOrderCorrelation)
 				.variables(variables)
@@ -132,7 +130,7 @@ public class ProductionControlWorker {
 		variables.put("orderType", bikeComponent.getColor());
 		LOG.info("sendManufactureOrder correlationKey: {} orderType {}"
 				, manufactureOrderCorrelation, bikeComponent.getColor());
-		zeebeClient.newPublishMessageCommand()
+		camundaClient.newPublishMessageCommand()
 				.messageName("MsgStartManufactureOrder")
 				.correlationKey(manufactureOrderCorrelation)
 				.variables(variables)
@@ -166,7 +164,7 @@ public class ProductionControlWorker {
         String color = vars.get("orderType").toString();
         varsOut.put("color", color);
         LOG.info("startWarehousePut {}", varsOut);
-        zeebeClient.newPublishMessageCommand()
+        camundaClient.newPublishMessageCommand()
                 .messageName(MSG_WAREHOUSE_START_PUT)
                 .correlationKey(manufactureOrderCorrelation)
                 .variables(varsOut)
@@ -184,7 +182,7 @@ public class ProductionControlWorker {
 			String productionOrderCorrelation = variables.get("productionOrderCorrelation").toString();
 			LOG.info("sendFinishedBikeModelProductionOrder correlationKey {}"
 					, productionOrderCorrelation);
-			zeebeClient.newPublishMessageCommand()
+			camundaClient.newPublishMessageCommand()
 					.messageName("MsgProductionFinished")
 					.correlationKey(productionOrderCorrelation)
 					.send().join();

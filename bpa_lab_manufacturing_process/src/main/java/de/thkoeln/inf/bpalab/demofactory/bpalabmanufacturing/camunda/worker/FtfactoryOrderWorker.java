@@ -3,8 +3,8 @@ package de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.camunda.worker;
 import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.mqtt.publisher.FtfactoryPubOrder;
 import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.mqtt.subscriber.FtfactorySubOrder;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
-import io.camunda.zeebe.spring.client.annotation.JobWorker;
-import io.camunda.zeebe.spring.common.exception.ZeebeBpmnError;
+import io.camunda.client.annotation.JobWorker;
+import io.camunda.client.exception.CamundaError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,7 @@ public class FtfactoryOrderWorker extends AWorker {
 		HashMap<String, Object> variables = new HashMap<>(job.getVariablesAsMap());
 
 		if (this.ftfactorySubOrder.isOrdered()) {
-			throw new ZeebeBpmnError("factoryOrderOtherError", "factory busy for another order", null);
+			throw CamundaError.bpmnError("factoryOrderOtherError", "factory busy for another order", null);
 		}
 
 		pubOrder.updateOrder(job.getVariables());

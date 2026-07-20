@@ -38,7 +38,7 @@ public class BikeInstanceService {
     }
 
     public BikeInstance produceBikeInstance(String bikeModelTitle) {
-        BikeModel bikeModel = bikeModelRepository.getReferenceById(bikeModelTitle);
+        BikeModel bikeModel = bikeModelRepository.findById(bikeModelTitle).get();
         BikeInstance bikeInstance = new BikeInstance();
         bikeInstance.setBikeModel(bikeModel);
         bikeInstance.setShipped(false);
@@ -47,7 +47,7 @@ public class BikeInstanceService {
 
     public void reserveBikeInstance(String bikeInstanceSerialNumber, String orderNumber) {
         UUID bikeInstanceUUID = UUID.fromString(bikeInstanceSerialNumber);
-        BikeInstance bikeInstance = bikeInstanceRepository.getReferenceById(bikeInstanceUUID);
+        BikeInstance bikeInstance = bikeInstanceRepository.findById(bikeInstanceUUID).get();
         if (bikeInstance != null) {
             if (orderNumber != null) {
                 bikeInstance.setCustomerOrder(orderNumber);

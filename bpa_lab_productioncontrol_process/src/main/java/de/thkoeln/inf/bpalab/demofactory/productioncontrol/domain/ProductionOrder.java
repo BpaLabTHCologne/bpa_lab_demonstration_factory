@@ -2,11 +2,9 @@ package de.thkoeln.inf.bpalab.demofactory.productioncontrol.domain;
 
 import de.thkoeln.inf.bpalab.demofactory.common.domain.BikeModel;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Proxy;
 
 
 @Entity
-@Proxy(lazy = false)
 public class ProductionOrder {
 
     @Id

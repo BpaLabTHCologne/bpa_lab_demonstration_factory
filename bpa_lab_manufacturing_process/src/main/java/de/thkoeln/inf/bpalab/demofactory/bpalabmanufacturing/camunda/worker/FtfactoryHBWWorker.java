@@ -5,7 +5,6 @@ import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.mqtt.subscriber.Ftf
 import io.camunda.zeebe.client.api.command.ClientException;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
-import io.camunda.zeebe.spring.common.exception.ZeebeBpmnError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -75,7 +74,7 @@ public class FtfactoryHBWWorker extends AWorker {
 
 	public void sendFtfactoryStorageMessage() {
 		if (this.ftfactoryHBWAvailableMessage != null) {
-			this.ftfactoryZEEBEClient.newPublishMessageCommand()
+			this.ftfactoryCamundaClient.newPublishMessageCommand()
 					.messageName(this.ftfactoryHBWAvailableMessage.getReplyMessageName())
 					.correlationKey(this.ftfactoryHBWAvailableMessage.getReplyMessageCorrelationValue())
 					.send();

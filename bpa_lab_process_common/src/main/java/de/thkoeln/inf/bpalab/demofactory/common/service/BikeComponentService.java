@@ -19,19 +19,19 @@ public class BikeComponentService {
     private BikeComponentRepository bikeComponentRepository;
 
     public int countBikeComponentsByBikeModelId(String bikeModelId) {
-        BikeModel bikeModel = bikeModelRepository.getReferenceById(bikeModelId);
+        BikeModel bikeModel = bikeModelRepository.findById(bikeModelId).get();
         BikeComponent bikeComponent = bikeComponentRepository.getAllByBikeModel(bikeModel).getFirst();
         if (bikeComponent != null) return bikeComponent.getQuantity();
         else throw new NoSuchElementException();
     }
 
     public BikeComponent getBikeComponentsByBikeModelTitle(String title) {
-        BikeModel bikeModel = bikeModelRepository.getReferenceById(title);
+        BikeModel bikeModel = bikeModelRepository.findById(title).get();
         return bikeComponentRepository.getAllByBikeModel(bikeModel).getFirst();
     }
 
     public void decreaseBikeComponentQuantity(String title, Integer quantity) {
-        BikeComponent bikeComponent = bikeComponentRepository.getReferenceById(title);
+        BikeComponent bikeComponent = bikeComponentRepository.findById(title).get();
         bikeComponent.setQuantity(bikeComponent.getQuantity() - quantity);
         bikeComponentRepository.save(bikeComponent);
     }

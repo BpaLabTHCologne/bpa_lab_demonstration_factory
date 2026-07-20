@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '3.5.0'
+    id 'org.springframework.boot' version '4.1.0'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
 }
@@ -20,7 +20,9 @@ repositories {
 
 dependencies {
     implementation('ch.qos.logback:logback-classic')
-    implementation("io.camunda:spring-boot-starter-camunda-sdk:8.7.5")
+    implementation("io.camunda:camunda-spring-boot-starter:8.9.12")
+    // Source: https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api
+    implementation("jakarta.annotation:jakarta.annotation-api:3.0.0")
 // https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
     implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
     testImplementation('org.springframework.boot:spring-boot-starter-test')

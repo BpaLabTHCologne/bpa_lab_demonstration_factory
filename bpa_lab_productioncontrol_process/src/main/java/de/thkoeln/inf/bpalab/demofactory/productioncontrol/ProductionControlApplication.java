@@ -1,6 +1,6 @@
 package de.thkoeln.inf.bpalab.demofactory.productioncontrol;
 
-import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.client.CamundaClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +18,15 @@ public class ProductionControlApplication implements CommandLineRunner {
         SpringApplication.run(ProductionControlApplication.class, args);
     }
     @Autowired
-    private ZeebeClient zeebeClient;
+    private CamundaClient camundaClient;
 
     @Override
     public void run(String... args) throws Exception {
-        zeebeClient.newDeployResourceCommand()
+        camundaClient.newDeployResourceCommand()
                 .addResourceFile("bpmn/BPALabBikeFactoryProductionControl.bpmn")
                 .send().join();
         LOG.info("Deployed bpmn/BPALabBikeFactoryProductionControl.bpmn");
-        zeebeClient.newDeployResourceCommand()
+        camundaClient.newDeployResourceCommand()
                 .addResourceFile("bpmn/bpa_lab_production_process_start.form")
                 .send().join();
         LOG.info("Deployed bpmn/bpa_lab_production_process_start.form");
