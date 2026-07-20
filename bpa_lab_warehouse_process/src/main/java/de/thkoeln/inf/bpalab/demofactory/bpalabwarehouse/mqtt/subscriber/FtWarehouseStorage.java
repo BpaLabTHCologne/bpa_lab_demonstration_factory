@@ -9,7 +9,6 @@ import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.FtwarehouseMQTTCli
 import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.WarehouseTopics;
 import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.subscriber.ftwarehousestorage.BikeInstance;
 import jakarta.annotation.PostConstruct;
-import org.checkerframework.checker.units.qual.C;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;

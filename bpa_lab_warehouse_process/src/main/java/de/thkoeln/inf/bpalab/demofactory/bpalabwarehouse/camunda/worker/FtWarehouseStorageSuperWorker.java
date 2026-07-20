@@ -1,16 +1,11 @@
 package de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.camunda.worker;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.FtwarehouseMQTTClient;
-import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.publisher.FtWarehousePublisher;
-import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.subscriber.FtWarehouseFetchedBike;
 import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.subscriber.FtWarehouseStorage;
-import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.subscriber.FtWarehouseStoredPlace;
-import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.client.CamundaClient;
+import io.camunda.client.annotation.JobWorker;
+import io.camunda.client.api.worker.JobClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
-import io.camunda.zeebe.client.api.worker.JobClient;
-import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,8 +27,8 @@ public class FtWarehouseStorageSuperWorker extends AWorker {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public FtWarehouseStorageSuperWorker(ZeebeClient zeebeClient) {
-        this.ftfactoryZEEBEClient = zeebeClient;
+    public FtWarehouseStorageSuperWorker(CamundaClient camundaClient) {
+        this.ftfactoryCamundaClient = camundaClient;
     }
 // Worker for inventory
     @JobWorker(type = "inventory")
@@ -58,7 +53,7 @@ public class FtWarehouseStorageSuperWorker extends AWorker {
         Map<String, Object> vars = job.getVariablesAsMap();
         warehouseFetchCorrelation = (String) vars.get("warehouseFetchCorrelation");
         LOG.info("startWarehouseFetch vars {}", vars);
-        ftfactoryZEEBEClient.newPublishMessageCommand()
+        ftfactoryCamundaClient.newPublishMessageCommand()
                 .messageName(MSG_WAREHOUSE_START_FETCH)
                 .correlationKey(warehouseFetchCorrelation)
                 .variables(vars)
@@ -72,7 +67,7 @@ public class FtWarehouseStorageSuperWorker extends AWorker {
         Map<String, Object> vars = job.getVariablesAsMap();
         warehousePutCorrelation = (String) vars.get("warehousePutCorrelation");
         LOG.info("startWarehousePut {}", vars);
-        ftfactoryZEEBEClient.newPublishMessageCommand()
+        ftfactoryCamundaClient.newPublishMessageCommand()
                 .messageName(MSG_WAREHOUSE_START_PUT)
                 .correlationKey(warehousePutCorrelation)
                 .variables(vars)

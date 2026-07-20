@@ -7,10 +7,11 @@ import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.publisher.FtWareho
 import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.subscriber.FtWarehouseFetchedBike;
 import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.subscriber.FtWarehouseStorage;
 import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.subscriber.FtWarehouseStoredPlace;
+import io.camunda.client.CamundaClient;
+import io.camunda.client.annotation.JobWorker;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
-import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,9 +44,9 @@ public class FtWarehouseStorageWorker extends AWorker {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public FtWarehouseStorageWorker(ZeebeClient zeebeClient, FtwarehouseMQTTClient ftWarehouseMQTTClient) {
+    public FtWarehouseStorageWorker(CamundaClient zeebeClient, FtwarehouseMQTTClient ftWarehouseMQTTClient) {
         this.ftWarehouseMQTTClient = ftWarehouseMQTTClient;
-        this.ftfactoryZEEBEClient = zeebeClient;
+        this.ftfactoryCamundaClient = zeebeClient;
     }
 // Worker for BPALabWarehouseFetch
 
@@ -88,7 +89,7 @@ public class FtWarehouseStorageWorker extends AWorker {
             warehouseFetchCorrelation = variables.get("warehouseFetchCorrelation").toString();
             LOG.info("sendFinishedWarehouseFetch correlationKey {}"
                     , warehouseFetchCorrelation);
-            ftfactoryZEEBEClient.newPublishMessageCommand()
+            ftfactoryCamundaClient.newPublishMessageCommand()
                     .messageName(MSG_WAREHOUSE_FETCH_FINISHED)
                     .correlationKey(warehouseFetchCorrelation)
                     .variables(variables)
@@ -106,7 +107,7 @@ public class FtWarehouseStorageWorker extends AWorker {
             warehouseFetchCorrelation = variables.get("warehouseFetchCorrelation").toString();
             LOG.info("sendFinishedWarehouseNoBike correlationKey {}"
                     , warehouseFetchCorrelation);
-            ftfactoryZEEBEClient.newPublishMessageCommand()
+            ftfactoryCamundaClient.newPublishMessageCommand()
                     .messageName(MSG_WAREHOUSE_FETCH_NOBIKE_FINISHED)
                     .correlationKey(warehouseFetchCorrelation)
                     .send().join();
@@ -148,7 +149,7 @@ public class FtWarehouseStorageWorker extends AWorker {
             warehousePutCorrelation = variables.get("warehousePutCorrelation").toString();
             LOG.info("sendFinishedWarehousePut correlationKey {}"
                     , warehousePutCorrelation);
-            ftfactoryZEEBEClient.newPublishMessageCommand()
+            ftfactoryCamundaClient.newPublishMessageCommand()
                     .messageName(MSG_WAREHOUSE_PUT_FINISHED)
                     .correlationKey(warehousePutCorrelation)
                     .variables(variables)
@@ -166,7 +167,7 @@ public class FtWarehouseStorageWorker extends AWorker {
             warehousePutCorrelation = variables.get("warehousePutCorrelation").toString();
             LOG.info("sendFinishedWarehouseNoPut correlationKey {} "
                     , warehousePutCorrelation);
-            ftfactoryZEEBEClient.newPublishMessageCommand()
+            ftfactoryCamundaClient.newPublishMessageCommand()
                     .messageName(MSG_WAREHOUSE_PUT_NOPLACE_FINISHED)
                     .correlationKey(warehousePutCorrelation)
                     .send().join();

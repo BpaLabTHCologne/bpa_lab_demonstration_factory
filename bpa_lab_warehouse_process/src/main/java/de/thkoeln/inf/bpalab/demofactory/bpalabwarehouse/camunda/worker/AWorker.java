@@ -1,7 +1,7 @@
 package de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.camunda.worker;
 
 import de.thkoeln.inf.bpalab.demofactory.bpalabwarehouse.mqtt.FtwarehouseMQTTClient;
-import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.client.CamundaClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public abstract class AWorker {
 	protected FtwarehouseMQTTClient ftWarehouseMQTTClient;
 
 	@Autowired
- 	protected ZeebeClient ftfactoryZEEBEClient;
+ 	protected CamundaClient ftfactoryCamundaClient;
 
 	protected static void logJobStart(ActivatedJob job) {
 	log.info(
