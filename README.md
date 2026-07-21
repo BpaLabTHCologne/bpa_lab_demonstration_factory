@@ -1,5 +1,8 @@
 # BPA Lab Bicycle Manufacturing Factory
 
+> branch 8.9 
+> > migrate to camunda8.9 and springboot 4
+
 The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (enterprises, students, ...).
 
 A general introduction is available here: [https://github.com/BpaLabTHCologne/bpa_lab_docs](https://bpalabthcologne.github.io/bpa_lab_book/)
@@ -12,9 +15,9 @@ Install docker, e.g. docker desktop application based on your system preference 
 
 ## Using docker compose to deploy and start entire solution 
 
-:information_source: Docker 20.10.16+ is required.
+information_source: Docker 20.10.16+ is required.
 
-:information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
+information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
 
 1. Clone this repository to a directory of your choice
 2. Run docker service (e.g Docker Desktop application)
