@@ -161,7 +161,7 @@ services:
   bpalabpurchasing:
     image: bpa_lab_demonstration_factory/purchasing
     environment:
-      ZEEBE_ADDRESS: zeebe:26500
+      ZEEBE_ADDRESS: orchestration:26500
       CAMUNDA_AUTH_STRATEGY: NONE
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
@@ -180,7 +180,7 @@ services:
   bpalabshipment:
     image: bpa_lab_demonstration_factory/shipment
     environment:
-      ZEEBE_ADDRESS: zeebe:26500
+      ZEEBE_ADDRESS: orchestration:26500
       CAMUNDA_AUTH_STRATEGY: NONE
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
