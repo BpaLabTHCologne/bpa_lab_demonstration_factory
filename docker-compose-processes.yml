@@ -252,8 +252,6 @@ volumes:
   elastic:
   camunda:
   camunda-data:
-  grafana_data:
-  mysql_data:
 
 networks:
   camunda:
