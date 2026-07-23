@@ -272,8 +272,9 @@ services:
     depends_on:
       - elasticsearch
 
+# trino bug?: doesn't show startDate, endDate from operate-flownode-instance-8.3.1_alias
+#             viewing index with Kibana startDate, endDate appear
   trino:
-    #    image: trinodb/trino:435
     image: trinodb/trino
     container_name: trino
     ports:
