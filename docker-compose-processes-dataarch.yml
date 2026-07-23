@@ -70,7 +70,7 @@ services:
         condition: service_healthy
 
   elasticsearch: # https://hub.docker.com/_/elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.4.4
     container_name: elasticsearch
     ports:
       - "9200:9200"
@@ -234,7 +234,7 @@ services:
 
   # ------------- BPALab Dataarchitecture
   kibana:
-    image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
+    image: docker.elastic.co/kibana/kibana:9.4.4
     container_name: kibana
     ports:
       - "5601:5601"
@@ -272,8 +272,6 @@ services:
     depends_on:
       - elasticsearch
 
-# trino bug?: doesn't show startDate, endDate from operate-flownode-instance-8.3.1_alias
-#             viewing index with Kibana startDate, endDate appear
   trino:
     image: trinodb/trino
     container_name: trino
