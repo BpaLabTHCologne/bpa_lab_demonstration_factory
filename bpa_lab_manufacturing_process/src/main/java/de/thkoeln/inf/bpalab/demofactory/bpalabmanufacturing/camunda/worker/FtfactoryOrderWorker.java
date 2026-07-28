@@ -2,7 +2,7 @@ package de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.camunda.worker;
 
 import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.mqtt.publisher.FtfactoryPubOrder;
 import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.mqtt.subscriber.FtfactorySubOrder;
-import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.client.api.response.ActivatedJob;
 import io.camunda.client.annotation.JobWorker;
 import io.camunda.client.exception.CamundaError;
 import org.springframework.beans.factory.annotation.Autowired;

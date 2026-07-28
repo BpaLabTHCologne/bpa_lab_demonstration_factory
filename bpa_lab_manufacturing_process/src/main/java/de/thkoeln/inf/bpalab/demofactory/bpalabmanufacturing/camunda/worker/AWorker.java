@@ -2,8 +2,7 @@ package de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.camunda.worker;
 
 import de.thkoeln.inf.bpalab.demofactory.bpalabmanufacturing.mqtt.FtfactoryMQTTClient;
 import io.camunda.client.CamundaClient;
-import jakarta.annotation.PostConstruct;
-import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.client.api.response.ActivatedJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
