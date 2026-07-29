@@ -1,6 +1,13 @@
 camunda:
   client:
     mode: self-managed
+#    for docker-compose-full
+#    auth:
+#      method: oidc
+#      client-id: orchestration
+#      client-secret: secret
+#      issuer-url: http://localhost:18080/auth/realms/camunda-platform
+#      audience: orchestration-api
     rest-address: ${ZEEBE_REST_ADRESS:http://localhost:8080}
     grpc-address: ${ZEEBE_GRPC_ADRESS:http://localhost:26500}
 
