@@ -14,8 +14,7 @@ import de.thkoeln.inf.bpalab.demofactory.common.service.BikeInstanceService;
 import de.thkoeln.inf.bpalab.demofactory.productioncontrol.service.ProductionOrderService;
 import io.camunda.client.CamundaClient;
 import io.camunda.client.annotation.JobWorker;
-import io.camunda.zeebe.client.api.response.ActivatedJob;
-import io.camunda.zeebe.client.api.worker.JobClient;
+import io.camunda.client.api.response.ActivatedJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,7 @@ public class ProductionControlWorker {
 	}
 
 	@JobWorker(type = "createComponentDemand", fetchVariables={"productionOrderNumber", "orderNumber", "produceBikeModel"})
-	public Map<String, Object> createComponentDemand(JobClient client, ActivatedJob job) {
+	public Map<String, Object> createComponentDemand(ActivatedJob job) {
 		ProductionOrderDTO productionOrderDTO = job.getVariablesAsType(ProductionOrderDTO.class);
 		HashMap<String, Object> variables = new HashMap<>();
 		int amount = productionOrderDTO.produceBikeModel.amount;
@@ -152,7 +151,7 @@ public class ProductionControlWorker {
 // Worker for starting WarehousePut
 
     @JobWorker(type = "startWarehousePut")
-    public void startWarehousePut(final JobClient client, final ActivatedJob job) {
+    public void startWarehousePut(final ActivatedJob job) {
         Map<String, Object> vars = job.getVariablesAsMap();
         Map<String, Object> varsOut = new HashMap<>();
 
