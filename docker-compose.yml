@@ -1,4 +1,5 @@
 services:
+  #  mysql database
   mysql:
     image: mysql:9.2
     environment:
@@ -6,6 +7,12 @@ services:
       - MYSQL_ROOT_PASSWORD=P4ssword!
     ports:
       - 3070:3306
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -h 127.0.0.1 -uroot -pP4ssword! -e 'SELECT 1' || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     volumes:
       - ./sql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
     networks:
