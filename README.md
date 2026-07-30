@@ -2,6 +2,15 @@
 
 > branch 8.9 
 > > migrate to camunda8.9 and springboot 4
+> >
+> > use docker multistage builds
+> >
+> > dividing dockerfiles 
+> > > basic(docker-compose),
+> > >
+> > > processes(docker-compose-processes), includes basic
+> > >
+> > > dataarch(docker-compose-processes-dataarch), includes basic, processes
 
 The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (enterprises, students, ...).
 
@@ -46,12 +55,14 @@ Remark: In case you need to deloy a new release of the BPA Lab solution, it may 
 
 4. (open issue) Check container status (e.g. in Docker Desktop Application). In case not all containers are started sucessfully, please restart these containers after some time. Remark: In case you have limited RAM/CPU, the start of components/container (e.g. Camunda task list) may require few minutes. 
 
-5. (only for initial setup) To use the data architecture / dashboards: please follow the guideline "Necessary configurations for the use of the data architecture during initial installation or reinstallation" in the Wiki    
+5. (only for initial setup) To use the data architecture / dashboards: please follow the guideline "Necessary configurations for the use of the data architecture during initial installation or reinstallation"
 
-6. Run solution (refer to "User Guide for End to End Process Execution" and - in case you would like to use the physical components of the BPA Lab "Use-of-the-productive-environment-of-the-model-factory" in wiki) The application can be accesses via URL, which are visible in Docker Desktop.
-   
+    1. (new open issue) trino unreliable: startDate, endDate of index operate-flownode-instances-8.3.1 not found
+
+6. Run solution (refer to "User Guide for End to End Process Execution" and - in case you would like to use the physical components of the BPA Lab "Use-of-the-productive-environment-of-the-model-factory") The application can be accesses via URL, which are visible in Docker Desktop.
+
 7. Run the following command only to shut down the containers gracefully: 
-   "docker compose -f docker-compose-processes.yml down" to 
+   "docker compose -f docker-compose-processes.yml down"
 
 ### Recommended tools for developers
 
