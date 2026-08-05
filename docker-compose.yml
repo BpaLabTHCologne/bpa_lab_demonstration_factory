@@ -1,23 +1,4 @@
 services:
-  #  mysql database
-  mysql:
-    image: mysql:9.2
-    environment:
-      - MYSQL_DATABASE=bpa_lab_demonstration_factory
-      - MYSQL_ROOT_PASSWORD=P4ssword!
-    ports:
-      - 3070:3306
-    healthcheck:
-      test: ["CMD-SHELL", "mysql -h 127.0.0.1 -uroot -pP4ssword! -e 'SELECT 1' || exit 1"]
-      interval: 30s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    volumes:
-      - ./sql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
-    networks:
-      - camunda
-
 # This is a lightweight configuration with Orchestration (Zeebe + Operate + Tasklist), Connectors
 # and Elasticsearch as secondary storage
   camunda-data-init:
@@ -89,7 +70,7 @@ services:
         condition: service_healthy
 
   elasticsearch: # https://hub.docker.com/_/elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:9.4.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
     container_name: elasticsearch
     ports:
       - "9200:9200"
