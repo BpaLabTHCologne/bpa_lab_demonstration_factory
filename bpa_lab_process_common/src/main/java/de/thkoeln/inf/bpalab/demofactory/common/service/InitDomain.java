@@ -71,21 +71,21 @@ public class InitDomain {
         if (bikeComponentRepository.count() != 0)
             return;
         BikeComponent bikeComponent = new BikeComponent();
-        BikeModel bikeModel = bikeModelRepository.getReferenceById("Schaf Citybike");
+        BikeModel bikeModel = bikeModelRepository.findById("Schaf Citybike").get();
         bikeComponent.setBikeModel(bikeModel);
         bikeComponent.setColor(bikeModel.getColor());
         bikeComponent.setQuantity(0);
         bikeComponent.setTitle("Citybike Component Kit");
         bikeComponentRepository.save(bikeComponent);
         bikeComponent = new BikeComponent();
-        bikeModel = bikeModelRepository.getReferenceById("Ziege Mountainbike");
+        bikeModel = bikeModelRepository.findById("Ziege Mountainbike").get();
         bikeComponent.setBikeModel(bikeModel);
         bikeComponent.setColor(bikeModel.getColor());
         bikeComponent.setQuantity(3);
         bikeComponent.setTitle("Mountainbike Component Kit");
         bikeComponentRepository.save(bikeComponent);
         bikeComponent = new BikeComponent();
-        bikeModel = bikeModelRepository.getReferenceById("Esel Lastenrad");
+        bikeModel = bikeModelRepository.findById("Esel Lastenrad").get();
         bikeComponent.setBikeModel(bikeModel);
         bikeComponent.setColor(bikeModel.getColor());
         bikeComponent.setQuantity(3);
