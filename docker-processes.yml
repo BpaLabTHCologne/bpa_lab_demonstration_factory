@@ -13,7 +13,7 @@ services:
       dockerfile: bpa_lab_ordermanagement.dockerfile
       no_cache: true
     depends_on:
-      mysql:
+      mysql-secondary:
         condition: service_healthy
       orchestration:
         # Wait for orchestration service to be healthy, otherwise we get a lot of noisy logs from connection errors
@@ -33,7 +33,7 @@ services:
       dockerfile: bpa_lab_productioncontrol.dockerfile
       no_cache: true
     depends_on:
-      mysql:
+      mysql-secondary:
         condition: service_healthy
       orchestration:
         # Wait for orchestration service to be healthy, otherwise we get a lot of noisy logs from connection errors
@@ -86,7 +86,7 @@ services:
       dockerfile: bpa_lab_purchasing.dockerfile
       no_cache: true
     depends_on:
-      mysql:
+      mysql-secondary:
         condition: service_healthy
       orchestration:
         # Wait for orchestration service to be healthy, otherwise we get a lot of noisy logs from connection errors
@@ -105,7 +105,7 @@ services:
       dockerfile: bpa_lab_shipment.dockerfile
       no_cache: true
     depends_on:
-      mysql:
+      mysql-secondary:
         condition: service_healthy
       orchestration:
         # Wait for orchestration service to be healthy, otherwise we get a lot of noisy logs from connection errors

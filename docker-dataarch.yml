@@ -22,9 +22,7 @@ services:
     volumes:
       - ./trino-config:/etc/trino/catalog
     depends_on:
-      - elasticsearch
-      #condition: service_healthy
-      - mysql
+      - mysql-secondary
     networks:
       - camunda
 
