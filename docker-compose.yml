@@ -103,8 +103,11 @@ services:
 
 volumes:
   camunda:
+    name: camunda
   camunda-data:
+    name: camunda-data
   elastic:
+    name: elastic-volume
 
 
 networks:
