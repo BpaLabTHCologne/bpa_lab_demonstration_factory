@@ -1,3 +1,5 @@
+create schema bpa_lab_demonstration_factory;
+
 use bpa_lab_demonstration_factory;
 
 create table if not exists bike_model

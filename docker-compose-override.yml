@@ -29,38 +29,8 @@ services:
     networks:
       - secondary-storage
 
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3008:3000"
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./grafana_dashboards:/var/lib/grafana/dashboards
-      - ./provision:/etc/grafana/provisioning
-    depends_on:
-      - trino
-    networks:
-      - secondary-storage
-
-  trino:
-    image: trinodb/trino
-    container_name: trino
-    ports:
-      - "8089:8080"
-    volumes:
-      - ./trino-config:/etc/trino/catalog
-    depends_on:
-      - mysql-secondary
-      #condition: service_healthy
-    networks:
-      - secondary-storage
-
-
-
 volumes:
   mysql-secondary-data:
-  grafana_data:
 
 networks:
   secondary-storage:

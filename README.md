@@ -1,6 +1,8 @@
 # BPA Lab Bicycle Manufacturing Factory
 
 > branch 8.9 
+> > use mysql as secondary storage
+> >
 > > migrate to camunda8.9 and springboot 4
 > >
 > > use docker multistage builds
