@@ -1,17 +1,5 @@
 services:
   # ------------- BPALab Dataarchitecture
-  kibana:
-    image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
-    container_name: kibana
-    ports:
-      - "5601:5601"
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
-    networks:
-      - camunda
-
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -25,19 +13,6 @@ services:
       - trino
     networks:
       - camunda
-
-  # Filebeat to ingest data from MQTT-Broker to ElasticSearch
-  # ONLY POSSIBLE  IF THERE IS A CONNECTION TO THE MQTT_BROKER (RASPBERRY PI) AND FT_FACTORY OF THE BPA-LAB!
-  filebeat:
-    build:
-      context: ./filebeat
-      dockerfile: Dockerfile.filebeat
-    environment:
-      - ELASTICSEARCH_HOST=http://elasticsearch:9200
-    networks:
-      - camunda
-    depends_on:
-      - elasticsearch
 
   trino:
     image: trinodb/trino
@@ -56,7 +31,4 @@ services:
 
 volumes:
   grafana_data:
-
-networks:
-  camunda:
-    name: camunda
+    name: grafana_data
