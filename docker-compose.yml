@@ -125,3 +125,6 @@ configs:
 
   orchestration-config:
     file: ./configuration/${ORCHESTRATION_CONFIG_FILE:-application-h2.yaml}
+
+include:
+  - docker-compose-override.yml

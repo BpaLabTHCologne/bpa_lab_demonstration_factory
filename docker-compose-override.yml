@@ -1,0 +1,66 @@
+services:
+  orchestration:
+    environment:
+      CAMUNDA_DATA_SECONDARY_STORAGE_TYPE: rdbms
+      CAMUNDA_DATA_SECONDARY_STORAGE_RDBMS_DATABASEVENDORID: mysql
+      CAMUNDA_DATA_SECONDARY_STORAGE_RDBMS_URL: jdbc:mysql://mysql-secondary:3306/camunda_secondary?serverTimezone=UTC
+      CAMUNDA_DATA_SECONDARY_STORAGE_RDBMS_USERNAME: camunda
+      CAMUNDA_DATA_SECONDARY_STORAGE_RDBMS_PASSWORD: camunda
+    depends_on:
+      - mysql-secondary
+    volumes:
+      - ./driver-lib:/driver-lib:ro
+    networks:
+      - secondary-storage
+
+  mysql-secondary:
+    image: mysql:9.2
+    environment:
+      MYSQL_DATABASE: camunda_secondary
+      MYSQL_USER: camunda
+      MYSQL_PASSWORD: camunda
+      MYSQL_ROOT_PASSWORD: rootcamunda
+    ports:
+      - 3070:3306
+    volumes:
+      - mysql-secondary-data:/var/lib/mysql
+      - ./sql/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+
+    networks:
+      - secondary-storage
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3008:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana_dashboards:/var/lib/grafana/dashboards
+      - ./provision:/etc/grafana/provisioning
+    depends_on:
+      - trino
+    networks:
+      - secondary-storage
+
+  trino:
+    image: trinodb/trino
+    container_name: trino
+    ports:
+      - "8089:8080"
+    volumes:
+      - ./trino-config:/etc/trino/catalog
+    depends_on:
+      - mysql-secondary
+      #condition: service_healthy
+    networks:
+      - secondary-storage
+
+
+
+volumes:
+  mysql-secondary-data:
+  grafana_data:
+
+networks:
+  secondary-storage:
