@@ -35,9 +35,5 @@ spring:
         type:
           preferred_uuid_jdbc_type: CHAR
 #        format_sql: true
-  docker:
-    compose:
-      lifecycle-management: start-only
-      file: ../docker-compose.yml
 server:
   port: 9090

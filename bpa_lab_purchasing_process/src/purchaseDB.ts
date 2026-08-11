@@ -7,9 +7,9 @@ config()
 export let con = mysql.createConnection({
     host: process.env.MYSQL_HOST,
     port: process.env.MYSQL_PORT,
-    user: "root",
-    password: "P4ssword!",
-    database: "bpa_lab_demonstration_factory"
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PW,
+    database: process.env.MYSQL_DB
 });
 
 export function getPurchaseOrder(purchaseOrderNumber : string) {

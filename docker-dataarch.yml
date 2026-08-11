@@ -12,7 +12,7 @@ services:
     depends_on:
       - trino
     networks:
-      - camunda
+      - secondary-storage
 
   trino:
     image: trinodb/trino
@@ -24,7 +24,7 @@ services:
     depends_on:
       - mysql-secondary
     networks:
-      - camunda
+      - secondary-storage
 
 
 volumes:

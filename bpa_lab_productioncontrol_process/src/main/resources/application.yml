@@ -8,7 +8,7 @@ spring:
   datasource:
     url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3070/bpa_lab_demonstration_factory?serverTimezone=UTC}
     username: ${JDBC_DATABASE_USERNAME:root}
-    password: ${JDBC_DATABASE_PASSWORD:P4ssword!}
+    password: ${JDBC_DATABASE_PASSWORD:rootcamunda}
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
