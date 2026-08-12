@@ -1,0 +1,184 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "trino-datasource",
+        "uid": "de5zt5g5uujgga"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "case_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 149
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "activity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 463
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "start_timestamp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 217
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "end_timestamp"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 234
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "customer_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 180
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "products"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 320
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "sorting_column"
+          }
+        ]
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "trino-datasource",
+            "uid": "de5zt5g5uujgga"
+          },
+          "format": 1,
+          "rawSQL": "WITH variable AS (\n    SELECT DISTINCT\n        processInstanceKey,\n        TRIM(BOTH '\"' FROM CAST(value AS VARCHAR)) AS orderNumber\n    FROM elasticsearch.default.\"operate-variable-8.3.0_alias\" AS v\n    WHERE v.\"name\" = 'orderNumber'\n),\norder_products AS (\n    SELECT\n        coi.order_id,\n        array_join(array_agg(CAST(coi.quantity AS VARCHAR) || 'x ' || coi.bike_model_id), ', ') AS products\n    FROM mysql.bpa_lab_demonstration_factory.customer_order_item AS coi\n    GROUP BY coi.order_id\n)\nSELECT\n    variable.orderNumber AS case_id,\n    flownode.flowNodeId AS activity,\n    flownode.startDate AS start_timestamp,\n    flownode.endDate AS end_timestamp,\n    flownode.position AS sorting_column,\n    flownode.state AS activity_state,\n    flownode.incident AS incident_occured,\n    orders.customer_name,\n    order_products.products\nFROM elasticsearch.default.\"operate-flownode-instance-8.3.1_alias\" AS flownode\nLEFT JOIN variable\n    ON flownode.processInstanceKey = variable.processInstanceKey\nLEFT JOIN mysql.bpa_lab_demonstration_factory.customer_order AS orders\n    ON variable.orderNumber = orders.customer_order_number\nLEFT JOIN order_products\n    ON orders.customer_order_number = order_products.order_id\nWHERE flownode.type NOT IN ('EXCLUSIVE_GATEWAY', 'RECEIVE_TASK')\n    AND variable.orderNumber IS NOT NULL\n    AND flownode.flowNodeId IS NOT NULL\n    AND flownode.startDate IS NOT NULL\n    AND flownode.endDate IS NOT NULL\n    AND flownode.startDate BETWEEN $__timeFrom() AND $__timeTo()\nORDER BY sorting_column",
+          "refId": "A"
+        }
+      ],
+      "title": "Ereignisprotokoll",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-2y",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Ereignisprotokoll für Process Mining",
+  "uid": "ce5ztwholpvcwe",
+  "version": 30,
+  "weekStart": ""
+}

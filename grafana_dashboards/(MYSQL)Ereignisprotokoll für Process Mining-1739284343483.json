@@ -1,0 +1,247 @@
+{
+  "apiVersion": "dashboard.grafana.app/v2",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "adf4ktb",
+    "namespace": "default",
+    "uid": "c4aa237c-cf9f-41e0-8b60-711ab2c38332",
+    "resourceVersion": "1786361317942012",
+    "generation": 1,
+    "creationTimestamp": "2026-08-10T11:28:37Z",
+    "labels": {
+      "grafana.app/deprecatedInternalID": "1610104212488192"
+    },
+    "annotations": {
+      "grafana.app/createdBy": "user:cfuqxhzmptr7ke",
+      "grafana.app/saved-from-ui": "Grafana v13.1.3 (45a27d64b6)"
+    }
+  },
+  "spec": {
+    "annotations": [
+      {
+        "kind": "AnnotationQuery",
+        "spec": {
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana",
+            "version": "v0",
+            "datasource": {
+              "name": "-- Grafana --"
+            },
+            "spec": {}
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "builtIn": true
+        }
+      }
+    ],
+    "cursorSync": "Off",
+    "description": "",
+    "editable": true,
+    "elements": {
+      "panel-1": {
+        "kind": "Panel",
+        "spec": {
+          "id": 1,
+          "title": "Ereignisprotokoll",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "trino-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "afur6ketl4ydce"
+                      },
+                      "spec": {
+                        "format": 1,
+                        "rawSQL": "WITH variable AS (\n    SELECT DISTINCT\n        process_instance_key,\n        TRIM(BOTH '\"' FROM CAST(var_value AS VARCHAR)) AS orderNumber\n    FROM mysql.camunda_secondary.\"variable\" AS v\n    WHERE v.\"var_name\" = 'orderNumber'\n),\norder_products AS (\n    SELECT\n        coi.order_id,\n        array_join(array_agg(CAST(coi.quantity AS VARCHAR) || 'x ' || coi.bike_model_id), ', ') AS products\n    FROM mysql.bpa_lab_demonstration_factory.customer_order_item AS coi\n    GROUP BY coi.order_id\n)\nSELECT\n    variable.orderNumber AS case_id,\n    flownode.flow_node_id AS activity,\n    flownode.start_date AS start_timestamp,\n    flownode.end_date AS end_timestamp,\n    flownode.state AS activity_state,\n    flownode.incident_key AS incident_occured,\n    orders.customer_name,\n    order_products.products\nFROM mysql.camunda_secondary.\"flow_node_instance\" AS flownode\nLEFT JOIN variable\n    ON flownode.process_instance_key = variable.process_instance_key\nLEFT JOIN mysql.bpa_lab_demonstration_factory.customer_order AS orders\n    ON variable.orderNumber = orders.customer_order_number\nLEFT JOIN order_products\n    ON orders.customer_order_number = order_products.order_id\nWHERE flownode.type NOT IN ('EXCLUSIVE_GATEWAY', 'RECEIVE_TASK')\n    AND variable.orderNumber IS NOT NULL\n    AND flownode.flow_node_id IS NOT NULL\n    AND flownode.start_date IS NOT NULL\n    AND flownode.end_date IS NOT NULL\n    AND flownode.start_date BETWEEN $__timeFrom() AND $__timeTo()\nORDER BY flownode.start_date"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.1.3",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": false,
+                    "displayName": "sorting_column"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "case_id"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 149
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "activity"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 463
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "start_timestamp"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 217
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "end_timestamp"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 234
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "customer_name"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 180
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "products"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 320
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "layout": {
+      "kind": "GridLayout",
+      "spec": {
+        "items": [
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 0,
+              "width": 24,
+              "height": 16,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-1"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "links": [],
+    "liveNow": false,
+    "preload": false,
+    "tags": [],
+    "timeSettings": {
+      "timezone": "browser",
+      "from": "now-2y",
+      "to": "now",
+      "autoRefresh": "",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "hideTimepicker": false,
+      "fiscalYearStartMonth": 0
+    },
+    "title": "(MYSQL) Ereignisprotokoll für Process Mining",
+    "variables": []
+  }
+}
