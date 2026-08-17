@@ -1,14 +1,16 @@
 # BPA Lab Bicycle Manufacturing Factory
 
-> branch 8.9 
-> > use mysql as secondary storage
+> branch c8.9mysql
+> > use mysql for bpa_lab_demonstration_factory database and as secondary storage for camunda 
 > >
 > > migrate to camunda8.9 and springboot 4
 > >
 > > use docker multistage builds
 > >
 > > dividing dockerfiles 
-> > > basic(docker-compose),
+> > > docker-compose-override (mysql camunda secondary storage),
+> > >
+> > > basic(docker-compose), includes docker-compose-override 
 > > >
 > > > processes(docker-compose-processes), includes basic
 > > >
