@@ -15,6 +15,9 @@
 > > > processes(docker-compose-processes), includes basic
 > > >
 > > > dataarch(docker-compose-processes-dataarch), includes basic, processes
+> >
+> > to use grafana built-in mysql datasource
+> > > host: host.docker.internal:3070
 
 The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (enterprises, students, ...).
 
