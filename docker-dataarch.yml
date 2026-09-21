@@ -1,5 +1,16 @@
 services:
   # ------------- BPALab Dataarchitecture
+  mongodb:
+    image: mongo:8.0.4
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodbdata:/data/db
+    networks:
+      - secondary-storage
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -30,3 +41,4 @@ services:
 volumes:
   grafana_data:
     name: grafana_data
+  mongodbdata:
