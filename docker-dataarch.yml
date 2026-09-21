@@ -1,5 +1,18 @@
 services:
   # ------------- BPALab Dataarchitecture
+  bpalabmqtt2mongodb:
+    image: bpa_lab_demonstration_factory/mqtt_2_mongodb
+    environment:
+      MONGODB_URI: mongodb://host.docker.internal:27017
+      MQTT_BROKER_URL: ws://10.0.0.12:9001
+    build:
+      dockerfile: bpa_lab_mqtt_2_mongodb.dockerfile
+      no_cache: true
+    depends_on:
+      - mongodb
+    networks:
+      - secondary-storage
+
   mongodb:
     image: mongo:8.0.4
     container_name: mongodb

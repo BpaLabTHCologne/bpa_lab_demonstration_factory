@@ -6,7 +6,6 @@ plugins {
 }
 
 group = "de.thkoeln.inf.bpalab"
-version = "0.0.1-SNAPSHOT"
 description = "bpalab_mqtt_2_mongodb"
 
 java {
