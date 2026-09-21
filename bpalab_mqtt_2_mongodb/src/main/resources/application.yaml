@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: bpalab_mqtt_2_mongodb
+  mongodb:
+    database: ft-factory-sensor-data
+    auto-index-creation: true
+    uri: mongodb://localhost:27017
+mqtt:
+#  broker-url: ws://host.docker.internal:9001
+  broker-url: ws://localhost:9001
+  client-id: bpalab_mqtt2mongodb_client
+  default-topic: "#"
