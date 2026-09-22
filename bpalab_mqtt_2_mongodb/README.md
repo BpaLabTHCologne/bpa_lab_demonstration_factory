@@ -22,34 +22,90 @@ These additional references should also help you:
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
 
 ### Topics and Payloads 
+**Topic: bpalab/ftfactory/i/ldr**
 
+    {"ts": "2025-07-31T10:58:03.299Z",
+    "br": 82.2,
+    "ldr": 11575
+    }
 
-"bpalab/ftfactory/f/i/state/hbw",
+**Topic: bpalab/ftfactory/i/bme680**
 
-    payload_hbw = '{"ts":"{}","station":"hbw","code":{},"active":{}}'
+    {"ts": "2025-07-31T10:57:23.356Z",
+    "t": 24.6,
+    "rt": 0,
+    "h": 39,
+    "rh": 0,
+    "p": 1000.7,
+    "iaq": 3,
+    "aq": 3,
+    "gr": 0
+    }
 
-"bpalab/ftfactory/f/i/state/vgr",
+**Topic: bpalab/ftfactory/f/i/order**
 
-    payload = '{"ts":"{}","station":"vgr","code":{},"active":{},"target":"{}"}'
+    {"ts": "2025-07-31T10:57:42.953Z",
+    "state": "ORDERED",
+    "type": "WHITE",
+    "processOrderReference": "None"
+    }
 
-"bpalab/ftfactory/f/i/state/mpo", 
+**Topic: bpalab/ftfactory/f/i/state/vgr**
 
-    payload_mpo = '{"ts":"{}","station":"mpo","code":{},"active":{}}'
+    {"ts": "2025-07-31T10:57:24.089Z",
+    "station": "vgr",
+    "code": 1,
+    "active": 0,
+    "target": ""
+    }
 
-"bpalab/ftfactory/f/i/state/sld",
+**----- Station ------------------------------**
 
-    payload_sld = '{"ts":"{}","station":"sld","code":{},"active":{}}'
+**Topic: bpalab/ftfactory/f/i/state/dsi** 
 
+    {"ts": "2025-07-31T10:57:16.647Z",
+    "station": "dsi",
+    "code": 1,
+    "active": 0
+    }
 
-"bpalab/ftfactory/f/i/order"
+**Topic: bpalab/ftfactory/f/i/state/sld**
 
-    payload_order = '{"ts":"{}","state":"{}","type":"{}", "processOrderReference":"{}"}'
+    {"ts": "2025-07-31T10:57:18.509Z",
+    "station": "sld",
+    "code": 1,
+    "active": 0
+    }
 
-"bpalab/ftfactory/i/bme680",
+**Topic: bpalab/ftfactory/f/i/state/dso**
 
-    payload_bme680 = '{"ts":"{}","t":{},"rt":{},"h":{},"rh":{},"p":{},"iaq":{},"aq":{},"gr":{}}'
+    {"ts": "2025-07-31T10:57:24.709Z",
+    "station": "dso",
+    "code": 1,
+    "active": 0
+    }
 
-"bpalab/ftfactory/i/ldr",
+**Topic: bpalab/ftfactory/f/i/state/hbw**
 
-    payload_ldr = '{"ts":"{}", "br":{}, "ldr":{}}'
+    {"ts": "2025-07-31T10:57:25.962Z",
+    "station": "hbw",
+    "code": 2,
+    "active": 1
+    }
+
+**Topic: bpalab/ftfactory/f/i/state/sld**
+
+    {"ts": "2025-07-31T10:57:28.773Z",
+    "station": "sld",
+    "code": 1,
+    "active": 0
+    }
+
+**Topic: bpalab/ftfactory/f/i/state/mpo**
+
+    {"ts": "2025-07-31T10:57:34.871Z",
+    "station": "mpo",
+    "code": 1,
+    "active": 0
+    }
 

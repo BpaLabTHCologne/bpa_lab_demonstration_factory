@@ -17,6 +17,7 @@ import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt.MqttBme680Listener
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt.MqttLdrListener
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt.MqttOrderListener
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt.MqttStationListener
+import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt.MqttVgrListener
 
 @Service
 class MqttService(
@@ -26,13 +27,16 @@ class MqttService(
 ) {
     val stationSubscriptions = arrayOf(
         "bpalab/ftfactory/f/i/state/hbw",
-        "bpalab/ftfactory/f/i/state/vgr",
         "bpalab/ftfactory/f/i/state/mpo",
         "bpalab/ftfactory/f/i/state/sld",
+        "bpalab/ftfactory/f/i/state/dsi",
+        "bpalab/ftfactory/f/i/state/dso",
     )
+
+    val vgrSubscription = "bpalab/ftfactory/f/i/state/vgr"
     val orderSubscription = "bpalab/ftfactory/f/i/order"
-    val ldrSubscription = "bpalab/ftfactory/f/i/ldr"
-    val bme680Subscription = "bpalab/ftfactory/f/i/bme680"
+    val ldrSubscription = "bpalab/ftfactory/i/ldr"
+    val bme680Subscription = "bpalab/ftfactory/i/bme680"
 
 
     init {
@@ -40,6 +44,7 @@ class MqttService(
             mqttClient.subscribe(s, MqttStationListener(mqttEventRepository))
         }
 
+        mqttClient.subscribe(vgrSubscription, MqttVgrListener(mqttEventRepository))
         mqttClient.subscribe(orderSubscription, MqttOrderListener(mqttEventRepository))
         mqttClient.subscribe(ldrSubscription, MqttLdrListener(mqttEventRepository))
         mqttClient.subscribe(bme680Subscription, MqttBme680Listener(mqttEventRepository))
