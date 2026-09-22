@@ -11,11 +11,14 @@ open class MqttEvent(
     var id: String? = null
 )
 
+//------------ stations: mpo, vgr, sld, hbw ------------
+
 class MqttEventStationPayload(
     var ts: String = "",
     var code: String = "",
     var active: String = "",
-    var station:String = ""
+    var station: String = "",
+    var target: String = ""
 )
 
 class MqttEventStation(
@@ -25,6 +28,7 @@ class MqttEventStation(
     )
 : MqttEvent(topic)
 
+//------------ Order ------------------------------------
 
 class MqttEventOrderPayload(
     var ts: String = "",
@@ -39,6 +43,8 @@ class MqttEventOrder(
     val payload: MqttEventOrderPayload,
     ) : MqttEvent(topic)
 
+//------------ LDR ------------------------------------
+
 class MqttEventLdrPayload(
     var ts: String = "",
     var br: Double = 0.0,
@@ -51,6 +57,7 @@ class MqttEventLdr(
     val payload: MqttEventLdrPayload,
 ) : MqttEvent(topic)
 
+//------------ bme680 ------------------------------------
 class MqttEventBme680(
     topic: String,
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
