@@ -2,6 +2,7 @@ package de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.BpalabMqtt2MongodbApplication
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventBME680Payload
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventBme680
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventLdr
@@ -12,15 +13,21 @@ import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventStation
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventStationPayload
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventVgr
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventVgrPayload
-import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventRepository
-import org.eclipse.paho.client.mqttv3.IMqttActionListener
+import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventBme680Repository
+import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventLdrRepository
+import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventOrderRepository
+import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventStationRepository
+import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventVgrRepository
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener
 import org.eclipse.paho.client.mqttv3.MqttMessage
+import org.slf4j.LoggerFactory
 import java.nio.charset.StandardCharsets
 
 class MqttStationListener(
-    private val mqttEventRepository: MqttEventRepository
+    private val mqttEventRepository: MqttEventStationRepository
     ): IMqttMessageListener {
+    private val log = LoggerFactory.getLogger(MqttStationListener::class.java)
+
     override fun messageArrived(topic: String?, message: MqttMessage?) {
         if (topic == null || message == null) return
         val msgPayload = message.payload.toString(StandardCharsets.UTF_8)
@@ -28,17 +35,18 @@ class MqttStationListener(
             val mqttEventStationPayload = ObjectMapper().readValue<MqttEventStationPayload>(msgPayload)
             val mqttEvent = MqttEventStation(topic = topic, payload = mqttEventStationPayload)
             val event = mqttEventRepository.save(mqttEvent)
-            println("Stored event ${event.topic} : ${event.payload.station}")
+            log.info("$topic received message: ${event.payload.station}")
         } catch (e: Exception) {
-            println("Exception: $e")
+            log.info("Exception: $e")
         }
     }
 
 }
 
 class MqttOrderListener(
-    private val mqttEventRepository: MqttEventRepository
+    private val mqttEventRepository: MqttEventOrderRepository
     ): IMqttMessageListener {
+    private val log = LoggerFactory.getLogger(MqttOrderListener::class.java)
     override fun messageArrived(topic: String?, message: MqttMessage?) {
         if (topic == null || message == null) return
         val msgPayload = message.payload.toString(StandardCharsets.UTF_8)
@@ -48,16 +56,17 @@ class MqttOrderListener(
                     ObjectMapper().readValue<MqttEventOrderPayload>(msgPayload)
             )
             val event = mqttEventRepository.save(mqttEvent)
-            println("Stored event ${event.topic} : ${event.payload.type}")
+            log.info("$topic received message: ${event.payload.type}")
         } catch (e: Exception) {
-            println("Exception: $e")
+            log.info("Exception: $e")
         }
     }
 }
 
 class MqttLdrListener(
-    private val mqttEventRepository: MqttEventRepository
+    private val mqttEventRepository: MqttEventLdrRepository
 ): IMqttMessageListener {
+    private val log = LoggerFactory.getLogger(MqttLdrListener::class.java)
     override fun messageArrived(topic: String?, message: MqttMessage?) {
         if (topic == null || message == null) return
         val msgPayload = message.payload.toString(StandardCharsets.UTF_8)
@@ -67,39 +76,38 @@ class MqttLdrListener(
                     ObjectMapper().readValue<MqttEventLdrPayload>(msgPayload)
             )
             val event = mqttEventRepository.save(mqttEvent)
-            println("Stored event ${event.topic} : ${event.payload.ldr}")
+            log.info("$topic received message: ${event.payload.ldr}")
         } catch (e: Exception) {
-            println("Exception: $e")
+            log.info("Exception: $e")
         }
     }
 }
 
 class MqttBme680Listener(
-    private val mqttEventRepository: MqttEventRepository
+    private val mqttEventRepository: MqttEventBme680Repository
     ): IMqttMessageListener {
+    private val log = LoggerFactory.getLogger(MqttBme680Listener::class.java)
     override fun messageArrived(topic: String?, message: MqttMessage?) {
-        println("MQTT message arrived: $topic")
         if (topic == null || message == null) return
         val msgPayload = message.payload.toString(StandardCharsets.UTF_8)
-        println("MQTT message payload: $msgPayload")
         try {
             val payload = ObjectMapper().readValue<MqttEventBME680Payload>(msgPayload)
             val mqttEvent = MqttEventBme680(
                 topic = topic, payload = payload
             )
             val event = mqttEventRepository.save(mqttEvent)
-            println("Stored event ${event.topic} : ${event.payload.ts}")
+            log.info("$topic received message: ${event.payload.t}")
         } catch (e: Exception) {
-            println("Exception: $e")
+            log.info("Exception: $e")
         }
     }
 }
 
 class MqttVgrListener(
-    private val mqttEventRepository: MqttEventRepository
+    private val mqttEventRepository: MqttEventVgrRepository
 ): IMqttMessageListener {
+    private val log = LoggerFactory.getLogger(MqttVgrListener::class.java)
     override fun messageArrived(topic: String?, message: MqttMessage?) {
-        println("MQTT message arrived: $topic")
         if (topic == null || message == null) return
         val msgPayload = message.payload.toString(StandardCharsets.UTF_8)
         try {
@@ -108,9 +116,9 @@ class MqttVgrListener(
                 topic = topic, payload = payload
             )
             val event = mqttEventRepository.save(mqttEvent)
-            println("Stored even ${event.topic} : ${event.payload.target}")
+            log.info("$topic received message: ${event.payload.target}")
         } catch (e: Exception) {
-            println("Exception: $e")
+            log.info("Exception: $e")
         }
     }
 }

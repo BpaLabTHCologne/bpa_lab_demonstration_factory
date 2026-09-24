@@ -1,0 +1,81 @@
+db.trino_schema_collection.insertOne(
+    {
+        "fields": [
+                {"name": "_id", "type": "ObjectId", "hidden": true},
+                {"name": "_class", "type": "varchar", "hidden": true},
+                {"name": "topic", "type": "varchar", "hidden": false},
+                {"name": "timestamp", "type": "varchar", "hidden": false},
+                {"name": "code", "type": "varchar", "hidden": false},
+                {"name": "active", "type": "boolean", "hidden": false},
+                {"name": "station", "type": "varchar", "hidden": false}
+        ],
+        "table": "mqttEventStation"
+    }
+);
+
+db.trino_schema_collection.insertOne(
+    {
+        "fields": [
+            {"name": "_id", "type": "ObjectId", "hidden": true},
+            {"name": "_class", "type": "varchar", "hidden": true},
+            {"name": "topic", "type": "varchar", "hidden": false},
+            {"name": "timestamp", "type": "varchar", "hidden": false},
+            {"name": "code", "type": "varchar", "hidden": false},
+            {"name": "active", "type": "boolean", "hidden": false},
+            {"name": "station", "type": "varchar", "hidden": false},
+            {"name": "target", "type": "varchar", "hidden": false}
+        ],
+        "table": "mqttEventVgr"
+    }
+);
+
+db.trino_schema_collection.insertOne(
+    {
+        "fields": [
+            {"name": "_id", "type": "ObjectId", "hidden": true},
+            {"name": "_class", "type": "varchar", "hidden": true},
+            {"name": "topic", "type": "varchar"},
+            {"name": "timestamp", "type": "varchar"},
+            {"name": "type", "type": "varchar"},
+            {"name": "state", "type": "varchar"},
+            {"name": "processOrderReference", "type": "varchar"}
+        ],
+        "table": "mqttEventOrder"
+    }
+);
+
+db.trino_schema_collection.insertOne(
+    {
+        "fields": [
+                {"name": "_id", "type": "ObjectId", "hidden": true},
+                {"name": "_class", "type": "varchar", "hidden": true},
+                {"name": "topic", "type": "varchar", "hidden": false},
+                {"name": "timestamp", "type": "varchar", "hidden": false},
+                {"name": "br", "type": "double", "hidden": false},
+                {"name": "ldr", "type": "varchar", "hidden": false}
+        ],
+        "table": "mqttEventLdr"
+    }
+);
+
+
+db.trino_schema_collection.insertOne(
+    {
+        "fields": [
+            {"name": "_id", "type": "ObjectId", "hidden": true},
+            {"name": "_class", "type": "varchar", "hidden": true},
+            {"name": "topic", "type": "varchar"},
+            {"name": "timestamp", "type": "varchar"},
+            {"name": "aq", "type": "double"},
+            {"name": "gr", "type": "double"},
+            {"name": "p", "type": "double"},
+            {"name": "rh", "type": "double"},
+            {"name": "t", "type": "double"},
+            {"name": "h", "type": "double"},
+            {"name": "rt", "type": "double"},
+            {"name": "iaq", "type": "double"}
+        ],
+        "table": "mqttEventBme680"
+    }
+);
+

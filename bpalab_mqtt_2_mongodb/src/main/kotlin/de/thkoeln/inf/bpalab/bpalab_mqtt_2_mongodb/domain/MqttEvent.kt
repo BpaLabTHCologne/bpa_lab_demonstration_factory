@@ -1,52 +1,61 @@
 package de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.Transient
 import org.springframework.data.mongodb.core.mapping.Unwrapped
 import java.time.LocalDateTime
 
-open class MqttEvent(
-    var topic: String,
-    var timestamp: String = LocalDateTime.now().toString(),
-    @Id
-    var id: String? = null
-)
+//open class MqttEvent(
+//    var topic: String,
+//    var timestamp: String = LocalDateTime.now().toString(),
+//    @Id
+//    var id: String? = null
+//)
 
 //------------ stations: mpo, sld, hbw ------------
 
 class MqttEventStationPayload(
+    @Transient
     var ts: String = "",
     var code: String = "",
-    var active: String = "",
+    var active: Boolean = false,
     var station: String = ""
 )
 
 class MqttEventStation(
-    topic: String,
+    var topic: String,
+    var timestamp: String = LocalDateTime.now().toString(),
+    @Id
+    var id: String? = null,
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
     val payload: MqttEventStationPayload,
     )
-: MqttEvent(topic)
 
 //------------ Vgr ------------------------------------
 
 class MqttEventVgrPayload(
+    @Transient
     var ts: String = "",
     var code: String = "",
-    var active: String = "",
+    var active: Boolean = false,
     var station: String = "",
     var target: String = ""
 )
 
 class MqttEventVgr(
-    topic: String,
+    var topic: String,
+    var timestamp: String = LocalDateTime.now().toString(),
+    @Id
+    var id: String? = null,
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
     val payload: MqttEventVgrPayload,
 )
-    : MqttEvent(topic)
 
 //------------ Order ------------------------------------
 
 class MqttEventOrderPayload(
+    @Transient
     var ts: String = "",
     var state: String = "",
     var type: String = "",
@@ -54,40 +63,52 @@ class MqttEventOrderPayload(
 )
 
 class MqttEventOrder(
-    topic: String,
+    var topic: String,
+    var timestamp: String = LocalDateTime.now().toString(),
+    @Id
+    var id: String? = null,
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
     val payload: MqttEventOrderPayload,
-    ) : MqttEvent(topic)
+    )
 
 //------------ LDR ------------------------------------
 
 class MqttEventLdrPayload(
+    @Transient
     var ts: String = "",
     var br: Double = 0.0,
     var ldr: String = ""
 )
 
 class MqttEventLdr(
-    topic: String,
+    var topic: String,
+    var timestamp: String = LocalDateTime.now().toString(),
+    @Id
+    var id: String? = null,
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
     val payload: MqttEventLdrPayload,
-) : MqttEvent(topic)
+)
 
 //------------ bme680 ------------------------------------
-class MqttEventBme680(
-    topic: String,
-    @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
-    val payload: MqttEventBME680Payload
-    ) : MqttEvent(topic)
 
 class MqttEventBME680Payload(
+    @Transient
     var ts: String = "",
     var t: Double = 0.0,
     var rt: Double = 0.0,
     var h: Double = 0.0,
     var rh: Double = 0.0,
     var p: Double = 0.0,
-    var iaq: String = "",
-    var aq: String = "",
-    var gr: String = ""
+    var iaq: Double = 0.0,
+    var aq: Double = 0.0,
+    var gr: Double = 0.0
+)
+
+class MqttEventBme680(
+    var topic: String,
+    var timestamp: String = LocalDateTime.now().toString(),
+    @Id
+    var id: String? = null,
+    @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
+    val payload: MqttEventBME680Payload
 )
