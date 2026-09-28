@@ -1,17 +1,9 @@
 package de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
 import org.springframework.data.mongodb.core.mapping.Unwrapped
 import java.time.LocalDateTime
-
-//open class MqttEvent(
-//    var topic: String,
-//    var timestamp: String = LocalDateTime.now().toString(),
-//    @Id
-//    var id: String? = null
-//)
 
 //------------ stations: mpo, sld, hbw ------------
 

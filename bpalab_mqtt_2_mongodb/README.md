@@ -21,6 +21,11 @@ These additional references should also help you:
 
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
 
+# what does it
+* grabs mqtt messages from broker and inserts topic and payload into mongodb
+
+* writes "trino_schema_collection" to mongodb to be used by trino
+
 ### Topics and Payloads 
 **Topic: bpalab/ftfactory/i/ldr**
 

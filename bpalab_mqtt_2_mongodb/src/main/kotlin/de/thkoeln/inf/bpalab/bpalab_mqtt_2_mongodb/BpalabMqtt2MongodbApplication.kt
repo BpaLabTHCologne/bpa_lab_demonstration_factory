@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
+
 @SpringBootApplication
 class BpalabMqtt2MongodbApplication: CommandLineRunner{
     private val log = LoggerFactory.getLogger(BpalabMqtt2MongodbApplication::class.java)
