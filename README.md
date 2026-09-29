@@ -2,7 +2,9 @@
 
 > branch c8.9mysql
 > > use mysql for bpa_lab_demonstration_factory database and as secondary storage for camunda 
-> >
+> > >
+> > > copy "mysql-connector-j-9.7.0.jar" to /driver-lib
+> > 
 > > migrate to camunda8.9 and springboot 4
 > >
 > > use docker multistage builds
@@ -15,9 +17,7 @@
 > > > processes(docker-compose-processes), includes basic
 > > >
 > > > dataarch(docker-compose-processes-dataarch), includes basic, processes
-> >
-> > to use grafana built-in mysql datasource
-> > > host: host.docker.internal:3070
+
 
 The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (enterprises, students, ...).
 
