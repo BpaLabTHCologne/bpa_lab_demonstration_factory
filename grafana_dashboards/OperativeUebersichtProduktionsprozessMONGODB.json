@@ -1,0 +1,753 @@
+{
+  "apiVersion": "dashboard.grafana.app/v2",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "ad4tpql",
+    "namespace": "default",
+    "uid": "c35416ca-cbb4-4ad4-bb3c-b6791d0b1c2a",
+    "resourceVersion": "1790681428236003",
+    "generation": 2,
+    "creationTimestamp": "2026-09-29T11:22:42Z",
+    "labels": {
+      "grafana.app/deprecatedInternalID": "1713608125218816"
+    },
+    "annotations": {
+      "grafana.app/createdBy": "user:ffzplg141qlfka",
+      "grafana.app/saved-from-ui": "Grafana v13.2.2 (1bea008f7e)",
+      "grafana.app/updatedBy": "user:ffzplg141qlfka",
+      "grafana.app/updatedTimestamp": "2026-09-29T11:30:28Z"
+    }
+  },
+  "spec": {
+    "annotations": [
+      {
+        "kind": "AnnotationQuery",
+        "spec": {
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana",
+            "version": "v0",
+            "datasource": {
+              "name": "-- Grafana --"
+            },
+            "spec": {}
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "builtIn": true
+        }
+      }
+    ],
+    "cursorSync": "Off",
+    "editable": true,
+    "elements": {
+      "panel-1": {
+        "kind": "Panel",
+        "spec": {
+          "id": 1,
+          "title": "Aktuelle Raumluftqualität (IAQ)",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "trino-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "de5zt5g5uujgga"
+                      },
+                      "spec": {
+                        "format": 0,
+                        "rawSQL": "SELECT \r\n  sensor.iaq AS current_iaq\r\nFROM\r\n  elasticsearch.default.\"ft-factory-sensor-data\" AS sensor\r\nWHERE\r\n  sensor.mqtt.topic = 'bpalab/ftfactory/i/bme680'\r\n  AND sensor.\"@timestamp\" BETWEEN $__timeFrom() AND $__timeTo()\r\nORDER BY \r\n  sensor.\"@timestamp\" DESC\r\nLIMIT 1"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "gauge",
+            "version": "13.2.2",
+            "spec": {
+              "options": {
+                "barShape": "flat",
+                "barWidthFactor": 0.5,
+                "effects": {
+                  "barGlow": false,
+                  "centerGlow": false,
+                  "gradient": false
+                },
+                "endpointMarker": "point",
+                "minVizHeight": 75,
+                "minVizWidth": 75,
+                "orientation": "auto",
+                "reduceOptions": {
+                  "calcs": [
+                    "last"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "segmentCount": 1,
+                "segmentSpacing": 0.3,
+                "shape": "gauge",
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true,
+                "sizing": "auto",
+                "sparkline": false,
+                "textMode": "auto"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "min": 500,
+                  "max": 0,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "dark-green"
+                      },
+                      {
+                        "value": 51,
+                        "color": "green"
+                      },
+                      {
+                        "value": 101,
+                        "color": "yellow"
+                      },
+                      {
+                        "value": 151,
+                        "color": "dark-orange"
+                      },
+                      {
+                        "value": 201,
+                        "color": "dark-red"
+                      },
+                      {
+                        "value": 251,
+                        "color": "#7c0251"
+                      },
+                      {
+                        "value": 351,
+                        "color": "#4a1d00"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "fieldMinMax": false
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-2": {
+        "kind": "Panel",
+        "spec": {
+          "id": 2,
+          "title": "Temperatur",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "trino-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "efzpltjyzs16oe"
+                      },
+                      "spec": {
+                        "format": 0,
+                        "rawSQL": "SELECT \n  sensor.timestamp AS time,\n  sensor.t AS temperature\nFROM\n  mongodb.\"ft-factory-sensor-data\".mqtteventbme680 AS sensor\nORDER BY\n  sensor.timestamp ASC"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.2.2",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "celsius",
+                  "min": 0,
+                  "max": 80,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  },
+                  "fieldMinMax": false
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "temperature"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Temperatur"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-3": {
+        "kind": "Panel",
+        "spec": {
+          "id": 3,
+          "title": "Luftfeuchtigkeit",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "trino-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "de5zt5g5uujgga"
+                      },
+                      "spec": {
+                        "format": 0,
+                        "rawSQL": "SELECT \n  sensor.\"@timestamp\" AS time,\n  sensor.h AS humidity\nFROM\n  elasticsearch.default.\"ft-factory-sensor-data\" AS sensor\nWHERE\n  sensor.\"@timestamp\" BETWEEN $__timeFrom() AND $__timeTo()\nORDER BY\n  sensor.\"@timestamp\" ASC"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.2.2",
+            "spec": {
+              "options": {
+                "legend": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "humidity",
+                  "min": 0,
+                  "max": 100,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "smooth",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "showValues": false,
+                    "spanNulls": true,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "humidity"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Luftfeuchtigkeit"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "brightness"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Helligkeit"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-4": {
+        "kind": "Panel",
+        "spec": {
+          "id": 4,
+          "title": "Aktueller Status jeder Station ",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "trino-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "de5zt5g5uujgga"
+                      },
+                      "spec": {
+                        "format": 0,
+                        "rawSQL": "SELECT\r\n    sensor.\"@timestamp\" AS status_timestamp,\r\n    MAX(CASE WHEN sensor.mqtt.topic = 'bpalab/ftfactory/f/i/state/vgr' THEN CAST(sensor.active AS BOOLEAN) END) AS vgr_status,\r\n    MAX(CASE WHEN sensor.mqtt.topic = 'bpalab/ftfactory/f/i/state/hbw' THEN CAST(sensor.active AS BOOLEAN) END) AS hbw_status,\r\n    MAX(CASE WHEN sensor.mqtt.topic = 'bpalab/ftfactory/f/i/state/mpo' THEN CAST(sensor.active AS BOOLEAN) END) AS mpo_status,\r\n    MAX(CASE WHEN sensor.mqtt.topic = 'bpalab/ftfactory/f/i/state/sld' THEN CAST(sensor.active AS BOOLEAN) END) AS sld_status\r\nFROM\r\n    elasticsearch.default.\"ft-factory-sensor-data\" AS sensor\r\nWHERE\r\n    sensor.mqtt.topic LIKE 'bpalab/ftfactory/f/i/state/%'\r\n    AND sensor.active IS NOT NULL\r\n    AND sensor.\"@timestamp\" BETWEEN $__timeFrom() AND $__timeTo()\r\nGROUP BY\r\n    sensor.\"@timestamp\"\r\nORDER BY\r\n    status_timestamp ASC"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "state-timeline",
+            "version": "13.2.2",
+            "spec": {
+              "options": {
+                "alignValue": "center",
+                "legend": {
+                  "displayMode": "list",
+                  "placement": "right",
+                  "showLegend": false
+                },
+                "mergeValues": true,
+                "rowHeight": 0.9,
+                "showValue": "auto",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "mappings": [
+                    {
+                      "type": "value",
+                      "options": {
+                        "false": {
+                          "text": "Nicht Aktiv",
+                          "color": "red",
+                          "index": 0
+                        },
+                        "true": {
+                          "text": "Aktiv",
+                          "color": "green",
+                          "index": 1
+                        }
+                      }
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "axisPlacement": "auto",
+                    "fillOpacity": 70,
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": 300000,
+                    "lineWidth": 0,
+                    "spanNulls": true
+                  },
+                  "fieldMinMax": false
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "vgr_status"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Vakuum-Sauggreifer"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "hbw_status"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Hochregallager"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "mpo_status"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Multi-Fertigungsstation"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "sld_status"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Sortierstrecke"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-5": {
+        "kind": "Panel",
+        "spec": {
+          "id": 5,
+          "title": "Aktueller Produktionsstatus",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "trino-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "efzpltjyzs16oe"
+                      },
+                      "spec": {
+                        "format": 0,
+                        "rawSQL": "SELECT\n    sensor.state AS current_order_status,\n    sensor.timestamp as time\nFROM\n    mongodb.\"ft-factory-sensor-data\".mqtteventorder AS sensor\n"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.2.2",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "/^current_order_status$/",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "mappings": [
+                    {
+                      "type": "value",
+                      "options": {
+                        "IN_PROCESS": {
+                          "text": "Auftrag wird produziert",
+                          "color": "green",
+                          "index": 2
+                        },
+                        "ORDERED": {
+                          "text": "Produktionsauftrag eingegangen",
+                          "color": "super-light-green",
+                          "index": 1
+                        },
+                        "SHIPPED": {
+                          "text": "Auftrag ist fertiggestellt",
+                          "color": "dark-green",
+                          "index": 3
+                        },
+                        "WAITING_FOR_ORDER": {
+                          "text": "Warte auf Produktionsauftrag",
+                          "color": "#fafafa6e",
+                          "index": 0
+                        }
+                      }
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "layout": {
+      "kind": "GridLayout",
+      "spec": {
+        "items": [
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 0,
+              "width": 8,
+              "height": 9,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-5"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 8,
+              "y": 0,
+              "width": 5,
+              "height": 9,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-1"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 13,
+              "y": 0,
+              "width": 11,
+              "height": 9,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-2"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 9,
+              "width": 13,
+              "height": 9,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-4"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 13,
+              "y": 9,
+              "width": 11,
+              "height": 9,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-3"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "links": [],
+    "liveNow": false,
+    "preload": false,
+    "tags": [],
+    "timeSettings": {
+      "timezone": "browser",
+      "from": "now-3m",
+      "to": "now",
+      "autoRefresh": "10s",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "hideTimepicker": false,
+      "fiscalYearStartMonth": 0
+    },
+    "title": "{mongodb}Operative Übersicht für den Produktionsprozess",
+    "variables": []
+  }
+}
