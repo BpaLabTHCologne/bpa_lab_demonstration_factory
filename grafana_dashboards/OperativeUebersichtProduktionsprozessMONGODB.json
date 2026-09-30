@@ -4,18 +4,18 @@
   "metadata": {
     "name": "ad4tpql",
     "namespace": "default",
-    "uid": "c35416ca-cbb4-4ad4-bb3c-b6791d0b1c2a",
-    "resourceVersion": "1790681428236003",
+    "uid": "77d7248e-0123-4331-a5a0-001b12ad82dc",
+    "resourceVersion": "1790771353035995",
     "generation": 2,
-    "creationTimestamp": "2026-09-29T11:22:42Z",
+    "creationTimestamp": "2026-09-30T11:48:40Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "1713608125218816"
+      "grafana.app/deprecatedInternalID": "2082530700197888"
     },
     "annotations": {
-      "grafana.app/createdBy": "user:ffzplg141qlfka",
+      "grafana.app/createdBy": "user:afzt83n0jvxtsb",
       "grafana.app/saved-from-ui": "Grafana v13.2.2 (1bea008f7e)",
-      "grafana.app/updatedBy": "user:ffzplg141qlfka",
-      "grafana.app/updatedTimestamp": "2026-09-29T11:30:28Z"
+      "grafana.app/updatedBy": "user:afzt83n0jvxtsb",
+      "grafana.app/updatedTimestamp": "2026-09-30T12:29:13Z"
     }
   },
   "spec": {
@@ -178,11 +178,11 @@
                       "group": "trino-datasource",
                       "version": "v0",
                       "datasource": {
-                        "name": "efzpltjyzs16oe"
+                        "name": "bfzt9k2wzo7pcd"
                       },
                       "spec": {
                         "format": 0,
-                        "rawSQL": "SELECT \n  sensor.timestamp AS time,\n  sensor.t AS temperature\nFROM\n  mongodb.\"ft-factory-sensor-data\".mqtteventbme680 AS sensor\nORDER BY\n  sensor.timestamp ASC"
+                        "rawSQL": "SELECT \n  sensor.timestamp AS time,\n  sensor.t AS temperature\nFROM\n  mongodb.\"ft-factory-sensor-data\".mqtteventbme680 AS sensor\nORDER BY\n  sensor.timestamp DESC\nLimit 1"
                       }
                     },
                     "refId": "A",
@@ -196,12 +196,23 @@
           },
           "vizConfig": {
             "kind": "VizConfig",
-            "group": "table",
+            "group": "stat",
             "version": "13.2.2",
             "spec": {
               "options": {
-                "cellHeight": "sm",
-                "showHeader": true
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [],
+                  "fields": "/.*/",
+                  "values": true
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
               },
               "fieldConfig": {
                 "defaults": {
@@ -219,16 +230,6 @@
                   },
                   "color": {
                     "mode": "thresholds"
-                  },
-                  "custom": {
-                    "align": "auto",
-                    "cellOptions": {
-                      "type": "auto"
-                    },
-                    "footer": {
-                      "reducers": []
-                    },
-                    "inspect": false
                   },
                   "fieldMinMax": false
                 },
@@ -564,7 +565,7 @@
                       "group": "trino-datasource",
                       "version": "v0",
                       "datasource": {
-                        "name": "efzpltjyzs16oe"
+                        "name": "bfzt9k2wzo7pcd"
                       },
                       "spec": {
                         "format": 0,
