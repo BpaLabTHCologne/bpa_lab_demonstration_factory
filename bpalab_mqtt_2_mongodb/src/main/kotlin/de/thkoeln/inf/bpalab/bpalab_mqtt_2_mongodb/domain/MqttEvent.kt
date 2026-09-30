@@ -2,6 +2,7 @@ package de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
+import org.springframework.data.mongodb.core.mapping.Field
 import org.springframework.data.mongodb.core.mapping.Unwrapped
 import java.time.LocalDateTime
 
@@ -60,7 +61,7 @@ class MqttEventOrder(
     @Id
     var id: String? = null,
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
-    val payload: MqttEventOrderPayload,
+    val payload: MqttEventOrderPayload
     )
 
 //------------ LDR ------------------------------------

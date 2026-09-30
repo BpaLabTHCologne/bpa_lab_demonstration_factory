@@ -2,7 +2,6 @@ package de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.BpalabMqtt2MongodbApplication
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventBME680Payload
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventBme680
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventLdr
@@ -51,12 +50,12 @@ class MqttOrderListener(
         if (topic == null || message == null) return
         val msgPayload = message.payload.toString(StandardCharsets.UTF_8)
         try {
+            val mqttEventOrderPayload = ObjectMapper().readValue<MqttEventOrderPayload>(msgPayload)
             val mqttEvent = MqttEventOrder(
-                topic = topic, payload =
-                    ObjectMapper().readValue<MqttEventOrderPayload>(msgPayload)
+                topic = topic, payload = mqttEventOrderPayload
             )
             val event = mqttEventRepository.save(mqttEvent)
-            log.info("$topic received message: ${event.payload.type}")
+            log.info("$topic received message: ${event.payload.type}, ${event.payload.state}, ${event.payload.processOrderReference}")
         } catch (e: Exception) {
             log.info("Exception: $e")
         }

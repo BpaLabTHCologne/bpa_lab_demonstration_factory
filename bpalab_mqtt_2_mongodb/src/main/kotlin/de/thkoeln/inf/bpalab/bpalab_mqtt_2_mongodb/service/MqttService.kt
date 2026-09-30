@@ -54,9 +54,6 @@ class MqttService(
         mqttClient.subscribe(ldrSubscription, MqttLdrListener(mqttEventLdrRepository))
         mqttClient.subscribe(bme680Subscription, MqttBme680Listener(mqttEventBme680Repository))
 
-        if (!mqttClient.isConnected) {
-            mqttClient.connect()
-        }
     }
 
 

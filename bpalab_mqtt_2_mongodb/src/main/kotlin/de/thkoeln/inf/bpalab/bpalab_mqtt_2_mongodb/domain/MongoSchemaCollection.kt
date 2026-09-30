@@ -84,7 +84,7 @@ val mqttEventOrder = TrinoSchemaCollection(
         FieldsEntry(name = "topic", type = "varchar", hidden = false),
         FieldsEntry("timestamp", "varchar"),
         FieldsEntry(name = "type", type = "varchar"),
-        FieldsEntry(name = "state", type = "boolean"),
+        FieldsEntry(name = "state", type = "varchar"),
         FieldsEntry(name = "processOrderReference", type = "varchar"),
     ),
     "mqttEventOrder"
