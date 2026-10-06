@@ -1,14 +1,10 @@
 package de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.service
 
-import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt.MqttProperties
+import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.configuration.MqttProperties
 import org.eclipse.paho.client.mqttv3.MqttClient
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import org.springframework.stereotype.Service
 import java.nio.charset.StandardCharsets
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventStation
-import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventStationPayload
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt.MqttBme680Listener
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt.MqttLdrListener
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt.MqttOrderListener

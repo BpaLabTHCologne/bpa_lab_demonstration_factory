@@ -1,4 +1,4 @@
-package de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt
+package de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.configuration
 
 import org.eclipse.paho.client.mqttv3.MqttClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
@@ -31,6 +31,7 @@ class MqttConfig(
         val options = MqttConnectOptions().apply {
             isAutomaticReconnect = true
             isCleanSession = true
+            connectionTimeout = 5000
         }
         client.connect(options)
         return client
