@@ -2,7 +2,6 @@ package de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Transient
-import org.springframework.data.mongodb.core.mapping.Field
 import org.springframework.data.mongodb.core.mapping.Unwrapped
 import java.time.LocalDateTime
 
@@ -18,11 +17,11 @@ class MqttEventStationPayload(
 
 class MqttEventStation(
     var topic: String,
-    var timestamp: String = LocalDateTime.now().toString(),
+    var timestamp: LocalDateTime = LocalDateTime.now(),
     @Id
     var id: String? = null,
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
-    val payload: MqttEventStationPayload,
+    val payload: MqttEventStationPayload
     )
 
 //------------ Vgr ------------------------------------
@@ -38,7 +37,7 @@ class MqttEventVgrPayload(
 
 class MqttEventVgr(
     var topic: String,
-    var timestamp: String = LocalDateTime.now().toString(),
+    var timestamp: LocalDateTime = LocalDateTime.now(),
     @Id
     var id: String? = null,
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
@@ -57,7 +56,7 @@ class MqttEventOrderPayload(
 
 class MqttEventOrder(
     var topic: String,
-    var timestamp: String = LocalDateTime.now().toString(),
+    var timestamp: LocalDateTime = LocalDateTime.now(),
     @Id
     var id: String? = null,
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
@@ -75,7 +74,7 @@ class MqttEventLdrPayload(
 
 class MqttEventLdr(
     var topic: String,
-    var timestamp: String = LocalDateTime.now().toString(),
+    var timestamp: LocalDateTime = LocalDateTime.now(),
     @Id
     var id: String? = null,
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
@@ -99,7 +98,7 @@ class MqttEventBME680Payload(
 
 class MqttEventBme680(
     var topic: String,
-    var timestamp: String = LocalDateTime.now().toString(),
+    var timestamp: LocalDateTime = LocalDateTime.now(),
     @Id
     var id: String? = null,
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
