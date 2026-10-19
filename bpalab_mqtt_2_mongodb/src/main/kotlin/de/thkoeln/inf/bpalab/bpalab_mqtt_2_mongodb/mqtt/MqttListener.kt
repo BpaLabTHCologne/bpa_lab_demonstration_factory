@@ -17,15 +17,21 @@ import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventLdrReposi
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventOrderRepository
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventStationRepository
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventVgrRepository
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener
+import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import org.slf4j.LoggerFactory
 import java.nio.charset.StandardCharsets
 
 class MqttStationListener(
     private val mqttEventRepository: MqttEventStationRepository
-    ): IMqttMessageListener {
+    ): IMqttMessageListener, MqttCallback {
     private val log = LoggerFactory.getLogger(MqttStationListener::class.java)
+
+    override fun connectionLost(cause: Throwable?) {
+        log.info("connectionLost: {}", cause.toString())
+    }
 
     override fun messageArrived(topic: String?, message: MqttMessage?) {
         if (topic == null || message == null) return
@@ -38,6 +44,10 @@ class MqttStationListener(
         } catch (e: Exception) {
             log.info("Exception: $e")
         }
+    }
+
+    override fun deliveryComplete(token: IMqttDeliveryToken?) {
+        log.info("connectionLost: {}", token.toString())
     }
 
 }
