@@ -31,7 +31,8 @@ class MqttConfig(
         val options = MqttConnectOptions().apply {
             isAutomaticReconnect = true
             isCleanSession = true
-            connectionTimeout = 5000
+            connectionTimeout = 0 // forever
+            keepAliveInterval = 30 // seconds between messages, no message -> send ping
         }
         client.connect(options)
         return client
