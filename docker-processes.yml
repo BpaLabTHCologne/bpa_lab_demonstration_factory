@@ -103,14 +103,32 @@ services:
   # ---------------- BPALab container -----------------
   #  Manufacturing
   #  MQTT Broker required / default ws://10.0.0.21:9001
-
   bpalabmanufacturing:
+    profiles: [factorymqtt]
     image: bpa_lab_demonstration_factory/manufacturing
     environment:
       JAVA_TOOL_OPTIONS: -Dlogging.level.io.camunda.zeebe.client.impl.ZeebeCallCredentials=ERROR
       ZEEBE_GRPC_ADRESS: http://orchestration:26500
       ZEEBE_REST_ADRESS: http://orchestration:8080
-      # MQTTBROKER_ADRESS: ws://host.docker.internal:9001
+    build:
+      dockerfile: bpa_lab_manufacturing.dockerfile
+      no_cache: true
+    depends_on:
+      orchestration:
+        # Wait for orchestration service to be healthy, otherwise we get a lot of noisy logs from connection errors
+        condition: service_healthy
+    networks:
+      - camunda
+
+
+  bpalabdockermqttmanufacturing:
+    profiles: [mqttdocker]
+    image: bpa_lab_demonstration_factory/manufacturing
+    environment:
+      JAVA_TOOL_OPTIONS: -Dlogging.level.io.camunda.zeebe.client.impl.ZeebeCallCredentials=ERROR
+      ZEEBE_GRPC_ADRESS: http://orchestration:26500
+      ZEEBE_REST_ADRESS: http://orchestration:8080
+      MQTTBROKER_ADRESS: ws://host.docker.internal:9001
     build:
       dockerfile: bpa_lab_manufacturing.dockerfile
       no_cache: true
@@ -125,20 +143,21 @@ services:
   # ---------------- BPALab container -----------------
   #  MQTT Broker
 
-#  mosquitto:
-#    image: eclipse-mosquitto
-#    container_name: mosquitto
-#    volumes:
-#      - ./mqttDockerBroker/config:/mosquitto/config
-#      - ./mqttDockerBroker/data:/mosquitto/data
-#      - ./mqttDockerBroker/log:/mosquitto/log
-#    ports:
-#      - 1883:1883
-#      - 9001:9001
-#    stdin_open: true
-#    tty: true
-#    networks:
-#      - camunda
-#      - secondary-storage
+  mosquitto:
+    profiles: [mqttdocker]
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    volumes:
+      - ./mqttDockerBroker/config:/mosquitto/config
+      - ./mqttDockerBroker/data:/mosquitto/data
+      - ./mqttDockerBroker/log:/mosquitto/log
+    ports:
+      - 1883:1883
+      - 9001:9001
+    stdin_open: true
+    tty: true
+    networks:
+      - camunda
+      - secondary-storage
 
 

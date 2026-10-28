@@ -17,7 +17,13 @@
 > > > processes(docker-compose-processes), includes basic
 > > >
 > > > dataarch(docker-compose-processes-dataarch), includes basic, processes
-
+> >
+> > use docker compose -f ?.yml --profile 
+> > > mqttdocker up -d
+> > > > for mqtt broker in docker container
+> >
+> > > factorymqtt up -d
+> > > > for external mqtt broker 
 
 The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (enterprises, students, ...).
 
@@ -39,8 +45,9 @@ information_source: This project uses the basic components of Camunda Platform 8
 2. Run docker service (e.g Docker Desktop application)
 3. Run the following command from the directory of the project to pull, create and run all the containers (and images if not existing yet):
   
-   "docker compose -f docker-compose-processes.yml up -d"
-
+```
+docker compose --profile [mqttdocker | factorymqtt] -f docker-compose-processes.yml up -d
+```
   This starts: 
 - Container with Mysql DBMS running [./sql/initdb.sql](./sql/initdb.sql) to create tables and data (if not existing yet) 
 - Camunda self-managed (with components like tasklist, operate, zeebe, ...)
