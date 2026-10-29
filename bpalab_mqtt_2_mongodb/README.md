@@ -26,7 +26,10 @@ These additional references should also help you:
 
 * writes "trino_schema_collection" to mongodb to be used by trino
 
-### Topics and Payloads 
+## Topics and Payloads 
+
+### Messages send from FT-Factory
+
 **Topic: bpalab/ftfactory/i/ldr**
 
     {"ts": "2025-07-31T10:58:03.299Z",
