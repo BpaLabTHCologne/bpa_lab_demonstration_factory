@@ -37,63 +37,47 @@ topics configuration
 
 # Sample mqtt messages
 
+The following list shows the messages accepted and sent by the **Fischertechnik Factory** (not exhaustive)
+
 Sample BROADCAST publish:
 
-> Topic
+(send to activate the publisher of FT-Factory)
 
-		bpalab/ftfactory/o/broadcast
+**Topic: bpalab/ftfactory/o/broadcast**
 
-> Payload (JSON)
-
-		{"ts":"2023-06-05T15:20:41.613", "message":"keep-alive"}
+    {"ts":"2023-06-05T15:20:41.613", "message":"keep-alive"}
 
 
 Sample ORDER publish:
 
-> Topic
+**Topic: bpalab/ftfactory/f/o/order**
 
-		bpalab/ftfactory/f/o/order
-
-> Payload (JSON)
-
-		{"ts":"2026-06-18T08:56:50.022Z","type":"RED","processOrderReference":"00000099-99"}
+	{"ts":"2026-06-18T08:56:50.022Z","type":"RED","processOrderReference":"00000099-99"}
 
 Sample HBW subscription:
 
-> Topic:
+**Topic: bpalab/ftfactory/f/i/stock**
 
-		bpalab/ftfactory/f/i/stock
-	
-> PayLoad(JSON):	
-	
-		{"ts":"2023-06-22T12:m12:12.123",
-		"stockItems": 
-		[{"workpiece": { "id":"123456789ABCDE", "type":"WHITE", "state":"RAW" }, "location":"A1"},
-		 {"workpiece": { "id":"156789ABCDE", "type":"RED", "state":"RAW" }, "location":"A2"},
-		 {"workpiece": { "id":"7765555", "type":"BLUE", "state":"RAW" }, "location":"A3"},
-		 { "workpiece":null, "location":"B1"},
-		 { "workpiece":null, "location":"B2"},
-		 { "workpiece":null, "location":"B3" },
-		 { "workpiece":null, "location":"C1"},
-		 { "workpiece":null, "location":"C2"},
-		 { "workpiece":null, "location":"C3" }] }
+    {"ts":"2023-06-22T12:m12:12.123",
+     "stockItems": 
+        [{"workpiece": { "id":"123456789ABCDE", "type":"WHITE", "state":"RAW" }, "location":"A1"},
+         {"workpiece": { "id":"156789ABCDE", "type":"RED", "state":"RAW" }, "location":"A2"},
+         {"workpiece": { "id":"7765555", "type":"BLUE", "state":"RAW" }, "location":"A3"},
+         { "workpiece":null, "location":"B1"},
+         { "workpiece":null, "location":"B2"},
+         { "workpiece":null, "location":"B3" },
+         { "workpiece":null, "location":"C1"},
+         { "workpiece":null, "location":"C2"},
+         { "workpiece":null, "location":"C3" }] }
 
 Sample BME680 subscription:
 
-> Topic
+**Topic: bpalab/ftfactory/i/bme680**
 
-		bpalab/ftfactory/i/bme680
-
-> PayLoad(JSON):
-
-		{"ts":"2023-06-05T15:20:41.613","t":15.6,"rt":0,"h":56,"rh":0,"p":56.45,"iaq":60,"aq":0,"gr":0}
+	{"ts":"2023-06-05T15:20:41.613","t":15.6,"rt":0,"h":56,"rh":0,"p":56.45,"iaq":60,"aq":0,"gr":0}
 
 Sample ORDER subscription:
 
-> Topic
+**Topic: bpalab/ftfactory/f/i/order**
 
-		bpalab/ftfactory/f/i/order
-
-> Payload (JSON)
-
-		{"ts":"2023-06-05T15:20:41.613", "state":"SHIPPED","type":"RED","processOrderReference":"00000099-99"}
+	{"ts":"2023-06-05T15:20:41.613", "state":"SHIPPED","type":"RED","processOrderReference":"00000099-99"}

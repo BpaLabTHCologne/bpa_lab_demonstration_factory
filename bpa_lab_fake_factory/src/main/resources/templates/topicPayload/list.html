@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{topicPayload.list.headline}]]</title>
+        <style>
+            #events { margin-top: 1rem; border: 1px solid #ddd; background: #f9f9f9; padding: 12px; height: 360px; overflow-y: auto; white-space: pre-wrap; }
+        </style>
+        <script>
+            function appendEvent(event) {
+                const eventsContainer = document.getElementById('events');
+                const data = JSON.parse(event.data);
+                const item = document.createElement('div');
+                item.className = 'event';
+                item.innerHTML = `
+                    <p>${data.topic}   ${data.payload}</p>
+                `;
+                eventsContainer.prepend(item);
+            }
+            const source = new EventSource('/topicPayloads/stream');
+            source.addEventListener('mqtt-message', appendEvent);
+            source.onerror = () => {
+                console.error('SSE connection lost.');
+                source.close();
+            };
+            function sendTopicPayload(id) {
+                console.log("sendTopic... : ", id);
+                fetch(`/topicPayloads/send/${id}`, { method: 'GET' })
+                    .then(response => {
+                        // if (!response.ok) throw new Error('Network response was not ok');
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            };
+            function editTopicPayload(topicPayload) {
+                console.log("editTopicPayload : ", topicPayload);
+                fetch(`/topicPayloads/editr/${topicPayload.id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(topicPayload)
+                })
+                    .then(response => response.json())
+                    .then(data => console.log('Success:', data))
+                    .catch(error => console.error('Error:', error));
+            }
+            function updateTopic(topicPayload, newValue) {
+                console.log("updateTopicPayload : ", topicPayload.id);
+                topicPayload.topic = newValue;
+                editTopicPayload(topicPayload);
+            }
+            function updatePayload(topicPayload, newValue) {
+                console.log("updateTopicPayload : ", topicPayload.id);
+                topicPayload.payload = newValue;
+                editTopicPayload(topicPayload);
+            }
+            function updateFrequency(topicPayload, newValue) {
+                console.log("updateTopicPayload : ", topicPayload.id);
+                topicPayload.frequency = newValue;
+                editTopicPayload(topicPayload);
+            }
+        </script>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{topicPayload.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/topicPayloads/add}" class="btn btn-primary ms-2">[[#{topicPayload.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${topicPayloads.empty}">[[#{topicPayload.list.empty}]]</div>
+            <div th:if="${!topicPayloads.empty}" class="table-responsive">
+                <table class="table table-striped table-hover table-sm w-auto">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{topicPayload.id.label}]]</th>
+                            <th scope="col">[[#{topicPayload.topic.label}]]</th>
+                            <th scope="col">[[#{topicPayload.payload.label}]]</th>
+                            <th scope="col">[[#{topicPayload.clock.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="topicPayload : ${topicPayloads}">
+                            <td>[[${topicPayload.id}]]</td>
+                            <td> <input type="text" th:value="${topicPayload.topic}" th:onchange="updateTopic([[${topicPayload}]], this.value)"/></td>
+                            <td> <input type="text" th:value="${topicPayload.payload}" th:onchange="updatePayload([[${topicPayload}]], this.value)"/></td>
+                            <td></tdclass> <input type="text" th:value="${topicPayload.clock}" th:onchange="updateFrequency([[${topicPayload}]], this.value)"/></td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/topicPayloads/edit/{id}(id=${topicPayload.id})}" class="btn btn-sm btn-secondary">[[#{topicPayload.list.edit}]]</a>
+                                    <!--button th:onclick="editTopicPayload([[${topicPayload}]])" class="btn btn-sm btn-secondary">[[#{topicPayload.list.edit}]]</button-->
+                                    <!--a th:href="@{/topicPayloads/send/{id}(id=${topicPayload.id})}" class="btn btn-sm btn-secondary">[[#{topicPayload.list.send}]]</a-->
+                                    <button th:onclick="sendTopicPayload([[${topicPayload.id}]])" class="btn btn-sm btn-secondary">[[#{topicPayload.list.send}]]</button>
+                                    <form th:action="@{/topicPayloads/delete/{id}(id=${topicPayload.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{topicPayload.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="events"></div>
+        </div>
+    </body>
+</html>
