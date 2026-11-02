@@ -42,13 +42,19 @@ information_source: Docker 20.10.16+ is required.
 information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
 
 1. Clone this repository to a directory of your choice
-2. Run docker service (e.g Docker Desktop application)
-3. Run the following command from the directory of the project to pull, create and run all the containers (and images if not existing yet):
-  
+2. (in all versions Camunda uses mysql like branch c8.9myslqsec)  copy "mysql-connector-j-9.7.0.jar" to /driver-lib
+3. Run docker service (e.g Docker Desktop application)
+4. Run the following command from the directory of the project to pull, create and run the containers (and images if not existing yet):
+
+  a) To start all components including data architecture (grafana, ...)
+```
+docker compose --profile [mqttdocker | factorymqtt] -f docker-compose-processes-dataarch.yml up -d
+```
+  b) To start all components without data architecture
 ```
 docker compose --profile [mqttdocker | factorymqtt] -f docker-compose-processes.yml up -d
 ```
-  This starts: 
+  This starts (amon others): 
 - Container with Mysql DBMS running [./sql/initdb.sql](./sql/initdb.sql) to create tables and data (if not existing yet) 
 - Camunda self-managed (with components like tasklist, operate, zeebe, ...)
 - multiple process applications 
