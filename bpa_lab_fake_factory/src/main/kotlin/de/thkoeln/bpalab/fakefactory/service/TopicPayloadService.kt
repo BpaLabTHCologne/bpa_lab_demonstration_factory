@@ -79,13 +79,6 @@ class TopicPayloadService(
         topicPayloadDTO.id = topicPayload.id
         topicPayloadDTO.topic = topicPayload.topic
         topicPayloadDTO.clock = topicPayload.clock!!
-        try {
-            val payloadRoot = ObjectMapper().readTree(topicPayload.payload) as ObjectNode
-            payloadRoot.put("ts", LocalDateTime.now().toString())
-            topicPayload.payload = ObjectMapper().writeValueAsString(payloadRoot)
-        } catch (e: Exception) {
-            throw e
-        }
         topicPayloadDTO.payload = refreshTimestamp(topicPayload.payload)
         return topicPayloadDTO
     }
@@ -94,13 +87,6 @@ class TopicPayloadService(
             TopicPayload {
         topicPayload.topic = topicPayloadDTO.topic
         topicPayload.clock = topicPayloadDTO.clock
-        try {
-            val payloadRoot = ObjectMapper().readTree(topicPayloadDTO.payload) as ObjectNode
-            payloadRoot.put("ts", LocalDateTime.now().toString())
-            topicPayloadDTO.payload = ObjectMapper().writeValueAsString(payloadRoot)
-        } catch (e: Exception) {
-            throw e
-        }
         topicPayload.payload = refreshTimestamp(topicPayloadDTO.payload)
         return topicPayload
     }
