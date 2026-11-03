@@ -23,7 +23,7 @@ information_source: This project uses the basic components of Camunda Platform 8
 3. Run docker service (e.g Docker Desktop application)
 4. Run the following command from the directory of the project to pull, create and run the containers (and images if not existing yet):
 
-  a) To start all components including _data architecture (grafana, ...)_ with **local(docker) MQTT-Broker**
+  a) To start all components including _data architecture (grafana, ...)_ with **internal(docker) MQTT-Broker** and **BpaLabFakeFactory**
 ```
 docker compose --profile mqttdocker -f docker-compose-processes-dataarch.yml up -d
 ```
@@ -31,7 +31,7 @@ docker compose --profile mqttdocker -f docker-compose-processes-dataarch.yml up 
 ```
 docker compose --profile factorymqtt -f docker-compose-processes-dataarch.yml up -d
 ```
-  c) To start only all _process components_ with **local(docker) MQTT-Broker**
+  c) To start only all _process components_ with **internal(docker) MQTT-Broker** and **BpaLabFakeFactory**
 ```
 docker compose --profile mqttdocker -f docker-compose-processes.yml up -d
 ```
@@ -86,7 +86,7 @@ Remark: In case you need to deloy a new release of the BPA Lab solution, it may 
 
 ### Recommended tools for developers
 
-1. Database client
+#### 1. Database client
 Install extension of your software development environment (or any other client) to access the data tables in the MYSQL database. This contains e.g. product information, stock, etc.   
 
 Create connection
@@ -102,20 +102,29 @@ Create connection
   `Password: •••••••••`
 
 
-3. MQTT client
-[only when working with the physical BPA Lab Factory] Install a MQTT Client toolbox like https://mqttx.app/ to be able to test the connection to the MQTT broker (running on the rasberry pi), receive messages or simulate messages.
+#### 2. MQTT client
+  Install a MQTT Client toolbox like https://mqttx.app/ to be able to test the connection to the MQTT broker (running on the rasberry pi), receive messages or simulate messages.
 
-a) Create connection and connect:
+    a) Create connection and connect:
 
-  'Name: [e.g. BPALabBroker]' 
+      'Name: [e.g. BPALabBroker]' 
   
-  'Host: mqtt://10.0.0.21'
+      'Host: [ws://10.0.0.21' | ws://localhost:9001]
   
-  'Port: 1883'
+      'Port: 1883'
   
-  'Client ID: [a unique ID]'
+      'Client ID: [a unique ID]'
 
-b) Create subscription with topic "#" (all messages) or more specific subscriptions
+    b) Create subscription with topic "#" (all messages) or more specific subscriptions
+
+#### 3. Fake Factory
+
+Subproject **BpaLabFakeFactory** provides a replacement MQTT-Publisher 
+to fake messages send from physical FT-Factory
+
+   See [Readme of BpaLabFakeFactory](bpa_lab_fake_factory/README.md) for usage
+
+
 
 ### Database scheme
 The data schema of the mysql database is shown here:
