@@ -29,6 +29,9 @@ java ./build/libs/BpaLabFakeFactory.jar
 
 After starting the application it is accessible under `localhost:9090`.
 
+For valid **topics and payloads**
+see [Topics and payloads](https://bpalabthcologne.github.io/bpa_lab_book/chapter04-data-architecture.html#mqtt-topics-and-payloads)
+in _"Documentation of a Demonstration Factory for Business Process Automation and Analytics"_
 
 ## Further readings
 
