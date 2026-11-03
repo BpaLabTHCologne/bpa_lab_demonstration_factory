@@ -1,30 +1,5 @@
 # BPA Lab Bicycle Manufacturing Factory
 
-> branch c8.9mysql
-> > use mysql for bpa_lab_demonstration_factory database and as secondary storage for camunda 
-> > >
-> > > copy "mysql-connector-j-9.7.0.jar" to /driver-lib
-> > 
-> > migrate to camunda8.9 and springboot 4
-> >
-> > use docker multistage builds
-> >
-> > dividing dockerfiles 
-> > > docker-compose-override (mysql camunda secondary storage),
-> > >
-> > > basic(docker-compose), includes docker-compose-override 
-> > >
-> > > processes(docker-compose-processes), includes basic
-> > >
-> > > dataarch(docker-compose-processes-dataarch), includes basic, processes
-> >
-> > use docker compose -f ?.yml --profile 
-> > > mqttdocker up -d
-> > > > for mqtt broker in docker container
-> >
-> > > factorymqtt up -d
-> > > > for external mqtt broker 
-
 The Business Process Automation Lab (BPA Lab) at the TH Cologne is a small and modular model factory focusing on business process automation and analytics. One of its goals is to demonstrate modern concepts and technologies for the automation and analysis of business processes to different stakeholders (enterprises, students, ...).
 
 A general introduction is available here: [https://github.com/BpaLabTHCologne/bpa_lab_docs](https://bpalabthcologne.github.io/bpa_lab_book/)
@@ -42,19 +17,30 @@ information_source: Docker 20.10.16+ is required.
 information_source: This project uses the basic components of Camunda Platform 8. For more information, follow the official Camunda Platform link: [Camunda Platform 8](https://github.com/camunda/camunda-platform)
 
 1. Clone this repository to a directory of your choice
-2. (in all versions Camunda uses mysql like branch c8.9myslqsec)  copy "mysql-connector-j-9.7.0.jar" to /driver-lib
+2. (in all versions Camunda uses mysql as secondary storage)
+
+   so copy "mysql-connector-j-9.7.0.jar" to /driver-lib
 3. Run docker service (e.g Docker Desktop application)
 4. Run the following command from the directory of the project to pull, create and run the containers (and images if not existing yet):
 
-  a) To start all components including data architecture (grafana, ...)
+  a) To start all components including _data architecture (grafana, ...)_ with **local(docker) MQTT-Broker**
 ```
-docker compose --profile [mqttdocker | factorymqtt] -f docker-compose-processes-dataarch.yml up -d
+docker compose --profile mqttdocker -f docker-compose-processes-dataarch.yml up -d
 ```
-  b) To start all components without data architecture
+  b) To start all components including _data architecture (grafana, ...)_ with **external MQTT-Broker**
 ```
-docker compose --profile [mqttdocker | factorymqtt] -f docker-compose-processes.yml up -d
+docker compose --profile factorymqtt -f docker-compose-processes-dataarch.yml up -d
 ```
-  This starts (amon others): 
+  c) To start only all _process components_ with **local(docker) MQTT-Broker**
+```
+docker compose --profile mqttdocker -f docker-compose-processes.yml up -d
+```
+  d) To start only all _process components_ with **external MQTT-Broker**
+```
+docker compose --profile factorymqtt -f docker-compose-processes.yml up -d
+```
+
+  This starts (among others): 
 - Container with Mysql DBMS running [./sql/initdb.sql](./sql/initdb.sql) to create tables and data (if not existing yet) 
 - Camunda self-managed (with components like tasklist, operate, zeebe, ...)
 - multiple process applications 
@@ -77,12 +63,26 @@ Remark: In case you need to deloy a new release of the BPA Lab solution, it may 
 
 5. (only for initial setup) To use the data architecture / dashboards: please follow the guideline "Necessary configurations for the use of the data architecture during initial installation or reinstallation"
 
-    1. (new open issue) trino unreliable: startDate, endDate of index operate-flownode-instances-8.3.1 not found
-
 6. Run solution (refer to "User Guide for End to End Process Execution" and - in case you would like to use the physical components of the BPA Lab "Use-of-the-productive-environment-of-the-model-factory") The application can be accesses via URL, which are visible in Docker Desktop.
 
-7. Run the following command only to shut down the containers gracefully: 
-   "docker compose -f docker-compose-processes.yml down"
+7. Run the following command only to shut down the containers gracefully:
+
+   ```
+    docker compose -f docker-compose-processes-dataarch.yml down"
+   ```
+   respectively
+   ```
+   docker compose -f docker-compose-processes.yml down"
+   ```
+  
+#### Structure of dockerfiles 
+> Basic(docker-compose.yml), includes docker-compose-override
+> >
+> >  Processes(docker-compose-processes.yml), includes basic
+> > 
+> > > Data-Architecture(docker-compose-processes-dataarch.yml), includes basic, processes
+
+> docker-compose-override (used by camunda for mysql as secondary storage),
 
 ### Recommended tools for developers
 
@@ -128,7 +128,12 @@ In general, the deployment via docker (described below) is fastest deployment me
 
 #### Run
     docker compose -f docker-compose.yaml up -d
-to start Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql) and Camunda self-managed without process applications
+to start 
+
+    + Mysql DBMS with [./sql/initdb.sql](./sql/initdb.sql)
+    + Camunda self-managed
+
+please note: _Mqtt-Broker must be provided separately_
 
 ### BPALabBikeFactoryOrderManagement
     jdk21 spring-boot-starter-camunda-sdk(c8) mysql(9) gradle

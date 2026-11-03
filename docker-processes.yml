@@ -161,3 +161,16 @@ services:
       - secondary-storage
 
 
+  bpalabfakefactory:
+    profiles: [mqttdocker]
+    image: bpa_lab_demonstration_factory/fakefactory
+    ports:
+      - 9090:9090
+    environment:
+      MQTTBROKER_ADRESS: ws://host.docker.internal:9001
+    build:
+      dockerfile: bpa_lab_fake_factory.dockerfile
+      no_cache: true
+    networks:
+      - camunda
+      - secondary-storage
