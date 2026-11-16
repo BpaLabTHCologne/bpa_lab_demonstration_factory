@@ -11,3 +11,15 @@ bpa_lab_process_application/.env
 docker-compose-core.yaml
 .vscode/settings.json
 BPA Lab MySQL.session.sql
+
+# Gradle / IDE build output (all modules)
+.gradle/
+build/
+bin/
+!**/src/main/**/build/
+!**/src/test/**/build/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# JDBC driver is copied manually (see README)
+driver-lib/*.jar
