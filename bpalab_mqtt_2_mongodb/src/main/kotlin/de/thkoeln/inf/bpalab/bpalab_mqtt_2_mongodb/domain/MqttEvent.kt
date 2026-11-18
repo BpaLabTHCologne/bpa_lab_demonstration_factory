@@ -104,3 +104,10 @@ class MqttEventBme680(
     @Unwrapped(onEmpty = Unwrapped.OnEmpty.USE_NULL)
     val payload: MqttEventBME680Payload
 )
+
+// -------------- raw mqtt messages ---------------
+
+class MqttEventRaw(
+    val topic: String,
+    val payload: String
+)
