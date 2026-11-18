@@ -13,6 +13,7 @@ import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.mqtt.MqttVgrListener
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventBme680Repository
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventLdrRepository
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventOrderRepository
+import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventRawRepository
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventStationRepository
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository.MqttEventVgrRepository
 
@@ -25,6 +26,7 @@ class MqttService(
     private val mqttEventOrderRepository: MqttEventOrderRepository,
     private val mqttEventLdrRepository: MqttEventLdrRepository,
     private val mqttEventVgrRepository: MqttEventVgrRepository,
+    private val mqttEventRawRepository: MqttEventRawRepository
 ) {
     val stationSubscriptions = arrayOf(
         "bpalab/ftfactory/f/i/state/hbw",
@@ -39,17 +41,16 @@ class MqttService(
     val ldrSubscription = "bpalab/ftfactory/i/ldr"
     val bme680Subscription = "bpalab/ftfactory/i/bme680"
 
-
     init {
+
         stationSubscriptions.forEach {s ->
-            mqttClient.subscribe(s, MqttStationListener(mqttEventStationRepository))
+            mqttClient.subscribe(s, MqttStationListener(mqttEventStationRepository, mqttEventRawRepository))
         }
 
-        mqttClient.subscribe(vgrSubscription, MqttVgrListener(mqttEventVgrRepository))
-        mqttClient.subscribe(orderSubscription, MqttOrderListener(mqttEventOrderRepository))
-        mqttClient.subscribe(ldrSubscription, MqttLdrListener(mqttEventLdrRepository))
-        mqttClient.subscribe(bme680Subscription, MqttBme680Listener(mqttEventBme680Repository))
-
+        mqttClient.subscribe(vgrSubscription, MqttVgrListener(mqttEventVgrRepository, mqttEventRawRepository))
+        mqttClient.subscribe(orderSubscription, MqttOrderListener(mqttEventOrderRepository, mqttEventRawRepository))
+        mqttClient.subscribe(ldrSubscription, MqttLdrListener(mqttEventLdrRepository, mqttEventRawRepository))
+        mqttClient.subscribe(bme680Subscription, MqttBme680Listener(mqttEventBme680Repository, mqttEventRawRepository))
     }
 
 

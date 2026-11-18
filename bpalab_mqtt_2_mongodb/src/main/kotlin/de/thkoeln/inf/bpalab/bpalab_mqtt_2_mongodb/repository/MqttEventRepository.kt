@@ -3,6 +3,7 @@ package de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.repository
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventBme680
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventLdr
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventOrder
+import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventRaw
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventStation
 import de.thkoeln.inf.bpalab.bpalab_mqtt_2_mongodb.domain.MqttEventVgr
 import org.springframework.data.repository.CrudRepository
@@ -26,3 +27,5 @@ interface MqttEventOrderRepository: CrudRepository<MqttEventOrder, String> {
 interface MqttEventLdrRepository: CrudRepository<MqttEventLdr, String> {
     fun findAllByOrderByTimestampAsc(): Iterable<MqttEventLdr>
 }
+
+interface MqttEventRawRepository: CrudRepository<MqttEventRaw, String>
