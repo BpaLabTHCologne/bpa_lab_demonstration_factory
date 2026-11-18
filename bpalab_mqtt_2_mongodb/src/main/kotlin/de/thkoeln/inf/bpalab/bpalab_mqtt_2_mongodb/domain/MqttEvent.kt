@@ -109,5 +109,6 @@ class MqttEventBme680(
 
 class MqttEventRaw(
     val topic: String,
-    val payload: String
+    val payload: String,
+    var timestamp: LocalDateTime = LocalDateTime.now()
 )

@@ -38,6 +38,7 @@ class TrinoSchemaService(
 
     init {
         trinoSchemaCollectionRepository.deleteAll()
+        insert(mqttEventRaw)
         insert(mqttEventStation)
         insert(mqttEventVgr)
         insert(mqttEventOrder)
@@ -49,6 +50,16 @@ class TrinoSchemaService(
 @Repository
 interface TrinoSchemaCollectionRepository: CrudRepository<TrinoSchemaCollection, String> {
 }
+val mqttEventRaw = TrinoSchemaCollection(
+    listOf<FieldsEntry>(
+        FieldsEntry("_id", "ObjectId", hidden = true),
+        FieldsEntry(name = "_class", type = "varchar", hidden = true),
+        FieldsEntry("timestamp", "timestamp"),
+        FieldsEntry(name = "topic", type = "varchar", hidden = false),
+        FieldsEntry(name = "payload", type = "varchar"),
+    ),
+    "mqttEventRaw"
+)
 
 val mqttEventStation = TrinoSchemaCollection(
     listOf<FieldsEntry>(
